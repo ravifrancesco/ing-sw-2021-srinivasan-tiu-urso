@@ -6,6 +6,4 @@ public class Game {
 
 	private GameBoard gameBoard;
 
-	private GameBoard gameBoard;
-
 }
