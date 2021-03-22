@@ -10,4 +10,8 @@ public class ProductionPower implements SpecialAbility {
 
 	}
 
+	@Override
+	public void activate(Player p) {
+
+	}
 }
