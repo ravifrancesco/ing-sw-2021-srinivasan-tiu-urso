@@ -16,6 +16,7 @@ public class LeaderCard implements Card {
 	/**
 	 * @see it.polimi.ingsw.model.Card#play()
 	 */
+	@Override
 	public void play() {
 
 	}
@@ -24,6 +25,7 @@ public class LeaderCard implements Card {
 	/**
 	 * @see it.polimi.ingsw.model.Card#draw()
 	 */
+	@Override
 	public void draw() {
 
 	}
@@ -32,6 +34,7 @@ public class LeaderCard implements Card {
 	/**
 	 * @see it.polimi.ingsw.model.Card#activate(it.polimi.ingsw.model.Player)
 	 */
+	@Override
 	public void activate(Player p) {
 
 	}

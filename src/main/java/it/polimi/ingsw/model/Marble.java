@@ -1,17 +1,7 @@
 package it.polimi.ingsw.model;
 
-public enum Marble {
+public interface Marble {
 
-	BLUE,
-
-	PURPLE,
-
-	GREY,
-
-	YELLOW,
-
-	RED,
-
-	WHITE
+    Resource getResource(Player p);
 
 }

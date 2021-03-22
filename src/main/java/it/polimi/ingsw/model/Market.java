@@ -8,13 +8,11 @@ public class Market {
 
 	private Marble freeMarble;
 
-	private Resource resource;
-
 	public void init() {
 
 	}
 
-	public Collection<Resource> getResources(Collection<WhiteMarbleResource> wmr) {
+	public Collection<Resource> getResources(Player p) {
 		return null;
 	}
 
