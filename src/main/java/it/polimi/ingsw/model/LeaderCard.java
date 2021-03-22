@@ -14,20 +14,23 @@ public class LeaderCard implements Card {
 
 
 	/**
-	 * @see it.polimi.ingsw.model.Card#play()
+	 * @see Card#play(Hand)
+     * @param h
 	 */
 	@Override
-	public void play() {
+	public void play(Hand h) {
 
 	}
 
 
 	/**
-	 * @see it.polimi.ingsw.model.Card#draw()
+	 * @see Card#draw(Deck)
+	 * @param d
+	 * @return
 	 */
 	@Override
-	public void draw() {
-
+	public Card draw(Deck d) {
+		return null;
 	}
 
 
