@@ -8,8 +8,6 @@ public class Market {
 
 	private Marble freeMarble;
 
-	private Resource resource;
-
 	public void init() {
 
 	}
