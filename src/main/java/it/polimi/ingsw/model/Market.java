@@ -12,7 +12,7 @@ public class Market {
 
 	}
 
-	public Collection<Resource> getResources(Collection<WhiteMarbleResource> wmr) {
+	public Collection<Resource> getResources(Player p) {
 		return null;
 	}
 
