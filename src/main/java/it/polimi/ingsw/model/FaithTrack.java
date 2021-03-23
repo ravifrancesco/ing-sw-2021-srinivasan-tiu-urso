@@ -58,12 +58,11 @@ public class FaithTrack {
 	 * 				<code>false</code> otherwise.
 	 */
 	public boolean moveFaithMarker(int pos) {
-		for (int i = 0; i < pos; i++) {
-			if (position == GameSettings.FAITH_TRACK_LENGTH) {
+		for (int i = 1; i <= pos; i++) {
+			position++;
+			victoryPoints += faithTrackVictoryPoints[position];
+			if (position == GameSettings.FAITH_TRACK_LENGTH - 1) {
 				return true;
-			} else {
-				position++;
-				victoryPoints += faithTrackVictoryPoints[position];
 			}
 		}
 		return false;
@@ -80,7 +79,7 @@ public class FaithTrack {
 	 * @param vaticanReportEnd checkpoint of the vatican report zone
 	 *                         to be checked.
 	 */
-	public void getVaticanVictoryPoints(int vaticanReportEnd) {
+	public void checkVaticanVictoryPoints(int vaticanReportEnd) {
 		VaticanReport currentVaticanReport = vaticanReports.get(vaticanReportEnd);
 		if (position < currentVaticanReport.start) { currentVaticanReport.miss(); }
 		else {
@@ -107,4 +106,12 @@ public class FaithTrack {
 		return victoryPoints;
 	}
 
+	/**
+	 * Getter for vaticanReports
+	 *
+	 * @return list of vaticanReports
+	 */
+	public Map<Integer, VaticanReport> getVaticanReports() {
+		return vaticanReports;
+	}
 }
