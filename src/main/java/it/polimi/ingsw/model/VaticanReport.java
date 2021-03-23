@@ -10,7 +10,7 @@ package it.polimi.ingsw.model;
  * </ul>
  * <p>
  */
-public class VaticanReport implements Cloneable {
+public class VaticanReport {
 
     protected final int start;
     protected final int end;
@@ -33,7 +33,7 @@ public class VaticanReport implements Cloneable {
         this.end = end;
         this.victoryPoints = victoryPoints;
         this.missed = false;
-        this.achieved = true;
+        this.achieved = false;
     }
 
     /**
@@ -41,7 +41,7 @@ public class VaticanReport implements Cloneable {
      */
     public void reset() {
         this.missed = false;
-        this.achieved = true;
+        this.achieved = false;
     }
 
     /**
@@ -89,8 +89,7 @@ public class VaticanReport implements Cloneable {
      *
      * @return a clone of <code>this</code>
      */
-    @Override
-    protected VaticanReport clone() {
+    protected VaticanReport copy() {
         return new VaticanReport(start, end, victoryPoints);
     }
 

@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
  * <li> The red cross position.
  * <li> The vatican report zones.
  * <li> The bonus victory points in the faith track.
- * <li> The total winning points accumulated by the faith track.
+ * <li> The total victory points accumulated by the faith track.
  * </ul>
  * <p>
  */
@@ -21,7 +21,7 @@ public class FaithTrack {
 	private Map<Integer, VaticanReport> vaticanReports;
 	private int[] faithTrackVictoryPoints;
 
-	private int winningPoints;
+	private int victoryPoints;
 
 	/**
 	 * The constructor for a FaithTrack object.
@@ -32,10 +32,10 @@ public class FaithTrack {
 	 * @param gameSettings the settings for the current game.
 	 */
 	public FaithTrack(GameSettings gameSettings) {
-		this.winningPoints = 0;
+		this.victoryPoints = 0;
 		this.position = 0;
 		this.vaticanReports = gameSettings.getVaticanReports().stream()
-				.collect(Collectors.toMap(v -> v.end, VaticanReport::clone));
+				.collect(Collectors.toMap(v -> v.end, VaticanReport::copy));
 		this.faithTrackVictoryPoints = gameSettings.getFaithTrackVictoryPoints();
 	}
 
@@ -43,7 +43,7 @@ public class FaithTrack {
 	 * Resets the state of this object to the initial state.
 	 */
 	public void reset() {
-		this.winningPoints = 0;
+		this.victoryPoints = 0;
 		this.position = 0;
 		vaticanReports.values().forEach(VaticanReport::reset);
 	}
@@ -63,7 +63,7 @@ public class FaithTrack {
 				return true;
 			} else {
 				position++;
-				winningPoints += faithTrackVictoryPoints[position];
+				victoryPoints += faithTrackVictoryPoints[position];
 			}
 		}
 		return false;
@@ -82,8 +82,11 @@ public class FaithTrack {
 	 */
 	public void getVaticanVictoryPoints(int vaticanReportEnd) {
 		VaticanReport currentVaticanReport = vaticanReports.get(vaticanReportEnd);
-		if (position < currentVaticanReport.start) { currentVaticanReport.isMissed(); }
-		else { currentVaticanReport.isAchieved(); }
+		if (position < currentVaticanReport.start) { currentVaticanReport.miss(); }
+		else {
+			currentVaticanReport.achieve();
+			victoryPoints += currentVaticanReport.victoryPoints;
+		}
 	}
 
 	/**
@@ -96,12 +99,12 @@ public class FaithTrack {
 	}
 
 	/**
-	 * Getter for the winningPoints
+	 * Getter for the victoryPoints
 	 *
-	 * @return the current winningPoints
+	 * @return the current victoryPoints
 	 */
-	public int getWinningPoints() {
-		return winningPoints;
+	public int getVictoryPoints() {
+		return victoryPoints;
 	}
 
 }
