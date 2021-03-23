@@ -16,12 +16,10 @@ import java.util.stream.Collectors;
  */
 public class FaithTrack {
 
-	static final int LENGTH = 25;
-
 	private int position;
 
 	private Map<Integer, VaticanReport> vaticanReports;
-	private Map<Integer, Integer> faithTrackVictoryPoints;
+	private int[] faithTrackVictoryPoints;
 
 	private int winningPoints;
 
@@ -61,11 +59,11 @@ public class FaithTrack {
 	 */
 	public boolean moveFaithMarker(int pos) {
 		for (int i = 0; i < pos; i++) {
-			if (position == LENGTH) {
+			if (position == GameSettings.FAITH_TRACK_LENGTH) {
 				return true;
 			} else {
 				position++;
-				winningPoints += faithTrackVictoryPoints.get(position) == null ? 0 : faithTrackVictoryPoints.get(position);
+				winningPoints += faithTrackVictoryPoints[position];
 			}
 		}
 		return false;
