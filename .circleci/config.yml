@@ -4,6 +4,7 @@ executors:
       - image: 'cimg/openjdk:15.0.1'
 orbs:
   maven: circleci/maven@1.1
+  codecov: codecov/codecov@1.0.2
 version: 2.1
 workflows:
   maven_test:
@@ -13,3 +14,15 @@ workflows:
             parameters:
               executor:
                 - j15
+Run-With-Node:
+    docker:
+      - image: circleci/node:10-browsers
+    steps:
+      - checkout
+      - run:
+          name: install and run tests
+          command: |
+            yarn install && yarn test
+      - codecov/upload:
+          file: './coverage/clover.xml'
+          token: a1510f15-ee3f-47ee-8ea5-3b2395e8e0ce
