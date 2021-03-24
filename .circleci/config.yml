@@ -14,15 +14,3 @@ workflows:
             parameters:
               executor:
                 - j15
-Run-With-Node:
-    docker:
-      - image: circleci/node:10-browsers
-    steps:
-      - checkout
-      - run:
-          name: install and run tests
-          command: |
-            yarn install && yarn test
-      - codecov/upload:
-          file: './coverage/clover.xml'
-          token: a1510f15-ee3f-47ee-8ea5-3b2395e8e0ce
