@@ -4,4 +4,7 @@ public interface Marble {
 
     Resource getResource(Player p);
 
+    int getNum();
+
 }
+

@@ -3,11 +3,15 @@ package it.polimi.ingsw.model;
 public class GreyMarble implements Marble {
 
     /**
-     * @see it.polimi.ingsw.model.Marble#getResource(it.polimi.ingsw.model.Player)
+     * @see Marble#getResource(Player)
+     * @param p
      */
     @Override
     public Resource getResource(Player p) {
-        return null;
+        return Resource.STONE;
+    }
+    public int getNum() {
+        return 0;
     }
 
 }
