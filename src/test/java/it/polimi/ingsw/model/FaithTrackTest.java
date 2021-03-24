@@ -21,7 +21,7 @@ public class FaithTrackTest {
         vaticanReports.add(new VaticanReport(19,24,4));
 
 
-        GameSettings gameSettings = new GameSettings(null, null, null, vaticanReports, faithTrackVictoryPoints);
+        GameSettings gameSettings = new GameSettings(null, 0, null, null, vaticanReports, faithTrackVictoryPoints);
 
         FaithTrack faithTrack = new FaithTrack(gameSettings);
 
@@ -42,7 +42,7 @@ public class FaithTrackTest {
         vaticanReports.add(new VaticanReport(19,24,4));
 
 
-        GameSettings gameSettings = new GameSettings(null, null, null, vaticanReports, faithTrackVictoryPoints);
+        GameSettings gameSettings = new GameSettings(null, 0, null, null, vaticanReports, faithTrackVictoryPoints);
 
         FaithTrack faithTrack = new FaithTrack(gameSettings);
 
@@ -70,7 +70,7 @@ public class FaithTrackTest {
         vaticanReports.add(new VaticanReport(19,24,4));
 
 
-        GameSettings gameSettings = new GameSettings(null, null, null, vaticanReports, faithTrackVictoryPoints);
+        GameSettings gameSettings = new GameSettings(null, 0, null, null, vaticanReports, faithTrackVictoryPoints);
 
         FaithTrack faithTrack = new FaithTrack(gameSettings);
 
@@ -96,7 +96,7 @@ public class FaithTrackTest {
         vaticanReports.add(new VaticanReport(19,24,4));
 
 
-        GameSettings gameSettings = new GameSettings(null, null, null, vaticanReports, faithTrackVictoryPoints);
+        GameSettings gameSettings = new GameSettings(null, 0, null, null, vaticanReports, faithTrackVictoryPoints);
 
         FaithTrack faithTrack = new FaithTrack(gameSettings);
 

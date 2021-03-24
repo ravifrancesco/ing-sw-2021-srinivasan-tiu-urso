@@ -22,11 +22,11 @@ import java.util.stream.IntStream;
 public class GameSettings {
 
     static final int DEVELOPMENT_CARD_NUM = 40;
-    static final int LEADER_CARD_NUM = 16;
     static final int FAITH_TRACK_LENGTH = 25;
 
     private DevelopmentCard[] developmentCards;
 
+    private int leaderCardNum;
     private LeaderCard[] leaderCards;
 
     private ProductionPower dashBoardProductionPower;
@@ -44,9 +44,10 @@ public class GameSettings {
      * @param vaticanReports            List of vaticanReports.
      * @param faithTrackVictoryPoints   array of FAITH_TRACK_LENGTH int representing faithTrackVictoryPoints.
      */
-    public GameSettings(DevelopmentCard[] developmentCards, LeaderCard[] leaderCards, ProductionPower dashBoardProductionPower,
-                        List<VaticanReport> vaticanReports, int[] faithTrackVictoryPoints) {
+    public GameSettings(DevelopmentCard[] developmentCards, int leaderCardNum, LeaderCard[] leaderCards,
+                        ProductionPower dashBoardProductionPower, List<VaticanReport> vaticanReports, int[] faithTrackVictoryPoints) {
         this.developmentCards = developmentCards;
+        this.leaderCardNum = leaderCardNum;
         this.leaderCards = leaderCards;
         this.dashBoardProductionPower = dashBoardProductionPower;
         this.vaticanReports = vaticanReports;
@@ -78,7 +79,8 @@ public class GameSettings {
             // set the properties value
             IntStream.range(0, DEVELOPMENT_CARD_NUM)
                     .forEach(i -> prop.setProperty("DevelopmentCard."+ i , developmentCards[i].toString()));
-            IntStream.range(0, LEADER_CARD_NUM)
+            prop.setProperty("LeaderCardNum", String.valueOf(leaderCardNum));
+            IntStream.range(0, leaderCardNum)
                     .forEach(i -> prop.setProperty("LeaderCard."+ i , leaderCards[i].toString()));
             prop.setProperty("DashBoardProductionPower", dashBoardProductionPower.toString());
             vaticanReports.
