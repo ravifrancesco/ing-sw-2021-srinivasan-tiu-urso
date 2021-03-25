@@ -2,9 +2,9 @@ package it.polimi.ingsw.model;
 
 public interface Card {
 
-	void play();
+	void play(Hand h);
 
-	void draw();
+	Card draw(Deck d);
 
 	void activate(Player p);
 
