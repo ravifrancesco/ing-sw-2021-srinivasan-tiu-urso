@@ -3,8 +3,8 @@ package it.polimi.ingsw.model;
 public class RedMarble implements Marble {
 
     /**
-     * @see Marble#getResource(Player)
      * @param p
+     * @see Marble#getResource(Player)
      */
     @Override
     public Resource getResource(Player p) {
@@ -12,7 +12,4 @@ public class RedMarble implements Marble {
         return null;
     }
 
-    public int getNum() {
-        return 4;
-    }
 }

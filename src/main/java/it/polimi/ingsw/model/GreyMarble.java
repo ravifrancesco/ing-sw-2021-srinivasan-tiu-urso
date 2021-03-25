@@ -10,8 +10,5 @@ public class GreyMarble implements Marble {
     public Resource getResource(Player p) {
         return Resource.STONE;
     }
-    public int getNum() {
-        return 0;
-    }
 
 }

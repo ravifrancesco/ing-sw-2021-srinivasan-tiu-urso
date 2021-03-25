@@ -10,9 +10,4 @@ public class BlueMarble implements Marble {
     public Resource getResource(Player p) {
         return Resource.SHIELD;
     }
-
-    public int getNum() {
-        return 3;
-    }
-
 }

@@ -11,8 +11,4 @@ public class YellowMarble implements Marble {
         return Resource.GOLD;
     }
 
-    public int getNum() {
-        return 2;
-    }
-
 }

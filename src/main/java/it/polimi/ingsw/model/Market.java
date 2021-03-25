@@ -21,9 +21,10 @@ public class Market {
 		gridRowLenght = 3;
 		gridColLength = 4;
 		marblesGrid = new Marble[gridRowLenght][gridColLength];
-		ArrayList<Marble> availableMarbles = new ArrayList<Marble>();
-		fillAvailableMarbles(availableMarbles);
 		int randInt;
+		ArrayList<Marble> availableMarbles = new ArrayList<Marble>();
+
+		fillAvailableMarbles(availableMarbles);
 
 		randInt = ThreadLocalRandom.current().nextInt(0, availableMarbles.size());
 		freeMarble = availableMarbles.get(randInt);
@@ -79,12 +80,6 @@ public class Market {
 			}
 			shiftColumnAfterCollection(move);
 		}
-
-		for(Resource r : collectedResources) {
-			System.out.println(r);
-		}
-		showMarket();
-
 		return collectedResources;
 	}
 
@@ -161,35 +156,6 @@ public class Market {
 				marblesGrid[j][move] = oldFreeMarble;
 			}
 		}
-	}
-
-	/**
-	 * Prints the market, mostly used for initial debugging.
-	 */
-	private void showMarket() {
-		System.out.println("Free marble is " + freeMarble.getNum());
-
-		System.out.println("The market is \n");
-
-		for(int i = 0; i < gridRowLenght; i++) {
-			for(int j = 0; j < gridColLength; j++) {
-				System.out.print(marblesGrid[i][j].getNum() + " ");
-			}
-			System.out.println();
-		}
-	}
-
-	/**
-	 * Main used for debugging.
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		Player p = new Player();
-		Market a = new Market();
-		a.init();
-		a.showMarket();
-
-		System.out.println(a.getMarblesGrid()[0][0] instanceof WhiteMarble);
 	}
 
 	public int getGridRowLenght() {

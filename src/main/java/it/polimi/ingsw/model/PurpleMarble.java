@@ -11,8 +11,4 @@ public class PurpleMarble implements Marble {
         return Resource.SERVANT;
     }
 
-    public int getNum() {
-        return 1;
-    }
-
 }

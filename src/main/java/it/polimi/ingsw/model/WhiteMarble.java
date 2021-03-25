@@ -14,12 +14,6 @@ public class WhiteMarble implements Marble {
 
         }
          */
-
         return null;
     }
-
-    public int getNum() {
-        return 5;
-    }
-
 }
