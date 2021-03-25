@@ -8,6 +8,12 @@ public class Player {
 
 	private Dashboard dashboard;
 
+	public Player(String nickname, String id, Dashboard dashboard) {
+		this.nickname = nickname;
+		this.id = id;
+		this.dashboard = dashboard;
+	}
+
 	public void init() {
 
 	}

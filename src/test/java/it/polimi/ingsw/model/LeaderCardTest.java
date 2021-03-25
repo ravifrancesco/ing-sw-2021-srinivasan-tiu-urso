@@ -4,7 +4,9 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.jupiter.api.Assumptions;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class LeaderCardTest{
@@ -40,10 +42,26 @@ public class LeaderCardTest{
 
         LeaderCard leaderCard = new LeaderCard(1, 5, resourceCost, bannerCost, null);
 
-        leaderCard.discard();
+        int[] faithTrackVictoryPoints = {0,0,0,1,0,0,2,0,0,4,0,0,6,0,0,9,0,0,12,0,0,16,0,0,0};
+
+        List<VaticanReport> vaticanReports = new ArrayList<>();
+
+        vaticanReports.add(new VaticanReport(5,8,2));
+        vaticanReports.add(new VaticanReport(12,15,2));
+        vaticanReports.add(new VaticanReport(19,24,4));
+
+
+        GameSettings gameSettings = new GameSettings(null, 0, null, null, vaticanReports, faithTrackVictoryPoints);
+
+        FaithTrack faithTrack = new FaithTrack(gameSettings);
+
+        Dashboard dashboard = new Dashboard(null, faithTrack, null, null);
+
+        leaderCard.discard(dashboard);
 
         Assert.assertTrue(leaderCard.isDiscarded());
         Assert.assertFalse(leaderCard.isPlayed());
+        Assert.assertEquals(faithTrack.getPosition(),1);
     }
 
     @Test
@@ -60,7 +78,7 @@ public class LeaderCardTest{
 
         LeaderCard leaderCard = new LeaderCard(1, 5, resourceCost, bannerCost, null);
 
-        leaderCard.play(null);
+        leaderCard.play(null, 0);
 
         Assert.assertFalse(leaderCard.isDiscarded());
         Assert.assertTrue(leaderCard.isPlayed());
@@ -80,8 +98,8 @@ public class LeaderCardTest{
 
         LeaderCard leaderCard = new LeaderCard(1, 5, resourceCost, bannerCost, null);
 
-        leaderCard.discard();
-        leaderCard.play(null);
+        leaderCard.discard(null);
+        leaderCard.play(null, 0);
 
         leaderCard.reset();
 

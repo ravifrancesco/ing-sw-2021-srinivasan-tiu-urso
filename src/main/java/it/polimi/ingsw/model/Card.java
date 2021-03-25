@@ -2,8 +2,8 @@ package it.polimi.ingsw.model;
 
 public interface Card {
 
-	void play(Dashboard d);
+	void play(Dashboard d, int position);
 
-	void activate(Player p);
+	void activate(Dashboard d);
 
 }

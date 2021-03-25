@@ -27,11 +27,11 @@ public class LeaderCard implements Card {
 	 * The constructor for a LeaderCard object.
 	 * It initializes the id, the victory points, the resource cost, the banner cost,
 	 * and the special ability.
-	 * @param id
-	 * @param victoryPoints
-	 * @param resourceCost
-	 * @param bannerCost
-	 * @param specialAbility
+	 * @param id represents the unique id of the card
+	 * @param victoryPoints represents the victory points given by the card
+	 * @param resourceCost represents the resource cost to buy the card
+	 * @param bannerCost represents the banner cost to buy the card
+	 * @param specialAbility represents the special ability of the card
 	 */
 
 	public LeaderCard(int id, int victoryPoints, Map<Resource, Integer> resourceCost, Map<Banner, Integer> bannerCost, SpecialAbility specialAbility) {
@@ -57,26 +57,26 @@ public class LeaderCard implements Card {
 	 * @param dashboard the dashboard of the player who played the card
 	 */
 	@Override
-	public void play(Dashboard dashboard) {
+	public void play(Dashboard dashboard, int position) {
 		if(dashboard!=null) {
-			dashboard.insertLeaderCard(this);
+			dashboard.insertLeaderCard(this, position);
 		}
 		this.played=true;
 	}
 
-	/**
-	 * @see it.polimi.ingsw.model.Card#activate(it.polimi.ingsw.model.Player)
-	 */
 	@Override
-	public void activate(Player p) {
+	public void activate(Dashboard d) {
 		//Implementing later..
 	}
 
 	/**
-	 * Set the state of the card as discarded
+	 * Set the state of the card as discarded and add a faith point
 	 */
-	public void discard(){
+	public void discard(Dashboard d){
 		this.discarded=true;
+		if(d!=null) {
+			d.moveFaithMarker(1);
+		}
 	}
 
 	/**
@@ -110,20 +110,6 @@ public class LeaderCard implements Card {
 	public boolean isDiscarded() {
 		return discarded;
 	}
-
-	/*public boolean isPlayable(Map<Resource, Integer> userResources, Map<Banner, Integer> userBanners){
-		for (Map.Entry<Resource, Integer> pair : resourceCost.entrySet()) {
-			if(!userResources.containsKey(pair.getKey()) || (userResources.containsKey(pair.getKey()) && userResources.get(pair.getKey())<pair.getValue())){
-				return false;
-			}
-		}
-		for (Map.Entry<Banner, Integer> pair : bannerCost.entrySet()) {
-			if(!userBanners.containsKey(pair.getKey()) || (userBanners.containsKey(pair.getKey()) && userBanners.get(pair.getKey())<pair.getValue())){
-				return false;
-			}
-		}
-		return true;
-	}*/
 
 	/**
 	 * To string method of the class
