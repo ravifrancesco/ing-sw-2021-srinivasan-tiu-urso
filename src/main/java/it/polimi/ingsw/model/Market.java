@@ -5,9 +5,9 @@ import java.util.Collection;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Market {
-	private int gridRowLenght;
+	static final int gridRowLenght = 3;
 
-	private int gridColLength;
+	static final int gridColLength = 4;
 
 	private Marble[][] marblesGrid;
 
@@ -18,8 +18,6 @@ public class Market {
 	 * Initializes the market, filling it at random.
 	 */
 	public void init() {
-		gridRowLenght = 3;
-		gridColLength = 4;
 		marblesGrid = new Marble[gridRowLenght][gridColLength];
 		int randInt;
 		ArrayList<Marble> availableMarbles = new ArrayList<Marble>();
