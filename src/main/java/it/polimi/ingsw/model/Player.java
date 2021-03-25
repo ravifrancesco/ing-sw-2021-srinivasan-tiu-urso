@@ -6,8 +6,13 @@ public class Player {
 
 	private String id;
 
+	private Dashboard dashboard;
+
 	public void init() {
 
 	}
 
+	public Dashboard getDashboard() {
+		return dashboard;
+	}
 }
