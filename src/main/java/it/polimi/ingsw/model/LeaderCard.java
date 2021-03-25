@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * The class represents a Leader Card of the game.
@@ -10,18 +11,10 @@ import java.util.Map;
 public class LeaderCard implements Card {
 
 	private int id;
-
 	private int victoryPoints;
-
 	private Map<Resource, Integer> resourceCost;
-
 	private Map<Banner, Integer> bannerCost;
-
 	private SpecialAbility specialAbility;
-
-	private boolean played;
-
-	private boolean discarded;
 
 	/**
 	 * The constructor for a LeaderCard object.
@@ -40,16 +33,6 @@ public class LeaderCard implements Card {
 		this.resourceCost = resourceCost;
 		this.bannerCost = bannerCost;
 		this.specialAbility = specialAbility;
-		this.played=false;
-		this.discarded=false;
-	}
-
-	/**
-	 * Resets the state of this object to the initial state.
-	 */
-	public void reset(){
-		this.played=false;
-		this.discarded=false;
 	}
 
 	/**
@@ -58,14 +41,11 @@ public class LeaderCard implements Card {
 	 */
 	@Override
 	public void play(Dashboard dashboard, int position) {
-		if(dashboard!=null) {
-			dashboard.insertLeaderCard(this, position);
-		}
-		this.played=true;
+		dashboard.insertLeaderCard(this, position);
 	}
 
 	@Override
-	public void activate(Dashboard d) {
+	public void activate(Player p) {
 		//Implementing later..
 	}
 
@@ -73,10 +53,7 @@ public class LeaderCard implements Card {
 	 * Set the state of the card as discarded and add a faith point
 	 */
 	public void discard(Dashboard d){
-		this.discarded=true;
-		if(d!=null) {
-			d.moveFaithMarker(1);
-		}
+		d.moveFaithMarker(1);
 	}
 
 	/**
@@ -96,59 +73,23 @@ public class LeaderCard implements Card {
 	}
 
 	/**
-	 * Getter for played
-	 * @return if the card has been played or not
-	 */
-	public boolean isPlayed() {
-		return played;
-	}
-
-	/**
-	 * Getter for discarded
-	 * @return if the card has been discarded or not
-	 */
-	public boolean isDiscarded() {
-		return discarded;
-	}
-
-	/**
 	 * To string method of the class
 	 * @return a string representation of the object
 	 */
 	@Override
 	public String toString(){
 		String result="";
-		result+="ID="+id+";VP="+victoryPoints+";RC=";
+		result+="ID="+id+";VP="+victoryPoints+"";
 
-		if(resourceCost!=null) {
-			for (Map.Entry<Resource, Integer> pair : resourceCost.entrySet()) {
-				result += pair.getKey() + "," + pair.getValue() + ",";
-			}
-			result=result.substring(0, result.length()-1)+";BC=";
-		}
-		else{
-			result+=";BC=";
-		}
+		result += resourceCost.keySet().stream()
+				.map(key -> key + "," + resourceCost.get(key))
+				.collect(Collectors.joining(",", ";RC=", ";"));
 
-		if(bannerCost!=null) {
-			for (Map.Entry<Banner, Integer> pair : bannerCost.entrySet()) {
-				result += pair.getKey().getColor() + "," + pair.getKey().getLevel() + "," + pair.getValue() + ",";
-			}
-			result=result.substring(0, result.length()-1)+";";
-		}
-		else
-		{
-			result+=";";
-		}
+		result += bannerCost.keySet().stream()
+				.map(key -> key.getColor() + "," + key.getLevel() + "," + bannerCost.get(key))
+				.collect(Collectors.joining(",", "BC=", ";"));
 
-
-		if(specialAbility!=null) {
-			result += "SA=" + specialAbility.toString() + ";";
-		}
-		else
-		{
-			result +="SA=;";
-		}
+		result += "SA=" + specialAbility.toString();
 		return result;
 	}
 }

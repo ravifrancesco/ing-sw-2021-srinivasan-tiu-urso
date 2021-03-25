@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * The class represents a Development Card of the game.
@@ -8,44 +9,28 @@ import java.util.Map;
  * The victory points.
  * The resource cost to buy the card.
  * The production power.
- * If the card has been played and if the card is activatable
  */
 
 public class DevelopmentCard implements Card {
 
+	private int id;
 	private int victoryPoints;
-
 	private Map<Resource, Integer> resourceCost;
-
 	private ProductionPower productionPower;
-
-	private boolean played;
-
-	private boolean activatable;
 
 	/**
 	 * The constructor for a Development Card object.
-	 * It initializes played and activatable.
+	 * @param id represents the unique id of the card
 	 * @param victoryPoints represents the victory points given by the card
 	 * @param resourceCost represents the resource cost to buy the card
 	 * @param productionPower represents the production power of the card
 	 */
 
-	public DevelopmentCard(int victoryPoints, Map<Resource, Integer> resourceCost, ProductionPower productionPower) {
+	public DevelopmentCard(int id, int victoryPoints, Map<Resource, Integer> resourceCost, ProductionPower productionPower) {
+		this.id=id;
 		this.victoryPoints = victoryPoints;
 		this.resourceCost = resourceCost;
 		this.productionPower = productionPower;
-		this.played=false;
-		this.activatable=false;
-	}
-
-	/**
-	 * Resets the state of this object to the initial state.
-	 */
-
-	public void reset(){
-		this.played=false;
-		this.activatable=false;
 	}
 
 	/**
@@ -56,51 +41,54 @@ public class DevelopmentCard implements Card {
 
 	@Override
 	public void play(Dashboard d, int position) {
-		if(d!=null) {
-			d.insertDevelopmentCard(this, position);
-		}
-		this.played=true;
-		this.activatable=true;
+		d.insertDevelopmentCard(this, position);
 	}
 
 	/**
 	 * Allows to activate the production power
-	 * @param d represents the dashboard of the player
+	 * @param p represents the player
 	 */
 
 	@Override
-	public void activate(Dashboard d) {
-		if(played && activatable && productionPower!=null && d!=null){
-			productionPower.activate(d.getPlayer());
-		}
+	public void activate(Player p) {
+		productionPower.activate(p);
 	}
 
 	/**
-	 * Allows to place another card onto this card
+	 * Getter for the id
+	 * @return the id of the card
 	 */
 
-	public void substitute(){
-		if(played) {
-			this.activatable = false;
-		}
+	public int getId() {
+		return id;
 	}
 
 	/**
-	 * Getter for played
-	 * @return if the card has been played or not
+	 * Getter for victory points
+	 * @return the victory points given by the card
 	 */
 
-	public boolean isPlayed(){
-		return played;
+	public int getVictoryPoints() {
+		return victoryPoints;
 	}
 
 	/**
-	 * Getter for activatable
-	 * @return if the card is still activatable or not
+	 * To string method of the class
+	 * @return a string representation of the object
 	 */
 
-	public boolean isActivatable(){
-		return activatable;
-	}
+	@Override
+	public String toString(){
+		String result="";
 
+		result+="ID="+id+";VP="+victoryPoints+"";
+
+		result += resourceCost.keySet().stream()
+				.map(key -> key + "," + resourceCost.get(key))
+				.collect(Collectors.joining(",", ";RC=", ";"));
+
+		result += "SA=" + productionPower.toString();
+
+		return result;
+	}
 }

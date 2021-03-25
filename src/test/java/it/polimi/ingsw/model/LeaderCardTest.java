@@ -11,21 +11,50 @@ import java.util.Map;
 
 public class LeaderCardTest{
     @Test
-    public void constructorTest(){
+    public void toStringTestWithNullRP(){
         Map<Resource, Integer> resourceCost = new HashMap<>();
 
         resourceCost.put(Resource.SHIELD, 1);
-        resourceCost.put(Resource.SERVANT, 2);
 
         Map<Banner, Integer> bannerCost = new HashMap<>();
 
         bannerCost.put(new Banner("GREEN", 1), 2);
         bannerCost.put(new Banner("BLUE", 2), 1);
 
-        LeaderCard leaderCard = new LeaderCard(1, 5, resourceCost, bannerCost, null);
+        Map<Resource, Integer> resourceRequired = new HashMap<>();
+        resourceRequired.put(Resource.GOLD, 1);
 
-        Assert.assertFalse(leaderCard.isDiscarded());
-        Assert.assertFalse(leaderCard.isPlayed());
+        SpecialAbility sa = new ProductionPower(resourceRequired, null, 1, true);
+
+        LeaderCard leaderCard = new LeaderCard(1, 5, resourceCost, bannerCost, sa);
+
+        String s1 = "ID=1;VP=5;RC=SHIELD,1;BC=BLUE,2,1,GREEN,1,2;SA=PP;RR=GOLD,1;FP=1;SR=y;";
+        String s2 = "ID=1;VP=5;RC=SHIELD,1;BC=GREEN,1,2,BLUE,2,1;SA=PP;RR=GOLD,1;FP=1;SR=y;";
+
+        Assumptions.assumeTrue(s1.equals(leaderCard.toString()) || s2.equals(leaderCard.toString()));
+
+    }
+
+    @Test
+    public void getterTest(){
+        Map<Resource, Integer> resourceCost = new HashMap<>();
+
+        resourceCost.put(Resource.SHIELD, 1);
+
+        Map<Banner, Integer> bannerCost = new HashMap<>();
+
+        bannerCost.put(new Banner("GREEN", 1), 2);
+        bannerCost.put(new Banner("BLUE", 2), 1);
+
+        Map<Resource, Integer> resourceRequired = new HashMap<>();
+        resourceRequired.put(Resource.GOLD, 1);
+
+        SpecialAbility sa = new ProductionPower(resourceRequired, null, 1, true);
+
+        LeaderCard leaderCard = new LeaderCard(1, 5, resourceCost, bannerCost, sa);
+
+        Assert.assertEquals(leaderCard.getId(), 1);
+        Assert.assertEquals(leaderCard.getVictoryPoints(), 5);
     }
 
     @Test
@@ -55,89 +84,22 @@ public class LeaderCardTest{
 
         FaithTrack faithTrack = new FaithTrack(gameSettings);
 
-        Dashboard dashboard = new Dashboard(null, faithTrack, null, null);
+        Dashboard dashboard = new Dashboard(gameSettings, null);
 
         leaderCard.discard(dashboard);
 
-        Assert.assertTrue(leaderCard.isDiscarded());
-        Assert.assertFalse(leaderCard.isPlayed());
-        Assert.assertEquals(faithTrack.getPosition(),1);
+        // TODO check if the card is in the discardDeck (when Deck will be implemented)
+
+        Assert.assertEquals(dashboard.getFaithMarkerPosition(),1);
     }
 
     @Test
     public void playTest(){
-        Map<Resource, Integer> resourceCost = new HashMap<>();
-
-        resourceCost.put(Resource.SHIELD, 1);
-        resourceCost.put(Resource.SERVANT, 2);
-
-        Map<Banner, Integer> bannerCost = new HashMap<>();
-
-        bannerCost.put(new Banner("GREEN", 1), 2);
-        bannerCost.put(new Banner("BLUE", 2), 1);
-
-        LeaderCard leaderCard = new LeaderCard(1, 5, resourceCost, bannerCost, null);
-
-        leaderCard.play(null, 0);
-
-        Assert.assertFalse(leaderCard.isDiscarded());
-        Assert.assertTrue(leaderCard.isPlayed());
+        // TODO when GameBoard will be done
     }
 
     @Test
-    public void resetTest(){
-        Map<Resource, Integer> resourceCost = new HashMap<>();
-
-        resourceCost.put(Resource.SHIELD, 1);
-        resourceCost.put(Resource.SERVANT, 2);
-
-        Map<Banner, Integer> bannerCost = new HashMap<>();
-
-        bannerCost.put(new Banner("GREEN", 1), 2);
-        bannerCost.put(new Banner("BLUE", 2), 1);
-
-        LeaderCard leaderCard = new LeaderCard(1, 5, resourceCost, bannerCost, null);
-
-        leaderCard.discard(null);
-        leaderCard.play(null, 0);
-
-        leaderCard.reset();
-
-        Assert.assertFalse(leaderCard.isDiscarded());
-        Assert.assertFalse(leaderCard.isPlayed());
+    public void activateTest(){
+        // TODO when GameBoard will be done
     }
-
-    @Test
-    public void nullTest(){
-        LeaderCard leaderCard = new LeaderCard(1, 5, null, null, null);
-
-        Assert.assertEquals("ID=1;VP=5;RC=;BC=;SA=;", leaderCard.toString());
-    }
-
-    /*@Test
-    public void playableTest1(){
-        Map<Resource, Integer> resourceCost = new HashMap<Resource, Integer>();
-
-        resourceCost.put(Resource.SHIELD, 1);
-        resourceCost.put(Resource.SERVANT, 2);
-
-        Map<Banner, Integer> bannerCost = new HashMap<Banner, Integer>();
-
-        bannerCost.put(new Banner("GREEN", 1), 2);
-        bannerCost.put(new Banner("BLUE", 2), 1);
-
-        Map<Resource, Integer> userResources = new HashMap<Resource, Integer>();
-
-        userResources.put(Resource.SHIELD, 2);
-        userResources.put(Resource.SERVANT, 3);
-
-        Map<Banner, Integer> userBanners = new HashMap<Banner, Integer>();
-
-        userBanners.put(new Banner("GREEN", 1), 2);
-        userBanners.put(new Banner("BLUE", 2), 1);
-
-        LeaderCard leaderCard = new LeaderCard(1, 5, resourceCost, bannerCost, null);
-
-        Assert.assertEquals(true, leaderCard.isPlayable(userResources, userBanners));
-    }*/
 }

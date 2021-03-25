@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * The class represents a Production Power of the game.
@@ -9,21 +10,21 @@ import java.util.Map;
 
 public class ProductionPower implements SpecialAbility {
 
-	Map<Resource, Integer> resourceCost;
+	Map<Resource, Integer> resourceRequired;
 	Map<Resource, Integer> resourceProduced;
 	int numberFaithPoints;
 	boolean selectableResource;
 
 	/**
 	 * The constructor for a Production Power object
-	 * @param resourceCost represents the cost to activate the production power
+	 * @param resourceRequired represents the cost to activate the production power
 	 * @param resourceProduced represents the resources producted
 	 * @param numberFaithPoints represents the faith points given by the production power
 	 * @param selectableResource represents if the production power gives a selectable resource or not
 	 */
 
-	public ProductionPower(Map<Resource, Integer> resourceCost, Map<Resource, Integer> resourceProduced, int numberFaithPoints, boolean selectableResource) {
-		this.resourceCost = resourceCost;
+	public ProductionPower(Map<Resource, Integer> resourceRequired, Map<Resource, Integer> resourceProduced, int numberFaithPoints, boolean selectableResource) {
+		this.resourceRequired = resourceRequired;
 		this.resourceProduced = resourceProduced;
 		this.numberFaithPoints = numberFaithPoints;
 		this.selectableResource = selectableResource;
@@ -59,12 +60,12 @@ public class ProductionPower implements SpecialAbility {
 	}
 
 	/**
-	 * Getter for resource cost
+	 * Getter for resource required
 	 * @return the resource cost of the production power
 	 */
 
-	public Map<Resource, Integer> getResourceCost() {
-		return resourceCost;
+	public Map<Resource, Integer> getResourceRequired() {
+		return resourceRequired;
 	}
 
 	/**
@@ -92,5 +93,31 @@ public class ProductionPower implements SpecialAbility {
 
 	public boolean isSelectableResource() {
 		return selectableResource;
+	}
+
+	/**
+	 * To string method of the class
+	 * @return a string representation of the object
+	 */
+	public String toString(){
+		String result="";
+
+		result+="PP";
+
+		result += resourceRequired.keySet().stream()
+				.map(key -> key + "," + resourceRequired.get(key))
+				.collect(Collectors.joining(",", ";RR=", ";"));
+
+		if(resourceProduced!=null) { //it could be null in case it is the production power of a leader card
+			result += resourceProduced.keySet().stream()
+					.map(key -> key + "," + resourceProduced.get(key))
+					.collect(Collectors.joining(",", "RP=", ";"));
+		}
+
+		result += "FP=" + numberFaithPoints + ";";
+
+		result += "SR=" + (selectableResource ? "y" : "n") + ";";
+
+		return result;
 	}
 }

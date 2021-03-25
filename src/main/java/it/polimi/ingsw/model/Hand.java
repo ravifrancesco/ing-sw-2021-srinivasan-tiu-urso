@@ -2,18 +2,11 @@ package it.polimi.ingsw.model;
 
 public class Hand {
 
-	Player p;
-
 	public void discardCard(int c) {
-
+		// TODO
 	}
 
 	public void playLeaderCard(int c) {
-
+		// TODO
 	}
-
-	public Player getPlayer(){
-		return null;
-	}
-
 }
