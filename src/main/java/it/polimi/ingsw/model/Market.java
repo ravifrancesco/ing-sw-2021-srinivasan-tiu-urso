@@ -5,10 +5,38 @@ import java.util.Collection;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Market {
+	private int gridRowLenght;
+
+	private int gridColLength;
 
 	private Marble[][] marblesGrid;
 
 	private Marble freeMarble;
+
+
+	/**
+	 * Initializes the market, filling it at random.
+	 */
+	public void init() {
+		gridRowLenght = 3;
+		gridColLength = 4;
+		marblesGrid = new Marble[gridRowLenght][gridColLength];
+		ArrayList<Marble> availableMarbles = new ArrayList<Marble>();
+		fillAvailableMarbles(availableMarbles);
+		int randInt;
+
+		randInt = ThreadLocalRandom.current().nextInt(0, availableMarbles.size());
+		freeMarble = availableMarbles.get(randInt);
+		availableMarbles.remove(randInt);
+
+		for(int i = 0; i < gridRowLenght; i++) {
+			for(int j = 0; j < gridColLength; j++) {
+				randInt = ThreadLocalRandom.current().nextInt(0, availableMarbles.size());
+				marblesGrid[i][j] = availableMarbles.get(randInt);
+				availableMarbles.remove(randInt);
+			}
+		}
+	}
 
 	/**
 	 * @param move is the integer representing the row and column where the free marble is moved.
@@ -17,14 +45,13 @@ public class Market {
 	 *             B P P W |  2
 	 *             G Y W R |  3
 	 *             - - - - -
-	 *             7 6 5 4
-	 *             4 3 2 1
+	 *             4 5 6 7
 	 *
-	 *             Move 7 would get the player resources from a White, Blue and Grey marble.
+	 *             Move 4 for example would get the player resources from a White, Blue and Grey marble.
 	 *
+	 * @param p is the player associated executing the move.
 	 * @return a collection of the resources corresponding to the marbles moved.
 	 */
-
 	public Collection<Resource> getResources(int move, Player p) {
 		ArrayList<Resource> collectedResources = new ArrayList<Resource>();
 		if (move < 4) {
@@ -33,10 +60,13 @@ public class Market {
 
 
 			for (int i = 0; i < 4; i++) {
-				collectedResources.add(marblesGrid[i][move].getResource(p));
+				Resource res = marblesGrid[move][i].getResource(p);
+				if(res != null) {
+					collectedResources.add(marblesGrid[move][i].getResource(p));
+				}
 			}
+			shiftRowAfterCollection(move);
 
-			// shiftAfterCollection();
 		} else {
 			move = move - 4;
 			// move is now the corresponding index of the column to be shifted
@@ -47,89 +77,138 @@ public class Market {
 					collectedResources.add(res);
 				}
 			}
+			shiftColumnAfterCollection(move);
 		}
+
+		for(Resource r : collectedResources) {
+			System.out.println(r);
+		}
+		showMarket();
 
 		return collectedResources;
 	}
 
-
-	private void initMarket() {
-		marblesGrid = new Marble[3][4];
-		ArrayList<Marble> availableMarbles = new ArrayList<Marble>();
+	/**
+	 * Fills a collection with every possible marble in the market.
+	 * @param allMarbles the collection that will be filled.
+	 */
+	private void fillAvailableMarbles(Collection<Marble> allMarbles) {
 
 		for(int i = 0; i < 4; i++) {
-			availableMarbles.add(new WhiteMarble());
+			allMarbles.add(new WhiteMarble());
 		}
 
 		for(int i = 0; i < 2; i++) {
-			availableMarbles.add(new BlueMarble());
+			allMarbles.add(new BlueMarble());
 		}
 
 		for(int i = 0; i < 2; i++) {
-			availableMarbles.add(new GreyMarble());
+			allMarbles.add(new GreyMarble());
 		}
 
 		for(int i = 0; i < 2; i++) {
-			availableMarbles.add(new YellowMarble());
+			allMarbles.add(new YellowMarble());
 		}
 
 		for(int i = 0; i < 2; i++) {
-			availableMarbles.add(new PurpleMarble());
+			allMarbles.add(new PurpleMarble());
 		}
 
-		availableMarbles.add(new RedMarble());
-
-		freeMarble = availableMarbles.get(ThreadLocalRandom.current().nextInt(0, availableMarbles.size()));
-
-		for(int i = 0; i < 3; i++) {
-			for(int j = 0; j < 4; j++) {
-				marblesGrid[i][j] = availableMarbles.get(ThreadLocalRandom.current().nextInt(0, availableMarbles.size()));
-			}
-		}
+		allMarbles.add(new RedMarble());
 
 	}
 
+	/**
+	 * Shifts the corresponding row, inserting the freeMarble according to game rules.
+	 * @param move is the integer associated with the row to be shifted.
+	 */
+	private void shiftRowAfterCollection(int move) {
+		int i, j;
+		Marble temp;
+		Marble oldFreeMarble = freeMarble;
+
+		// System.out.println("La freeMarble era " + freeMarble.getNum());
+		freeMarble = marblesGrid[move][0];
+		// System.out.println("La freeMarble è " + freeMarble.getNum());
+
+		for(i = 0; i < gridColLength-1; i++) {
+			j = i + 1;
+			temp = marblesGrid[move][i];
+			marblesGrid[move][i] = marblesGrid[move][j];
+			marblesGrid[move][j] = temp;
+			if(j == 3) {
+				marblesGrid[move][j] = oldFreeMarble;
+			}
+		}
+	}
+
+	/**
+	 * Shifts the corresponding column, inserting the freeMarble according to game rules.
+	 * @param move is the integer associated with the column to be shifted.
+	 */
+	private void shiftColumnAfterCollection(int move) {
+		int i, j;
+		Marble temp;
+		Marble oldFreeMarble = freeMarble;
+		freeMarble = marblesGrid[0][move];
+
+		for(i = 0; i < gridRowLenght-1; i++) {
+			j = i + 1;
+			temp = marblesGrid[i][move];
+			marblesGrid[i][move] = marblesGrid[j][move];
+			marblesGrid[j][move] = temp;
+			if(j == 2) {
+				marblesGrid[j][move] = oldFreeMarble;
+			}
+		}
+	}
+
+	/**
+	 * Prints the market, mostly used for initial debugging.
+	 */
 	private void showMarket() {
 		System.out.println("Free marble is " + freeMarble.getNum());
 
 		System.out.println("The market is \n");
 
-		for(int i = 0; i < 3; i++) {
-			for(int j = 0; j < 4; j++) {
+		for(int i = 0; i < gridRowLenght; i++) {
+			for(int j = 0; j < gridColLength; j++) {
 				System.out.print(marblesGrid[i][j].getNum() + " ");
 			}
 			System.out.println();
 		}
 	}
 
-
+	/**
+	 * Main used for debugging.
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		Player p = new Player();
 		Market a = new Market();
-		a.initMarket();
+		a.init();
 		a.showMarket();
-		Collection<Resource> temp = a.getResources(5, p);
-		for(Resource prova : temp) {
-			System.out.println(prova);
-		}
+
+		System.out.println(a.getMarblesGrid()[0][0] instanceof WhiteMarble);
 	}
 
-	private void shiftRowAfterCollection(int move) {
-		Marble temp;
-		Marble oldFreeMarble = freeMarble;
-		freeMarble = marblesGrid[move][0];
-		for(int i = 0; i < 3; i++) {
-			for(int j = 1; j < 4; j++) {
-				temp = marblesGrid[move][i];
-				marblesGrid[move][i] = marblesGrid[move][j];
-
-
-			}
-		}
+	public int getGridRowLenght() {
+		return gridRowLenght;
 	}
 
-	private void shiftColumnAfterCollection(int move) {
-		Marble oldFreeMarble = freeMarble;
-		freeMarble = marblesGrid[0][move];
+	public int getGridColLength() {
+		return gridColLength;
 	}
+
+	public Marble[][] getMarblesGrid() {
+		return marblesGrid;
+	}
+
+	public Marble getFreeMarble() {
+		return freeMarble;
+	}
+
+
 }
+
+
