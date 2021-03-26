@@ -2,7 +2,8 @@ package it.polimi.ingsw.model;
 
 /**
  * The class represent a personal Dashboard of the game.
- * It has a Warehouse, a FaitTrack, the Played Leader Cards and
+ * It has a Warehouse, a FaithTrack, the Played Leader Cards and
+
  * the reference of the player.
  */
 
