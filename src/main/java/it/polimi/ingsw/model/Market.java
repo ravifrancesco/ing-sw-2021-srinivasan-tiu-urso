@@ -12,6 +12,7 @@ public class Market {
 
 	private Marble[] marblesGrid;
 
+
 	/**
 	 * The constructor for the Market class.
 	 * It allocates space for the grid, using the two final attributes representing the dimension.

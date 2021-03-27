@@ -2,6 +2,17 @@ package it.polimi.ingsw.model;
 
 public class WhiteMarble implements Marble {
 
+    private int id;
+
+    public WhiteMarble() {
+        this.id = 6;
+    }
+
+    @Override
+    public int getId() {
+        return id;
+    }
+
     /**
      * @see Marble#getResource(Player)
      * @param p

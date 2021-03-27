@@ -2,6 +2,12 @@ package it.polimi.ingsw.model;
 
 public class RedMarble implements Marble {
 
+    private int id;
+
+    public RedMarble() {
+        this.id = 5;
+    }
+
     /**
      * @param p
      * @see Marble#getResource(Player)
@@ -12,4 +18,8 @@ public class RedMarble implements Marble {
         return null;
     }
 
+    @Override
+    public int getId() {
+        return id;
+    }
 }
