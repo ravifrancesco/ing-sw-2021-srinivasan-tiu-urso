@@ -14,7 +14,7 @@ public class MarketTest {
     @Test
     public void resetTest() {
         Market market = new Market();
-        Player p = new Player();
+        Player p = new Player("test", "0");
 
         market.reset();
 
@@ -40,7 +40,7 @@ public class MarketTest {
     @Test
     public void getResourcesTest() {
         Market market = new Market();
-        Player p = new Player();
+        Player p = new Player("test", "0");
 
         market.reset();
 

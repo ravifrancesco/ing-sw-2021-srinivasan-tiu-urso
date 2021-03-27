@@ -8,7 +8,7 @@ public class MarbleTest {
     @Test
     public void greyGetResources() {
         Marble a = new GreyMarble();
-        Player p = new Player();
+        Player p = new Player("test", "0");
 
         Assert.assertEquals(a.getResource(p), Resource.STONE);
     }
@@ -16,7 +16,7 @@ public class MarbleTest {
     @Test
     public void blueGetResources() {
         Marble a = new BlueMarble();
-        Player p = new Player();
+        Player p = new Player("test", "0");
 
         Assert.assertEquals(a.getResource(p), Resource.SHIELD);
     }
@@ -24,7 +24,7 @@ public class MarbleTest {
     @Test
     public void yellowGetResources() {
         Marble a = new YellowMarble();
-        Player p = new Player();
+        Player p = new Player("test", "0");
 
         Assert.assertEquals(a.getResource(p), Resource.GOLD);
     }
@@ -32,7 +32,7 @@ public class MarbleTest {
     @Test
     public void purpleGetResources() {
         Marble a = new PurpleMarble();
-        Player p = new Player();
+        Player p = new Player("test", "0");
 
         Assert.assertEquals(a.getResource(p), Resource.SERVANT);
     }
