@@ -1,13 +1,13 @@
 package it.polimi.ingsw.model;
 
 public class RedMarble implements Marble {
-
     /**
-     * @see it.polimi.ingsw.model.Marble#getResource(it.polimi.ingsw.model.Player)
+     * @param p
+     * @see Marble#getResource(Player)
      */
     @Override
     public Resource getResource(Player p) {
+        // p.getDashboard().moveFaithMarker(1); // TODO implement after dashboard implementation
         return null;
     }
-
 }

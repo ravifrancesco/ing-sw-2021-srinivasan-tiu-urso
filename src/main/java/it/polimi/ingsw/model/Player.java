@@ -6,8 +6,18 @@ public class Player {
 
 	private String id;
 
+	private Dashboard dashboard;
+
+	public Player(String nickname, String id) {
+		this.nickname = nickname;
+		this.id = id;
+	}
+
 	public void init() {
 
 	}
 
+	public Dashboard getDashboard() {
+		return dashboard;
+	}
 }
