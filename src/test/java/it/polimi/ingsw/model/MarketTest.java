@@ -18,6 +18,8 @@ public class MarketTest {
 
         market.reset();
 
+
+
         Assert.assertEquals(3, market.getGridRowLenght());
         Assert.assertEquals(4, market.getGridColLength());
 
