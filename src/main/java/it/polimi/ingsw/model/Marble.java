@@ -8,7 +8,5 @@ public interface Marble {
      * @return the resource associated with the marble.
      */
     Resource getResource(Player p);
-
-    int getId();
 }
 

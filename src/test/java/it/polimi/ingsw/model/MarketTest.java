@@ -23,17 +23,19 @@ public class MarketTest {
 
         ArrayList<Marble> alMarble = new ArrayList<>(Arrays.asList(market.getMarblesGrid()));
 
-        Map<Integer, Long> dest = alMarble.stream().collect(Collectors.groupingBy(Marble::getId, Collectors.counting()));
+        Map<String, Long> dest = alMarble.stream().collect(Collectors.groupingBy(m -> m.getClass().toString(), Collectors.counting()));
 
         System.out.println("Test produced:");
         dest.forEach((key, val) -> System.out.println("Marble: " + key + " Qty: " + val));
 
-        Assert.assertEquals(2, Math.toIntExact(dest.get(1))); // grey
-        Assert.assertEquals(2, Math.toIntExact(dest.get(2))); // purple
-        Assert.assertEquals(2, Math.toIntExact(dest.get(3))); // yellow
-        Assert.assertEquals(2, Math.toIntExact(dest.get(4))); // blue
-        Assert.assertEquals(1, Math.toIntExact(dest.get(5))); // red
-        Assert.assertEquals(4, Math.toIntExact(dest.get(6))); // white
+        Assert.assertEquals(Long.valueOf(2), dest.get("class it.polimi.ingsw.model.YellowMarble"));
+        Assert.assertEquals(Long.valueOf(2), dest.get("class it.polimi.ingsw.model.GreyMarble"));
+        Assert.assertEquals(Long.valueOf(1), dest.get("class it.polimi.ingsw.model.RedMarble"));
+        Assert.assertEquals(Long.valueOf(2), dest.get("class it.polimi.ingsw.model.PurpleMarble"));
+        Assert.assertEquals(Long.valueOf(2), dest.get("class it.polimi.ingsw.model.BlueMarble"));
+        Assert.assertEquals(Long.valueOf(4), dest.get("class it.polimi.ingsw.model.WhiteMarble"));
+
+
 
     }
 

@@ -26,15 +26,12 @@ public class Market {
 	 * Initializes the market, filling the grid and the free marble randomly.
 	 */
 	public void reset() {
-		ArrayList<Marble> coloredMarbles = new ArrayList<>();
-
-		coloredMarbles.add(new YellowMarble());
-		coloredMarbles.add(new GreyMarble());
-		coloredMarbles.add(new BlueMarble());
-		coloredMarbles.add(new PurpleMarble());
-
 		ArrayList<Marble> allMarbles = new ArrayList<>();
-		IntStream.range(0, 2).forEach(i -> allMarbles.addAll(coloredMarbles));
+
+		IntStream.range(0, 2).forEach(i -> allMarbles.add(new BlueMarble()));
+		IntStream.range(0, 2).forEach(i -> allMarbles.add(new PurpleMarble()));
+		IntStream.range(0, 2).forEach(i -> allMarbles.add(new YellowMarble()));
+		IntStream.range(0, 2).forEach(i -> allMarbles.add(new GreyMarble()));
 		IntStream.range(0, 4).forEach(i -> allMarbles.add(new WhiteMarble()));
 		allMarbles.add(new RedMarble());
 
