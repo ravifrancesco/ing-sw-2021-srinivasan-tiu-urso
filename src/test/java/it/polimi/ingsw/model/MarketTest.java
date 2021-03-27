@@ -3,14 +3,18 @@ package it.polimi.ingsw.model;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.Collection;
+import javax.swing.*;
+import java.lang.reflect.Array;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class MarketTest {
 
     @Test
-    public void initTest() {
+    public void resetTest() {
         Market market = new Market();
-        market.init();
+        market.reset();
 
         Assert.assertEquals(3, market.getGridRowLenght());
         Assert.assertEquals(4, market.getGridColLength());
@@ -22,41 +26,44 @@ public class MarketTest {
         int redCount = 0;
         int whiteCount = 0;
 
-
-        for(int i = 0; i < market.getGridRowLenght(); i++) {
-            for(int j = 0; j < market.getGridColLength(); j++) {
-                if ((market.getMarblesGrid())[i][j] instanceof WhiteMarble &&
-                        (market.getMarblesGrid())[i][j] != null) {
+        int i = 0;
+        int j = 0;
+        for(i = 0; i < market.getGridRowLenght(); i++) {
+            for(j = 0; j < market.getGridColLength(); j++) {
+                if ((market.getMarble(i,j) instanceof WhiteMarble)&&
+                        (market.getMarble(i,j) != null)) {
                     System.out.println("white");
                     whiteCount++;
                 }
 
-                if ((market.getMarblesGrid())[i][j] instanceof GreyMarble &&
-                        (market.getMarblesGrid())[i][j] != null) {
+                if ((market.getMarble(i,j) instanceof GreyMarble)&&
+                        (market.getMarble(i,j) != null)) {
                     System.out.println("grey");
                     greyCount++;
                 }
 
-                if ((market.getMarblesGrid())[i][j] instanceof PurpleMarble &&
-                        (market.getMarblesGrid())[i][j] != null) {
+
+                if ((market.getMarble(i,j) instanceof PurpleMarble)&&
+                        (market.getMarble(i,j) != null)) {
                     System.out.println("purple");
                     purpleCount++;
                 }
 
-                if ((market.getMarblesGrid())[i][j] instanceof YellowMarble &&
-                        (market.getMarblesGrid())[i][j] != null) {
+
+                if ((market.getMarble(i,j) instanceof YellowMarble)&&
+                        (market.getMarble(i,j) != null)) {
                     System.out.println("yellow");
                     yellowCount++;
                 }
 
-                if ((market.getMarblesGrid())[i][j] instanceof BlueMarble &&
-                        (market.getMarblesGrid())[i][j] != null) {
+                if ((market.getMarble(i,j) instanceof BlueMarble)&&
+                        (market.getMarble(i,j) != null)) {
                     System.out.println("blue");
                     blueCount++;
                 }
 
-                if ((market.getMarblesGrid())[i][j] instanceof RedMarble &&
-                        (market.getMarblesGrid())[i][j] != null) {
+                if ((market.getMarble(i,j) instanceof RedMarble)&&
+                        (market.getMarble(i,j) != null)) {
                     System.out.println("red");
                     redCount++;
                 }
@@ -96,7 +103,7 @@ public class MarketTest {
     @Test
     public void getResourcesTest() {
         Market market = new Market();
-        market.init();
+        market.reset();
         Player p = new Player();
         int row;
 
@@ -108,12 +115,22 @@ public class MarketTest {
         int blueCount = 0;
         int redCount = 0;
         int whiteCount = 0;
+        int move;
+        int t;
 
-        for(int i = 1; i < 8; i++) { // tries every possible move
+        for(int i = 0; i < 7; i++) { // tries every possible move
+            // ArrayList<Marble> alGrid = new ArrayList<Marble>(Arrays.asList(market.getMarblesGrid()));
+
+            //Map<Resource, Long> result = alGrid.stream().collect(Collectors.groupingBy(Marble::getResource));
+
+
+            // Map<Marble, Integer> temp = Arrays.stream(market.getMarblesGrid()).collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+
+            System.out.println("Testing move " + i);
             if(isRowMove(i)) {
-                row = i - 1;
                 for(int j = 0; j < 4; j++) {
-                    Marble curr = market.getMarblesGrid()[row][j];
+                    System.out.println("-calling " + i + " " + j );
+                    Marble curr = market.getMarble(i, j);;
                     if(curr instanceof BlueMarble) {
                         blueCount++;
                     }
@@ -128,9 +145,10 @@ public class MarketTest {
                     }
                 }
             } else {
-                row = i - 4;
+                t = i - 3;
                 for(int j = 0; j < 3; j++) {
-                    Marble curr = market.getMarblesGrid()[j][row];
+                    System.out.println("&calling " + t + " " + j );
+                    Marble curr = market.getMarble(j, t);;
                     if(curr instanceof BlueMarble) {
                         blueCount++;
                     }
@@ -146,6 +164,11 @@ public class MarketTest {
                 }
             }
 
+
+            System.out.println("Test -- STONE: " + greyCount + " SERVANT: " + purpleCount + " SHIELD: " + blueCount + " GOLD: " + yellowCount);
+
+
+
             returnedRes = market.getResources(i, p);
             Assert.assertEquals(yellowCount, returnedRes.stream().filter(r -> r == Resource.GOLD).count());
             Assert.assertEquals(purpleCount, returnedRes.stream().filter(r -> r == Resource.SERVANT).count());
@@ -160,6 +183,13 @@ public class MarketTest {
     }
 
     public boolean isRowMove(int moveIndex) {
-        return moveIndex < 4;
+        return moveIndex < 3;
     }
+
+
+
+
+
+
+
 }
