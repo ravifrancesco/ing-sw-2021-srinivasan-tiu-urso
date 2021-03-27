@@ -37,4 +37,6 @@ public class MarbleTest {
         Assert.assertEquals(a.getResource(p), Resource.SERVANT);
     }
 
+    // TODO add test for white and red marble after implementation
+
 }
