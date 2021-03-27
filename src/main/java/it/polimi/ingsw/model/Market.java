@@ -66,7 +66,6 @@ public class Market {
 		}
 
 		return collectedResources;
-
 	}
 
 	/**
@@ -134,6 +133,7 @@ public class Market {
 
 		shiftRow(move);
 		swapMarble(move, gridColLength-1, gridRowLenght-1, gridColLength);
+		// the coordinates gridRowLength-1 (2) and gridColLength(4) return 2*4 + 4 = 12, the index of the freeMarble
 		return collectedResources;
 	}
 
@@ -153,6 +153,7 @@ public class Market {
 
 		shiftCol(move);
 		swapMarble(gridRowLenght-1, move, gridRowLenght-1, gridColLength);
+		// the coordinates gridRowLength-1 (2) and gridColLength(4) return 2*4 + 4 = 12, the index of the freeMarble
 		return collectedResources;
 	}
 

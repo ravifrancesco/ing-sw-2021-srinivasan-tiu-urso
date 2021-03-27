@@ -53,16 +53,15 @@ public class MarketTest {
             ArrayList<Resource> actualResList = new ArrayList<>();
             Map<Resource, Long> actualRes = new HashMap<>();
 
+            int pM = possibleMove;
             if(possibleMove < 3) {
                 // row move
-                final int pM = possibleMove;
                 IntStream.range(0, market.getGridColLength()).forEach(i -> testResList.add(market.getMarble(pM, i).getResource(p)));
                 actualResList = (ArrayList<Resource>) market.getResources(pM, p);
             } else {
                 // col move
-                final int pM = possibleMove-3;
-                IntStream.range(0, market.getGridRowLenght()).forEach(i -> testResList.add(market.getMarble(i, pM).getResource(p)));
-                actualResList = (ArrayList<Resource>) market.getResources(pM+3, p);
+                IntStream.range(0, market.getGridRowLenght()).forEach(i -> testResList.add(market.getMarble(i, pM-3).getResource(p)));
+                actualResList = (ArrayList<Resource>) market.getResources(pM, p);
             }
 
             testRes = testResList.stream().filter(r -> r != null)
@@ -83,10 +82,6 @@ public class MarketTest {
             Assert.assertEquals(testRes.get(Resource.SHIELD), actualRes.get(Resource.SHIELD));
 
         }
-
-
-
-
     }
 
 }
