@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.stream.IntStream;
 
 public class Market {
-	static final int gridRowLenght = 3;
+	static final int gridRowLength = 3;
 
 	static final int gridColLength = 4;
 
@@ -18,7 +18,7 @@ public class Market {
 	 * It allocates space for the grid, using the two final attributes representing the dimension.
 	 */
 	public Market() {
-		this.marblesGrid = new Marble[(gridRowLenght * gridColLength) + 1];
+		this.marblesGrid = new Marble[(gridRowLength * gridColLength) + 1];
 	}
 
 
@@ -53,16 +53,7 @@ public class Market {
 	 * @return an ArrayList of collected Resource from the move.
 	 */
 	public Collection<Resource> getResources(int move, Player p) {
-		ArrayList<Resource> collectedResources;
-
-		if (isRowMove(move)) {
-			collectedResources = doRowMove(move, p);
-		} else {
-			move = move - 3;
-			collectedResources = doColMove(move, p);
-		}
-
-		return collectedResources;
+		return isRowMove(move) ? doRowMove(move, p) : doColMove(move-3, p);
 	}
 
 	/**
@@ -89,7 +80,7 @@ public class Market {
 	 * @return the current free marble.
 	 */
 	public Marble getFreeMarble() {
-		return getMarble(gridRowLenght-1, gridColLength);
+		return getMarble(gridRowLength-1, gridColLength);
 	}
 
 	/**
@@ -123,13 +114,14 @@ public class Market {
 	private ArrayList<Resource> doRowMove(int move, Player p) {
 		ArrayList<Resource> collectedResources = new ArrayList<Resource>();
 
+		Resource res;
 		for(int i = 0; i < gridColLength; i++) {
-			Resource res = getMarble(move, i).getResource(p);
+			res = getMarble(move, i).getResource(p);
 			if(res != null) { collectedResources.add(res); }
 		}
 
 		shiftRow(move);
-		swapMarble(move, gridColLength-1, gridRowLenght-1, gridColLength);
+		swapMarble(move, gridColLength-1, gridRowLength-1, gridColLength);
 		// the coordinates gridRowLength-1 (2) and gridColLength(4) return 2*4 + 4 = 12, the index of the freeMarble
 		return collectedResources;
 	}
@@ -143,13 +135,14 @@ public class Market {
 	private ArrayList<Resource> doColMove(int move, Player p) {
 		ArrayList<Resource> collectedResources = new ArrayList<Resource>();
 
-		for (int i = 0; i < gridRowLenght; i++) {
-			Resource res = getMarble(i, move).getResource(p);
+		Resource res;
+		for (int i = 0; i < gridRowLength; i++) {
+			res = getMarble(i, move).getResource(p);
 			if (res != null) { collectedResources.add(res); }
 		}
 
 		shiftCol(move);
-		swapMarble(gridRowLenght-1, move, gridRowLenght-1, gridColLength);
+		swapMarble(gridRowLength-1, move, gridRowLength-1, gridColLength);
 		// the coordinates gridRowLength-1 (2) and gridColLength(4) return 2*4 + 4 = 12, the index of the freeMarble
 		return collectedResources;
 	}
@@ -169,13 +162,13 @@ public class Market {
 	 * @param col the grid to be shifted
 	 */
 	private void shiftCol(int col) {
-		for(int i = 0; i < gridRowLenght-1; i++) {
+		for(int i = 0; i < gridRowLength-1; i++) {
 			swapMarble(i, col, i+1, col);
 		}
 	}
 
-	public static int getGridRowLenght() {
-		return gridRowLenght;
+	public static int getGridRowLength() {
+		return gridRowLength;
 	}
 
 	public static int getGridColLength() {
