@@ -94,7 +94,7 @@ public class DevelopmentCardTest {
         FaithTrack faithTrack = new FaithTrack(gameSettings);
 
         Dashboard dashboard = new Dashboard(gameSettings, null);
-        Player player = new Player("nickname", "AAA123", dashboard);
+        Player player = new Player("nickname", "AAA123");
 
         dashboard.setPlayer(player);
 

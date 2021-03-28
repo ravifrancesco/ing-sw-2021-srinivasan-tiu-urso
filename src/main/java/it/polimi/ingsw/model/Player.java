@@ -8,10 +8,9 @@ public class Player {
 
 	private Dashboard dashboard;
 
-	public Player(String nickname, String id, Dashboard dashboard) {
+	public Player(String nickname, String id) {
 		this.nickname = nickname;
 		this.id = id;
-		this.dashboard = dashboard;
 	}
 
 	public void init() {
