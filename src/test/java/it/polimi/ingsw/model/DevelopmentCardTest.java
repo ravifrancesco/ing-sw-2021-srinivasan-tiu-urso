@@ -13,6 +13,8 @@ public class DevelopmentCardTest {
 
     @Test
     public void toStringTest(){
+        Banner banner = new Banner(BannerEnum.BLUE, 2);
+
         Map<Resource, Integer> resourceCost = new HashMap<>();
         resourceCost.put(Resource.SERVANT, 3);
 
@@ -28,16 +30,18 @@ public class DevelopmentCardTest {
         Map<Resource, Integer> resourceCostDC = new HashMap<>();
         resourceCostDC.put(Resource.SERVANT, 3);
 
-        DevelopmentCard c = new DevelopmentCard(1, 5, resourceCost, p);
+        DevelopmentCard c = new DevelopmentCard(1, 5, resourceCost, p, banner);
 
-        String s1 = "ID=1;VP=5;RC=SERVANT,3;SA=PP;RR=STONE,1,GOLD,1;RP=SHIELD,1;FP=2;SR=n;";
-        String s2 = "ID=1;VP=5;RC=SERVANT,3;SA=PP;RR=GOLD,1,STONE,1;RP=SHIELD,1;FP=2;SR=n;";
+        String s1 = "ID=1;VP=5;BA=BLUE,2;RC=SERVANT,3;SA=PP;RR=STONE,1,GOLD,1;RP=SHIELD,1;FP=2;SR=n;";
+        String s2 = "ID=1;VP=5;BA=BLUE,2;RC=SERVANT,3;SA=PP;RR=GOLD,1,STONE,1;RP=SHIELD,1;FP=2;SR=n;";
 
         Assumptions.assumeTrue(s1.equals(c.toString()) || s2.equals(c.toString()));
     }
 
     @Test
     public void getterTest(){
+        Banner banner = new Banner(BannerEnum.BLUE, 2);
+
         Map<Resource, Integer> resourceCost = new HashMap<>();
         resourceCost.put(Resource.SERVANT, 3);
 
@@ -53,10 +57,12 @@ public class DevelopmentCardTest {
         Map<Resource, Integer> resourceCostDC = new HashMap<>();
         resourceCostDC.put(Resource.SERVANT, 3);
 
-        DevelopmentCard c = new DevelopmentCard(1, 5, resourceCost, p);
+        DevelopmentCard c = new DevelopmentCard(1, 5, resourceCost, p, banner);
 
         Assert.assertEquals(c.getId(), 1);
         Assert.assertEquals(c.getVictoryPoints(), 5);
+        Assert.assertEquals(c.getBanner().getColor(), BannerEnum.BLUE);
+        Assert.assertEquals(c.getBanner().getLevel(), 2);
     }
 
     @Test
@@ -78,7 +84,7 @@ public class DevelopmentCardTest {
         Map<Resource, Integer> resourceCostDC = new HashMap<>();
         resourceCostDC.put(Resource.SERVANT, 3);
 
-        DevelopmentCard c = new DevelopmentCard(1, 5, null, p);
+        DevelopmentCard c = new DevelopmentCard(1, 5, null, p, null);
 
         int[] faithTrackVictoryPoints = {0,0,0,1,0,0,2,0,0,4,0,0,6,0,0,9,0,0,12,0,0,16,0,0,0};
 
@@ -96,6 +102,7 @@ public class DevelopmentCardTest {
         Dashboard dashboard = new Dashboard(gameSettings, null);
         Player player = new Player("nickname", "AAA123");
 
+        player.setDashboard(dashboard);
         dashboard.setPlayer(player);
 
         c.play(dashboard, 0);

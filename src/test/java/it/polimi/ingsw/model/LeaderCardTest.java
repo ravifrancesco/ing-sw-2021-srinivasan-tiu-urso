@@ -18,8 +18,8 @@ public class LeaderCardTest{
 
         Map<Banner, Integer> bannerCost = new HashMap<>();
 
-        bannerCost.put(new Banner("GREEN", 1), 2);
-        bannerCost.put(new Banner("BLUE", 2), 1);
+        bannerCost.put(new Banner(BannerEnum.GREEN, 1), 2);
+        bannerCost.put(new Banner(BannerEnum.BLUE, 2), 1);
 
         Map<Resource, Integer> resourceRequired = new HashMap<>();
         resourceRequired.put(Resource.GOLD, 1);
@@ -43,8 +43,8 @@ public class LeaderCardTest{
 
         Map<Banner, Integer> bannerCost = new HashMap<>();
 
-        bannerCost.put(new Banner("GREEN", 1), 2);
-        bannerCost.put(new Banner("BLUE", 2), 1);
+        bannerCost.put(new Banner(BannerEnum.GREEN, 1), 2);
+        bannerCost.put(new Banner(BannerEnum.BLUE, 2), 1);
 
         Map<Resource, Integer> resourceRequired = new HashMap<>();
         resourceRequired.put(Resource.GOLD, 1);
@@ -66,8 +66,8 @@ public class LeaderCardTest{
 
         Map<Banner, Integer> bannerCost = new HashMap<>();
 
-        bannerCost.put(new Banner("GREEN", 1), 2);
-        bannerCost.put(new Banner("BLUE", 2), 1);
+        bannerCost.put(new Banner(BannerEnum.GREEN, 1), 2);
+        bannerCost.put(new Banner(BannerEnum.BLUE, 2), 1);
 
         LeaderCard leaderCard = new LeaderCard(1, 5, resourceCost, bannerCost, null);
 

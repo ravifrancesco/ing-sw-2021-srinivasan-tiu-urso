@@ -17,6 +17,7 @@ public class DevelopmentCard implements Card {
 	private int victoryPoints;
 	private Map<Resource, Integer> resourceCost;
 	private ProductionPower productionPower;
+	private Banner banner;
 
 	/**
 	 * The constructor for a Development Card object.
@@ -24,13 +25,15 @@ public class DevelopmentCard implements Card {
 	 * @param victoryPoints represents the victory points given by the card
 	 * @param resourceCost represents the resource cost to buy the card
 	 * @param productionPower represents the production power of the card
+	 * @param banner represents the banner of the card
 	 */
 
-	public DevelopmentCard(int id, int victoryPoints, Map<Resource, Integer> resourceCost, ProductionPower productionPower) {
+	public DevelopmentCard(int id, int victoryPoints, Map<Resource, Integer> resourceCost, ProductionPower productionPower, Banner banner) {
 		this.id=id;
 		this.victoryPoints = victoryPoints;
 		this.resourceCost = resourceCost;
 		this.productionPower = productionPower;
+		this.banner=banner;
 	}
 
 	/**
@@ -73,6 +76,15 @@ public class DevelopmentCard implements Card {
 	}
 
 	/**
+	 * Getter for banner
+	 * @return the banner of the card
+	 */
+
+	public Banner getBanner() {
+		return banner;
+	}
+
+	/**
 	 * To string method of the class
 	 * @return a string representation of the object
 	 */
@@ -81,11 +93,11 @@ public class DevelopmentCard implements Card {
 	public String toString(){
 		String result="";
 
-		result+="ID="+id+";VP="+victoryPoints+"";
+		result+="ID="+id+";VP="+victoryPoints+";" + banner.toString();
 
 		result += resourceCost.keySet().stream()
 				.map(key -> key + "," + resourceCost.get(key))
-				.collect(Collectors.joining(",", ";RC=", ";"));
+				.collect(Collectors.joining(",", "RC=", ";"));
 
 		result += "SA=" + productionPower.toString();
 

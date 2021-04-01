@@ -8,7 +8,7 @@ package it.polimi.ingsw.model;
 
 public class Banner {
 
-	String color;
+	BannerEnum color;
 	int level;
 
 	/**
@@ -17,7 +17,7 @@ public class Banner {
 	 * @param color represents the color of the banner
 	 * @param level represent the level of the banner
 	 */
-	Banner(String color, int level){
+	Banner(BannerEnum color, int level){
 		this.color=color;
 		this.level=level;
 	}
@@ -27,7 +27,7 @@ public class Banner {
 	 * @return the color of the banner
 	 */
 
-	public String getColor() {
+	public BannerEnum getColor() {
 		return color;
 	}
 
@@ -37,6 +37,14 @@ public class Banner {
 	 */
 	public int getLevel() {
 		return level;
+	}
+
+	/** To string method of the class
+	 * @return a string representation of the object
+	 */
+
+	public String toString(){
+		return "BA=" + color + "," + level + ";";
 	}
 
 }

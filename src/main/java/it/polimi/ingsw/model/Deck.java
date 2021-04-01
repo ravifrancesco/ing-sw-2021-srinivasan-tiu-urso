@@ -4,33 +4,28 @@ import java.util.*;
 
 public class Deck {
 
-	private Stack<DevelopmentCard> developmentCardDeck;
-	private Stack<LeaderCard> leaderCardDeck;
-	private List<Card> discardDeck;
+	private Stack<Card> deck;
 
-	Deck(GameSettings gameSettings){
-		developmentCardDeck=new Stack<>();
-		leaderCardDeck=new Stack<>();
-		discardDeck=new ArrayList<>();
-		Arrays.stream(gameSettings.getDevelopmentCards()).forEach(c->developmentCardDeck.push(c));
-		Arrays.stream(gameSettings.getLeaderCards()).forEach(c->leaderCardDeck.push(c));
+	Deck(){
+		deck = new Stack<>();
+	}
+
+	public void init(List<Card> cards){
+		if(cards!=null) {
+			cards.forEach(c -> deck.push(c));
+		}
 	}
 
 	public void shuffle() {
-		Collections.shuffle(developmentCardDeck);
-		Collections.shuffle(leaderCardDeck);
+		Collections.shuffle(deck);
 	}
 
 	public void discard(Card c){
-		discardDeck.add(c);
+		deck.push(c);
 	}
 
-	public LeaderCard getLeaderCard(){
-		return !leaderCardDeck.empty() ? leaderCardDeck.pop() : null;
-	}
-
-	public DevelopmentCard getDevelopmentCard(){
-		return !developmentCardDeck.empty() ? developmentCardDeck.pop() : null;
+	public Card getCard(){
+		return deck.pop();
 	}
 
 }

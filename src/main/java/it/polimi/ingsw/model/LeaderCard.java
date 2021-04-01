@@ -79,11 +79,11 @@ public class LeaderCard implements Card {
 	@Override
 	public String toString(){
 		String result="";
-		result+="ID="+id+";VP="+victoryPoints+"";
+		result+="ID="+id+";VP="+victoryPoints+";";
 
 		result += resourceCost.keySet().stream()
 				.map(key -> key + "," + resourceCost.get(key))
-				.collect(Collectors.joining(",", ";RC=", ";"));
+				.collect(Collectors.joining(",", "RC=", ";"));
 
 		result += bannerCost.keySet().stream()
 				.map(key -> key.getColor() + "," + key.getLevel() + "," + bannerCost.get(key))
