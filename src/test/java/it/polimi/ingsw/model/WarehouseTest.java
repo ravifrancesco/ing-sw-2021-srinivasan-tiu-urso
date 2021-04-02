@@ -3,12 +3,16 @@ package it.polimi.ingsw.model;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.IntStream;
 
+
+/*
+    Methods checking add legality are called before adding in this test: they aren't incorporated in the add function
+    due to the fact that they will be called by the controller.
+ */
 public class WarehouseTest {
 
     @Test
@@ -55,7 +59,7 @@ public class WarehouseTest {
     }
 
     @Test
-    public void storeInLocker() {
+    public void storeInLockerTest() {
         Warehouse wh = new Warehouse();
         ArrayList<Resource> resToAdd = new ArrayList<>();
 
@@ -91,7 +95,51 @@ public class WarehouseTest {
     }
 
     @Test
-    public void removeFromDeposit() {
+    public void removeFromDepositTest() {
+        Warehouse wh = new Warehouse();
+        ArrayList<Resource> resToAdd = new ArrayList<>();
+        Map<Resource, Integer> resToRemove = new HashMap<>();
+
+        IntStream.range(0, 1).forEach(l -> resToAdd.add(Resource.STONE));
+        IntStream.range(0, 2).forEach(l -> resToAdd.add(Resource.SERVANT));
+        IntStream.range(0, 3).forEach(l -> resToAdd.add(Resource.GOLD));
+
+        // move is definitely legal, no check needed
+        wh.storeInDeposit(resToAdd);
+        resToAdd.clear();
+
+
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < 3; j++) {
+                for (int k = 0; k < 4; k++) {
+                    resToRemove.put(Resource.STONE, i);
+                    resToRemove.put(Resource.SERVANT, j);
+                    resToRemove.put(Resource.GOLD, k);
+
+                    if(wh.checkDepositRemoveLegality(resToRemove)) { wh.removeFromDeposit(resToRemove); }
+
+                    System.out.println("STONE -- found: " + (wh.getLocker().get(Resource.STONE) == null ? 0 : wh.getLocker().get(Resource.STONE)) + " expected:" + (1-i));
+                    Assert.assertEquals(wh.getDeposit().get(Resource.STONE) == null ? 0 : wh.getDeposit().get(Resource.STONE), 1 - i);
+
+                    System.out.println("SHIELD -- found: " + (wh.getLocker().get(Resource.SERVANT) == null ? 0 : wh.getLocker().get(Resource.SERVANT)) + " expected:" + (2-j));
+                    Assert.assertEquals(wh.getDeposit().get(Resource.SERVANT) == null ? 0 : wh.getDeposit().get(Resource.SERVANT), 2 - j);
+
+                    System.out.println("GOLD -- found: " + (wh.getLocker().get(Resource.GOLD) == null ? 0 : wh.getLocker().get(Resource.GOLD)) + " expected:" + (3-k));
+                    Assert.assertEquals(wh.getDeposit().get(Resource.GOLD) == null ? 0 : wh.getDeposit().get(Resource.GOLD), 3 - k);
+
+                    // readding the removed resources for next iteration
+                    IntStream.range(0, i).forEach(l -> resToAdd.add(Resource.STONE));
+                    IntStream.range(0, j).forEach(l -> resToAdd.add(Resource.SERVANT));
+                    IntStream.range(0, k).forEach(l -> resToAdd.add(Resource.GOLD));
+                    wh.storeInDeposit(resToAdd);
+                    resToAdd.clear();
+                }
+            }
+        }
+    }
+
+    @Test
+    public void removeFromLockerTest() {
         Warehouse wh = new Warehouse();
         ArrayList<Resource> resToAdd = new ArrayList<>();
         Map<Resource, Integer> resToRemove = new HashMap<>();
@@ -101,15 +149,34 @@ public class WarehouseTest {
         IntStream.range(0, 3).forEach(l -> resToAdd.add(Resource.GOLD));
 
         // move is definitely legal, no check needed
-        wh.storeInDeposit(resToAdd);
+        wh.storeInLocker(resToAdd);
+        resToAdd.clear();
 
 
-        for (int i = 0; i < 1; i++) {
-            for (int j = 0; j < 2; j++) {
-                for (int k = 0; k < 3; k++) {
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < 3; j++) {
+                for (int k = 0; k < 4; k++) {
                     resToRemove.put(Resource.STONE, i);
                     resToRemove.put(Resource.SHIELD, j);
                     resToRemove.put(Resource.GOLD, k);
+
+                    if(wh.checkLockerRemoveLegality(resToRemove)) { wh.removeFromLocker(resToRemove); }
+
+                    System.out.println("STONE -- found: " + (wh.getLocker().get(Resource.STONE) == null ? 0 : wh.getLocker().get(Resource.STONE)) + " expected:" + (1-i));
+                    Assert.assertEquals(wh.getLocker().get(Resource.STONE) == null ? 0 : wh.getLocker().get(Resource.STONE), 1 - i);
+
+                    System.out.println("SHIELD -- found: " + (wh.getLocker().get(Resource.SHIELD) == null ? 0 : wh.getLocker().get(Resource.SHIELD)) + " expected:" + (2-j));
+                    Assert.assertEquals(wh.getLocker().get(Resource.SHIELD) == null ? 0 : wh.getLocker().get(Resource.SHIELD), 2 - j);
+
+                    System.out.println("GOLD -- found: " + (wh.getLocker().get(Resource.GOLD) == null ? 0 : wh.getLocker().get(Resource.GOLD)) + " expected:" + (3-k));
+                    Assert.assertEquals(wh.getLocker().get(Resource.GOLD) == null ? 0 : wh.getLocker().get(Resource.GOLD), 3 - k);
+
+                    // readding the removed resources for next iteration
+                    IntStream.range(0, i).forEach(l -> resToAdd.add(Resource.STONE));
+                    IntStream.range(0, j).forEach(l -> resToAdd.add(Resource.SHIELD));
+                    IntStream.range(0, k).forEach(l -> resToAdd.add(Resource.GOLD));
+                    wh.storeInLocker(resToAdd);
+                    resToAdd.clear();
                 }
             }
         }
