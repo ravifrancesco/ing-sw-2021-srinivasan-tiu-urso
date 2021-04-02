@@ -120,4 +120,62 @@ public class DevelopmentCardTest {
     public void storingAndFMTest(){
         // TODO after implementing Warehouse class
     }
+
+    @Test
+    public void trueIsActivatableTest(){
+        Banner banner = new Banner(BannerEnum.BLUE, 2);
+
+        Map<Resource, Integer> resourceCost = new HashMap<>();
+        resourceCost.put(Resource.SERVANT, 3);
+
+        Map<Resource, Integer> resourceRequired = new HashMap<>();
+        resourceRequired.put(Resource.GOLD, 1);
+        resourceRequired.put(Resource.STONE, 1);
+
+        Map<Resource, Integer> resourceProduced = new HashMap<>();
+        resourceProduced.put(Resource.SHIELD, 1);
+
+        ProductionPower p = new ProductionPower(resourceRequired, resourceProduced,2, false);
+
+        Map<Resource, Integer> resourceCostDC = new HashMap<>();
+        resourceCostDC.put(Resource.SERVANT, 3);
+
+        DevelopmentCard c = new DevelopmentCard(1, 5, resourceCost, p, banner);
+
+        Map<Resource, Integer> playerResources = new HashMap<>();
+        playerResources.put(Resource.GOLD, 2);
+        playerResources.put(Resource.SERVANT, 1);
+        playerResources.put(Resource.STONE, 3);
+
+        Assumptions.assumeTrue(c.isActivatable(playerResources));
+    }
+
+    @Test
+    public void falseIsActivatableTest(){
+        Banner banner = new Banner(BannerEnum.BLUE, 2);
+
+        Map<Resource, Integer> resourceCost = new HashMap<>();
+        resourceCost.put(Resource.SERVANT, 3);
+
+        Map<Resource, Integer> resourceRequired = new HashMap<>();
+        resourceRequired.put(Resource.GOLD, 1);
+        resourceRequired.put(Resource.STONE, 1);
+
+        Map<Resource, Integer> resourceProduced = new HashMap<>();
+        resourceProduced.put(Resource.SHIELD, 1);
+
+        ProductionPower p = new ProductionPower(resourceRequired, resourceProduced,2, false);
+
+        Map<Resource, Integer> resourceCostDC = new HashMap<>();
+        resourceCostDC.put(Resource.SERVANT, 3);
+
+        DevelopmentCard c = new DevelopmentCard(1, 5, resourceCost, p, banner);
+
+        Map<Resource, Integer> playerResources = new HashMap<>();
+        playerResources.put(Resource.GOLD, 1);
+        playerResources.put(Resource.SERVANT, 1);
+        playerResources.put(Resource.SHIELD, 3);
+
+        Assumptions.assumeFalse(c.isActivatable(playerResources));
+    }
 }

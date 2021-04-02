@@ -102,4 +102,132 @@ public class LeaderCardTest{
     public void activateTest(){
         // TODO when GameBoard will be done
     }
+
+    @Test
+    public void trueIsPlayableTest(){
+        Map<Resource, Integer> resourceCost = new HashMap<>();
+
+        resourceCost.put(Resource.SHIELD, 1);
+
+        Map<Banner, Integer> bannerCost = new HashMap<>();
+
+        bannerCost.put(new Banner(BannerEnum.GREEN, 1), 2);
+        bannerCost.put(new Banner(BannerEnum.BLUE, 2), 1);
+
+        Map<Resource, Integer> resourceRequired = new HashMap<>();
+        resourceRequired.put(Resource.GOLD, 1);
+
+        SpecialAbility sa = new ProductionPower(resourceRequired, null, 1, true);
+
+        LeaderCard leaderCard = new LeaderCard(1, 5, resourceCost, bannerCost, sa);
+
+        Map<Resource, Integer> playerResources = new HashMap<>();
+
+        playerResources.put(Resource.GOLD, 3);
+        playerResources.put(Resource.SHIELD, 1);
+
+        Map<Banner, Integer> playerBanners = new HashMap<>();
+
+        playerBanners.put(new Banner(BannerEnum.YELLOW, 1), 1);
+        playerBanners.put(new Banner(BannerEnum.GREEN, 3), 2);
+        playerBanners.put(new Banner(BannerEnum.BLUE, 3), 1);
+
+        Assert.assertTrue(leaderCard.isPlayable(playerResources, playerBanners));
+    }
+
+    @Test
+    public void cornerCaseIsPlayableTest(){
+        Map<Resource, Integer> resourceCost = new HashMap<>();
+
+        resourceCost.put(Resource.SHIELD, 1);
+
+        Map<Banner, Integer> bannerCost = new HashMap<>();
+
+        bannerCost.put(new Banner(BannerEnum.BLUE, 1), 2);
+
+        Map<Resource, Integer> resourceRequired = new HashMap<>();
+        resourceRequired.put(Resource.GOLD, 1);
+
+        SpecialAbility sa = new ProductionPower(resourceRequired, null, 1, true);
+
+        LeaderCard leaderCard = new LeaderCard(1, 5, resourceCost, bannerCost, sa);
+
+        Map<Resource, Integer> playerResources = new HashMap<>();
+
+        playerResources.put(Resource.GOLD, 3);
+        playerResources.put(Resource.SHIELD, 1);
+
+        Map<Banner, Integer> playerBanners = new HashMap<>();
+
+        playerBanners.put(new Banner(BannerEnum.BLUE, 2), 1);
+        playerBanners.put(new Banner(BannerEnum.GREEN, 3), 2);
+        playerBanners.put(new Banner(BannerEnum.BLUE, 3), 1);
+
+        Assert.assertTrue(leaderCard.isPlayable(playerResources, playerBanners));
+    }
+
+    @Test
+    public void lessResourcesIsPlayableTest(){
+        Map<Resource, Integer> resourceCost = new HashMap<>();
+
+        resourceCost.put(Resource.SHIELD, 2);
+
+        Map<Banner, Integer> bannerCost = new HashMap<>();
+
+        bannerCost.put(new Banner(BannerEnum.GREEN, 1), 2);
+        bannerCost.put(new Banner(BannerEnum.BLUE, 2), 1);
+
+        Map<Resource, Integer> resourceRequired = new HashMap<>();
+        resourceRequired.put(Resource.GOLD, 1);
+
+        SpecialAbility sa = new ProductionPower(resourceRequired, null, 1, true);
+
+        LeaderCard leaderCard = new LeaderCard(1, 5, resourceCost, bannerCost, sa);
+
+        Map<Resource, Integer> playerResources = new HashMap<>();
+
+        playerResources.put(Resource.GOLD, 3);
+        playerResources.put(Resource.SHIELD, 1);
+
+        Map<Banner, Integer> playerBanners = new HashMap<>();
+
+        playerBanners.put(new Banner(BannerEnum.YELLOW, 1), 1);
+        playerBanners.put(new Banner(BannerEnum.GREEN, 3), 2);
+        playerBanners.put(new Banner(BannerEnum.BLUE, 3), 1);
+
+        Assert.assertFalse(leaderCard.isPlayable(playerResources, playerBanners));
+    }
+
+    @Test
+    public void lessBannersIsPlayableTest(){
+        Map<Resource, Integer> resourceCost = new HashMap<>();
+
+        resourceCost.put(Resource.SHIELD, 1);
+
+        Map<Banner, Integer> bannerCost = new HashMap<>();
+
+        bannerCost.put(new Banner(BannerEnum.BLUE, 1), 2);
+        bannerCost.put(new Banner(BannerEnum.PURPLE, 1), 1);
+
+        Map<Resource, Integer> resourceRequired = new HashMap<>();
+        resourceRequired.put(Resource.GOLD, 1);
+
+        SpecialAbility sa = new ProductionPower(resourceRequired, null, 1, true);
+
+        LeaderCard leaderCard = new LeaderCard(1, 5, resourceCost, bannerCost, sa);
+
+        Map<Resource, Integer> playerResources = new HashMap<>();
+
+        playerResources.put(Resource.GOLD, 3);
+        playerResources.put(Resource.SHIELD, 1);
+
+        Map<Banner, Integer> playerBanners = new HashMap<>();
+
+        playerBanners.put(new Banner(BannerEnum.BLUE, 2), 1);
+        playerBanners.put(new Banner(BannerEnum.GREEN, 3), 2);
+        playerBanners.put(new Banner(BannerEnum.BLUE, 3), 1);
+
+        Assert.assertFalse(leaderCard.isPlayable(playerResources, playerBanners));
+    }
+
 }

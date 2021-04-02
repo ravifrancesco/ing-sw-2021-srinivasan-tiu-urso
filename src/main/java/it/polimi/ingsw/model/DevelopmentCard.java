@@ -13,11 +13,11 @@ import java.util.stream.Collectors;
 
 public class DevelopmentCard implements Card {
 
-	private int id;
-	private int victoryPoints;
-	private Map<Resource, Integer> resourceCost;
-	private ProductionPower productionPower;
-	private Banner banner;
+	private final int id;
+	private final int victoryPoints;
+	private final Map<Resource, Integer> resourceCost;
+	private final ProductionPower productionPower;
+	private final Banner banner;
 
 	/**
 	 * The constructor for a Development Card object.
@@ -76,6 +76,24 @@ public class DevelopmentCard implements Card {
 	}
 
 	/**
+	 * Getter for resourceCost
+	 * @return the resource cost of the card
+	 */
+
+	public Map<Resource, Integer> getResourceCost() {
+		return resourceCost;
+	}
+
+	/**
+	 * Getter for productionPower
+	 * @return the production power of the card
+	 */
+
+	public ProductionPower getProductionPower() {
+		return productionPower;
+	}
+
+	/**
 	 * Getter for banner
 	 * @return the banner of the card
 	 */
@@ -102,5 +120,22 @@ public class DevelopmentCard implements Card {
 		result += "SA=" + productionPower.toString();
 
 		return result;
+	}
+
+	/**
+	 * Allows to know if this card is activatable
+	 * @param playerResources all the resources of the player
+	 * @return if this card is activatable or not with the given resources
+	 */
+
+	public boolean isActivatable(Map<Resource, Integer> playerResources){
+		Map<Resource, Integer> resourceRequired = productionPower.getResourceRequired();
+		long contResources;
+
+		contResources=resourceRequired.entrySet().stream()
+				.filter(entry -> playerResources.get(entry.getKey())!=null && playerResources.get(entry.getKey())>=entry.getValue())
+				.count();
+
+		return contResources>=resourceRequired.size();
 	}
 }

@@ -10,11 +10,11 @@ import java.util.stream.Collectors;
 
 public class LeaderCard implements Card {
 
-	private int id;
-	private int victoryPoints;
-	private Map<Resource, Integer> resourceCost;
-	private Map<Banner, Integer> bannerCost;
-	private SpecialAbility specialAbility;
+	private final int id;
+	private final int victoryPoints;
+	private final Map<Resource, Integer> resourceCost;
+	private final Map<Banner, Integer> bannerCost;
+	private final SpecialAbility specialAbility;
 
 	/**
 	 * The constructor for a LeaderCard object.
@@ -73,6 +73,33 @@ public class LeaderCard implements Card {
 	}
 
 	/**
+	 * Getter for resourceCost
+	 * @return the resource cost of the card
+	 */
+
+	public Map<Resource, Integer> getResourceCost() {
+		return resourceCost;
+	}
+
+	/**
+	 * Getter for bannerCost
+	 * @return the banner cost of the card
+	 */
+
+	public Map<Banner, Integer> getBannerCost() {
+		return bannerCost;
+	}
+
+	/**
+	 * Getter for specialAbility
+	 * @return the special ability of the card
+	 */
+
+	public SpecialAbility getSpecialAbility() {
+		return specialAbility;
+	}
+
+	/**
 	 * To string method of the class
 	 * @return a string representation of the object
 	 */
@@ -91,5 +118,40 @@ public class LeaderCard implements Card {
 
 		result += "SA=" + specialAbility.toString();
 		return result;
+	}
+
+	/**
+	 * Allows to know if the card is playable
+	 * @param playerResources all the resources of the player
+	 * @param playerBanners all the banner of the player
+	 * @return if the card is playable or not with the given resources and banners
+	 */
+
+	public boolean isPlayable(Map<Resource, Integer> playerResources, Map<Banner, Integer> playerBanners){
+		long contResources;
+		int contBanners=0;
+
+		contResources=resourceCost.entrySet().stream()
+				.filter(entry -> playerResources.get(entry.getKey())!=null && playerResources.get(entry.getKey())>=entry.getValue())
+				.count();
+
+		if(contResources<resourceCost.size()){ return false; }
+
+		/*bannerCost.entrySet().stream()
+				.forEach(e -> playerBanners.entrySet().stream()
+				.filter(e2 -> e2.getKey().getColor() == e.getKey().getColor() && e2.getKey().getLevel()>=e.getKey().getLevel())
+				.mapToInt(e2 -> e2.getValue())
+				.sum());
+		*/
+
+		for(Map.Entry<Banner, Integer> e : bannerCost.entrySet()){
+			for(Map.Entry<Banner, Integer> e2 : playerBanners.entrySet()){
+				if(e.getKey().getColor()==e2.getKey().getColor() && e2.getKey().getLevel()>=e.getKey().getLevel()){
+				contBanners+=e2.getValue();
+				}
+			}
+		}
+
+		return contBanners >= bannerCost.values().stream().reduce(0, Integer::sum);
 	}
 }

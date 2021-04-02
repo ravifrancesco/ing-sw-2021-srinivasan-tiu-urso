@@ -4,7 +4,7 @@ import java.util.*;
 
 public class Deck {
 
-	private Stack<Card> deck;
+	private final Stack<Card> deck;
 
 	Deck(){
 		deck = new Stack<>();
@@ -12,7 +12,7 @@ public class Deck {
 
 	public void init(List<Card> cards){
 		if(cards!=null) {
-			cards.forEach(c -> deck.push(c));
+			cards.forEach(deck::push);
 		}
 	}
 
