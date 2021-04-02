@@ -20,7 +20,7 @@ public class MarketTest {
 
 
 
-        Assert.assertEquals(3, market.getGridRowLenght());
+        Assert.assertEquals(3, market.getGridRowLength());
         Assert.assertEquals(4, market.getGridColLength());
 
         ArrayList<Marble> alMarble = new ArrayList<>(Arrays.asList(market.getMarblesGrid()));
@@ -64,7 +64,7 @@ public class MarketTest {
                 actualResList = (ArrayList<Resource>) market.getResources(pM, p);
             } else {
                 // col move
-                IntStream.range(0, market.getGridRowLenght()).forEach(i -> testResList.add(market.getMarble(i, pM-3).getResource(p)));
+                IntStream.range(0, market.getGridRowLength()).forEach(i -> testResList.add(market.getMarble(i, pM-3).getResource(p)));
                 actualResList = (ArrayList<Resource>) market.getResources(pM, p);
             }
 
