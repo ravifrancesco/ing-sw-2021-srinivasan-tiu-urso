@@ -114,7 +114,7 @@ public class DevelopmentCard implements Card {
 		result+="ID="+id+";VP="+victoryPoints+";" + banner.toString();
 
 		result += resourceCost.keySet().stream()
-				.map(key -> key + "," + resourceCost.get(key))
+				.map(key -> key + ":" + resourceCost.get(key))
 				.collect(Collectors.joining(",", "RC=", ";"));
 
 		result += "SA=" + productionPower.toString();

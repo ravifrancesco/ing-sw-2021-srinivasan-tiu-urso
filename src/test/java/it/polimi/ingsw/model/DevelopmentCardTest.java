@@ -32,8 +32,8 @@ public class DevelopmentCardTest {
 
         DevelopmentCard c = new DevelopmentCard(1, 5, resourceCost, p, banner);
 
-        String s1 = "ID=1;VP=5;BA=BLUE,2;RC=SERVANT,3;SA=PP;RR=STONE,1,GOLD,1;RP=SHIELD,1;FP=2;SR=n;";
-        String s2 = "ID=1;VP=5;BA=BLUE,2;RC=SERVANT,3;SA=PP;RR=GOLD,1,STONE,1;RP=SHIELD,1;FP=2;SR=n;";
+        String s1 = "ID=1;VP=5;BA=BLUE:2;RC=SERVANT:3;SA=PP;RR=STONE:1,GOLD:1;RP=SHIELD:1;FP=2;SR=n;";
+        String s2 = "ID=1;VP=5;BA=BLUE:2;RC=SERVANT:3;SA=PP;RR=GOLD:1,STONE:1;RP=SHIELD:1;FP=2;SR=n;";
 
         Assumptions.assumeTrue(s1.equals(c.toString()) || s2.equals(c.toString()));
     }
@@ -63,6 +63,8 @@ public class DevelopmentCardTest {
         Assert.assertEquals(c.getVictoryPoints(), 5);
         Assert.assertEquals(c.getBanner().getColor(), BannerEnum.BLUE);
         Assert.assertEquals(c.getBanner().getLevel(), 2);
+        Assert.assertEquals(c.getResourceCost(), resourceCost);
+        Assert.assertEquals(c.getProductionPower(), p);
     }
 
     @Test
@@ -119,6 +121,11 @@ public class DevelopmentCardTest {
     @Test
     public void storingAndFMTest(){
         // TODO after implementing Warehouse class
+    }
+
+    @Test
+    public void giveSelectableResourceTest(){
+        // TODO after implementing Dashboard and Warehouse classes
     }
 
     @Test

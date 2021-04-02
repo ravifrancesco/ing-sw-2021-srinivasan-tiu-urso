@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -109,11 +110,11 @@ public class LeaderCard implements Card {
 		result+="ID="+id+";VP="+victoryPoints+";";
 
 		result += resourceCost.keySet().stream()
-				.map(key -> key + "," + resourceCost.get(key))
+				.map(key -> key + ":" + resourceCost.get(key))
 				.collect(Collectors.joining(",", "RC=", ";"));
 
 		result += bannerCost.keySet().stream()
-				.map(key -> key.getColor() + "," + key.getLevel() + "," + bannerCost.get(key))
+				.map(key -> key.getColor() + ":" + key.getLevel() + ":" + bannerCost.get(key))
 				.collect(Collectors.joining(",", "BC=", ";"));
 
 		result += "SA=" + specialAbility.toString();
@@ -129,7 +130,7 @@ public class LeaderCard implements Card {
 
 	public boolean isPlayable(Map<Resource, Integer> playerResources, Map<Banner, Integer> playerBanners){
 		long contResources;
-		int contBanners=0;
+		int contBanners;
 
 		contResources=resourceCost.entrySet().stream()
 				.filter(entry -> playerResources.get(entry.getKey())!=null && playerResources.get(entry.getKey())>=entry.getValue())
@@ -137,20 +138,14 @@ public class LeaderCard implements Card {
 
 		if(contResources<resourceCost.size()){ return false; }
 
-		/*bannerCost.entrySet().stream()
-				.forEach(e -> playerBanners.entrySet().stream()
-				.filter(e2 -> e2.getKey().getColor() == e.getKey().getColor() && e2.getKey().getLevel()>=e.getKey().getLevel())
-				.mapToInt(e2 -> e2.getValue())
-				.sum());
-		*/
+		contBanners=playerBanners.entrySet().stream()
+				.filter(e-> bannerCost.entrySet().stream().anyMatch(e2 -> e.getKey().equalsColor(e2.getKey()) && e.getKey().getLevel()>=e2.getKey().getLevel()))
+				.map(Map.Entry::getValue)
+				.reduce(0, Integer::sum);
 
-		for(Map.Entry<Banner, Integer> e : bannerCost.entrySet()){
-			for(Map.Entry<Banner, Integer> e2 : playerBanners.entrySet()){
-				if(e.getKey().getColor()==e2.getKey().getColor() && e2.getKey().getLevel()>=e.getKey().getLevel()){
-				contBanners+=e2.getValue();
-				}
-			}
-		}
+		/*playerBanners.entrySet().stream()
+				.filter(e-> bannerCost.entrySet().stream().anyMatch(e2 -> e.getKey().equalsColor(e2.getKey()) && e.getKey().getLevel()>=e2.getKey().getLevel()))
+				.collect(Collectors.groupingBy(Banner::getColor, Collectors.summingInt(Map.Entry::getValue)));*/
 
 		return contBanners >= bannerCost.values().stream().reduce(0, Integer::sum);
 	}

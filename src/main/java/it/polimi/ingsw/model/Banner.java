@@ -44,7 +44,11 @@ public class Banner {
 	 */
 
 	public String toString(){
-		return "BA=" + color + "," + level + ";";
+		return "BA=" + color + ":" + level + ";";
+	}
+
+	public boolean equalsColor(Banner b){
+		return this.getColor()==b.getColor();
 	}
 
 }

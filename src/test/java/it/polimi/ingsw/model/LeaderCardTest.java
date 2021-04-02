@@ -28,8 +28,8 @@ public class LeaderCardTest{
 
         LeaderCard leaderCard = new LeaderCard(1, 5, resourceCost, bannerCost, sa);
 
-        String s1 = "ID=1;VP=5;RC=SHIELD,1;BC=BLUE,2,1,GREEN,1,2;SA=PP;RR=GOLD,1;FP=1;SR=y;";
-        String s2 = "ID=1;VP=5;RC=SHIELD,1;BC=GREEN,1,2,BLUE,2,1;SA=PP;RR=GOLD,1;FP=1;SR=y;";
+        String s1 = "ID=1;VP=5;RC=SHIELD:1;BC=BLUE:2:1,GREEN:1:2;SA=PP;RR=GOLD:1;FP=1;SR=y;";
+        String s2 = "ID=1;VP=5;RC=SHIELD:1;BC=GREEN:1:2,BLUE:2:1;SA=PP;RR=GOLD:1;FP=1;SR=y;";
 
         Assumptions.assumeTrue(s1.equals(leaderCard.toString()) || s2.equals(leaderCard.toString()));
 
@@ -55,6 +55,9 @@ public class LeaderCardTest{
 
         Assert.assertEquals(leaderCard.getId(), 1);
         Assert.assertEquals(leaderCard.getVictoryPoints(), 5);
+        Assert.assertEquals(leaderCard.getBannerCost(), bannerCost);
+        Assert.assertEquals(leaderCard.getResourceCost(), resourceCost);
+        Assert.assertEquals(leaderCard.getSpecialAbility(), sa);
     }
 
     @Test
