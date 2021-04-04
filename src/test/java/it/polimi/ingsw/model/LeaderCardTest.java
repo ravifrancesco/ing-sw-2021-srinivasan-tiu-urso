@@ -91,7 +91,7 @@ public class LeaderCardTest{
 
         leaderCard.discard(dashboard);
 
-        // TODO check if the card is in the discardDeck (when Deck will be implemented)
+        // TODO check if the card is in the discardDeck (when Deck and Gameboard will be implemented)
 
         Assert.assertEquals(dashboard.getFaithMarkerPosition(),1);
     }
@@ -167,6 +167,37 @@ public class LeaderCardTest{
         playerBanners.put(new Banner(BannerEnum.BLUE, 3), 1);
 
         Assert.assertTrue(leaderCard.isPlayable(playerResources, playerBanners));
+    }
+
+    @Test
+    public void cornerCase2IsPlayableTest(){
+        Map<Resource, Integer> resourceCost = new HashMap<>();
+
+        resourceCost.put(Resource.SHIELD, 1);
+
+        Map<Banner, Integer> bannerCost = new HashMap<>();
+
+        bannerCost.put(new Banner(BannerEnum.BLUE, 2), 2);
+        bannerCost.put(new Banner(BannerEnum.YELLOW, 3), 1);
+
+        Map<Resource, Integer> resourceRequired = new HashMap<>();
+        resourceRequired.put(Resource.GOLD, 1);
+
+        SpecialAbility sa = new ProductionPower(resourceRequired, null, 1, true);
+
+        LeaderCard leaderCard = new LeaderCard(1, 5, resourceCost, bannerCost, sa);
+
+        Map<Resource, Integer> playerResources = new HashMap<>();
+
+        playerResources.put(Resource.GOLD, 3);
+        playerResources.put(Resource.SHIELD, 1);
+
+        Map<Banner, Integer> playerBanners = new HashMap<>();
+
+        playerBanners.put(new Banner(BannerEnum.BLUE, 2), 1);
+        playerBanners.put(new Banner(BannerEnum.BLUE, 3), 2);
+
+        Assert.assertFalse(leaderCard.isPlayable(playerResources, playerBanners));
     }
 
     @Test

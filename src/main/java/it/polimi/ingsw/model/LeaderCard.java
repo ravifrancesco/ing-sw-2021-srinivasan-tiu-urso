@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -130,7 +131,8 @@ public class LeaderCard implements Card {
 
 	public boolean isPlayable(Map<Resource, Integer> playerResources, Map<Banner, Integer> playerBanners){
 		long contResources;
-		int contBanners;
+		Map<Banner, Integer> playerBannersCopy = playerBanners.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+		Map<Banner, Integer> bannerCostCopy = bannerCost.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
 		contResources=resourceCost.entrySet().stream()
 				.filter(entry -> playerResources.get(entry.getKey())!=null && playerResources.get(entry.getKey())>=entry.getValue())
@@ -138,15 +140,16 @@ public class LeaderCard implements Card {
 
 		if(contResources<resourceCost.size()){ return false; }
 
-		contBanners=playerBanners.entrySet().stream()
-				.filter(e-> bannerCost.entrySet().stream().anyMatch(e2 -> e.getKey().equalsColor(e2.getKey()) && e.getKey().getLevel()>=e2.getKey().getLevel()))
-				.map(Map.Entry::getValue)
-				.reduce(0, Integer::sum);
+		bannerCostCopy.entrySet().forEach(e-> playerBannersCopy.entrySet().stream()
+				.filter(e2 -> e.getKey().equalsColor(e2.getKey()) && e.getKey().equalsLevel(e2.getKey()))
+				.forEach(e2 -> {int diff = e.getValue()-e2.getValue(); e.setValue(Math.max(diff, 0));
+					e2.setValue(diff<0 ? -diff : 0); } ));
 
-		/*playerBanners.entrySet().stream()
-				.filter(e-> bannerCost.entrySet().stream().anyMatch(e2 -> e.getKey().equalsColor(e2.getKey()) && e.getKey().getLevel()>=e2.getKey().getLevel()))
-				.collect(Collectors.groupingBy(Banner::getColor, Collectors.summingInt(Map.Entry::getValue)));*/
+		bannerCostCopy.entrySet().forEach(e-> playerBannersCopy.entrySet().stream()
+				.filter(e2 -> e.getKey().equalsColor(e2.getKey()) && e2.getKey().getLevel()>e.getKey().getLevel())
+				.forEach(e2 -> {int diff = e.getValue()-e2.getValue(); e.setValue(Math.max(diff, 0));
+					e2.setValue(diff<0 ? -diff : 0); } ));
 
-		return contBanners >= bannerCost.values().stream().reduce(0, Integer::sum);
+		return bannerCostCopy.entrySet().stream().allMatch(e->e.getValue()==0);
 	}
 }

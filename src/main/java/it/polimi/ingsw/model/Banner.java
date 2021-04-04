@@ -47,8 +47,24 @@ public class Banner {
 		return "BA=" + color + ":" + level + ";";
 	}
 
+	/**
+	 * Compares the color of two banners
+	 * @param b the other banner to compare
+	 * @return true if the two banners have the same color
+	 */
+
 	public boolean equalsColor(Banner b){
 		return this.getColor()==b.getColor();
+	}
+
+	/**
+	 * Compares the level of two banners
+	 * @param b the other banner to compare
+	 * @return true if the two banners have the same level
+	 */
+
+	public boolean equalsLevel(Banner b){
+		return this.getLevel()==b.getLevel();
 	}
 
 }
