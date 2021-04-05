@@ -1,5 +1,4 @@
 package it.polimi.ingsw.model;
-import javax.lang.model.type.ArrayType;
 import java.util.*;
 
 public class Warehouse {
@@ -20,7 +19,7 @@ public class Warehouse {
 
 	/**
 	 * The constructor for the class.
-	 * ALlocates space for the locker and the deposit (both are Resource-Integer HashMaps), and calls the clear
+	 * Allocates space for the locker and the deposit (both are Resource-Integer HashMaps), and calls the clear
 	 * (initialization) method.
 	 */
 	public Warehouse() {
@@ -70,11 +69,24 @@ public class Warehouse {
 	}
 
 	/**
-	 * Removes resources from the deposit, with no checks on the legality (there's a separate method for that).
-	 * @param cost: HashMap Resource-Integer, where the integer is quantity to be removed. (the cost)
+	 * Removes the resources from the warehouse: the resources will at first be taken from the deposit,
+	 * followed by the locker.
+	 * @param cost HashMap Resource-Integer, where the integer is quantity to be removed. (the cost)
 	 */
-	public void removeFromDeposit(Map<Resource, Integer> cost) {
-		cost.forEach((key, value) -> deposit.put(key, deposit.get(key) - value));
+	public void removeFromWarehouse(Map<Resource, Integer> cost) {
+		cost.forEach((key, value) -> { // for each resource to be removed
+			if(deposit.get(key) - value >= 0) {
+				// deposit has enough of the resource to be removed
+				deposit.put(key, deposit.get(key) - value);
+				cost.put(key, 0);
+			} else {
+				// deposit has less than the required amount of resource to removed:
+				// set the deposit qty to 0 and take the remaining from the locker
+				cost.put(key, value - deposit.get(key));
+				deposit.put(key, 0);
+			}
+		});
+		removeFromLocker(cost);
 	}
 
 	/**
@@ -99,29 +111,6 @@ public class Warehouse {
 		deposit.forEach((k, v) -> newDeposit.merge(k, v, Integer::sum));
 
 		return checkShelvesRule(newDeposit);
-	}
-
-	/**
-	 * Checks if there are enough resources to be removed from the deposit.
-	 * @param cost HashMap Resource-Integer, where the integer is quantity to be removed. (the cost)
-	 * @return true if there are enough resources to remove, false otherwise.
-	 */
-	public boolean checkDepositRemoveLegality(Map<Resource, Integer> cost) {
-		HashMap<Resource, Integer> newDeposit = new HashMap<>();
-		cost.forEach((k, v) -> newDeposit.put(k, deposit.get(k) - v));
-		return newDeposit.values().stream().noneMatch(v -> v < 0);
-	}
-
-	/**
-	 * Checks if there are enough resources to be removed from the locker.
-	 * @param cost HashMap Resource-Integer, where the integer is quantity to be removed. (the cost)
-	 * @return true if there are enough resources to remove, false otherwise.
-	 */
-	public boolean checkLockerRemoveLegality(Map<Resource, Integer> cost) {
-
-		HashMap<Resource, Integer> newDeposit = new HashMap<>();
-		cost.forEach((k, v) -> newDeposit.put(k, locker.get(k) - v));
-		return newDeposit.values().stream().noneMatch(v -> v < 0);
 	}
 
 	/**
@@ -163,8 +152,27 @@ public class Warehouse {
 			limit++;
 		}
 		return true;
-		// Tried to transform this code into functional to no success.
+		// Tried to transform this code into functional with no success.
 	}
 
+	/**
+	 * Checks if there are enough resources to withdraw from the warehouse.
+	 * @param cost a HashMap Resource-Integer, where the integer is the quantity to be removed. (the cost)
+	 * @return true if the warehouse has enough resources, false otherwise.
+	 */
+	public boolean checkRemoveLegality(Map<Resource, Integer> cost) {
+		/*
+		 The check is done through the creation of a HashMap 'remainingResources'
+		 which at first is the union of resources inside the locker and the deposit.
+		 After the merger, each resource cost is subtracted and the map is checked for negative
+		 values: if there are none, it means that the warehouse had enough resources inside and the
+		 operation was legal.
+		 */
+		HashMap<Resource, Integer> remainingResources = new HashMap<>(locker);
+		deposit.forEach((k, v) -> remainingResources.merge(k, v, Integer::sum));
+		cost.forEach((k, v) -> remainingResources.merge(k, v, (a, b) -> a-b));
+
+		return remainingResources.values().stream().noneMatch(v -> v < 0);
+	}
 }
 
