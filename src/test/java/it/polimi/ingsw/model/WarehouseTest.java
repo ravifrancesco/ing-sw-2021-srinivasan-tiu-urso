@@ -30,20 +30,23 @@ public class WarehouseTest {
                         IntStream.range(0, z).forEach(l -> resToAdd.add(Resource.SERVANT));
 
                         if (wh.checkAddLegality(resToAdd)) {
+                            System.out.println("ACCEPTED with " + i + j + k + z);
                             wh.storeInDeposit(resToAdd);
 
-                            System.out.println("STONE -- found: " + (wh.getDeposit().get(Resource.STONE) == null ? 0 : wh.getDeposit().get(Resource.STONE)) + " expected:" + i);
+                             System.out.println("STONE -- found: " + (wh.getDeposit().get(Resource.STONE) == null ? 0 : wh.getDeposit().get(Resource.STONE)) + " expected:" + i);
                             Assert.assertEquals(wh.getDeposit().get(Resource.STONE) == null ? 0 : wh.getDeposit().get(Resource.STONE), i);
 
-                            System.out.println("SHIELD -- found: " + (wh.getDeposit().get(Resource.SHIELD) == null ? 0 : wh.getDeposit().get(Resource.SHIELD)) + " expected:" + i);
+                             System.out.println("SHIELD -- found: " + (wh.getDeposit().get(Resource.SHIELD) == null ? 0 : wh.getDeposit().get(Resource.SHIELD)) + " expected:" + j);
                             Assert.assertEquals(wh.getDeposit().get(Resource.SHIELD) == null ? 0 : wh.getDeposit().get(Resource.SHIELD), j);
 
-                            System.out.println("GOLD -- found: " + (wh.getDeposit().get(Resource.GOLD) == null ? 0 : wh.getDeposit().get(Resource.GOLD)) + " expected:" + i);
+                             System.out.println("GOLD -- found: " + (wh.getDeposit().get(Resource.GOLD) == null ? 0 : wh.getDeposit().get(Resource.GOLD)) + " expected:" + k);
                             Assert.assertEquals(wh.getDeposit().get(Resource.GOLD) == null ? 0 : wh.getDeposit().get(Resource.GOLD), k);
 
-                            System.out.println("SERVANT -- found: " + (wh.getDeposit().get(Resource.SERVANT) == null ? 0 : wh.getDeposit().get(Resource.SERVANT)) + " expected:" + i);
+                             System.out.println("SERVANT -- found: " + (wh.getDeposit().get(Resource.SERVANT) == null ? 0 : wh.getDeposit().get(Resource.SERVANT)) + " expected:" + z);
                             Assert.assertEquals(wh.getDeposit().get(Resource.SERVANT) == null ? 0 : wh.getDeposit().get(Resource.SERVANT), z);
 
+                        } else {
+                            System.out.println("DENIED with " + i + j + k + z);
                         }
 
                         // test più esplicito delle add illegali?

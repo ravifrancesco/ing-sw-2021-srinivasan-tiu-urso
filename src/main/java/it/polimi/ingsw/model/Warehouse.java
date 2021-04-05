@@ -1,4 +1,5 @@
 package it.polimi.ingsw.model;
+import javax.lang.model.type.ArrayType;
 import java.util.*;
 
 public class Warehouse {
@@ -90,12 +91,14 @@ public class Warehouse {
 	 * @return true if the move is legal, false otherwise.
 	 */
 	public boolean checkAddLegality(ArrayList<Resource> resToAdd) {
+		/*
+		 newDeposit is how the deposit would look like after the addition of resToAdd.
+		 */
 		HashMap<Resource, Integer> newDeposit = new HashMap<>();
 		resToAdd.forEach(r -> newDeposit.put(r, newDeposit.get(r) == null ? 1 : newDeposit.get(r) + 1));
 		deposit.forEach((k, v) -> newDeposit.merge(k, v, Integer::sum));
 
-		return checkResUniqueness(newDeposit) &
-				checkShelvesRule(newDeposit);
+		return checkShelvesRule(newDeposit);
 	}
 
 	/**
@@ -121,15 +124,6 @@ public class Warehouse {
 	}
 
 	/**
-	 * Checks how many different resources are in the deposit: due to game rules, it can't be more than 3.
-	 * @param depo the hypothetical deposit after storage
-	 * @return true if game rules are respected, false otherwise.
-	 */
-	private boolean checkResUniqueness(HashMap<Resource, Integer> depo) {
-		return  depo.values().stream().filter(qty -> qty > 0).count() <= 3;
-	}
-
-	/**
 	 * Checks the 'shelves rules' for the deposit:
 	 * <ul>
 	 * <li> The maximum amount of stored resources is 6.
@@ -140,14 +134,37 @@ public class Warehouse {
 	 * @return true if game rules are respected, false otherwise.
 	 */
 	private boolean checkShelvesRule(HashMap<Resource, Integer> newDeposit) {
-		return newDeposit.values().stream().reduce(0, Integer::sum) <= 6 && // sum of resources must be less than 6
-				newDeposit.values().stream().max(Integer::compare).get() <= 3 &&  // max amount of single resource must be 3 or below
-				(newDeposit.values().stream().max(Integer::compare).get() == 3 ?
-				newDeposit.values().stream().filter(a -> a < 3).filter(b -> b == 2).count() <= 1 &&
-						newDeposit.values().stream().filter(a -> a == 3).count() == 1 :
-						newDeposit.values().stream().anyMatch(a -> a < 2)) &&
-				newDeposit.values().stream().filter(a -> a == 2).count() <= 2;
+		/*
+		To check whether the shelves rule is respected, we take each quantity from the deposit, sort them and
+		transform it to an array.
+		After that, we iterate on the array and check that each element is below the threshold.
+		The threshold starts at 0 for the smallest shelves and goes up to 3.
+		The first element will always be 0 due to the fact that there can't be 4 different resources simultaneously.
+		For example, if we have:
+		- 4 stones
+		- 2 shield
+		- 1 gold
+		The returned array will be [0, 1, 2, 4]
+		The checks will then be:
+		0 > 0
+		1 > 1
+		2 > 2
+		4 > 3
+		If any of those checks is false, then false is returned since the operation is illegal.
+		In this case we return false due to 4 > 3, since we can't store 4 of the same resource.
+		 */
+		Integer[] arr = newDeposit.values().stream().sorted().toArray(Integer[]::new);
+		System.out.println(Arrays.toString(arr));
+		int limit = 0;
+		for (int qty : arr) {
+			if (qty > limit) {
+				return false;
+			}
+			limit++;
+		}
+		return true;
+		// Tried to transform this code from imperative to functional with no success.
 	}
 
-
 }
+
