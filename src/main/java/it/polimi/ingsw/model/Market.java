@@ -12,7 +12,6 @@ public class Market {
 
 	private Marble[] marblesGrid;
 
-
 	/**
 	 * The constructor for the Market class.
 	 * It allocates space for the grid, using the two final attributes representing the dimension.
@@ -112,7 +111,7 @@ public class Market {
 	 * @return the ArrayList of collected resources.
 	 */
 	private ArrayList<Resource> doRowMove(int move, Player p) {
-		ArrayList<Resource> collectedResources = new ArrayList<Resource>();
+		ArrayList<Resource> collectedResources = new ArrayList<>();
 
 		Resource res;
 		for(int i = 0; i < gridColLength; i++) {
@@ -133,7 +132,7 @@ public class Market {
 	 * @return the ArrayList of collected resources.
 	 */
 	private ArrayList<Resource> doColMove(int move, Player p) {
-		ArrayList<Resource> collectedResources = new ArrayList<Resource>();
+		ArrayList<Resource> collectedResources = new ArrayList<>();
 
 		Resource res;
 		for (int i = 0; i < gridRowLength; i++) {
