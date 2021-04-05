@@ -2,9 +2,9 @@ package it.polimi.ingsw.model;
 
 public class Player {
 
-	private String nickname;
+	private final String nickname;
 
-	private String id;
+	private final String id;
 
 	private Dashboard dashboard;
 
@@ -20,4 +20,6 @@ public class Player {
 	public Dashboard getDashboard() {
 		return dashboard;
 	}
+
+	public void setDashboard(Dashboard dashboard) { this.dashboard = dashboard; }
 }
