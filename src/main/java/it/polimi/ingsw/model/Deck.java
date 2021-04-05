@@ -14,7 +14,8 @@ public class Deck {
 	 * The constructor for a Deck object.
 	 */
 
-	Deck(){
+	Deck() {
+
 		deck = new Stack<>();
 	}
 
