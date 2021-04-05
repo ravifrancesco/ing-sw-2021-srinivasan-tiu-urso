@@ -118,6 +118,7 @@ public class Warehouse {
 	 * @return true if there are enough resources to remove, false otherwise.
 	 */
 	public boolean checkLockerRemoveLegality(Map<Resource, Integer> cost) {
+
 		HashMap<Resource, Integer> newDeposit = new HashMap<>();
 		cost.forEach((k, v) -> newDeposit.put(k, locker.get(k) - v));
 		return newDeposit.values().stream().noneMatch(v -> v < 0);
@@ -127,18 +128,17 @@ public class Warehouse {
 	 * Checks the 'shelves rules' for the deposit:
 	 * <ul>
 	 * <li> The maximum amount of stored resources is 6.
-	 * <li> First type of resource's stored quantity must be up to 3.
-	 * <li> Second type of resource's stored quantity must be up to 2.
-	 * <li> Third type of resource's stored quantity must be up to 1.
+	 * <li> Only 3 different types of resources can be stored.
+	 * <li> The maximum amount of each different kind of resource must be, in order, 3 2 and 1. (see game rules)
 	 * @param newDeposit the hypothetical deposit after storage
 	 * @return true if game rules are respected, false otherwise.
 	 */
 	private boolean checkShelvesRule(HashMap<Resource, Integer> newDeposit) {
 		/*
-		To check whether the shelves rule is respected, we take each quantity from the deposit, sort them and
-		transform it to an array.
+		To check whether the shelves rule is respected, we take each quantity from the deposit, sort them in ascending
+		 order and transform it into an array.
 		After that, we iterate on the array and check that each element is below the threshold.
-		The threshold starts at 0 for the smallest shelves and goes up to 3.
+		The threshold starts at 0 and increases up to 3.
 		The first element will always be 0 due to the fact that there can't be 4 different resources simultaneously.
 		For example, if we have:
 		- 4 stones
@@ -163,7 +163,7 @@ public class Warehouse {
 			limit++;
 		}
 		return true;
-		// Tried to transform this code from imperative to functional with no success.
+		// Tried to transform this code into functional to no success.
 	}
 
 }
