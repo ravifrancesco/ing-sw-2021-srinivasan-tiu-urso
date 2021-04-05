@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Stack;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * The class represents the grid of Development Card onto the Dashboard
@@ -22,10 +24,9 @@ public class DevelopmentCardGrid {
 	 */
 
 	DevelopmentCardGrid(){
-		grid = new ArrayList<>();
-		for(int i=0; i<gridRowLength*gridColLength; i++){
-			grid.add(new Stack<>());
-		}
+		grid = IntStream.range(0, gridRowLength*gridColLength)
+				.mapToObj(e->new Stack<DevelopmentCard>())
+				.collect(Collectors.toList());
 	}
 
 	/**
@@ -35,13 +36,9 @@ public class DevelopmentCardGrid {
 	 */
 
 	public void init(Deck developmentCardDeck) {
-		DevelopmentCard c;
-		Banner b;
-		for(int i=0; i<DEVELOPMENT_CARD_NUM; i++){
-			c=(DevelopmentCard) developmentCardDeck.getCard();
-			b=c.getBanner();
-			grid.get(getPosition(b.getLevel(), getColumn(b.getColor()))).push(c);
-		}
+		IntStream.range(0, DEVELOPMENT_CARD_NUM)
+				.mapToObj(i -> (DevelopmentCard) developmentCardDeck.getCard())
+				.forEach(c -> grid.get(getPosition(c.getBanner().getLevel(), getColumn(c.getBanner().getColor()))).push(c));
 	}
 
 	/**
@@ -62,23 +59,12 @@ public class DevelopmentCardGrid {
 	 */
 
 	private int getColumn(BannerEnum color){
-		switch(color){
-			case GREEN -> {
-				return 0;
-			}
-			case BLUE -> {
-				return 1;
-			}
-			case YELLOW -> {
-				return 2;
-			}
-			case PURPLE -> {
-				return 3;
-			}
-			default -> {
-				return -1;
-			}
-		}
+		return switch(color){
+			case GREEN -> 0;
+			case BLUE -> 1;
+			case YELLOW -> 2;
+			case PURPLE -> 3;
+		};
 	}
 
 	/**

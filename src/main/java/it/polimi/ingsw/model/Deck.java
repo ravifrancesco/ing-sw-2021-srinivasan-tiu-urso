@@ -24,9 +24,7 @@ public class Deck {
 	 */
 
 	public void init(List<Card> cards){
-		if(cards!=null) {
 			cards.forEach(deck::push);
-		}
 	}
 
 	/**
