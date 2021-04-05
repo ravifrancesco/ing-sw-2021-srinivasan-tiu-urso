@@ -24,7 +24,8 @@ public class Deck {
 	 * @param cards the cards to add to the deck
 	 */
 
-	public void init(List<Card> cards){
+	public void init(List<Card> cards) {
+
 			cards.forEach(deck::push);
 	}
 
