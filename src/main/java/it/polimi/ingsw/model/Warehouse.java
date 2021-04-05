@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 import java.util.*;
+import java.util.stream.IntStream;
 
 public class Warehouse {
 
@@ -26,6 +27,7 @@ public class Warehouse {
 		locker = new HashMap<>();
 		deposit = new HashMap<>();
 		this.clearDeposit();
+		this.clearLocker();
 
 	}
 
@@ -65,7 +67,7 @@ public class Warehouse {
 	 * @param resToAdd ArrayList with the resources to add.
 	 */
 	public void storeInLocker(ArrayList<Resource> resToAdd) {
-		resToAdd.forEach(r -> locker.put(r, locker.get(r) == null ? 1 : locker.get(r)+1));
+		resToAdd.forEach(r -> locker.put(r, locker.get(r)+1));
 	}
 
 	/**
@@ -106,9 +108,8 @@ public class Warehouse {
 		/*
 		 newDeposit is how the deposit would look like after the addition of resToAdd.
 		 */
-		HashMap<Resource, Integer> newDeposit = new HashMap<>();
+		HashMap<Resource, Integer> newDeposit = new HashMap<>(deposit);
 		resToAdd.forEach(r -> newDeposit.put(r, newDeposit.get(r) == null ? 1 : newDeposit.get(r) + 1));
-		deposit.forEach((k, v) -> newDeposit.merge(k, v, Integer::sum));
 
 		return checkShelvesRule(newDeposit);
 	}
@@ -143,16 +144,7 @@ public class Warehouse {
 		In this case we return false due to 4 > 3, since we can't store 4 of the same resource.
 		 */
 		Integer[] arr = newDeposit.values().stream().sorted().toArray(Integer[]::new);
-		System.out.println(Arrays.toString(arr));
-		int limit = 0;
-		for (int qty : arr) {
-			if (qty > limit) {
-				return false;
-			}
-			limit++;
-		}
-		return true;
-		// Tried to transform this code into functional with no success.
+		return IntStream.range(0, 4).filter(i -> arr[i] <= i).count() == 4;
 	}
 
 	/**
@@ -174,5 +166,7 @@ public class Warehouse {
 
 		return remainingResources.values().stream().noneMatch(v -> v < 0);
 	}
+
+
 }
 

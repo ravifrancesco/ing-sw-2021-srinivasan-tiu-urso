@@ -9,10 +9,7 @@ import java.util.Map;
 import java.util.stream.IntStream;
 
 
-/*
-    Methods checking add legality are called before adding in this test: they aren't incorporated in the add function
-    due to the fact that they will be called by the controller.
- */
+
 public class WarehouseTest {
 
     @Test
@@ -130,7 +127,7 @@ public class WarehouseTest {
 
         // Test 1: remove 3 gold, locker remains the same and they are withdrawn from the deposit
         resToRemove.put(Resource.GOLD, 3);
-        if(wh.checkRemoveLegality(resToRemove)) { wh.removeFromWarehouse(resToRemove); } 
+        if(wh.checkRemoveLegality(resToRemove)) { wh.removeFromWarehouse(resToRemove); }
         System.out.println(wh.getDeposit());
         Assert.assertEquals(wh.getDeposit().get(Resource.STONE) == null ? 0 : wh.getDeposit().get(Resource.STONE), 1);
         Assert.assertEquals(wh.getDeposit().get(Resource.SHIELD) == null ? 0 : wh.getDeposit().get(Resource.SHIELD), 2 );
