@@ -128,7 +128,8 @@ public class DevelopmentCard implements Card {
 	 * @return if this card is activatable or not with the given resources
 	 */
 
-	public boolean isActivatable(Map<Resource, Integer> playerResources){
+	public boolean isActivatable(Map<Resource, Integer> playerResources) {
+
 		Map<Resource, Integer> resourceRequired = productionPower.getResourceRequired();
 		long contResources;
 
