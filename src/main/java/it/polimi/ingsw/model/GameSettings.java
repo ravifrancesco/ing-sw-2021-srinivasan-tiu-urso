@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model;
 
 import java.io.*;
-import java.nio.file.Path;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -62,23 +61,23 @@ public class GameSettings {
     /**
      * Construtor to use to create GameSettings from .properties file.
      *
-     * @param p path of the .properties file.
+     * @param path path of the .properties file.
      */
-    public GameSettings(Path p) {
-        loadSettings(p);
+    public GameSettings(String path) {
+        loadSettings(path);
     }
 
 
     /**
      * Saves the current settings to a .properties file described by a path.
      *
-     * @param p path to locate where to save the .properties file.
+     * @param path path to locate where to save the .properties file.
      */
-    public void saveSettings(Path p) {
+    public void saveSettings(String path) {
 
         try {
 
-            OutputStream output = new FileOutputStream(p.toString());
+            OutputStream output = new FileOutputStream(path);
             Properties prop = new Properties();
 
             // set the properties value
@@ -106,11 +105,11 @@ public class GameSettings {
     /**
      * Loads the settings from a .properties file
      *
-     * @param p path of the .properties file
+     * @param path path of the .properties file
      */
-    public void loadSettings(Path p) {
+    public void loadSettings(String path) {
 
-        try (InputStream input = new FileInputStream(String.valueOf(p))) {
+        try (InputStream input = new FileInputStream(path)) {
 
             Properties prop = new Properties();
 
@@ -193,6 +192,7 @@ public class GameSettings {
                 .collect(Collectors.toMap(e -> parseBanner(e[0], e[1]), e -> Integer.parseInt(e[2])));
 
         SpecialAbility specialAbility = parseProductionPower(propertyMap);
+        // TODO add special ability parser
 
         return new LeaderCard(id, victoryPoints, resourceCost, bannerCost, specialAbility);
 
