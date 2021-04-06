@@ -15,7 +15,7 @@ public class GameBoard {
 	}
 
 	public void discardCard(Card c) {
-
+		discardDeck.discard(c);
 	}
 
 }

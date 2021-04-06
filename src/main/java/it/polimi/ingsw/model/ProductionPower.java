@@ -102,15 +102,15 @@ public class ProductionPower implements SpecialAbility {
 	public String toString(){
 		String result="";
 
-		result+="PP";
+		result+="PP;";
 
 		result += resourceRequired.keySet().stream()
-				.map(key -> key + "," + resourceRequired.get(key))
-				.collect(Collectors.joining(",", ";RR=", ";"));
+				.map(key -> key + ":" + resourceRequired.get(key))
+				.collect(Collectors.joining(",", "RR=", ";"));
 
 		if(resourceProduced!=null) { //it could be null in case it is the production power of a leader card
 			result += resourceProduced.keySet().stream()
-					.map(key -> key + "," + resourceProduced.get(key))
+					.map(key -> key + ":" + resourceProduced.get(key))
 					.collect(Collectors.joining(",", "RP=", ";"));
 		}
 

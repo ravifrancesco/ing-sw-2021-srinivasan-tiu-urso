@@ -9,9 +9,9 @@ package it.polimi.ingsw.model;
 
 public class Dashboard {
 
-	private Warehouse warehouse;
-	private FaithTrack faithTrack;
-	private LeaderCard[] playedLeaderCards;
+	private final Warehouse warehouse;
+	private final FaithTrack faithTrack;
+	private final LeaderCard[] playedLeaderCards;
 	private Player player;
 
 	/**

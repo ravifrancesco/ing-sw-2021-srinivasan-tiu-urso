@@ -13,10 +13,11 @@ import java.util.stream.Collectors;
 
 public class DevelopmentCard implements Card {
 
-	private int id;
-	private int victoryPoints;
-	private Map<Resource, Integer> resourceCost;
-	private ProductionPower productionPower;
+	private final int id;
+	private final int victoryPoints;
+	private final Map<Resource, Integer> resourceCost;
+	private final ProductionPower productionPower;
+	private final Banner banner;
 
 	/**
 	 * The constructor for a Development Card object.
@@ -24,13 +25,15 @@ public class DevelopmentCard implements Card {
 	 * @param victoryPoints represents the victory points given by the card
 	 * @param resourceCost represents the resource cost to buy the card
 	 * @param productionPower represents the production power of the card
+	 * @param banner represents the banner of the card
 	 */
 
-	public DevelopmentCard(int id, int victoryPoints, Map<Resource, Integer> resourceCost, ProductionPower productionPower) {
+	public DevelopmentCard(int id, int victoryPoints, Map<Resource, Integer> resourceCost, ProductionPower productionPower, Banner banner) {
 		this.id=id;
 		this.victoryPoints = victoryPoints;
 		this.resourceCost = resourceCost;
 		this.productionPower = productionPower;
+		this.banner=banner;
 	}
 
 	/**
@@ -73,6 +76,33 @@ public class DevelopmentCard implements Card {
 	}
 
 	/**
+	 * Getter for resourceCost
+	 * @return the resource cost of the card
+	 */
+
+	public Map<Resource, Integer> getResourceCost() {
+		return resourceCost;
+	}
+
+	/**
+	 * Getter for productionPower
+	 * @return the production power of the card
+	 */
+
+	public ProductionPower getProductionPower() {
+		return productionPower;
+	}
+
+	/**
+	 * Getter for banner
+	 * @return the banner of the card
+	 */
+
+	public Banner getBanner() {
+		return banner;
+	}
+
+	/**
 	 * To string method of the class
 	 * @return a string representation of the object
 	 */
@@ -81,14 +111,32 @@ public class DevelopmentCard implements Card {
 	public String toString(){
 		String result="";
 
-		result+="ID="+id+";VP="+victoryPoints+"";
+		result+="ID="+id+";VP="+victoryPoints+";" + banner.toString();
 
 		result += resourceCost.keySet().stream()
-				.map(key -> key + "," + resourceCost.get(key))
-				.collect(Collectors.joining(",", ";RC=", ";"));
+				.map(key -> key + ":" + resourceCost.get(key))
+				.collect(Collectors.joining(",", "RC=", ";"));
 
 		result += "SA=" + productionPower.toString();
 
 		return result;
+	}
+
+	/**
+	 * Allows to know if this card is activatable
+	 * @param playerResources all the resources of the player
+	 * @return if this card is activatable or not with the given resources
+	 */
+
+	public boolean isActivatable(Map<Resource, Integer> playerResources) {
+
+		Map<Resource, Integer> resourceRequired = productionPower.getResourceRequired();
+		long contResources;
+
+		contResources=resourceRequired.entrySet().stream()
+				.filter(entry -> playerResources.get(entry.getKey())!=null && playerResources.get(entry.getKey())>=entry.getValue())
+				.count();
+
+		return contResources>=resourceRequired.size();
 	}
 }
