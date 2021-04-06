@@ -2,8 +2,8 @@ package it.polimi.ingsw.model;
 
 import java.io.*;
 import java.nio.file.Path;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
@@ -31,6 +31,7 @@ public class GameSettings {
 
     private ProductionPower dashBoardProductionPower;
 
+    private int vaticanReportsNum;
     private List<VaticanReport> vaticanReports;
 
     private int[] faithTrackVictoryPoints;
@@ -45,13 +46,17 @@ public class GameSettings {
      * @param faithTrackVictoryPoints   array of FAITH_TRACK_LENGTH int representing faithTrackVictoryPoints.
      */
     public GameSettings(DevelopmentCard[] developmentCards, int leaderCardNum, LeaderCard[] leaderCards,
-                        ProductionPower dashBoardProductionPower, List<VaticanReport> vaticanReports, int[] faithTrackVictoryPoints) {
+                        ProductionPower dashBoardProductionPower,
+                        List<VaticanReport> vaticanReports, int[] faithTrackVictoryPoints) {
+
         this.developmentCards = developmentCards;
         this.leaderCardNum = leaderCardNum;
         this.leaderCards = leaderCards;
         this.dashBoardProductionPower = dashBoardProductionPower;
+        this.vaticanReportsNum = vaticanReports.size();
         this.vaticanReports = vaticanReports;
         this.faithTrackVictoryPoints = faithTrackVictoryPoints;
+
     }
 
     /**
@@ -83,8 +88,9 @@ public class GameSettings {
             IntStream.range(0, leaderCardNum)
                     .forEach(i -> prop.setProperty("LeaderCard."+ i , leaderCards[i].toString()));
             prop.setProperty("DashBoardProductionPower", dashBoardProductionPower.toString());
+            prop.setProperty("VaticanReportsNum", String.valueOf(vaticanReportsNum));
             vaticanReports.
-                    forEach(vr -> prop.setProperty("VaticanReport."+ vaticanReports.indexOf(vr) ,vr.toString()));
+                    forEach(vr -> prop.setProperty("VaticanReport."+ vaticanReports.indexOf(vr), vr.toString()));
             IntStream.range(0, FAITH_TRACK_LENGTH)
                     .forEach(i -> prop.setProperty("FaithTrackVictoryPoint."+ i , String.valueOf(faithTrackVictoryPoints[i])));
 
@@ -97,8 +103,232 @@ public class GameSettings {
 
     }
 
+    /**
+     * Loads the settings from a .properties file
+     *
+     * @param p path of the .properties file
+     */
     public void loadSettings(Path p) {
-        // TODO after implementing constructors for cards and production power
+
+        try (InputStream input = new FileInputStream(String.valueOf(p))) {
+
+            Properties prop = new Properties();
+
+            // load a properties file
+            prop.load(input);
+
+            // load the properties
+            loadDevelopmentCards(prop);
+            this.leaderCardNum = Integer.parseInt(prop.getProperty("LeaderCardNum"));
+            loadLeaderCards(prop);
+            this.dashBoardProductionPower = parseProductionPower(
+                    propertyParser(prop.getProperty("DashBoardProductionPower")));
+            loadVaticanReports(prop);
+            loadFaithTrackVictoryPoints(prop);
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
+    }
+
+    /**
+     * Given a property string it will return a map<property, value>
+     *
+     * @param property  string extracted from the property file
+     * @return          map with keys being the property, values being the property value
+     */
+    private Map<String, String> propertyParser(String property) {
+
+        return Arrays.stream(property.split(";"))
+                .map(s -> s.split("="))
+                .collect(Collectors.toMap(s-> s[0], s->s[1]));
+
+    }
+
+    /**
+     * Converts a map representing the properties of development card into a DevelopmentCard
+     *
+     * @param propertyMap   map with keys being the property, values being the property value
+     * @return              a Development card built using the propertyMap properties
+     */
+    private DevelopmentCard buildDevelopmentCard(Map<String, String> propertyMap) {
+
+        int id = Integer.parseInt(propertyMap.get("ID"));
+        int victoryPoints = Integer.parseInt(propertyMap.get("VP"));
+
+        Map<Resource, Integer> resourceCost = propertyMap.entrySet().stream()
+                .filter(e -> e.getKey().equals("RC"))
+                .map(e -> e.getValue().split(","))
+                .collect(Collectors.toMap(e -> parseResource(e[0]), e -> Integer.parseInt(e[1])));
+
+        ProductionPower productionPower = parseProductionPower(propertyMap);
+
+        return new DevelopmentCard(id, victoryPoints, resourceCost, productionPower);
+
+    }
+
+    /**
+     * Converts a map representing the properties of leader card into a LeaderCard
+     *
+     * @param propertyMap   map with keys being the property, values being the property value
+     * @return              a Leader card built using the propertyMap properties
+     */
+    private LeaderCard buildLeaderCard(Map<String, String> propertyMap) {
+
+        int id = Integer.parseInt(propertyMap.get("ID"));
+        int victoryPoints = Integer.parseInt(propertyMap.get("VP"));
+
+        Map<Resource, Integer> resourceCost = propertyMap.entrySet().stream()
+                .filter(e -> e.getKey().equals("RC"))
+                .map(e -> e.getValue().split(","))
+                .collect(Collectors.toMap(e -> parseResource(e[0]), e -> Integer.parseInt(e[1])));
+
+        Map<Banner, Integer> bannerCost = propertyMap.entrySet().stream()
+                .filter(e -> e.getKey().equals("BC"))
+                .map(e -> e.getValue().split(","))
+                .collect(Collectors.toMap(e -> parseBanner(e[0], e[1]), e -> Integer.parseInt(e[2])));
+
+        SpecialAbility specialAbility = parseProductionPower(propertyMap);
+
+        return new LeaderCard(id, victoryPoints, resourceCost, bannerCost, specialAbility);
+
+    }
+
+    /**
+     * Converts a map representing the properties of vatican report into a VaticanReport
+     *
+     * @param propertyMap   map with keys being the property, values being the property value
+     * @return              a Vatican Report built using the propertyMap properties
+     */
+    private VaticanReport buildVaticanReport(Map<String, String> propertyMap) {
+
+        int start = Integer.parseInt(propertyMap.get("ST"));
+        int end = Integer.parseInt(propertyMap.get("END"));
+        int victoryPoints = Integer.parseInt(propertyMap.get("VP"));
+
+        return new VaticanReport(start, end, victoryPoints);
+
+    }
+
+    /**
+     * Loads the DevelopmentCard array
+     *
+     * @param prop  game settings properties
+     */
+    private void loadDevelopmentCards(Properties prop) {
+
+        this.developmentCards = IntStream.range(0, DEVELOPMENT_CARD_NUM)
+                .boxed()
+                .map(i -> propertyParser(prop.getProperty("DevelopmentCard." + i)))
+                .map(this::buildDevelopmentCard)
+                .toArray(DevelopmentCard[]::new);
+
+    }
+
+    /**
+     * Loads the LeaderCards array
+     *
+     * @param prop  game settings properties
+     */
+    private void loadLeaderCards(Properties prop) {
+
+        this.leaderCards = IntStream.range(0, leaderCardNum)
+                .boxed()
+                .map(i -> propertyParser(prop.getProperty("LeaderCard." + i)))
+                .map(this::buildLeaderCard)
+                .toArray(LeaderCard[]::new);
+
+    }
+
+    /**
+     * Loads the VaticanReports list
+     *
+     * @param prop  game settings properties
+     */
+    private void loadVaticanReports(Properties prop) {
+
+        this.vaticanReportsNum = Integer.parseInt(prop.getProperty("VaticanReportsNum"));
+
+        this.vaticanReports = IntStream.range(0, vaticanReportsNum)
+                .boxed()
+                .map(i -> propertyParser(prop.getProperty("VaticanReport." + i)))
+                .map(this::buildVaticanReport)
+                .collect(Collectors.toList());
+
+    }
+
+    /**
+     * Loads the faithTrackVictoryPoints array
+     *
+     * @param prop  game settings properties
+     */
+    private void loadFaithTrackVictoryPoints(Properties prop) {
+
+        this.faithTrackVictoryPoints = IntStream.range(0, FAITH_TRACK_LENGTH)
+                .boxed()
+                .map(i -> Integer.parseInt(prop.getProperty("FaithTrackVictoryPoint."+ i)))
+                .mapToInt(Integer::intValue)
+                .toArray();
+
+    }
+
+
+    /**
+     * Method to convert a property string into a resource
+     *
+     * @param resourceName  string representing the name of the resource
+     * @return              a Resource matching the resourceName
+     */
+    private Resource parseResource(String resourceName) {
+
+        return switch (resourceName) {
+            case "SHIELD" -> Resource.SHIELD;
+            case "SERVANT" -> Resource.SERVANT;
+            case "STONE" -> Resource.STONE;
+            case "GOLD" -> Resource.GOLD;
+            default -> null;
+        };
+
+    }
+
+    private Banner parseBanner(String bannerName, String level) {
+
+        /* TODO
+        return switch (bannerName) {
+            case "SHIELD" -> Resource.SHIELD;
+            case "SERVANT" -> Resource.SERVANT;
+            case "STONE" -> Resource.STONE;
+            case "GOLD" -> Resource.GOLD;
+            default -> null;
+        };
+         */
+
+        return null;
+
+    }
+
+    /**
+     * Converts a map representing the properties of a production power into a production power
+     *
+     * @param propertyMap   map with keys being the property, values being the property value
+     * @return              a ProductionPower built using the propertyMap properties
+     */
+    private ProductionPower parseProductionPower(Map<String, String> propertyMap) {
+
+        Map<Resource, Integer> resourceRequired = Arrays.stream(propertyMap.get("RR").split(","))
+                .map(e -> e.split(":"))
+                .collect(Collectors.toMap(e -> parseResource(e[0]), e -> Integer.parseInt(e[1])));
+
+        Map<Resource, Integer> resourceProduced = Arrays.stream(propertyMap.get("RP").split(","))
+                .map(e -> e.split(":"))
+                .collect(Collectors.toMap(e -> parseResource(e[0]), e -> Integer.parseInt(e[1])));
+
+        int numberFaithPoints = Integer.parseInt(propertyMap.get("FP"));
+        boolean selectableResource = propertyMap.get("SR").equals("y");
+
+        return new ProductionPower(resourceRequired, resourceProduced, numberFaithPoints, selectableResource);
+
     }
 
     /**
