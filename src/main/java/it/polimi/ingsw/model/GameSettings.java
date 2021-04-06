@@ -157,6 +157,9 @@ public class GameSettings {
         int id = Integer.parseInt(propertyMap.get("ID"));
         int victoryPoints = Integer.parseInt(propertyMap.get("VP"));
 
+        String[] bannerString =propertyMap.get("BA").split(":");
+        Banner banner = parseBanner(bannerString[0], bannerString[1]);
+
         Map<Resource, Integer> resourceCost = propertyMap.entrySet().stream()
                 .filter(e -> e.getKey().equals("RC"))
                 .map(e -> e.getValue().split(","))
@@ -164,7 +167,7 @@ public class GameSettings {
 
         ProductionPower productionPower = parseProductionPower(propertyMap);
 
-        return new DevelopmentCard(id, victoryPoints, resourceCost, productionPower);
+        return new DevelopmentCard(id, victoryPoints, resourceCost, productionPower, banner);
 
     }
 
@@ -292,19 +295,23 @@ public class GameSettings {
 
     }
 
-    private Banner parseBanner(String bannerName, String level) {
+    /**
+     * Method to convert a property string into a banner
+     *
+     * @param bannerColor   string representing the color of the banner
+     * @param level         string representing the level of the banner
+     * @return              a banner matching the given color and level
+     */
+    private Banner parseBanner(String bannerColor, String level) {
 
-        /* TODO
-        return switch (bannerName) {
-            case "SHIELD" -> Resource.SHIELD;
-            case "SERVANT" -> Resource.SERVANT;
-            case "STONE" -> Resource.STONE;
-            case "GOLD" -> Resource.GOLD;
+        return switch (bannerColor) {
+            case "GREEN" -> new Banner(BannerEnum.GREEN, Integer.parseInt(level));
+            case "YELLOW" -> new Banner(BannerEnum.YELLOW, Integer.parseInt(level));
+            case "BLUE" -> new Banner(BannerEnum.BLUE, Integer.parseInt(level));
+            case "PURPLE" -> new Banner(BannerEnum.PURPLE, Integer.parseInt(level));
             default -> null;
         };
-         */
 
-        return null;
 
     }
 
