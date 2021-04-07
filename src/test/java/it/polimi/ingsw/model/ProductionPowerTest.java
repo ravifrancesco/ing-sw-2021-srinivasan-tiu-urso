@@ -10,7 +10,7 @@ import java.util.Map;
 public class ProductionPowerTest {
 
     @Test
-    public void toStringTest(){
+    public void toStringTest() {
         Map<Resource, Integer> resourceRequired = new HashMap<>();
         resourceRequired.put(Resource.GOLD, 1);
         resourceRequired.put(Resource.STONE, 1);
@@ -27,7 +27,7 @@ public class ProductionPowerTest {
     }
 
     @Test
-    public void toStringWithoutRPTest(){
+    public void toStringWithoutRPTest() {
         Map<Resource, Integer> resourceRequired = new HashMap<>();
         resourceRequired.put(Resource.GOLD, 1);
         resourceRequired.put(Resource.STONE, 1);
@@ -41,7 +41,7 @@ public class ProductionPowerTest {
     }
 
     @Test
-    public void getterTest(){
+    public void getterTest() {
         Map<Resource, Integer> resourceRequired = new HashMap<>();
         resourceRequired.put(Resource.GOLD, 1);
         resourceRequired.put(Resource.STONE, 1);

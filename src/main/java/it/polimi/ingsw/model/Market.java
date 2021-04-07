@@ -51,7 +51,7 @@ public class Market {
 	 * @param p the player doing the move
 	 * @return an ArrayList of collected Resource from the move.
 	 */
-	public Collection<Resource> getResources(int move, Player p) {
+	public ArrayList<Resource> getResources(int move, Player p) {
 		return isRowMove(move) ? doRowMove(move, p) : doColMove(move-3, p);
 	}
 

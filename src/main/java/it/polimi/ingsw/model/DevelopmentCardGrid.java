@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
- * The class represents the grid of Development Card onto the Dashboard
+ * The class represents the grid of Development Card onto the GameBoard.
  */
 
 public class DevelopmentCardGrid {
@@ -19,20 +19,20 @@ public class DevelopmentCardGrid {
 	private final List<Stack<DevelopmentCard>> grid;
 
 	/**
-	 * The constructor for a DevelopmentCardGrid object
-	 * It creates a grid of empty stacks
+	 * The constructor for a DevelopmentCardGrid object.
+	 * It creates a grid of empty stacks.
 	 */
 
-	DevelopmentCardGrid(){
+	DevelopmentCardGrid() {
 		grid = IntStream.range(0, gridRowLength*gridColLength)
 				.mapToObj(e->new Stack<DevelopmentCard>())
 				.collect(Collectors.toList());
 	}
 
 	/**
-	 * Init method for the class
-	 * It fills the grid with all Development Cards of the game
-	 * @param developmentCardDeck the deck of Development Cards
+	 * Init method for the class.
+	 * It fills the grid with all Development Cards of the game.
+	 * @param developmentCardDeck the deck of Development Cards.
 	 */
 
 	public void init(Deck developmentCardDeck) {
@@ -42,10 +42,10 @@ public class DevelopmentCardGrid {
 	}
 
 	/**
-	 * Private method to process the position in the list
-	 * @param row index of the interest row
-	 * @param column index of the interest column
-	 * @return the position in the list of the element
+	 * Private method to process the position in the list.
+	 * @param row index of the interest row.
+	 * @param column index of the interest column.
+	 * @return the position in the list of the element.
 	 */
 
 	private int getPosition(int row, int column){
@@ -53,12 +53,12 @@ public class DevelopmentCardGrid {
 	}
 
 	/**
-	 * Private method to get the column based on banner color
-	 * @param color the color of the banner
-	 * @return the column index
+	 * Private method to get the column based on banner color.
+	 * @param color the color of the banner.
+	 * @return the column index.
 	 */
 
-	private int getColumn(BannerEnum color){
+	private int getColumn(BannerEnum color) {
 		return switch(color){
 			case GREEN -> 0;
 			case BLUE -> 1;
@@ -68,10 +68,10 @@ public class DevelopmentCardGrid {
 	}
 
 	/**
-	 * Allows to buy a card
-	 * @param row index of the row where the card is placed
-	 * @param column index of the column where the card is placed
-	 * @return the bought card
+	 * Allows to buy a card.
+	 * @param row index of the row where the card is placed.
+	 * @param column index of the column where the card is placed.
+	 * @return the bought card.
 	 */
 
 	public DevelopmentCard buy(int row, int column) {
@@ -80,11 +80,11 @@ public class DevelopmentCardGrid {
 	}
 
 	/**
-	 * Allows to know if the development card selected is buyable
-	 * @param row index of the row where the card is placed
-	 * @param column index of the column where the card is placed
-	 * @param playerResources all the resources of the player
-	 * @return if the development card is buyable or not with the given resources
+	 * Allows to know if the development card selected is buyable.
+	 * @param row index of the row where the card is placed.
+	 * @param column index of the column where the card is placed.
+	 * @param playerResources all the resources of the player.
+	 * @return if the development card is buyable or not with the given resources.
 	 */
 
 	public boolean isBuyable(int row, int column, Map<Resource, Integer> playerResources) {

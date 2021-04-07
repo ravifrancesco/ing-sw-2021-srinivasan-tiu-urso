@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class LeaderCardTest{
     @Test
-    public void toStringTestWithNullRP(){
+    public void toStringTestWithNullRP() {
         Map<Resource, Integer> resourceCost = new HashMap<>();
 
         resourceCost.put(Resource.SHIELD, 1);
@@ -36,7 +36,7 @@ public class LeaderCardTest{
     }
 
     @Test
-    public void getterTest(){
+    public void getterTest() {
         Map<Resource, Integer> resourceCost = new HashMap<>();
 
         resourceCost.put(Resource.SHIELD, 1);
@@ -61,7 +61,7 @@ public class LeaderCardTest{
     }
 
     @Test
-    public void discardTest(){
+    public void discardTest() {
         Map<Resource, Integer> resourceCost = new HashMap<>();
 
         resourceCost.put(Resource.SHIELD, 1);
@@ -97,17 +97,17 @@ public class LeaderCardTest{
     }
 
     @Test
-    public void playTest(){
+    public void playTest() {
         // TODO when GameBoard will be done
     }
 
     @Test
-    public void activateTest(){
+    public void activateTest() {
         // TODO when GameBoard will be done
     }
 
     @Test
-    public void trueIsPlayableTest(){
+    public void trueIsPlayableTest() {
         Map<Resource, Integer> resourceCost = new HashMap<>();
 
         resourceCost.put(Resource.SHIELD, 1);
@@ -139,7 +139,7 @@ public class LeaderCardTest{
     }
 
     @Test
-    public void cornerCaseIsPlayableTest(){
+    public void cornerCaseIsPlayableTest() {
         Map<Resource, Integer> resourceCost = new HashMap<>();
 
         resourceCost.put(Resource.SHIELD, 1);
@@ -170,7 +170,7 @@ public class LeaderCardTest{
     }
 
     @Test
-    public void cornerCase2IsPlayableTest(){
+    public void cornerCase2IsPlayableTest() {
         Map<Resource, Integer> resourceCost = new HashMap<>();
 
         resourceCost.put(Resource.SHIELD, 1);
@@ -201,7 +201,7 @@ public class LeaderCardTest{
     }
 
     @Test
-    public void lessResourcesIsPlayableTest(){
+    public void lessResourcesIsPlayableTest() {
         Map<Resource, Integer> resourceCost = new HashMap<>();
 
         resourceCost.put(Resource.SHIELD, 2);
@@ -233,7 +233,7 @@ public class LeaderCardTest{
     }
 
     @Test
-    public void lessBannersIsPlayableTest(){
+    public void lessBannersIsPlayableTest() {
         Map<Resource, Integer> resourceCost = new HashMap<>();
 
         resourceCost.put(Resource.SHIELD, 1);

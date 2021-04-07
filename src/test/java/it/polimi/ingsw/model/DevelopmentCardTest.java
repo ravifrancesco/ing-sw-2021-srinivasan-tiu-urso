@@ -12,7 +12,7 @@ import java.util.Map;
 public class DevelopmentCardTest {
 
     @Test
-    public void toStringTest(){
+    public void toStringTest() {
         Banner banner = new Banner(BannerEnum.BLUE, 2);
 
         Map<Resource, Integer> resourceCost = new HashMap<>();
@@ -39,7 +39,7 @@ public class DevelopmentCardTest {
     }
 
     @Test
-    public void getterTest(){
+    public void getterTest() {
         Banner banner = new Banner(BannerEnum.BLUE, 2);
 
         Map<Resource, Integer> resourceCost = new HashMap<>();
@@ -68,12 +68,12 @@ public class DevelopmentCardTest {
     }
 
     @Test
-    public void playTest(){
+    public void playTest() {
         // TODO after implementing Dashboard class
     }
 
     @Test
-    public void movingFaithMarkerTest(){
+    public void movingFaithMarkerTest() {
         Map<Resource, Integer> resourceCostPP = new HashMap<>();
         resourceCostPP.put(Resource.GOLD, 1);
         resourceCostPP.put(Resource.STONE, 1);
@@ -114,22 +114,22 @@ public class DevelopmentCardTest {
     }
 
     @Test
-    public void storeResourcesTest(){
+    public void storeResourcesTest() {
         // TODO after implementing Warehouse class
     }
 
     @Test
-    public void storingAndFMTest(){
+    public void storingAndFMTest() {
         // TODO after implementing Warehouse class
     }
 
     @Test
-    public void giveSelectableResourceTest(){
+    public void giveSelectableResourceTest() {
         // TODO after implementing Dashboard and Warehouse classes
     }
 
     @Test
-    public void trueIsActivatableTest(){
+    public void trueIsActivatableTest() {
         Banner banner = new Banner(BannerEnum.BLUE, 2);
 
         Map<Resource, Integer> resourceCost = new HashMap<>();
@@ -158,7 +158,7 @@ public class DevelopmentCardTest {
     }
 
     @Test
-    public void falseIsActivatableTest(){
+    public void falseIsActivatableTest() {
         Banner banner = new Banner(BannerEnum.BLUE, 2);
 
         Map<Resource, Integer> resourceCost = new HashMap<>();

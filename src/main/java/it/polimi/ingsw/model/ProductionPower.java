@@ -16,11 +16,11 @@ public class ProductionPower implements SpecialAbility {
 	boolean selectableResource;
 
 	/**
-	 * The constructor for a Production Power object
-	 * @param resourceRequired represents the cost to activate the production power
-	 * @param resourceProduced represents the resources producted
-	 * @param numberFaithPoints represents the faith points given by the production power
-	 * @param selectableResource represents if the production power gives a selectable resource or not
+	 * The constructor for a Production Power object.
+	 * @param resourceRequired represents the cost to activate the production power.
+	 * @param resourceProduced represents the resources producted.
+	 * @param numberFaithPoints represents the faith points given by the production power.
+	 * @param selectableResource represents if the production power gives a selectable resource or not.
 	 */
 
 	public ProductionPower(Map<Resource, Integer> resourceRequired, Map<Resource, Integer> resourceProduced, int numberFaithPoints, boolean selectableResource) {
@@ -31,8 +31,8 @@ public class ProductionPower implements SpecialAbility {
 	}
 
 	/**
-	 * It allows to move the faith marker and to store the resources given by the production power
-	 * @param p the player who activated the production power
+	 * It allows to move the faith marker and to store the resources given by the production power.
+	 * @param p the player who activated the production power.
 	 */
 
 	@Override
@@ -48,20 +48,20 @@ public class ProductionPower implements SpecialAbility {
 	}
 
 	/**
-	 * It allows to store one selectable resource
-	 * @param p the player who activated the production power
-	 * @param r the resource chosen by the player
+	 * It allows to store one selectable resource.
+	 * @param p the player who activated the production power.
+	 * @param r the resource chosen by the player.
 	 */
 
-	public void giveOneSelectableResource(Player p, Resource r){
+	public void giveOneSelectableResource(Player p, Resource r) {
 		if(selectableResource){
 			p.getDashboard().storeResourceInLocker(r, 1);
 		}
 	}
 
 	/**
-	 * Getter for resource required
-	 * @return the resource cost of the production power
+	 * Getter for resource required.
+	 * @return the resource cost of the production power.
 	 */
 
 	public Map<Resource, Integer> getResourceRequired() {
@@ -69,8 +69,8 @@ public class ProductionPower implements SpecialAbility {
 	}
 
 	/**
-	 * Getter for resource produced
-	 * @return the resources produced by the production power
+	 * Getter for resource produced.
+	 * @return the resources produced by the production power.
 	 */
 
 	public Map<Resource, Integer> getResourceProduced() {
@@ -78,8 +78,8 @@ public class ProductionPower implements SpecialAbility {
 	}
 
 	/**
-	 * Getter for number faith points
-	 * @return the number of faith points given by the production power
+	 * Getter for number faith points.
+	 * @return the number of faith points given by the production power.
 	 */
 
 	public int getNumberFaithPoints() {
@@ -87,8 +87,8 @@ public class ProductionPower implements SpecialAbility {
 	}
 
 	/**
-	 * Getter for selectable resources
-	 * @return if the production power gives a selectable resource or not
+	 * Getter for selectable resources.
+	 * @return if the production power gives a selectable resource or not.
 	 */
 
 	public boolean isSelectableResource() {
@@ -96,10 +96,10 @@ public class ProductionPower implements SpecialAbility {
 	}
 
 	/**
-	 * To string method of the class
-	 * @return a string representation of the object
+	 * To string method of the class.
+	 * @return a string representation of the object.
 	 */
-	public String toString(){
+	public String toString() {
 		String result="";
 
 		result+="SA=PP;";
