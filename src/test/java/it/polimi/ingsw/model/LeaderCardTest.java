@@ -98,12 +98,12 @@ public class LeaderCardTest{
 
     @Test
     public void playTest() {
-        // TODO when GameBoard will be done
+        // TODO when Dashboard will be done
     }
 
     @Test
     public void activateTest() {
-        // TODO when GameBoard will be done
+        // TODO when the SpecialAbility classes will be done
     }
 
     @Test

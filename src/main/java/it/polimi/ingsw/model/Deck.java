@@ -55,4 +55,11 @@ public class Deck {
 		return deck.pop();
 	}
 
+	/**
+	 * Getter for the size of the deck.
+	 * @return the size of the deck.
+	 */
+
+	public int getSize() { return deck.size(); }
+
 }
