@@ -102,7 +102,7 @@ public class ProductionPower implements SpecialAbility {
 	public String toString(){
 		String result="";
 
-		result+="PP;";
+		result+="SA=PP;";
 
 		result += resourceRequired.keySet().stream()
 				.map(key -> key + ":" + resourceRequired.get(key))
