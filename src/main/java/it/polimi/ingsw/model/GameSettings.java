@@ -159,9 +159,8 @@ public class GameSettings {
         String[] bannerString =propertyMap.get("BA").split(":");
         Banner banner = parseBanner(bannerString[0], bannerString[1]);
 
-        Map<Resource, Integer> resourceCost = propertyMap.entrySet().stream()
-                .filter(e -> e.getKey().equals("RC"))
-                .map(e -> e.getValue().split(","))
+        Map<Resource, Integer> resourceCost = Arrays.stream(propertyMap.get("RC").split(","))
+                .map(e -> e.split(":"))
                 .collect(Collectors.toMap(e -> parseResource(e[0]), e -> Integer.parseInt(e[1])));
 
         ProductionPower productionPower = parseProductionPower(propertyMap);
@@ -181,14 +180,12 @@ public class GameSettings {
         int id = Integer.parseInt(propertyMap.get("ID"));
         int victoryPoints = Integer.parseInt(propertyMap.get("VP"));
 
-        Map<Resource, Integer> resourceCost = propertyMap.entrySet().stream()
-                .filter(e -> e.getKey().equals("RC"))
-                .map(e -> e.getValue().split(","))
+        Map<Resource, Integer> resourceCost = Arrays.stream(propertyMap.get("RC").split(","))
+                .map(e -> e.split(":"))
                 .collect(Collectors.toMap(e -> parseResource(e[0]), e -> Integer.parseInt(e[1])));
 
-        Map<Banner, Integer> bannerCost = propertyMap.entrySet().stream()
-                .filter(e -> e.getKey().equals("BC"))
-                .map(e -> e.getValue().split(","))
+        Map<Banner, Integer> bannerCost = Arrays.stream(propertyMap.get("BC").split(","))
+                .map(e -> e.split(":"))
                 .collect(Collectors.toMap(e -> parseBanner(e[0], e[1]), e -> Integer.parseInt(e[2])));
 
         SpecialAbility specialAbility = parseProductionPower(propertyMap);
