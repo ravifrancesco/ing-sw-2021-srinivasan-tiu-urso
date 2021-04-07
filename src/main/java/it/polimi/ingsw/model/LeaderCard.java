@@ -115,10 +115,10 @@ public class LeaderCard implements Card {
 				.collect(Collectors.joining(",", "RC=", ";"));
 
 		result += bannerCost.keySet().stream()
-				.map(key -> key.getColor() + ":" + key.getLevel() + ":" + bannerCost.get(key))
+				.map(key -> key.getColor().name() + ":" + key.getLevel() + ":" + bannerCost.get(key))
 				.collect(Collectors.joining(",", "BC=", ";"));
 
-		result += "SA=" + specialAbility.toString();
+		result += specialAbility.toString();
 		return result;
 	}
 

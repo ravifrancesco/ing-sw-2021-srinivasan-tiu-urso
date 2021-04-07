@@ -20,8 +20,8 @@ public class ProductionPowerTest {
 
         ProductionPower p = new ProductionPower(resourceRequired, resourceProduced,2, false);
 
-        String s1 = "PP;RR=STONE:1,GOLD:1;RP=SHIELD:1;FP=2;SR=n;";
-        String s2 = "PP;RR=GOLD:1,STONE:1;RP=SHIELD:1;FP=2;SR=n;";
+        String s1 = "SA=PP;RR=STONE:1,GOLD:1;RP=SHIELD:1;FP=2;SR=n;";
+        String s2 = "SA=PP;RR=GOLD:1,STONE:1;RP=SHIELD:1;FP=2;SR=n;";
 
         Assumptions.assumeTrue(s1.equals(p.toString()) || s2.equals(p.toString()));
     }
@@ -34,8 +34,8 @@ public class ProductionPowerTest {
 
         ProductionPower p = new ProductionPower(resourceRequired, null,2, true);
 
-        String s1 = "PP;RR=STONE:1,GOLD:1;FP=2;SR=y;";
-        String s2 = "PP;RR=GOLD:1,STONE:1;FP=2;SR=y;";
+        String s1 = "SA=PP;RR=STONE:1,GOLD:1;FP=2;SR=y;";
+        String s2 = "SA=PP;RR=GOLD:1,STONE:1;FP=2;SR=y;";
 
         Assumptions.assumeTrue(s1.equals(p.toString()) || s2.equals(p.toString()));
     }

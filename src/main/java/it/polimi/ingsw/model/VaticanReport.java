@@ -93,4 +93,16 @@ public class VaticanReport {
         return new VaticanReport(start, end, victoryPoints);
     }
 
+    @Override
+    public String toString() {
+
+        String result = "";
+
+        result+="ST="+start+";";
+        result+="END="+end+";";
+        result+="VP="+victoryPoints+";";
+
+        return result;
+
+    }
 }

@@ -117,7 +117,7 @@ public class DevelopmentCard implements Card {
 				.map(key -> key + ":" + resourceCost.get(key))
 				.collect(Collectors.joining(",", "RC=", ";"));
 
-		result += "SA=" + productionPower.toString();
+		result += productionPower.toString();
 
 		return result;
 	}
