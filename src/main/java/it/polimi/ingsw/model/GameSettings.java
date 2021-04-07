@@ -156,7 +156,7 @@ public class GameSettings {
         int id = Integer.parseInt(propertyMap.get("ID"));
         int victoryPoints = Integer.parseInt(propertyMap.get("VP"));
 
-        String[] bannerString =propertyMap.get("BA").split(":");
+        String[] bannerString = propertyMap.get("BA").split(":");
         Banner banner = parseBanner(bannerString[0], bannerString[1]);
 
         Map<Resource, Integer> resourceCost = Arrays.stream(propertyMap.get("RC").split(","))
