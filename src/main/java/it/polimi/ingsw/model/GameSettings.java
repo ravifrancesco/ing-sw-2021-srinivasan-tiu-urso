@@ -363,7 +363,7 @@ public class GameSettings {
     }
 
     /**
-     * Getter for developmentCards.
+     * Getter for vaticanReports.
      *
      * @return a List of vaticanReports.
      */
@@ -380,4 +380,12 @@ public class GameSettings {
         return faithTrackVictoryPoints;
     }
 
+    /**
+     * Getter for leaderCardNum.
+     * @return the leaderCardNum.
+     */
+
+    public int getLeaderCardNum() {
+        return leaderCardNum;
+    }
 }

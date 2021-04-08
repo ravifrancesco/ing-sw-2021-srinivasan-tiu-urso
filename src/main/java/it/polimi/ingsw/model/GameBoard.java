@@ -24,13 +24,12 @@ public class GameBoard {
 
 	private DevelopmentCardGrid developmentCardGrid;
 
-	private Game game;
-
-	// TODO change doc
+	private Game game; // TODO
 
 	/**
 	 * The constructor for a GameBoard object.
-	 * It initializes the three decks, the market and the development card grid.
+	 * It initializes the three decks from the game settings and it creates the market and the development card grid.
+	 * @param gameSettings the settings for the current game.
 	 */
 
 	public GameBoard(GameSettings gameSettings) {
@@ -44,8 +43,8 @@ public class GameBoard {
 	}
 
 	/**
-	 * The init method for the class. It loads the development cards and the leader cards from the game settings and
-	 * it adds them to the decks. It also reset the market and it fills the development card grid.
+	 * The init method for the class. It shuffles the development cards and the leader cards decks.
+	 * It also reset the market and it fills the development card grid.
 	 */
 
 	public void init() {
@@ -60,8 +59,9 @@ public class GameBoard {
 	 * @param c the card to be discarded
 	 */
 
-	public void discardCard(Card c) {
-		discardDeck.add(c);
+	public void discardCard(Card c, Dashboard d) {
+		LeaderCard leaderCard = (LeaderCard) c;
+		leaderCard.discard(d, discardDeck);
 	}
 
 	/**
@@ -79,5 +79,50 @@ public class GameBoard {
 
 	public ArrayList<Resource> getResourcesFromMarket(int move, Player p) {
 		return market.getResources(move, p);
+	}
+
+	/**
+	 * Getter for the discard deck.
+	 * @return the discard deck.
+	 */
+
+	public Deck getDiscardDeck() {
+		return discardDeck;
+	}
+
+	/**
+	 * Getter for the development cards deck.
+	 * @return the development cards deck.
+	 */
+
+	public Deck getDevelopmentDeck() {
+		return developmentDeck;
+	}
+
+	/**
+	 * Getter for the leader cards deck.
+	 * @return the leader cards deck.
+	 */
+
+	public Deck getLeaderDeck() {
+		return leaderDeck;
+	}
+
+	/**
+	 * Getter for the market.
+	 * @return the market.
+	 */
+
+	public Market getMarket() {
+		return market;
+	}
+
+	/**
+	 * Getter for the development cards grid.
+	 * @return the development cards grid.
+	 */
+
+	public DevelopmentCardGrid getDevelopmentCardGrid() {
+		return developmentCardGrid;
 	}
 }
