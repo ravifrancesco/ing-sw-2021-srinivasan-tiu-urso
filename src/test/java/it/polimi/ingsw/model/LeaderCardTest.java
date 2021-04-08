@@ -2,7 +2,6 @@ package it.polimi.ingsw.model;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.jupiter.api.Assumptions;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,7 +30,7 @@ public class LeaderCardTest{
         String s1 = "ID=1;VP=5;RC=SHIELD:1;BC=BLUE:2:1,GREEN:1:2;SA=PP;RR=GOLD:1;FP=1;SR=y;";
         String s2 = "ID=1;VP=5;RC=SHIELD:1;BC=GREEN:1:2,BLUE:2:1;SA=PP;RR=GOLD:1;FP=1;SR=y;";
 
-        Assumptions.assumeTrue(s1.equals(leaderCard.toString()) || s2.equals(leaderCard.toString()));
+        Assert.assertTrue(s1.equals(leaderCard.toString()) || s2.equals(leaderCard.toString()));
 
     }
 

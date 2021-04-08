@@ -2,7 +2,6 @@ package it.polimi.ingsw.model;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.jupiter.api.Assumptions;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -27,8 +26,8 @@ public class DeckTest {
         IntStream.range(0, dc.length)
                 .forEach(i -> dc[i] = (DevelopmentCard) developmentDeck.getCard());
 
-        Assumptions.assumeTrue(Arrays.asList(developmentCards).containsAll(Arrays.asList(dc)));
-        Assumptions.assumeTrue(Arrays.asList(dc).containsAll(Arrays.asList(developmentCards)));
+        Assert.assertTrue(Arrays.asList(developmentCards).containsAll(Arrays.asList(dc)));
+        Assert.assertTrue(Arrays.asList(dc).containsAll(Arrays.asList(developmentCards)));
     }
 
     @Test
@@ -48,8 +47,28 @@ public class DeckTest {
         IntStream.range(0, lc.length)
                 .forEach(i -> lc[i] = (LeaderCard) leaderDeck.getCard());
 
-        Assumptions.assumeTrue(Arrays.asList(leaderCards).containsAll(Arrays.asList(lc)));
-        Assumptions.assumeTrue(Arrays.asList(lc).containsAll(Arrays.asList(leaderCards)));
+        Assert.assertTrue(Arrays.asList(leaderCards).containsAll(Arrays.asList(lc)));
+        Assert.assertTrue(Arrays.asList(lc).containsAll(Arrays.asList(leaderCards)));
+    }
+
+    @Test
+    public void discardTest() {
+        int leaderCardNum = 16;
+        LeaderCard[] leaderCards = leaderCardDeckBuilder(leaderCardNum);
+        Deck discardDeck = new Deck();
+        LeaderCard lc = leaderCards[0];
+
+        Assert.assertEquals(discardDeck.getSize(), 0);
+
+        discardDeck.add(lc);
+
+        Assert.assertEquals(discardDeck.getSize(), 1);
+
+        LeaderCard lc2 = (LeaderCard) discardDeck.getCard();
+
+        Assert.assertEquals(discardDeck.getSize(), 0);
+        Assert.assertEquals(lc, lc2);
+
     }
 
     private DevelopmentCard[] developmentCardDeckBuilder() {
@@ -67,9 +86,6 @@ public class DeckTest {
         resourceProduced.put(Resource.SHIELD, 1);
 
         ProductionPower p = new ProductionPower(resourceRequired, resourceProduced,2, false);
-
-        Map<Resource, Integer> resourceCostDC = new HashMap<>();
-        resourceCostDC.put(Resource.SERVANT, 3);
 
         return IntStream.range(0, GameSettings.DEVELOPMENT_CARD_NUM)
                 .boxed()

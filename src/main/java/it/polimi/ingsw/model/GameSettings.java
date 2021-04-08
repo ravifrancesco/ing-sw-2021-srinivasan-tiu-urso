@@ -20,7 +20,7 @@ import java.util.stream.IntStream;
  */
 public class GameSettings {
 
-    static final int DEVELOPMENT_CARD_NUM = 40;
+    static final int DEVELOPMENT_CARD_NUM = 48;
     static final int FAITH_TRACK_LENGTH = 25;
 
     private DevelopmentCard[] developmentCards;

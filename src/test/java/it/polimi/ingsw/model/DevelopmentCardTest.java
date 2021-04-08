@@ -2,7 +2,6 @@ package it.polimi.ingsw.model;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.jupiter.api.Assumptions;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,7 +34,7 @@ public class DevelopmentCardTest {
         String s1 = "ID=1;VP=5;BA=BLUE:2;RC=SERVANT:3;SA=PP;RR=STONE:1,GOLD:1;RP=SHIELD:1;FP=2;SR=n;";
         String s2 = "ID=1;VP=5;BA=BLUE:2;RC=SERVANT:3;SA=PP;RR=GOLD:1,STONE:1;RP=SHIELD:1;FP=2;SR=n;";
 
-        Assumptions.assumeTrue(s1.equals(c.toString()) || s2.equals(c.toString()));
+        Assert.assertTrue(s1.equals(c.toString()) || s2.equals(c.toString()));
     }
 
     @Test
@@ -154,7 +153,7 @@ public class DevelopmentCardTest {
         playerResources.put(Resource.SERVANT, 1);
         playerResources.put(Resource.STONE, 3);
 
-        Assumptions.assumeTrue(c.isActivatable(playerResources));
+        Assert.assertTrue(c.isActivatable(playerResources));
     }
 
     @Test
@@ -183,6 +182,6 @@ public class DevelopmentCardTest {
         playerResources.put(Resource.SERVANT, 1);
         playerResources.put(Resource.SHIELD, 3);
 
-        Assumptions.assumeFalse(c.isActivatable(playerResources));
+        Assert.assertFalse(c.isActivatable(playerResources));
     }
 }

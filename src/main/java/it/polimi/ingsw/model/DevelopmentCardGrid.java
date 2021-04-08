@@ -49,7 +49,7 @@ public class DevelopmentCardGrid {
 	 */
 
 	private int getPosition(int row, int column){
-		return (row-1)*gridColLength+column;
+		return (row-1)*gridColLength+(column-1);
 	}
 
 	/**
@@ -60,17 +60,17 @@ public class DevelopmentCardGrid {
 
 	private int getColumn(BannerEnum color) {
 		return switch(color){
-			case GREEN -> 0;
-			case BLUE -> 1;
-			case YELLOW -> 2;
-			case PURPLE -> 3;
+			case GREEN -> 1;
+			case BLUE -> 2;
+			case YELLOW -> 3;
+			case PURPLE -> 4;
 		};
 	}
 
 	/**
 	 * Allows to buy a card.
-	 * @param row index of the row where the card is placed.
-	 * @param column index of the column where the card is placed.
+	 * @param row index of the row where the card is placed (starting from 1).
+	 * @param column index of the column where the card is placed (starting from 1).
 	 * @return the bought card.
 	 */
 
@@ -81,8 +81,8 @@ public class DevelopmentCardGrid {
 
 	/**
 	 * Allows to know if the development card selected is buyable.
-	 * @param row index of the row where the card is placed.
-	 * @param column index of the column where the card is placed.
+	 * @param row index of the row where the card is placed (starting from 1).
+	 * @param column index of the column where the card is placed (starting from 1).
 	 * @param playerResources all the resources of the player.
 	 * @return if the development card is buyable or not with the given resources.
 	 */
