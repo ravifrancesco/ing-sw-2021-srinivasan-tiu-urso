@@ -54,8 +54,10 @@ public class LeaderCard implements Card {
 	/**
 	 * Set the state of the card as discarded and add a faith point.
 	 */
-	public void discard(Dashboard d){
+	public void discard(Dashboard d /*, Deck discardDeck*/){
 		d.moveFaithMarker(1);
+		// TODO
+		//discardDeck.add(this);
 	}
 
 	/**

@@ -26,15 +26,19 @@ public class GameBoard {
 
 	private Game game;
 
+	// TODO change doc
+
 	/**
 	 * The constructor for a GameBoard object.
 	 * It initializes the three decks, the market and the development card grid.
 	 */
 
-	public GameBoard() {
+	public GameBoard(GameSettings gameSettings) {
 		discardDeck = new Deck();
 		developmentDeck = new Deck();
+		developmentDeck.init(Arrays.asList(gameSettings.getDevelopmentCards()));
 		leaderDeck = new Deck();
+		leaderDeck.init(Arrays.asList(gameSettings.getLeaderCards()));
 		market = new Market();
 		developmentCardGrid = new DevelopmentCardGrid();
 	}
@@ -42,13 +46,10 @@ public class GameBoard {
 	/**
 	 * The init method for the class. It loads the development cards and the leader cards from the game settings and
 	 * it adds them to the decks. It also reset the market and it fills the development card grid.
-	 * @param gameSettings the settings for the current game.
 	 */
 
-	public void init(GameSettings gameSettings) {
-		developmentDeck.init(Arrays.asList(gameSettings.getDevelopmentCards()));
+	public void init() {
 		developmentDeck.shuffle();
-		leaderDeck.init(Arrays.asList(gameSettings.getLeaderCards()));
 		leaderDeck.shuffle();
 		market.reset();
 		developmentCardGrid.init(developmentDeck);
