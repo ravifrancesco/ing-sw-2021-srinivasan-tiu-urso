@@ -85,7 +85,7 @@ public class DevelopmentCardTest {
         Map<Resource, Integer> resourceCostDC = new HashMap<>();
         resourceCostDC.put(Resource.SERVANT, 3);
 
-        DevelopmentCard c = new DevelopmentCard(1, 5, null, p, null);
+        DevelopmentCard c = new DevelopmentCard(1, 5, resourceCostDC, p, null);
 
         int[] faithTrackVictoryPoints = {0,0,0,1,0,0,2,0,0,4,0,0,6,0,0,9,0,0,12,0,0,16,0,0,0};
 

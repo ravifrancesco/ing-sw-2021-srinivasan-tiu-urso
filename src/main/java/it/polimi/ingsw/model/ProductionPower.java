@@ -24,8 +24,8 @@ public class ProductionPower implements SpecialAbility {
 	 */
 
 	public ProductionPower(Map<Resource, Integer> resourceRequired, Map<Resource, Integer> resourceProduced, int numberFaithPoints, boolean selectableResource) {
-		this.resourceRequired = resourceRequired;
-		this.resourceProduced = resourceProduced;
+		this.resourceRequired = resourceRequired.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+		this.resourceProduced = resourceProduced != null ? resourceProduced.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)) : null;
 		this.numberFaithPoints = numberFaithPoints;
 		this.selectableResource = selectableResource;
 	}
@@ -65,7 +65,7 @@ public class ProductionPower implements SpecialAbility {
 	 */
 
 	public Map<Resource, Integer> getResourceRequired() {
-		return resourceRequired;
+		return resourceRequired.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 	}
 
 	/**
@@ -74,7 +74,7 @@ public class ProductionPower implements SpecialAbility {
 	 */
 
 	public Map<Resource, Integer> getResourceProduced() {
-		return resourceProduced;
+		return resourceProduced != null ? resourceProduced.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)) : null;
 	}
 
 	/**

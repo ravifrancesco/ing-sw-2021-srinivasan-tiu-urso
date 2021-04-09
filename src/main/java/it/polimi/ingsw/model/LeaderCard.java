@@ -32,8 +32,8 @@ public class LeaderCard implements Card {
 	public LeaderCard(int id, int victoryPoints, Map<Resource, Integer> resourceCost, Map<Banner, Integer> bannerCost, SpecialAbility specialAbility) {
 		this.id = id;
 		this.victoryPoints = victoryPoints;
-		this.resourceCost = resourceCost;
-		this.bannerCost = bannerCost;
+		this.resourceCost = resourceCost.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+		this.bannerCost = bannerCost.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 		this.specialAbility = specialAbility;
 	}
 
@@ -83,7 +83,7 @@ public class LeaderCard implements Card {
 	 */
 
 	public Map<Resource, Integer> getResourceCost() {
-		return resourceCost;
+		return resourceCost.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 	}
 
 	/**
@@ -92,7 +92,7 @@ public class LeaderCard implements Card {
 	 */
 
 	public Map<Banner, Integer> getBannerCost() {
-		return bannerCost;
+		return bannerCost.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 	}
 
 	/**

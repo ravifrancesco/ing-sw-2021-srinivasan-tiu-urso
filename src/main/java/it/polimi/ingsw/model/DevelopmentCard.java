@@ -31,7 +31,7 @@ public class DevelopmentCard implements Card {
 	public DevelopmentCard(int id, int victoryPoints, Map<Resource, Integer> resourceCost, ProductionPower productionPower, Banner banner) {
 		this.id=id;
 		this.victoryPoints = victoryPoints;
-		this.resourceCost = resourceCost;
+		this.resourceCost = resourceCost.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 		this.productionPower = productionPower;
 		this.banner=banner;
 	}
@@ -81,7 +81,7 @@ public class DevelopmentCard implements Card {
 	 */
 
 	public Map<Resource, Integer> getResourceCost() {
-		return resourceCost;
+		return resourceCost.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 	}
 
 	/**
