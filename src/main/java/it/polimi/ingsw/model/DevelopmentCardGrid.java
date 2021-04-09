@@ -12,8 +12,8 @@ import java.util.stream.IntStream;
  */
 
 public class DevelopmentCardGrid {
-	static final int gridRowLength = 3;
-	static final int gridColLength = 4;
+	static final int GRID_ROW_LENGTH = 3;
+	static final int GRID_COL_LENGTH = 4;
 	static final int DEVELOPMENT_CARD_NUM = 48;
 
 	private final List<Stack<DevelopmentCard>> grid;
@@ -24,7 +24,7 @@ public class DevelopmentCardGrid {
 	 */
 
 	DevelopmentCardGrid() {
-		grid = IntStream.range(0, gridRowLength*gridColLength)
+		grid = IntStream.range(0, GRID_ROW_LENGTH*GRID_COL_LENGTH)
 				.mapToObj(e->new Stack<DevelopmentCard>())
 				.collect(Collectors.toList());
 	}
@@ -49,7 +49,7 @@ public class DevelopmentCardGrid {
 	 */
 
 	private int getPosition(int row, int column){
-		return (row-1)*gridColLength+(column-1);
+		return (row-1)*GRID_COL_LENGTH+(column-1);
 	}
 
 	/**

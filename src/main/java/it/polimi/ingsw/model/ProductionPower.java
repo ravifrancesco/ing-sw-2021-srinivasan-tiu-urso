@@ -10,6 +10,8 @@ import java.util.stream.Collectors;
 
 public class ProductionPower implements SpecialAbility {
 
+	//TODO allow to have any resourceRequired (for the base production power of the dashboard)
+
 	Map<Resource, Integer> resourceRequired;
 	Map<Resource, Integer> resourceProduced;
 	int numberFaithPoints;
