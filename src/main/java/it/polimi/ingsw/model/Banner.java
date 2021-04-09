@@ -8,8 +8,8 @@ package it.polimi.ingsw.model;
 
 public class Banner {
 
-	BannerEnum color;
-	int level;
+	private BannerEnum color;
+	private int level;
 
 	/**
 	 * The constructor for a Banner object.

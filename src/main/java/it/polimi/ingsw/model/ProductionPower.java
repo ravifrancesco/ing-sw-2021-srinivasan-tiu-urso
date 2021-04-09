@@ -12,10 +12,10 @@ public class ProductionPower implements SpecialAbility {
 
 	//TODO allow to have any resourceRequired (for the base production power of the dashboard)
 
-	Map<Resource, Integer> resourceRequired;
-	Map<Resource, Integer> resourceProduced;
-	int numberFaithPoints;
-	boolean selectableResource;
+	private Map<Resource, Integer> resourceRequired;
+	private Map<Resource, Integer> resourceProduced;
+	private int numberFaithPoints;
+	private boolean selectableResource;
 
 	/**
 	 * The constructor for a Production Power object.
