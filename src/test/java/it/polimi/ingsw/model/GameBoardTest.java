@@ -102,7 +102,9 @@ public class GameBoardTest {
         Assert.assertEquals(discardDeck.getSize(), 0);
         Assert.assertEquals(dashboard.getFaithMarkerPosition(), 0);
 
-        c.discard(dashboard, discardDeck);
+        gameBoard.discardCard(c, dashboard);
+
+        discardDeck = gameBoard.getDiscardDeck();
 
         Assert.assertEquals(discardDeck.getSize(), 1);
         Assert.assertEquals(dashboard.getFaithMarkerPosition(), 1);
@@ -121,6 +123,8 @@ public class GameBoardTest {
         Assert.assertEquals(leaderCardDeck.getSize(), gameSettings.getLeaderCardNum());
 
         LeaderCard c = gameBoard.getLeaderCard();
+
+        leaderCardDeck = gameBoard.getLeaderDeck();
 
         Assert.assertEquals(leaderCardDeck.getSize(), gameSettings.getLeaderCardNum()-1);
     }
@@ -244,36 +248,19 @@ public class GameBoardTest {
 
     private int getRow(int val) {
         return switch (val % 12) {
-            case 0 -> 1;
-            case 1 -> 1;
-            case 2 -> 1;
-            case 3 -> 1;
-            case 4 -> 2;
-            case 5 -> 2;
-            case 6 -> 2;
-            case 7 -> 2;
-            case 8 -> 3;
-            case 9 -> 3;
-            case 10 -> 3;
-            case 11 -> 3;
+            case 0, 1, 2, 3 -> 1;
+            case 4, 5, 6, 7 -> 2;
+            case 8, 9, 10, 11 -> 3;
             default -> -1;
         };
     }
 
     private int getColumn(int val) {
         return switch (val % 12) {
-            case 0 -> 1;
-            case 1 -> 2;
-            case 2 -> 3;
-            case 3 -> 4;
-            case 4 -> 1;
-            case 5 -> 2;
-            case 6 -> 3;
-            case 7 -> 4;
-            case 8 -> 1;
-            case 9 -> 2;
-            case 10 -> 3;
-            case 11 -> 4;
+            case 0, 4, 8 -> 1;
+            case 1, 5, 9 -> 2;
+            case 2, 6, 10 -> 3;
+            case 3, 7, 11 -> 4;
             default -> -1;
         };
     }

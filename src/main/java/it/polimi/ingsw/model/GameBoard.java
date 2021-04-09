@@ -55,13 +55,15 @@ public class GameBoard {
 	}
 
 	/**
-	 * Allows to add a card to the discard deck
-	 * @param c the card to be discarded
+	 * Allows to add a card to the discard deck.
+	 * @param c the card to be discarded.
+	 * @param d the dashboard of the player who discarded the card.
 	 */
 
 	public void discardCard(Card c, Dashboard d) {
 		LeaderCard leaderCard = (LeaderCard) c;
-		leaderCard.discard(d, discardDeck);
+		discardDeck.add(leaderCard);
+		leaderCard.discard(d);
 	}
 
 	/**
@@ -87,7 +89,7 @@ public class GameBoard {
 	 */
 
 	public Deck getDiscardDeck() {
-		return discardDeck;
+		return discardDeck.copy();
 	}
 
 	/**
@@ -96,7 +98,7 @@ public class GameBoard {
 	 */
 
 	public Deck getDevelopmentDeck() {
-		return developmentDeck;
+		return developmentDeck.copy();
 	}
 
 	/**
@@ -105,7 +107,7 @@ public class GameBoard {
 	 */
 
 	public Deck getLeaderDeck() {
-		return leaderDeck;
+		return leaderDeck.copy();
 	}
 
 	/**

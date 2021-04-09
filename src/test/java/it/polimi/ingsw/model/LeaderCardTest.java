@@ -88,17 +88,7 @@ public class LeaderCardTest{
 
         Dashboard dashboard = new Dashboard(gameSettings, null);
 
-        Deck discardDeck = new Deck();
-
-        Assert.assertEquals(discardDeck.getSize(), 0);
-
-        leaderCard.discard(dashboard, discardDeck);
-
-        Assert.assertEquals(discardDeck.getSize(), 1);
-
-        Assert.assertEquals(discardDeck.getCard(), leaderCard);
-
-        Assert.assertEquals(discardDeck.getSize(), 0);
+        leaderCard.discard(dashboard);
 
         Assert.assertEquals(dashboard.getFaithMarkerPosition(),1);
     }

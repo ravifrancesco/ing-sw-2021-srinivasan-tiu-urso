@@ -15,8 +15,12 @@ public class Deck {
 	 */
 
 	Deck() {
-
 		deck = new Stack<>();
+	}
+
+	private Deck(Stack<Card> oldDeck) {
+		deck = new Stack<>();
+		deck.addAll(oldDeck);
 	}
 
 	/**
@@ -25,7 +29,6 @@ public class Deck {
 	 */
 
 	public void init(List<Card> cards) {
-
 			cards.forEach(deck::push);
 	}
 
@@ -61,5 +64,9 @@ public class Deck {
 	 */
 
 	public int getSize() { return deck.size(); }
+
+	public Deck copy() {
+		return new Deck(this.deck);
+	}
 
 }

@@ -140,6 +140,12 @@ public class DevelopmentCard implements Card {
 		return contResources>=resourceRequired.size();
 	}
 
+	/**
+	 * Equals method for the class.
+	 * @param o the other development card to compare.
+	 * @return true if the two cards have the same id.
+	 */
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;

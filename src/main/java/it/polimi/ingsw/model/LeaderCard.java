@@ -54,11 +54,9 @@ public class LeaderCard implements Card {
 	/**
 	 * Add the card to the discard deck and add a faith point.
 	 * @param d the dashboard of the player who discarded this card.
-	 * @param discardDeck the discard deck of the game.
 	 */
-	public void discard(Dashboard d, Deck discardDeck){
+	public void discard(Dashboard d){
 		d.moveFaithMarker(1);
-		discardDeck.add(this);
 	}
 
 	/**
@@ -154,5 +152,21 @@ public class LeaderCard implements Card {
 					e2.setValue(diff<0 ? -diff : 0); } ));
 
 		return bannerCostCopy.entrySet().stream().allMatch(e->e.getValue()==0);
+	}
+
+	/**
+	 * Equals method for the class.
+	 * @param o the other leader card to compare.
+	 * @return true if the two cards have the same id.
+	 */
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		LeaderCard that = (LeaderCard) o;
+
+		return id == that.id;
 	}
 }
