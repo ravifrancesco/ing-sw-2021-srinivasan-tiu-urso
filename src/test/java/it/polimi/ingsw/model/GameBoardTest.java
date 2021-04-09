@@ -129,10 +129,7 @@ public class GameBoardTest {
         Assert.assertEquals(leaderCardDeck.getSize(), gameSettings.getLeaderCardNum()-1);
     }
 
-    @Test
-    public void getResourceFromMarketTest() {
-        // TODO
-    }
+    // getResourceFromMarket() is already tested in MarketTest, it's only an incapsulation in GameBoard
 
     private GameSettings buildGameSettings() {
 
