@@ -9,7 +9,7 @@ package it.polimi.ingsw.model;
 
 public class Dashboard {
 
-	private final Warehouse warehouse;
+	private Warehouse warehouse;
 	private final FaithTrack faithTrack;
 	private final LeaderCard[] playedLeaderCards;
 	private Player player;
@@ -85,4 +85,14 @@ public class Dashboard {
 	public void setPlayer(Player player) {
 		this.player = player;
 	}
+
+	public Warehouse getWarehouse() {
+		return warehouse;
+	}
+
+	public void setWarehouse(Warehouse wh) {
+		warehouse = wh;
+	}
+
+
 }

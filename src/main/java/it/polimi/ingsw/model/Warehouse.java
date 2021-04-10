@@ -18,6 +18,12 @@ public class Warehouse {
 
 	private Dashboard dashboard; // not used yet?
 
+	private Map<Resource, Integer> extraDeposit;
+
+	private ArrayList<Resource> extraDepositResources;
+
+	private boolean activatedExtraDeposit;
+
 	/**
 	 * The constructor for the class.
 	 * Allocates space for the locker and the deposit (both are Resource-Integer HashMaps), and calls the clear
@@ -70,12 +76,16 @@ public class Warehouse {
 		resToAdd.forEach(r -> locker.put(r, locker.get(r)+1));
 	}
 
+	public void storeInExtraDeposit(ArrayList<Resource> resToAdd) { resToAdd.forEach(r -> extraDeposit.put(r, extraDeposit.get(r) + 1));}
+
 	/**
 	 * Removes the resources from the warehouse: the resources will at first be taken from the deposit,
 	 * followed by the locker.
 	 * @param cost HashMap Resource-Integer, where the integer is quantity to be removed. (the cost)
 	 */
 	public void removeFromWarehouse(Map<Resource, Integer> cost) {
+		// cost is updated throughout; if deposit has enough then it will just be a map of zeros
+		// 1. remove from deposit
 		cost.forEach((key, value) -> { // for each resource to be removed
 			if(deposit.get(key) - value >= 0) {
 				// deposit has enough of the resource to be removed
@@ -88,7 +98,23 @@ public class Warehouse {
 				deposit.put(key, 0);
 			}
 		});
+		// 2. remove from extra deposit (leader card abilities) if possible
+		if(hasExtraDeposit()) { attemptRemovalFromExtraDeposit(cost); }
+		// 3. remove from locker
 		removeFromLocker(cost);
+	}
+
+	public void attemptRemovalFromExtraDeposit(Map<Resource, Integer> cost) {
+		// checks too see what can be removed from the extra warehouses from the cost
+		cost.forEach((key, value) -> {
+			if (extraDeposit.get(key) - value >= 0) {
+				cost.put(key, 0);
+				extraDeposit.put(key, extraDeposit.get(key) - value);
+			} else {
+				cost.put(key, value - extraDeposit.get(key));
+				extraDeposit.put(key, 0);
+			}
+		});
 	}
 
 	/**
@@ -147,6 +173,18 @@ public class Warehouse {
 		return IntStream.range(0, 4).filter(i -> arr[i] <= i).count() == 4;
 	}
 
+	public boolean checkExtraDepositAddLegality(ArrayList<Resource> resToAdd) {
+		// copying current extra deposit
+		HashMap<Resource, Integer> changedExtraD = new HashMap<>(extraDeposit);
+		// adding the desired resources
+		resToAdd.forEach(r -> changedExtraD.put(r, changedExtraD.get(r) + 1));
+
+		return changedExtraD.values().stream().filter(v -> v > 0 && v < 3).count() == extraDepositResources.size()
+				// rule 1: qty of non-zero resources should be equal to currently activated extra deposit
+				& changedExtraD.entrySet().stream().filter(v -> v.getValue() == 0 || extraDepositResources.contains(v.getKey())).count() == changedExtraD.size();
+				// rule 2: every resource with a non-zero qty should have an activated extraWarehouse
+	}
+
 	/**
 	 * Checks if there are enough resources to withdraw from the warehouse.
 	 * @param cost a HashMap Resource-Integer, where the integer is the quantity to be removed. (the cost)
@@ -162,11 +200,42 @@ public class Warehouse {
 		 */
 		HashMap<Resource, Integer> remainingResources = new HashMap<>(locker);
 		deposit.forEach((k, v) -> remainingResources.merge(k, v, Integer::sum));
+		if(hasExtraDeposit()) { extraDeposit.forEach((k, v) -> remainingResources.merge(k, v, Integer::sum)); }
 		cost.forEach((k, v) -> remainingResources.merge(k, v, (a, b) -> a-b));
 
 		return remainingResources.values().stream().noneMatch(v -> v < 0);
 	}
 
+	// TODO Add documentation for ExtraDeposit methods
+	public void activateExtraDeposit(Resource r) {
+		if(!hasExtraDeposit()) {
+			extraDeposit = new HashMap<>();
+			extraDepositResources = new ArrayList<>();
+			activatedExtraDeposit = true;
+		}
+		extraDeposit.put(Resource.GOLD, 0);
+		extraDeposit.put(Resource.STONE, 0);
+		extraDeposit.put(Resource.SERVANT, 0);
+		extraDeposit.put(Resource.SHIELD, 0);
+		extraDepositResources.add(r);
+	}
 
+	public boolean hasExtraDeposit() {
+		return activatedExtraDeposit;
+	}
+
+
+	// required for tests
+	public Map<Resource, Integer> getExtraDeposit() {
+		return extraDeposit;
+	}
+
+	public ArrayList<Resource> getExtraDepositResources() {
+		return extraDepositResources;
+	}
+
+	public boolean isActivatedExtraDeposit() {
+		return activatedExtraDeposit;
+	}
 }
 
