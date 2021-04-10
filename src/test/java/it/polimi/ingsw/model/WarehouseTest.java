@@ -201,7 +201,6 @@ public class WarehouseTest {
         resToAddEWH.add(Resource.GOLD);
         resToAddEWH.add(Resource.SHIELD);
 
-        System.out.println(resToAddEWH);
 
         wh.storeInExtraDeposit(resToAddEWH);
 

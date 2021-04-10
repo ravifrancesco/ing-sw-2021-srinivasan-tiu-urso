@@ -18,6 +18,8 @@ public class Warehouse {
 
 	private Dashboard dashboard; // not used yet?
 
+	static final int MAX_EXTRA_DEPOSITS = 2;
+
 	private Map<Resource, Integer> extraDeposit;
 
 	private ArrayList<Resource> extraDepositResources;
@@ -179,7 +181,7 @@ public class Warehouse {
 		// adding the desired resources
 		resToAdd.forEach(r -> changedExtraD.put(r, changedExtraD.get(r) + 1));
 
-		return changedExtraD.values().stream().filter(v -> v > 0 && v < 3).count() == extraDepositResources.size()
+		return changedExtraD.values().stream().filter(v -> v > 0 && v <= MAX_EXTRA_DEPOSITS).count() == extraDepositResources.size()
 				// rule 1: qty of non-zero resources should be equal to currently activated extra deposit
 				& changedExtraD.entrySet().stream().filter(v -> v.getValue() == 0 || extraDepositResources.contains(v.getKey())).count() == changedExtraD.size();
 				// rule 2: every resource with a non-zero qty should have an activated extraWarehouse
