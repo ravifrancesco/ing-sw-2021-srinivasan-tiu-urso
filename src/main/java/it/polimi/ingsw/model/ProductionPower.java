@@ -10,29 +10,31 @@ import java.util.stream.Collectors;
 
 public class ProductionPower implements SpecialAbility {
 
-	Map<Resource, Integer> resourceRequired;
-	Map<Resource, Integer> resourceProduced;
-	int numberFaithPoints;
-	boolean selectableResource;
+	//TODO allow to have any resourceRequired (for the base production power of the dashboard)
+
+	private Map<Resource, Integer> resourceRequired;
+	private Map<Resource, Integer> resourceProduced;
+	private int numberFaithPoints;
+	private boolean selectableResource;
 
 	/**
-	 * The constructor for a Production Power object
-	 * @param resourceRequired represents the cost to activate the production power
-	 * @param resourceProduced represents the resources producted
-	 * @param numberFaithPoints represents the faith points given by the production power
-	 * @param selectableResource represents if the production power gives a selectable resource or not
+	 * The constructor for a Production Power object.
+	 * @param resourceRequired represents the cost to activate the production power.
+	 * @param resourceProduced represents the resources producted.
+	 * @param numberFaithPoints represents the faith points given by the production power.
+	 * @param selectableResource represents if the production power gives a selectable resource or not.
 	 */
 
 	public ProductionPower(Map<Resource, Integer> resourceRequired, Map<Resource, Integer> resourceProduced, int numberFaithPoints, boolean selectableResource) {
-		this.resourceRequired = resourceRequired;
-		this.resourceProduced = resourceProduced;
+		this.resourceRequired = resourceRequired.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+		this.resourceProduced = resourceProduced != null ? resourceProduced.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)) : null;
 		this.numberFaithPoints = numberFaithPoints;
 		this.selectableResource = selectableResource;
 	}
 
 	/**
-	 * It allows to move the faith marker and to store the resources given by the production power
-	 * @param p the player who activated the production power
+	 * It allows to move the faith marker and to store the resources given by the production power.
+	 * @param p the player who activated the production power.
 	 */
 
 	@Override
@@ -48,38 +50,38 @@ public class ProductionPower implements SpecialAbility {
 	}
 
 	/**
-	 * It allows to store one selectable resource
-	 * @param p the player who activated the production power
-	 * @param r the resource chosen by the player
+	 * It allows to store one selectable resource.
+	 * @param p the player who activated the production power.
+	 * @param r the resource chosen by the player.
 	 */
 
-	public void giveOneSelectableResource(Player p, Resource r){
+	public void giveOneSelectableResource(Player p, Resource r) {
 		if(selectableResource){
 			p.getDashboard().storeResourceInLocker(r, 1);
 		}
 	}
 
 	/**
-	 * Getter for resource required
-	 * @return the resource cost of the production power
+	 * Getter for resource required.
+	 * @return the resource cost of the production power.
 	 */
 
 	public Map<Resource, Integer> getResourceRequired() {
-		return resourceRequired;
+		return resourceRequired.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 	}
 
 	/**
-	 * Getter for resource produced
-	 * @return the resources produced by the production power
+	 * Getter for resource produced.
+	 * @return the resources produced by the production power.
 	 */
 
 	public Map<Resource, Integer> getResourceProduced() {
-		return resourceProduced;
+		return resourceProduced != null ? resourceProduced.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)) : null;
 	}
 
 	/**
-	 * Getter for number faith points
-	 * @return the number of faith points given by the production power
+	 * Getter for number faith points.
+	 * @return the number of faith points given by the production power.
 	 */
 
 	public int getNumberFaithPoints() {
@@ -87,8 +89,8 @@ public class ProductionPower implements SpecialAbility {
 	}
 
 	/**
-	 * Getter for selectable resources
-	 * @return if the production power gives a selectable resource or not
+	 * Getter for selectable resources.
+	 * @return if the production power gives a selectable resource or not.
 	 */
 
 	public boolean isSelectableResource() {
@@ -96,10 +98,10 @@ public class ProductionPower implements SpecialAbility {
 	}
 
 	/**
-	 * To string method of the class
-	 * @return a string representation of the object
+	 * To string method of the class.
+	 * @return a string representation of the object.
 	 */
-	public String toString(){
+	public String toString() {
 		String result="";
 
 		result+="SA=PP;";

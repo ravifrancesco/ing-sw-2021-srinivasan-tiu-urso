@@ -1,38 +1,35 @@
 package it.polimi.ingsw.model;
 
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Stack;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
- * The class represents the grid of Development Card onto the Dashboard
+ * The class represents the grid of Development Card onto the GameBoard.
  */
 
 public class DevelopmentCardGrid {
-	static final int gridRowLength = 3;
-	static final int gridColLength = 4;
+	static final int GRID_ROW_LENGTH = 3;
+	static final int GRID_COL_LENGTH = 4;
 	static final int DEVELOPMENT_CARD_NUM = 48;
 
 	private final List<Stack<DevelopmentCard>> grid;
 
 	/**
-	 * The constructor for a DevelopmentCardGrid object
-	 * It creates a grid of empty stacks
+	 * The constructor for a DevelopmentCardGrid object.
+	 * It creates a grid of empty stacks.
 	 */
 
-	DevelopmentCardGrid(){
-		grid = IntStream.range(0, gridRowLength*gridColLength)
+	DevelopmentCardGrid() {
+		grid = IntStream.range(0, GRID_ROW_LENGTH*GRID_COL_LENGTH)
 				.mapToObj(e->new Stack<DevelopmentCard>())
 				.collect(Collectors.toList());
 	}
 
 	/**
-	 * Init method for the class
-	 * It fills the grid with all Development Cards of the game
-	 * @param developmentCardDeck the deck of Development Cards
+	 * Init method for the class.
+	 * It fills the grid with all Development Cards of the game.
+	 * @param developmentCardDeck the deck of Development Cards.
 	 */
 
 	public void init(Deck developmentCardDeck) {
@@ -42,36 +39,36 @@ public class DevelopmentCardGrid {
 	}
 
 	/**
-	 * Private method to process the position in the list
-	 * @param row index of the interest row
-	 * @param column index of the interest column
-	 * @return the position in the list of the element
+	 * Private method to process the position in the list.
+	 * @param row index of the interest row.
+	 * @param column index of the interest column.
+	 * @return the position in the list of the element.
 	 */
 
 	private int getPosition(int row, int column){
-		return (row-1)*gridColLength+column;
+		return (row-1)*GRID_COL_LENGTH+(column-1);
 	}
 
 	/**
-	 * Private method to get the column based on banner color
-	 * @param color the color of the banner
-	 * @return the column index
+	 * Private method to get the column based on banner color.
+	 * @param color the color of the banner.
+	 * @return the column index.
 	 */
 
-	private int getColumn(BannerEnum color){
+	private int getColumn(BannerEnum color) {
 		return switch(color){
-			case GREEN -> 0;
-			case BLUE -> 1;
-			case YELLOW -> 2;
-			case PURPLE -> 3;
+			case GREEN -> 1;
+			case BLUE -> 2;
+			case YELLOW -> 3;
+			case PURPLE -> 4;
 		};
 	}
 
 	/**
-	 * Allows to buy a card
-	 * @param row index of the row where the card is placed
-	 * @param column index of the column where the card is placed
-	 * @return the bought card
+	 * Allows to buy a card.
+	 * @param row index of the row where the card is placed (starting from 1).
+	 * @param column index of the column where the card is placed (starting from 1).
+	 * @return the bought card.
 	 */
 
 	public DevelopmentCard buy(int row, int column) {
@@ -80,18 +77,26 @@ public class DevelopmentCardGrid {
 	}
 
 	/**
-	 * Allows to know if the development card selected is buyable
-	 * @param row index of the row where the card is placed
-	 * @param column index of the column where the card is placed
-	 * @param playerResources all the resources of the player
-	 * @return if the development card is buyable or not with the given resources
+	 * Allows to know if the development card selected is buyable.
+	 * @param row index of the row where the card is placed (starting from 1).
+	 * @param column index of the column where the card is placed (starting from 1).
+	 * @param playerResources all the resources of the player.
+	 * @return if the development card is buyable or not with the given resources.
 	 */
 
-	public boolean isBuyable(int row, int column, Map<Resource, Integer> playerResources) {
+	public boolean isBuyable(int row, int column, Map<Resource, Integer> playerResources, DevelopmentCardDiscount[] activeDiscounts) {
 		long contResources;
 		int position = getPosition(row, column);
 		DevelopmentCard developmentCard = grid.get(position).peek();
 		Map<Resource, Integer> resourceCost = developmentCard.getResourceCost();
+
+		List<DevelopmentCardDiscount> activeDiscountsList = Arrays.asList(Arrays.copyOfRange(activeDiscounts, 0, activeDiscounts.length));
+
+		resourceCost.entrySet().forEach(e-> activeDiscountsList.stream()
+				.filter(e2 -> e.getKey() == e2.getResource())
+				.forEach(e2 -> e.setValue(e.getValue()-e2.getQuantity()>=0 ? e.getValue()-e2.getQuantity() : 0)));
+
+		resourceCost.values().removeIf(v -> v==0);
 
 		contResources=resourceCost.entrySet().stream()
 				.filter(entry -> playerResources.get(entry.getKey())!=null && playerResources.get(entry.getKey())>=entry.getValue())

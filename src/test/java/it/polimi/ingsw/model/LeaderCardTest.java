@@ -2,7 +2,6 @@ package it.polimi.ingsw.model;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.jupiter.api.Assumptions;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,7 +10,7 @@ import java.util.Map;
 
 public class LeaderCardTest{
     @Test
-    public void toStringTestWithNullRP(){
+    public void toStringTestWithNullRP() {
         Map<Resource, Integer> resourceCost = new HashMap<>();
 
         resourceCost.put(Resource.SHIELD, 1);
@@ -31,12 +30,12 @@ public class LeaderCardTest{
         String s1 = "ID=1;VP=5;RC=SHIELD:1;BC=BLUE:2:1,GREEN:1:2;SA=PP;RR=GOLD:1;FP=1;SR=y;";
         String s2 = "ID=1;VP=5;RC=SHIELD:1;BC=GREEN:1:2,BLUE:2:1;SA=PP;RR=GOLD:1;FP=1;SR=y;";
 
-        Assumptions.assumeTrue(s1.equals(leaderCard.toString()) || s2.equals(leaderCard.toString()));
+        Assert.assertTrue(s1.equals(leaderCard.toString()) || s2.equals(leaderCard.toString()));
 
     }
 
     @Test
-    public void getterTest(){
+    public void getterTest() {
         Map<Resource, Integer> resourceCost = new HashMap<>();
 
         resourceCost.put(Resource.SHIELD, 1);
@@ -61,7 +60,7 @@ public class LeaderCardTest{
     }
 
     @Test
-    public void discardTest(){
+    public void discardTest() {
         Map<Resource, Integer> resourceCost = new HashMap<>();
 
         resourceCost.put(Resource.SHIELD, 1);
@@ -91,23 +90,21 @@ public class LeaderCardTest{
 
         leaderCard.discard(dashboard);
 
-        // TODO check if the card is in the discardDeck (when Deck and Gameboard will be implemented)
-
         Assert.assertEquals(dashboard.getFaithMarkerPosition(),1);
     }
 
     @Test
-    public void playTest(){
-        // TODO when GameBoard will be done
+    public void playTest() {
+        // TODO when Dashboard will be done
     }
 
     @Test
-    public void activateTest(){
-        // TODO when GameBoard will be done
+    public void activateTest() {
+        // TODO when the SpecialAbility classes will be done
     }
 
     @Test
-    public void trueIsPlayableTest(){
+    public void trueIsPlayableTest() {
         Map<Resource, Integer> resourceCost = new HashMap<>();
 
         resourceCost.put(Resource.SHIELD, 1);
@@ -139,7 +136,7 @@ public class LeaderCardTest{
     }
 
     @Test
-    public void cornerCaseIsPlayableTest(){
+    public void cornerCaseIsPlayableTest() {
         Map<Resource, Integer> resourceCost = new HashMap<>();
 
         resourceCost.put(Resource.SHIELD, 1);
@@ -170,7 +167,7 @@ public class LeaderCardTest{
     }
 
     @Test
-    public void cornerCase2IsPlayableTest(){
+    public void cornerCase2IsPlayableTest() {
         Map<Resource, Integer> resourceCost = new HashMap<>();
 
         resourceCost.put(Resource.SHIELD, 1);
@@ -201,7 +198,7 @@ public class LeaderCardTest{
     }
 
     @Test
-    public void lessResourcesIsPlayableTest(){
+    public void lessResourcesIsPlayableTest() {
         Map<Resource, Integer> resourceCost = new HashMap<>();
 
         resourceCost.put(Resource.SHIELD, 2);
@@ -233,7 +230,7 @@ public class LeaderCardTest{
     }
 
     @Test
-    public void lessBannersIsPlayableTest(){
+    public void lessBannersIsPlayableTest() {
         Map<Resource, Integer> resourceCost = new HashMap<>();
 
         resourceCost.put(Resource.SHIELD, 1);
