@@ -1,9 +1,6 @@
 package it.polimi.ingsw.model;
 
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Stack;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -87,11 +84,19 @@ public class DevelopmentCardGrid {
 	 * @return if the development card is buyable or not with the given resources.
 	 */
 
-	public boolean isBuyable(int row, int column, Map<Resource, Integer> playerResources) {
+	public boolean isBuyable(int row, int column, Map<Resource, Integer> playerResources, DevelopmentCardDiscount[] activeDiscounts) {
 		long contResources;
 		int position = getPosition(row, column);
 		DevelopmentCard developmentCard = grid.get(position).peek();
 		Map<Resource, Integer> resourceCost = developmentCard.getResourceCost();
+
+		List<DevelopmentCardDiscount> activeDiscountsList = Arrays.asList(Arrays.copyOfRange(activeDiscounts, 0, activeDiscounts.length));
+
+		resourceCost.entrySet().forEach(e-> activeDiscountsList.stream()
+				.filter(e2 -> e.getKey() == e2.getResource())
+				.forEach(e2 -> e.setValue(e.getValue()-e2.getQuantity()>=0 ? e.getValue()-e2.getQuantity() : 0)));
+
+		resourceCost.values().removeIf(v -> v==0);
 
 		contResources=resourceCost.entrySet().stream()
 				.filter(entry -> playerResources.get(entry.getKey())!=null && playerResources.get(entry.getKey())>=entry.getValue())

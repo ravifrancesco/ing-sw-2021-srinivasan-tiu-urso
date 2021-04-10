@@ -2,13 +2,24 @@ package it.polimi.ingsw.model;
 
 public class DevelopmentCardDiscount implements SpecialAbility {
 
+	private Resource resource;
+	private int quantity;
 
-	/**
-	 * @see it.polimi.ingsw.model.SpecialAbility#activate(it.polimi.ingsw.model.Player)
-	 */
-	@Override
-	public void activate(Player p) {
-
+	public DevelopmentCardDiscount(Resource resource, int quantity) {
+		this.resource = resource;
+		this.quantity = quantity;
 	}
 
+	@Override
+	public void activate(Player p) {
+		p.addActiveDiscount(this);
+	}
+
+	public Resource getResource() {
+		return resource;
+	}
+
+	public int getQuantity() {
+		return quantity;
+	}
 }

@@ -25,8 +25,7 @@ public class DevelopmentCardGridTest {
         playerResources.put(Resource.SHIELD, 1);
         playerResources.put(Resource.STONE, 4);
 
-        Assert.assertTrue(dvGrid.isBuyable(1, 1, playerResources));
-
+        Assert.assertTrue(dvGrid.isBuyable(1, 1, playerResources, new DevelopmentCardDiscount[0]));
     }
 
     @Test
@@ -43,7 +42,54 @@ public class DevelopmentCardGridTest {
         playerResources.put(Resource.SHIELD, 1);
         playerResources.put(Resource.STONE, 4);
 
-        Assert.assertFalse(dvGrid.isBuyable(1, 1, playerResources));
+        Assert.assertFalse(dvGrid.isBuyable(1, 1, playerResources, new DevelopmentCardDiscount[0]));
+    }
+
+    @Test
+    public void isBuyableTrueWithDiscountTest() {
+        Deck developmentCardDeck = new Deck();
+        developmentCardDeck.init(Arrays.asList(developmentCardDeckBuilder()));
+
+        DevelopmentCardGrid dvGrid = new DevelopmentCardGrid();
+        dvGrid.init(developmentCardDeck);
+
+        Map<Resource, Integer> playerResources = new HashMap<>();
+        playerResources.put(Resource.GOLD, 2);
+        playerResources.put(Resource.SERVANT, 3);
+
+        Player p = new Player("test", "1");
+
+        DevelopmentCardDiscount discount1 = new DevelopmentCardDiscount(Resource.SHIELD, 1);
+
+        discount1.activate(p);
+
+        DevelopmentCardDiscount[] activeDiscounts = p.getActiveDiscounts();
+
+        Assert.assertTrue(dvGrid.isBuyable(1, 1, playerResources, activeDiscounts));
+    }
+
+    @Test
+    public void isBuyableFalseWithDiscountTest() {
+        Deck developmentCardDeck = new Deck();
+        developmentCardDeck.init(Arrays.asList(developmentCardDeckBuilder()));
+
+        DevelopmentCardGrid dvGrid = new DevelopmentCardGrid();
+        dvGrid.init(developmentCardDeck);
+
+        Map<Resource, Integer> playerResources = new HashMap<>();
+        playerResources.put(Resource.GOLD, 2);
+
+        Player p = new Player("test", "1");
+
+        DevelopmentCardDiscount discount1 = new DevelopmentCardDiscount(Resource.SHIELD, 1);
+        DevelopmentCardDiscount discount2 = new DevelopmentCardDiscount(Resource.SERVANT, 1);
+
+        discount1.activate(p);
+        discount2.activate(p);
+
+        DevelopmentCardDiscount[] activeDiscounts = p.getActiveDiscounts();
+
+        Assert.assertFalse(dvGrid.isBuyable(1, 1, playerResources, activeDiscounts));
     }
 
     @Test
