@@ -2,7 +2,6 @@ package it.polimi.ingsw.model;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.jupiter.api.Assumptions;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,7 +11,7 @@ import java.util.Map;
 public class DevelopmentCardTest {
 
     @Test
-    public void toStringTest(){
+    public void toStringTest() {
         Banner banner = new Banner(BannerEnum.BLUE, 2);
 
         Map<Resource, Integer> resourceCost = new HashMap<>();
@@ -35,11 +34,11 @@ public class DevelopmentCardTest {
         String s1 = "ID=1;VP=5;BA=BLUE:2;RC=SERVANT:3;SA=PP;RR=STONE:1,GOLD:1;RP=SHIELD:1;FP=2;SR=n;";
         String s2 = "ID=1;VP=5;BA=BLUE:2;RC=SERVANT:3;SA=PP;RR=GOLD:1,STONE:1;RP=SHIELD:1;FP=2;SR=n;";
 
-        Assumptions.assumeTrue(s1.equals(c.toString()) || s2.equals(c.toString()));
+        Assert.assertTrue(s1.equals(c.toString()) || s2.equals(c.toString()));
     }
 
     @Test
-    public void getterTest(){
+    public void getterTest() {
         Banner banner = new Banner(BannerEnum.BLUE, 2);
 
         Map<Resource, Integer> resourceCost = new HashMap<>();
@@ -68,12 +67,12 @@ public class DevelopmentCardTest {
     }
 
     @Test
-    public void playTest(){
+    public void playTest() {
         // TODO after implementing Dashboard class
     }
 
     @Test
-    public void movingFaithMarkerTest(){
+    public void movingFaithMarkerTest() {
         Map<Resource, Integer> resourceCostPP = new HashMap<>();
         resourceCostPP.put(Resource.GOLD, 1);
         resourceCostPP.put(Resource.STONE, 1);
@@ -86,7 +85,7 @@ public class DevelopmentCardTest {
         Map<Resource, Integer> resourceCostDC = new HashMap<>();
         resourceCostDC.put(Resource.SERVANT, 3);
 
-        DevelopmentCard c = new DevelopmentCard(1, 5, null, p, null);
+        DevelopmentCard c = new DevelopmentCard(1, 5, resourceCostDC, p, null);
 
         int[] faithTrackVictoryPoints = {0,0,0,1,0,0,2,0,0,4,0,0,6,0,0,9,0,0,12,0,0,16,0,0,0};
 
@@ -114,22 +113,22 @@ public class DevelopmentCardTest {
     }
 
     @Test
-    public void storeResourcesTest(){
+    public void storeResourcesTest() {
         // TODO after implementing Warehouse class
     }
 
     @Test
-    public void storingAndFMTest(){
+    public void storingAndFMTest() {
         // TODO after implementing Warehouse class
     }
 
     @Test
-    public void giveSelectableResourceTest(){
+    public void giveSelectableResourceTest() {
         // TODO after implementing Dashboard and Warehouse classes
     }
 
     @Test
-    public void trueIsActivatableTest(){
+    public void trueIsActivatableTest() {
         Banner banner = new Banner(BannerEnum.BLUE, 2);
 
         Map<Resource, Integer> resourceCost = new HashMap<>();
@@ -154,11 +153,11 @@ public class DevelopmentCardTest {
         playerResources.put(Resource.SERVANT, 1);
         playerResources.put(Resource.STONE, 3);
 
-        Assumptions.assumeTrue(c.isActivatable(playerResources));
+        Assert.assertTrue(c.isActivatable(playerResources));
     }
 
     @Test
-    public void falseIsActivatableTest(){
+    public void falseIsActivatableTest() {
         Banner banner = new Banner(BannerEnum.BLUE, 2);
 
         Map<Resource, Integer> resourceCost = new HashMap<>();
@@ -183,6 +182,6 @@ public class DevelopmentCardTest {
         playerResources.put(Resource.SERVANT, 1);
         playerResources.put(Resource.SHIELD, 3);
 
-        Assumptions.assumeFalse(c.isActivatable(playerResources));
+        Assert.assertFalse(c.isActivatable(playerResources));
     }
 }

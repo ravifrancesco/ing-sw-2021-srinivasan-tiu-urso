@@ -21,25 +21,25 @@ public class DevelopmentCard implements Card {
 
 	/**
 	 * The constructor for a Development Card object.
-	 * @param id represents the unique id of the card
-	 * @param victoryPoints represents the victory points given by the card
-	 * @param resourceCost represents the resource cost to buy the card
-	 * @param productionPower represents the production power of the card
-	 * @param banner represents the banner of the card
+	 * @param id represents the unique id of the card.
+	 * @param victoryPoints represents the victory points given by the card.
+	 * @param resourceCost represents the resource cost to buy the card.
+	 * @param productionPower represents the production power of the card.
+	 * @param banner represents the banner of the card.
 	 */
 
 	public DevelopmentCard(int id, int victoryPoints, Map<Resource, Integer> resourceCost, ProductionPower productionPower, Banner banner) {
 		this.id=id;
 		this.victoryPoints = victoryPoints;
-		this.resourceCost = resourceCost;
+		this.resourceCost = resourceCost.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 		this.productionPower = productionPower;
 		this.banner=banner;
 	}
 
 	/**
-	 * Allows to place the card in the player dashboard
-	 * @param d represents the dashboard of the player
-	 * @param position represents the position where to place the card
+	 * Allows to place the card in the player dashboard.
+	 * @param d represents the dashboard of the player.
+	 * @param position represents the position where to place the card.
 	 */
 
 	@Override
@@ -48,8 +48,8 @@ public class DevelopmentCard implements Card {
 	}
 
 	/**
-	 * Allows to activate the production power
-	 * @param p represents the player
+	 * Allows to activate the production power.
+	 * @param p represents the player.
 	 */
 
 	@Override
@@ -58,8 +58,8 @@ public class DevelopmentCard implements Card {
 	}
 
 	/**
-	 * Getter for the id
-	 * @return the id of the card
+	 * Getter for the id.
+	 * @return the id of the card.
 	 */
 
 	public int getId() {
@@ -67,8 +67,8 @@ public class DevelopmentCard implements Card {
 	}
 
 	/**
-	 * Getter for victory points
-	 * @return the victory points given by the card
+	 * Getter for victory points.
+	 * @return the victory points given by the card.
 	 */
 
 	public int getVictoryPoints() {
@@ -76,17 +76,17 @@ public class DevelopmentCard implements Card {
 	}
 
 	/**
-	 * Getter for resourceCost
-	 * @return the resource cost of the card
+	 * Getter for resourceCost.
+	 * @return the resource cost of the card.
 	 */
 
 	public Map<Resource, Integer> getResourceCost() {
-		return resourceCost;
+		return resourceCost.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 	}
 
 	/**
-	 * Getter for productionPower
-	 * @return the production power of the card
+	 * Getter for productionPower.
+	 * @return the production power of the card.
 	 */
 
 	public ProductionPower getProductionPower() {
@@ -94,8 +94,8 @@ public class DevelopmentCard implements Card {
 	}
 
 	/**
-	 * Getter for banner
-	 * @return the banner of the card
+	 * Getter for banner.
+	 * @return the banner of the card.
 	 */
 
 	public Banner getBanner() {
@@ -103,12 +103,12 @@ public class DevelopmentCard implements Card {
 	}
 
 	/**
-	 * To string method of the class
-	 * @return a string representation of the object
+	 * To string method of the class.
+	 * @return a string representation of the object.
 	 */
 
 	@Override
-	public String toString(){
+	public String toString() {
 		String result="";
 
 		result+="ID="+id+";VP="+victoryPoints+";" + banner.toString();
@@ -123,9 +123,9 @@ public class DevelopmentCard implements Card {
 	}
 
 	/**
-	 * Allows to know if this card is activatable
-	 * @param playerResources all the resources of the player
-	 * @return if this card is activatable or not with the given resources
+	 * Allows to know if this card is activatable.
+	 * @param playerResources all the resources of the player.
+	 * @return if this card is activatable or not with the given resources.
 	 */
 
 	public boolean isActivatable(Map<Resource, Integer> playerResources) {
@@ -138,5 +138,21 @@ public class DevelopmentCard implements Card {
 				.count();
 
 		return contResources>=resourceRequired.size();
+	}
+
+	/**
+	 * Equals method for the class.
+	 * @param o the other development card to compare.
+	 * @return true if the two cards have the same id.
+	 */
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		DevelopmentCard that = (DevelopmentCard) o;
+
+		return id == that.id;
 	}
 }
