@@ -68,6 +68,7 @@ public class GameSettings {
     }
 
 
+
     /**
      * Saves the current settings to a .properties file described by a path.
      *

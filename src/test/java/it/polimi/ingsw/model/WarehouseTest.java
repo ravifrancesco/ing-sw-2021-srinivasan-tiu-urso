@@ -126,6 +126,7 @@ public class WarehouseTest {
         Assert.assertEquals(wh.getLocker().get(Resource.STONE) == null ? 0 : wh.getLocker().get(Resource.STONE), 1);
         Assert.assertEquals(wh.getLocker().get(Resource.SHIELD) == null ? 0 : wh.getLocker().get(Resource.SHIELD), 2 );
         Assert.assertEquals(wh.getLocker().get(Resource.GOLD) == null ? 0 : wh.getLocker().get(Resource.GOLD), 3);
+
         resToRemove.clear();
 
         // Test 2: remove 2 shield, 1 stone, locker remains the same and deposit is  now completely emptied
@@ -220,6 +221,7 @@ public class WarehouseTest {
         Assert.assertEquals(sumDeposit, 0 );
         int sumLocker = wh.getLocker().values().stream().reduce(0, Integer::sum);
         Assert.assertEquals(sumLocker, 0 );
+
 
 
 
