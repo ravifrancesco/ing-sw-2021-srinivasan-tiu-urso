@@ -18,7 +18,7 @@ public class Warehouse {
 
 	private Dashboard dashboard; // not used yet?
 
-	static final int MAX_EXTRA_DEPOSITS = 2;
+	static final int MAX_EXTRA_DEPOSIT_SLOTS = 2;
 
 	private Map<Resource, Integer> extraDeposit;
 
@@ -58,7 +58,19 @@ public class Warehouse {
 		locker.put(Resource.SHIELD, 0);
 		locker.put(Resource.GOLD, 0);
 		locker.put(Resource.SERVANT, 0);
+	}
 
+	/**
+	 * Clears everything related to extra deposits. (for game reset purposes)
+	 */
+	public void clearExtraDeposits() {
+		activatedExtraDeposit = false;
+		extraDeposit.clear();
+		extraDepositResources.clear();
+		extraDeposit.put(Resource.GOLD, 0);
+		extraDeposit.put(Resource.STONE, 0);
+		extraDeposit.put(Resource.SERVANT, 0);
+		extraDeposit.put(Resource.SHIELD, 0);
 	}
 
 	/**
@@ -78,6 +90,10 @@ public class Warehouse {
 		resToAdd.forEach(r -> locker.put(r, locker.get(r)+1));
 	}
 
+	/**
+	 * Stores resources in the extra deposit for that resource. Checks on its legality are done with a separate method.
+	 * @param resToAdd ArrayList with the resources to add.
+	 */
 	public void storeInExtraDeposit(ArrayList<Resource> resToAdd) { resToAdd.forEach(r -> extraDeposit.put(r, extraDeposit.get(r) + 1));}
 
 	/**
@@ -106,6 +122,12 @@ public class Warehouse {
 		removeFromLocker(cost);
 	}
 
+	/**
+	 * Used for warehouse removal operations: checks to see if any of the resources to be removed
+	 * are part of an extraDeposit. If so, they will be removed from the extra deposit and the cost HashMap
+	 * will be updated with the remaining (if any) needed quantity.
+	 * @param cost a HashMap Resource-Integer representing the resources to be removed from the warehouse.
+	 */
 	public void attemptRemovalFromExtraDeposit(Map<Resource, Integer> cost) {
 		// checks too see what can be removed from the extra warehouses from the cost
 		cost.forEach((key, value) -> {
@@ -175,16 +197,21 @@ public class Warehouse {
 		return IntStream.range(0, 4).filter(i -> arr[i] <= i).count() == 4;
 	}
 
+	/**
+	 * Check to see if an add operation on an extraDeposit is legal. The check rules are:
+	 * 1. Resources are stored only if an extra deposit of that kind has been activated.
+	 * 2. The stored quantity for each extra warehouse is not over the limit (MAX_EXTRA_DEPOSIT_SLOTS)
+	 * @param resToAdd the resources to be added.
+	 * @return true if the add is legal, false if it is not.
+	 */
 	public boolean checkExtraDepositAddLegality(ArrayList<Resource> resToAdd) {
 		// copying current extra deposit
 		HashMap<Resource, Integer> changedExtraD = new HashMap<>(extraDeposit);
 		// adding the desired resources
 		resToAdd.forEach(r -> changedExtraD.put(r, changedExtraD.get(r) + 1));
 
-		return changedExtraD.values().stream().filter(v -> v > 0 && v <= MAX_EXTRA_DEPOSITS).count() == extraDepositResources.size()
-				// rule 1: qty of non-zero resources should be equal to currently activated extra deposit
+		return changedExtraD.values().stream().filter(v -> v > 0 && v <= MAX_EXTRA_DEPOSIT_SLOTS).count() == extraDepositResources.size()
 				& changedExtraD.entrySet().stream().filter(v -> v.getValue() == 0 || extraDepositResources.contains(v.getKey())).count() == changedExtraD.size();
-				// rule 2: every resource with a non-zero qty should have an activated extraWarehouse
 	}
 
 	/**
@@ -208,7 +235,10 @@ public class Warehouse {
 		return remainingResources.values().stream().noneMatch(v -> v < 0);
 	}
 
-	// TODO Add documentation for ExtraDeposit methods
+	/**
+	 * Activates an extra deposit, allowing to store MAX_EXTRA_DEPOSIT_SLOTS extra units of a single resource type.
+	 * @param r the resource type of which to store MAX_EXTRA_DEPOSIT_SLOTS extra units.
+	 */
 	public void activateExtraDeposit(Resource r) {
 		if(!hasExtraDeposit()) {
 			extraDeposit = new HashMap<>();
@@ -226,8 +256,8 @@ public class Warehouse {
 		return activatedExtraDeposit;
 	}
 
-
 	// required for tests
+
 	public Map<Resource, Integer> getExtraDeposit() {
 		return extraDeposit;
 	}
