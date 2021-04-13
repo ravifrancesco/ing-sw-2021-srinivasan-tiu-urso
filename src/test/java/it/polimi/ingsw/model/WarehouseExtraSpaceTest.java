@@ -72,7 +72,6 @@ public class WarehouseExtraSpaceTest  {
         // additional shield extra storage is created
         Assert.assertEquals(whDoubleCheck.getExtraDepositResources().get(1), Resource.SHIELD);
 
-        System.out.println(whDoubleCheck.getExtraDepositResources());
 
 
     }

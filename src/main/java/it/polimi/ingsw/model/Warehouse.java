@@ -16,8 +16,6 @@ public class Warehouse {
 		return locker;
 	}
 
-	private Dashboard dashboard; // not used yet?
-
 	static final int MAX_EXTRA_DEPOSIT_SLOTS = 2;
 
 	private Map<Resource, Integer> extraDeposit;
@@ -210,7 +208,7 @@ public class Warehouse {
 		// adding the desired resources
 		resToAdd.forEach(r -> changedExtraD.put(r, changedExtraD.get(r) + 1));
 
-		return changedExtraD.values().stream().filter(v -> v > 0 && v <= MAX_EXTRA_DEPOSIT_SLOTS).count() == extraDepositResources.size()
+		return changedExtraD.values().stream().filter(v -> v > 0 & v <= MAX_EXTRA_DEPOSIT_SLOTS).count() == extraDepositResources.size()
 				& changedExtraD.entrySet().stream().filter(v -> v.getValue() == 0 || extraDepositResources.contains(v.getKey())).count() == changedExtraD.size();
 	}
 
