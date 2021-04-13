@@ -9,5 +9,4 @@ public enum Resource {
 	STONE,
 
 	GOLD
-
 }

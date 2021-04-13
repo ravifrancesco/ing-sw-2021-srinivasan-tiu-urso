@@ -38,7 +38,6 @@ public class MarketTest {
         Assert.assertEquals(Long.valueOf(4), dest.get("class it.polimi.ingsw.model.WhiteMarble"));
 
 
-
     }
 
     @Test
