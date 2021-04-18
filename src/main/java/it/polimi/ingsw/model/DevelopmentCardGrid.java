@@ -13,18 +13,7 @@ public class DevelopmentCardGrid {
 	static final int GRID_COL_LENGTH = 4;
 	static final int DEVELOPMENT_CARD_NUM = 48;
 
-	private final List<Stack<DevelopmentCard>> grid;
-
-	/**
-	 * The constructor for a DevelopmentCardGrid object.
-	 * It creates a grid of empty stacks.
-	 */
-
-	DevelopmentCardGrid() {
-		grid = IntStream.range(0, GRID_ROW_LENGTH*GRID_COL_LENGTH)
-				.mapToObj(e->new Stack<DevelopmentCard>())
-				.collect(Collectors.toList());
-	}
+	private List<Stack<DevelopmentCard>> grid;
 
 	/**
 	 * Init method for the class.
@@ -33,6 +22,14 @@ public class DevelopmentCardGrid {
 	 */
 
 	public void init(Deck developmentCardDeck) {
+
+		this.grid = IntStream.range(0, GRID_ROW_LENGTH*GRID_COL_LENGTH)
+				.mapToObj(e->new Stack<DevelopmentCard>())
+				.collect(Collectors.toList());
+
+	}
+
+	public void fillCardGrid(Deck developmentCardDeck) {
 		IntStream.range(0, DEVELOPMENT_CARD_NUM)
 				.mapToObj(i -> (DevelopmentCard) developmentCardDeck.getCard())
 				.forEach(c -> grid.get(getPosition(c.getBanner().getLevel(), getColumn(c.getBanner().getColor()))).push(c));

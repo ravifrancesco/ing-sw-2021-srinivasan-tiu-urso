@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
 
+import java.util.Map;
+
 /**
  * The class represent a personal Dashboard of the game.
  * It has a Warehouse, a FaithTrack, the Played Leader Cards and
@@ -94,5 +96,17 @@ public class Dashboard {
 		warehouse = wh;
 	}
 
+	public Map<Resource, Integer> getResources() {
+		// TODO
+		return null;
+	}
 
+	public Map<Banner, Integer> getBanners() {
+		// TODO
+		return null;
+	}
+
+	public LeaderCard getLeaderCard(int c) {
+		return playedLeaderCards[c];
+	}
 }

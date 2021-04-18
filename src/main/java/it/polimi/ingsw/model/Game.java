@@ -1,19 +1,36 @@
 package it.polimi.ingsw.model;
 
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 
 public class Game {
 
 	private String gameId;
 
-	private Player currentPlayer;
-
-	private Collection<Player> players;
+	private LinkedHashMap<String, Player> players;
+	private Iterator<String> playerOrder;
 
 	private GameBoard gameBoard;
 
-	public void init() {
+	private GameSettings gameSettings;
 
+	private TurnPhase turnPhase;
+
+	public Game(String gameId) {
+		this.gameId = gameId;
+		this.players = new LinkedHashMap<>();
+	}
+
+	public void loadGameSettings(GameSettings gameSettings) {
+		this.gameSettings = gameSettings;
+	}
+
+	public void init() {
+		gameBoard.init(gameSettings);
+		players.values().forEach(p -> p.init(gameSettings));
+		this.playerOrder = players.keySet().iterator();
 	}
 
 	public boolean checkEnd() {
@@ -28,4 +45,42 @@ public class Game {
 		return false;
 	}
 
+	public void addPlayer(String nickname, Player p) {
+		players.put(nickname, p);
+	}
+
+	public HashMap<String, Player> getPlayers() {
+		return players;
+	}
+
+	public String getGameId() {
+		return gameId;
+	}
+
+	public GameSettings getGameSettings() {
+		return gameSettings;
+	}
+
+	public GameBoard getGameBoard() {
+		return gameBoard;
+	}
+
+	public String getNextPlayer() {
+		if (!playerOrder.hasNext()) {
+			this.playerOrder = players.keySet().iterator();
+		}
+		return playerOrder.next();
+	}
+
+	public void startUniquePhase(TurnPhase turnPhase) {
+		this.turnPhase = turnPhase;
+	}
+
+	public TurnPhase getTurnPhase() {
+		return turnPhase;
+	}
+
+	public void resetTurnPhase() {
+		this.turnPhase = TurnPhase.COMMON;
+	}
 }

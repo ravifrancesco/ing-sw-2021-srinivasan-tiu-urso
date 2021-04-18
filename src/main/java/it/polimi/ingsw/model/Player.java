@@ -8,11 +8,9 @@ public class Player {
 
 	static final int NUM_WHITE_MARBLE_RESOURCE = 2;
 
-	private final String nickname;
-
-	private final String id;
-
 	private Dashboard dashboard;
+
+	private Hand hand;
 
 	private DevelopmentCardDiscount[] activeDiscounts;
 
@@ -24,9 +22,7 @@ public class Player {
 
 	// WMR = white marble resource
 
-	public Player(String nickname, String id) {
-		this.nickname = nickname;
-		this.id = id;
+	public Player() {
 		this.activeDiscounts = new DevelopmentCardDiscount[NUM_PLAYABLE_LEADER_CARDS];
 		this.activatedWMR = new WhiteMarbleResource[NUM_WHITE_MARBLE_RESOURCE];
 		this.numActiveDiscounts = 0;
@@ -34,7 +30,19 @@ public class Player {
 
 	}
 
-	public void init() {
+	public Hand getHand() {
+		return hand;
+	}
+
+	public void init(GameSettings gameSettings) {
+	}
+
+	public void playLeaderCard(int card) {
+		// TODO check auto activation
+	}
+
+	public void discardLeaderCard(int card, GameBoard gameBoard) {
+		// TODO
 	}
 
 	public Dashboard getDashboard() {
@@ -76,4 +84,10 @@ public class Player {
 	public int getNumActiveWMR() {
 		return numActiveWMR;
 	}
+
+	public LeaderCard getFromHand(int c) {
+		// TODO
+		return null;
+	}
+
 }
