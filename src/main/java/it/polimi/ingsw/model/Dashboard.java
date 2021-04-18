@@ -15,6 +15,7 @@ public class Dashboard {
 	private final FaithTrack faithTrack;
 	private final LeaderCard[] playedLeaderCards;
 	private Player player;
+	private ProductionPower dashBoardProductionPower;
 
 	/**
 	 * The constructor for a Dashboard object.
@@ -99,6 +100,19 @@ public class Dashboard {
 	public Map<Resource, Integer> getResources() {
 		// TODO
 		return null;
+	}
+  
+	public Map<Banner, Integer> getBanners() {
+		// TODO
+		return null;
+	}
+
+	public LeaderCard getLeaderCard(int c) {
+		return playedLeaderCards[c];
+	}
+
+	public ProductionPower getDashBoardProductionPower() {
+		return dashBoardProductionPower;
 	}
 
 	public Map<Banner, Integer> getBanners() {

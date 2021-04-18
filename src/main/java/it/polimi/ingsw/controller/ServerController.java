@@ -3,14 +3,14 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.controller.exceptions.*;
 import it.polimi.ingsw.model.*;
 
-import java.util.ArrayList;
 import java.util.Map;
 
 public class ServerController {
 
-    private Game game;
 
-    private int numberOfPlayers;
+    private final Game game;
+
+    private final int numberOfPlayers;
     private String currentPlayer;
 
     public ServerController(String gameId, int numberOfPlayers) {
@@ -63,7 +63,7 @@ public class ServerController {
 
     }
 
-    public void activateLeaderCardProduction(String nickname, int cardToActivate) throws WrongTurnException, CardNotActivatableException {
+    public void activateLeaderCardProduction(String nickname, int cardToActivate) throws WrongTurnException, PowerNotActivatableException {
 
         if (!currentPlayer.equals(nickname)) {
             throw new WrongTurnException("Not " + nickname + " turn");
@@ -75,20 +75,20 @@ public class ServerController {
         Dashboard dashboard = player.getDashboard();
 
         if (cardToActivate < 0 || cardToActivate > 1 || dashboard.getLeaderCard(cardToActivate) == null) {
-            throw new CardNotActivatableException("Invalid index");
+            throw new PowerNotActivatableException("Invalid index");
         }
 
         SpecialAbility specialAbility = dashboard.getLeaderCard(cardToActivate).getSpecialAbility();
 
         if (!specialAbility.getType().equals(SpecialAbilityType.PRODUCTION_POWER)) {
-            throw new CardNotActivatableException("Card doesn't have a production power special ability");
+            throw new PowerNotActivatableException("Card doesn't have a production power special ability");
         }
 
         ProductionPower productionPower = (ProductionPower) specialAbility;
         Map<Resource, Integer> playerResources = dashboard.getResources();
 
         if (!productionPower.isActivatable(playerResources)) {
-            throw new CardNotActivatableException("Not enough resources");
+            throw new PowerNotActivatableException("Not enough resources");
         }
 
         if (game.getTurnPhase().equals(TurnPhase.COMMON)) {
@@ -115,7 +115,30 @@ public class ServerController {
         player.discardLeaderCard(cardToDiscard, gameBoard);
 
     }
+  
+    public void activateDashboardProduction(String nickname) throws WrongTurnException, PowerNotActivatableException {
 
+        if (!currentPlayer.equals(nickname)) {
+            throw new WrongTurnException("Not " + nickname + " turn");
+        } else if (!game.getTurnPhase().equals(TurnPhase.COMMON) || !game.getTurnPhase().equals(TurnPhase.PRODUCTION)) {
+            throw new WrongTurnPhaseException("Turn phase is " + game.getTurnPhase().name());
+        }
 
+        Player player = game.getPlayers().get(nickname);
+        Dashboard dashboard = player.getDashboard();
+        ProductionPower productionPower = dashboard.getDashBoardProductionPower();
+        Map<Resource, Integer> playerResources = dashboard.getResources();
+
+        if (!productionPower.isActivatable(playerResources)) {
+            throw new PowerNotActivatableException("Not enough resources");
+        }
+
+        if (game.getTurnPhase().equals(TurnPhase.COMMON)) {
+            game.startUniquePhase(TurnPhase.PRODUCTION);
+        }
+
+        productionPower.activate(player);
+
+    }
 
 }
