@@ -169,4 +169,6 @@ public class LeaderCard implements Card {
 
 		return id == that.id;
 	}
+
+
 }

@@ -123,24 +123,6 @@ public class DevelopmentCard implements Card {
 	}
 
 	/**
-	 * Allows to know if this card is activatable.
-	 * @param playerResources all the resources of the player.
-	 * @return if this card is activatable or not with the given resources.
-	 */
-
-	public boolean isActivatable(Map<Resource, Integer> playerResources) {
-
-		Map<Resource, Integer> resourceRequired = productionPower.getResourceRequired();
-		long contResources;
-
-		contResources=resourceRequired.entrySet().stream()
-				.filter(entry -> playerResources.get(entry.getKey())!=null && playerResources.get(entry.getKey())>=entry.getValue())
-				.count();
-
-		return contResources>=resourceRequired.size();
-	}
-
-	/**
 	 * Equals method for the class.
 	 * @param o the other development card to compare.
 	 * @return true if the two cards have the same id.

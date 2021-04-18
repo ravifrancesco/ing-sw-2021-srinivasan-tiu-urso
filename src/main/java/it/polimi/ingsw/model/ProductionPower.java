@@ -44,7 +44,7 @@ public class ProductionPower implements SpecialAbility {
 				p.getDashboard().moveFaithMarker(numberFaithPoints);
 			}
 			if (resourceProduced != null && !resourceProduced.isEmpty()) {
-				resourceProduced.forEach((k, v) -> p.getDashboard().storeResourceInLocker(k, v));
+				resourceProduced.forEach((k, v) -> p.getDashboard().storeResourceInLocker(k, v)); //TODO store separatly
 			}
 		}
 	}
@@ -95,6 +95,23 @@ public class ProductionPower implements SpecialAbility {
 
 	public boolean isSelectableResource() {
 		return selectableResource;
+	}
+
+
+	/**
+	 * Allows to know if this card is activatable.
+	 * @param playerResources all the resources of the player.
+	 * @return if this card is activatable or not with the given resources.
+	 */
+
+	public boolean isActivatable(Map<Resource, Integer> playerResources) {
+		long contResources;
+
+		contResources=resourceRequired.entrySet().stream()
+				.filter(entry -> playerResources.get(entry.getKey())!=null && playerResources.get(entry.getKey())>=entry.getValue())
+				.count();
+
+		return contResources>=resourceRequired.size();
 	}
 
 	/**
