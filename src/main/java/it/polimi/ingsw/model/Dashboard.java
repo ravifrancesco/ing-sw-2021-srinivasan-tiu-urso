@@ -101,7 +101,7 @@ public class Dashboard {
 		// TODO
 		return null;
 	}
-
+  
 	public Map<Banner, Integer> getBanners() {
 		// TODO
 		return null;
@@ -115,4 +115,12 @@ public class Dashboard {
 		return dashBoardProductionPower;
 	}
 
+	public Map<Banner, Integer> getBanners() {
+		// TODO
+		return null;
+	}
+
+	public LeaderCard getLeaderCard(int c) {
+		return playedLeaderCards[c];
+	}
 }

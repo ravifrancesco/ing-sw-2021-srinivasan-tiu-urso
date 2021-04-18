@@ -7,6 +7,7 @@ import java.util.Map;
 
 public class ServerController {
 
+
     private final Game game;
 
     private final int numberOfPlayers;
@@ -114,7 +115,7 @@ public class ServerController {
         player.discardLeaderCard(cardToDiscard, gameBoard);
 
     }
-
+  
     public void activateDashboardProduction(String nickname) throws WrongTurnException, PowerNotActivatableException {
 
         if (!currentPlayer.equals(nickname)) {
@@ -139,6 +140,5 @@ public class ServerController {
         productionPower.activate(player);
 
     }
-
 
 }
