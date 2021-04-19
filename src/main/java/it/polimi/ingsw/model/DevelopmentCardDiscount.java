@@ -48,4 +48,9 @@ public class DevelopmentCardDiscount implements SpecialAbility {
 	public int getQuantity() {
 		return quantity;
 	}
+
+	//TODO doc
+	public SpecialAbilityType getType() {
+		return SpecialAbilityType.DEVELOPMENT_CARD_DISCOUNT;
+	}
 }

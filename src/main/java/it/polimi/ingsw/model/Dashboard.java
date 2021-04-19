@@ -16,6 +16,7 @@ public class Dashboard {
 	private final LeaderCard[] playedLeaderCards;
 	private Player player;
 	private ProductionPower dashBoardProductionPower;
+	//TODO add three stacks of development card
 
 	/**
 	 * The constructor for a Dashboard object.
@@ -115,12 +116,8 @@ public class Dashboard {
 		return dashBoardProductionPower;
 	}
 
-	public Map<Banner, Integer> getBanners() {
-		// TODO
+	public DevelopmentCard getDevelopmentCard(int c) {
+		//TODO
 		return null;
-	}
-
-	public LeaderCard getLeaderCard(int c) {
-		return playedLeaderCards[c];
 	}
 }
