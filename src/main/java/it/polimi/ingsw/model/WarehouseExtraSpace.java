@@ -16,4 +16,8 @@ public class WarehouseExtraSpace implements SpecialAbility {
 		p.getDashboard().getWarehouse().activateExtraDeposit(storedResource);
 	}
 
+	//TODO doc
+	public SpecialAbilityType getType() {
+		return SpecialAbilityType.WAREHOUSE_EXTRA_SPACE;
+	}
 }
