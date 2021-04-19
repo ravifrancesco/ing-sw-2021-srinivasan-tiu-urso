@@ -1,5 +1,8 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.cards.Card;
+import it.polimi.ingsw.model.cards.LeaderCard;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 

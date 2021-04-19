@@ -1,5 +1,8 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.cards.LeaderCard;
+import it.polimi.ingsw.model.specialAbilities.ProductionPower;
+import it.polimi.ingsw.model.specialAbilities.SpecialAbility;
 import org.junit.Assert;
 import org.junit.Test;
 

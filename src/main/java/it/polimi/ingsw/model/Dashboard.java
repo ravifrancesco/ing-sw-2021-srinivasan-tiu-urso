@@ -1,5 +1,10 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.common.Pair;
+import it.polimi.ingsw.model.cards.DevelopmentCard;
+import it.polimi.ingsw.model.cards.LeaderCard;
+import it.polimi.ingsw.model.specialAbilities.ProductionPower;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
