@@ -24,4 +24,9 @@ public class WhiteMarbleResource implements SpecialAbility {
 	public Resource getRes() {
 		return res;
 	}
+
+	//TODO doc
+	public SpecialAbilityType getType() {
+		return SpecialAbilityType.WHITE_MARBLE_RESOURCES;
+	}
 }

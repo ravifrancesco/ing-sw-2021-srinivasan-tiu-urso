@@ -3,6 +3,7 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.controller.exceptions.*;
 import it.polimi.ingsw.model.*;
 
+import java.util.EmptyStackException;
 import java.util.Map;
 
 public class ServerController {
@@ -117,7 +118,7 @@ public class ServerController {
         player.discardLeaderCard(cardToDiscard, gameBoard);
 
     }
-  
+
     public void activateDashboardProduction(String nickname) throws WrongTurnException, PowerNotActivatableException {
 
         if (!currentPlayer.equals(nickname)) {
@@ -142,13 +143,14 @@ public class ServerController {
         productionPower.activate(player);
 
     }
-
-    public void getFromMarket(String nickname, int move) throws WrongTurnException, WrongMoveException {
+  
+  public void getFromMarket(String nickname, int move) throws WrongTurnException, WrongMoveException {
         if (!currentPlayer.equals(nickname)) {
             throw new WrongTurnException("Not " + nickname + " turn");
         } else if (!game.getTurnPhase().equals(TurnPhase.COMMON)) {
             throw new WrongTurnPhaseException("Turn phase is " + game.getTurnPhase().name());
         }
+    
         if(game.getTurnPhase().equals(TurnPhase.COMMON)) {
             game.startUniquePhase(TurnPhase.MARKET);
         }
@@ -165,19 +167,84 @@ public class ServerController {
 
         Dashboard.addResources(market.getResources(move, player));
     }
+ 
+  public void buyDevelopmentCard(String nickname, int row, int column) throws WrongTurnException, CardNotBuyableException {
+        if (row < 1 || row > 3 || column < 1 || column > 4) {
+            throw new CardNotBuyableException("Invalid index");
+        }
+
+        Player player = game.getPlayers().get(nickname);
+        Dashboard dashboard = player.getDashboard();
+        GameBoard gameBoard = game.getGameBoard();
+        DevelopmentCardGrid developmentCardGrid = gameBoard.getDevelopmentCardGrid();
+
+        Map<Resource, Integer> playerResources = dashboard.getResources();
+        DevelopmentCardDiscount[] activeDiscounts = player.getActiveDiscounts();
+        DevelopmentCard developmentCard;
+
+        try {
+            if (!developmentCardGrid.isBuyable(row, column, playerResources, activeDiscounts)) {
+                throw new CardNotBuyableException("Not enough resources");
+            }
+        } catch (EmptyStackException e) {
+            throw new CardNotBuyableException("Card doesn't exists");
+        }
+
+        try {
+            developmentCard = developmentCardGrid.buy(row, column);
+        } catch (EmptyStackException e) {
+            throw new CardNotBuyableException("Card doesn't exists");
+        }
+
+        game.startUniquePhase(TurnPhase.BUY);
+
+        // TODO, when we should ask the position to the player?
+        int position = 0;
+        dashboard.insertDevelopmentCard(developmentCard, position);
+    }
 
     public void endTurn(String nickname) throws WrongTurnException {
         if(!currentPlayer.equals(nickname)) {
             throw new WrongTurnException("Not " + nickname + " turn");
         }
         // no turn phase check needed: player may stupidly pass the turn whilst having done nothing.
+      
+       Player player = game.getPlayers().get(nickname);
+       Dashboard dashboard = player.getDashboard();
+      
+       dashboard.discardResources();
 
-        Player player = game.getPlayers().get(nickname);
-        Dashboard dashboard = player.getDashboard();
-
-        dashboard.discardResources();
-
-        currentPlayer = game.getNextPlayer();
+       currentPlayer = game.getNextPlayer();
     }
 
+
+    public void activateDevelopmentCardProductionPower(String nickname, int cardToActivate) throws WrongTurnException, PowerNotActivatableException {
+
+        //TODO card can't be activated two times in one turn
+
+        if (!currentPlayer.equals(nickname)) {
+            throw new WrongTurnException("Not " + nickname + " turn");
+        } else if (!game.getTurnPhase().equals(TurnPhase.COMMON) || !game.getTurnPhase().equals(TurnPhase.PRODUCTION)) {
+            throw new WrongTurnPhaseException("Turn phase is " + game.getTurnPhase().name());
+        }
+      
+        if (cardToActivate < 0 || cardToActivate > 2 || dashboard.getDevelopmentCard(cardToActivate) == null) {
+            throw new PowerNotActivatableException("Invalid index");
+        }
+
+        DevelopmentCard developmentCard = dashboard.getDevelopmentCard(cardToActivate);
+        ProductionPower productionPower = developmentCard.getProductionPower();
+        Map<Resource, Integer> playerResources = dashboard.getResources();
+
+        if (!productionPower.isActivatable(playerResources)) {
+            throw new PowerNotActivatableException("Not enough resources");
+        }
+
+        if (game.getTurnPhase().equals(TurnPhase.COMMON)) {
+            game.startUniquePhase(TurnPhase.PRODUCTION);
+        }
+
+        developmentCard.activate(player);
+
+    }
 }

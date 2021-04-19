@@ -139,4 +139,9 @@ public class ProductionPower implements SpecialAbility {
 
 		return result;
 	}
+
+	//TODO doc
+	public SpecialAbilityType getType() {
+		return SpecialAbilityType.PRODUCTION_POWER;
+	}
 }
