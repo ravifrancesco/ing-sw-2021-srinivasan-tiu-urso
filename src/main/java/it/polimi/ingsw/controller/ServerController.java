@@ -33,6 +33,8 @@ public class ServerController {
     }
 
     public void reset() {
+        // shouldn't these two be inverted?
+        // first we reset the game then we get the next player
         currentPlayer = game.getNextPlayer();
         game.init();
     }
@@ -161,14 +163,21 @@ public class ServerController {
             game.startUniquePhase(TurnPhase.MARKET);
         }
 
-        market.getResources(move, player);
+        Dashboard.addResources(market.getResources(move, player));
     }
 
+    public void endTurn(String nickname) throws WrongTurnException {
+        if(!currentPlayer.equals(nickname)) {
+            throw new WrongTurnException("Not " + nickname + " turn");
+        }
+        // no turn phase check needed: player may stupidly pass the turn whilst having done nothing.
 
-    public void discardResource(String nickname) {
+        Player player = game.getPlayers().get(nickname);
+        Dashboard dashboard = player.getDashboard();
 
+        dashboard.discardResources();
+
+        currentPlayer = game.getNextPlayer();
     }
-
-
 
 }
