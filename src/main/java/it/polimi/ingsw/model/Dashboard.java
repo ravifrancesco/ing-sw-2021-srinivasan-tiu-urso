@@ -11,6 +11,13 @@ import java.util.Map;
 
 public class Dashboard {
 
+	/*
+	TODO: Add a temporary in-dashboard warehouse (collection) where the resources from the market are stored, with at least
+	the following methods:
+	- addResources: given a collection of resources, adds them to the temporary warehouse
+	- discardResources: removes each remaining resource from the tempWarehouse, giving one faith point for each etc.
+	 */
+
 	private Warehouse warehouse;
 	private final FaithTrack faithTrack;
 	private final LeaderCard[] playedLeaderCards;

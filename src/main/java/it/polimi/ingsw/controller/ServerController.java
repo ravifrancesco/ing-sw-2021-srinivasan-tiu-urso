@@ -34,6 +34,8 @@ public class ServerController {
     }
 
     public void reset() {
+        // shouldn't these two be inverted?
+        // first we reset the game then we get the next player
         currentPlayer = game.getNextPlayer();
         game.init();
     }
@@ -141,15 +143,32 @@ public class ServerController {
         productionPower.activate(player);
 
     }
-
-    public void buyDevelopmentCard(String nickname, int row, int column) throws WrongTurnException, CardNotBuyableException {
-
+  
+  public void getFromMarket(String nickname, int move) throws WrongTurnException, WrongMoveException {
         if (!currentPlayer.equals(nickname)) {
             throw new WrongTurnException("Not " + nickname + " turn");
         } else if (!game.getTurnPhase().equals(TurnPhase.COMMON)) {
             throw new WrongTurnPhaseException("Turn phase is " + game.getTurnPhase().name());
         }
+    
+        if(game.getTurnPhase().equals(TurnPhase.COMMON)) {
+            game.startUniquePhase(TurnPhase.MARKET);
+        }
 
+        Player player = game.getPlayers().get(nickname);
+        GameBoard gameboard = game.getGameBoard();
+        Market market = gameboard.getMarket();
+
+        if(move < 0 || move > 6) { throw new WrongMoveException("Desired move is out of index!"); }
+
+        if(game.getTurnPhase().equals(TurnPhase.COMMON)) {
+            game.startUniquePhase(TurnPhase.MARKET);
+        }
+
+        Dashboard.addResources(market.getResources(move, player));
+    }
+ 
+  public void buyDevelopmentCard(String nickname, int row, int column) throws WrongTurnException, CardNotBuyableException {
         if (row < 1 || row > 3 || column < 1 || column > 4) {
             throw new CardNotBuyableException("Invalid index");
         }
@@ -184,6 +203,21 @@ public class ServerController {
         dashboard.insertDevelopmentCard(developmentCard, position);
     }
 
+    public void endTurn(String nickname) throws WrongTurnException {
+        if(!currentPlayer.equals(nickname)) {
+            throw new WrongTurnException("Not " + nickname + " turn");
+        }
+        // no turn phase check needed: player may stupidly pass the turn whilst having done nothing.
+      
+       Player player = game.getPlayers().get(nickname);
+       Dashboard dashboard = player.getDashboard();
+      
+       dashboard.discardResources();
+
+       currentPlayer = game.getNextPlayer();
+    }
+
+
     public void activateDevelopmentCardProductionPower(String nickname, int cardToActivate) throws WrongTurnException, PowerNotActivatableException {
 
         //TODO card can't be activated two times in one turn
@@ -193,10 +227,7 @@ public class ServerController {
         } else if (!game.getTurnPhase().equals(TurnPhase.COMMON) || !game.getTurnPhase().equals(TurnPhase.PRODUCTION)) {
             throw new WrongTurnPhaseException("Turn phase is " + game.getTurnPhase().name());
         }
-
-        Player player = game.getPlayers().get(nickname);
-        Dashboard dashboard = player.getDashboard();
-
+      
         if (cardToActivate < 0 || cardToActivate > 2 || dashboard.getDevelopmentCard(cardToActivate) == null) {
             throw new PowerNotActivatableException("Invalid index");
         }
