@@ -141,4 +141,34 @@ public class ServerController {
 
     }
 
+    public void getFromMarket(String nickname, int move) throws WrongTurnException, WrongMoveException {
+        if (!currentPlayer.equals(nickname)) {
+            throw new WrongTurnException("Not " + nickname + " turn");
+        } else if (!game.getTurnPhase().equals(TurnPhase.COMMON)) {
+            throw new WrongTurnPhaseException("Turn phase is " + game.getTurnPhase().name());
+        }
+        if(game.getTurnPhase().equals(TurnPhase.COMMON)) {
+            game.startUniquePhase(TurnPhase.MARKET);
+        }
+
+        Player player = game.getPlayers().get(nickname);
+        GameBoard gameboard = game.getGameBoard();
+        Market market = gameboard.getMarket();
+
+        if(move < 0 || move > 6) { throw new WrongMoveException("Desired move is out of index!"); }
+
+        if(game.getTurnPhase().equals(TurnPhase.COMMON)) {
+            game.startUniquePhase(TurnPhase.MARKET);
+        }
+
+        market.getResources(move, player);
+    }
+
+
+    public void discardResource(String nickname) {
+
+    }
+
+
+
 }

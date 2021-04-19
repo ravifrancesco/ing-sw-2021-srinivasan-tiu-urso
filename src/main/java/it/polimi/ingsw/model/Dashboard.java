@@ -11,6 +11,10 @@ import java.util.Map;
 
 public class Dashboard {
 
+	/*
+	TODO: Add a temporary in-dashboard warehouse where the resources stored
+	 */
+
 	private Warehouse warehouse;
 	private final FaithTrack faithTrack;
 	private final LeaderCard[] playedLeaderCards;

@@ -2,6 +2,7 @@ package it.polimi.ingsw.model;
 
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * The class represents a Production Power of the game.
@@ -138,5 +139,12 @@ public class ProductionPower implements SpecialAbility {
 		result += "SR=" + (selectableResource ? "y" : "n") + ";";
 
 		return result;
+	}
+
+	public static void main(String[] args) {
+		Integer[] arr;
+		arr = new Integer[4];
+
+		IntStream.range(0, arr.length).forEach(System.out::println);
 	}
 }
