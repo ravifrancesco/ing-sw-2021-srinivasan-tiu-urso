@@ -1,6 +1,11 @@
 package it.polimi.ingsw.model;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.Stack;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * The class represent a personal Dashboard of the game.
@@ -11,18 +16,18 @@ import java.util.Map;
 
 public class Dashboard {
 
-	/*
-	TODO: Add a temporary in-dashboard warehouse (collection) where the resources from the market are stored, with at least
-	the following methods:
-	- addResources: given a collection of resources, adds them to the temporary warehouse
-	- discardResources: removes each remaining resource from the tempWarehouse, giving one faith point for each etc.
-	 */
+	static final int NUM_DEVELOPMENT_CARD_STACKS = 3;
 
 	private Warehouse warehouse;
 	private final FaithTrack faithTrack;
 	private final LeaderCard[] playedLeaderCards;
 	private Player player;
 	private ProductionPower dashBoardProductionPower;
+	private ArrayList<Resource> supply;
+	private List<Stack<DevelopmentCard>> playedDevelopmentCards;
+
+
+
 	//TODO add three stacks of development card
 
 	/**
@@ -35,6 +40,11 @@ public class Dashboard {
 		this.warehouse = new Warehouse();
 		this.faithTrack = new FaithTrack(gameSettings);
 		this.playedLeaderCards = new LeaderCard[2];
+
+		this.playedDevelopmentCards = IntStream.range(0, NUM_DEVELOPMENT_CARD_STACKS)
+				.mapToObj(e->new Stack<DevelopmentCard>())
+				.collect(Collectors.toList());
+
 		this.player = player;
 	}
 
@@ -66,9 +76,8 @@ public class Dashboard {
 	/**
 	 * Allows to insert a DevelopmentCard onto the Dashboard
 	 * @param c the Development Card to place
-	 * @param position the position (1, 2 or 3) where to place the card
 	 */
-	public void insertDevelopmentCard(DevelopmentCard c, int position){
+	public void insertDevelopmentCard(DevelopmentCard c){
 		// TODO
 	}
 
@@ -77,7 +86,11 @@ public class Dashboard {
 	 * @param r the resource to store
 	 * @param quantity the quantity of the resource
 	 */
-	public void storeResourceInLocker(Resource r, int quantity){
+	public void storeResourceInLocker(Resource r, int quantity) {
+		// TODO
+	}
+
+	public void storeResourceInDeposit(Resource r, int position) throws IllegalArgumentException, IllegalStateException {
 		// TODO
 	}
 
@@ -124,7 +137,44 @@ public class Dashboard {
 	}
 
 	public DevelopmentCard getDevelopmentCard(int c) {
-		//TODO
+		// TODO
 		return null;
+	}
+
+	public void addResourcesToSupply(ArrayList<Resource> res) {
+		supply.addAll(res);
+	}
+
+
+
+	public int discardResources() {
+		int faithPoints = supply.size();
+		supply.clear();
+		return faithPoints;
+	}
+
+	public void resetProductionPowers() {
+		// TODO
+	}
+
+	public int getStoredResourceQty() {
+		// TODO
+		return 0;
+	}
+
+	public void moveDepositResources(ArrayList<Pair<Integer, Integer>> moves) throws IllegalArgumentException, IllegalStateException {
+		// TODO
+		// checks that the two integer of the pair makes sense -> else IllegalArg
+		// checks that the moves generate a legal deposit -> else IllegalState
+	}
+
+	public void storeFromSupply(int from, int to) throws IllegalArgumentException, IllegalStateException{
+		// TODO
+		// checks that the two integer of the pair makes sense -> else IllegalArg
+		// checks that the moves generate a legal deposit -> else IllegalState
+	}
+
+	public void storeInExtraDeposit(int leaderCardPosition, int from, int to) throws IllegalArgumentException, IllegalStateException {
+		// TODO
 	}
 }

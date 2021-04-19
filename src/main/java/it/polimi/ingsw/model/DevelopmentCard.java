@@ -107,6 +107,10 @@ public class DevelopmentCard implements Card {
 	 * @return a string representation of the object.
 	 */
 
+	public void resetProductionPower() {
+		this.productionPower.reset();
+	}
+
 	@Override
 	public String toString() {
 		String result="";

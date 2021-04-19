@@ -79,7 +79,4 @@ public class Game {
 		return turnPhase;
 	}
 
-	public void resetTurnPhase() {
-		this.turnPhase = TurnPhase.COMMON;
-	}
 }

@@ -16,6 +16,7 @@ public class ProductionPower implements SpecialAbility {
 	private Map<Resource, Integer> resourceProduced;
 	private int numberFaithPoints;
 	private boolean selectableResource;
+	private boolean activated;
 
 	/**
 	 * The constructor for a Production Power object.
@@ -30,6 +31,7 @@ public class ProductionPower implements SpecialAbility {
 		this.resourceProduced = resourceProduced != null ? resourceProduced.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)) : null;
 		this.numberFaithPoints = numberFaithPoints;
 		this.selectableResource = selectableResource;
+		this.activated = false;
 	}
 
 	/**
@@ -39,6 +41,7 @@ public class ProductionPower implements SpecialAbility {
 
 	@Override
 	public void activate(Player p) {
+		// TODO: clean this code, null check is useless
 		if(p!=null) {
 			if (numberFaithPoints != 0) {
 				p.getDashboard().moveFaithMarker(numberFaithPoints);
@@ -47,6 +50,13 @@ public class ProductionPower implements SpecialAbility {
 				resourceProduced.forEach((k, v) -> p.getDashboard().storeResourceInLocker(k, v)); //TODO store separatly
 			}
 		}
+		// In order to not activate the same production power twice in one turn, after activation 'activated'
+		// flag is set to true.
+		activated = true;
+	}
+
+	public void reset() {
+		activated = false;
 	}
 
 	/**
@@ -112,6 +122,10 @@ public class ProductionPower implements SpecialAbility {
 				.count();
 
 		return contResources>=resourceRequired.size();
+	}
+
+	public boolean isActivatable() {
+		return !activated;
 	}
 
 	/**

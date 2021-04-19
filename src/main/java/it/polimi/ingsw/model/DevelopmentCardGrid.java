@@ -81,7 +81,9 @@ public class DevelopmentCardGrid {
 	 * @return if the development card is buyable or not with the given resources.
 	 */
 
-	public boolean isBuyable(int row, int column, Map<Resource, Integer> playerResources, DevelopmentCardDiscount[] activeDiscounts) {
+	public boolean isBuyable(int row, int column, Map<Resource, Integer> playerResources, DevelopmentCardDiscount[] activeDiscounts)
+			throws IllegalArgumentException {
+		// TODO add check for errors
 		long contResources;
 		int position = getPosition(row, column);
 		DevelopmentCard developmentCard = grid.get(position).peek();
@@ -101,5 +103,9 @@ public class DevelopmentCardGrid {
 
 		return contResources>=resourceCost.size();
 	}
+
+	// buying a card from an empty stack for example
+
+
 
 }
