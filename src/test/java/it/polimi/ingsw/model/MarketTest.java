@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
 
+import it.polimi.ingsw.model.marbles.Marble;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -30,12 +31,12 @@ public class MarketTest {
         System.out.println("Test produced:");
         dest.forEach((key, val) -> System.out.println("Marble: " + key + " Qty: " + val));
 
-        Assert.assertEquals(Long.valueOf(2), dest.get("class it.polimi.ingsw.model.YellowMarble"));
-        Assert.assertEquals(Long.valueOf(2), dest.get("class it.polimi.ingsw.model.GreyMarble"));
-        Assert.assertEquals(Long.valueOf(1), dest.get("class it.polimi.ingsw.model.RedMarble"));
-        Assert.assertEquals(Long.valueOf(2), dest.get("class it.polimi.ingsw.model.PurpleMarble"));
-        Assert.assertEquals(Long.valueOf(2), dest.get("class it.polimi.ingsw.model.BlueMarble"));
-        Assert.assertEquals(Long.valueOf(4), dest.get("class it.polimi.ingsw.model.WhiteMarble"));
+        Assert.assertEquals(Long.valueOf(2), dest.get("class it.polimi.ingsw.model.marbles.YellowMarble"));
+        Assert.assertEquals(Long.valueOf(2), dest.get("class it.polimi.ingsw.model.marbles.GreyMarble"));
+        Assert.assertEquals(Long.valueOf(1), dest.get("class it.polimi.ingsw.model.marbles.RedMarble"));
+        Assert.assertEquals(Long.valueOf(2), dest.get("class it.polimi.ingsw.model.marbles.PurpleMarble"));
+        Assert.assertEquals(Long.valueOf(2), dest.get("class it.polimi.ingsw.model.marbles.BlueMarble"));
+        Assert.assertEquals(Long.valueOf(4), dest.get("class it.polimi.ingsw.model.marbles.WhiteMarble"));
 
 
     }

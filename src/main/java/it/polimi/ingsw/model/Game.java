@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.specialAbilities.TurnPhase;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -79,7 +81,4 @@ public class Game {
 		return turnPhase;
 	}
 
-	public void resetTurnPhase() {
-		this.turnPhase = TurnPhase.COMMON;
-	}
 }

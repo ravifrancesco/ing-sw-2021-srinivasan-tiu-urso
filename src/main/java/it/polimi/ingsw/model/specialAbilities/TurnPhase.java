@@ -1,6 +1,8 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.specialAbilities;
 
 public enum TurnPhase {
+
+    FIRST_TURN,
 
     COMMON,
 

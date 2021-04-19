@@ -4,6 +4,11 @@ import java.util.stream.IntStream;
 
 public class Warehouse {
 
+	// TODO add free movements of resources
+
+	// TODO remove smart positioning/removal
+
+
 	private Map<Resource, Integer> deposit;
 
 	public Map<Resource, Integer> getDeposit() {
@@ -267,5 +272,7 @@ public class Warehouse {
 	public boolean isActivatedExtraDeposit() {
 		return activatedExtraDeposit;
 	}
+
+
 }
 

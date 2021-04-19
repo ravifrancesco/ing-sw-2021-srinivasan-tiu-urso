@@ -1,5 +1,10 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.cards.LeaderCard;
+import it.polimi.ingsw.model.specialAbilities.DevelopmentCardDiscount;
+import it.polimi.ingsw.model.specialAbilities.WhiteMarbleResource;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Player {
@@ -88,6 +93,11 @@ public class Player {
 	public LeaderCard getFromHand(int c) {
 		// TODO
 		return null;
+	}
+
+	public boolean checkWMR(ArrayList<WhiteMarbleResource> wmrs) {
+		// TODO
+		return true;
 	}
 
 }
