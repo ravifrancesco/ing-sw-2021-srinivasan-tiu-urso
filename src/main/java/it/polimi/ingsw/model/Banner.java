@@ -26,7 +26,6 @@ public class Banner {
 	 * Getter for the color.
 	 * @return the color of the banner.
 	 */
-
 	public BannerEnum getColor() {
 		return color;
 	}
@@ -42,7 +41,6 @@ public class Banner {
 	/** To string method of the class.
 	 * @return a string representation of the object.
 	 */
-
 	public String toString(){
 		return "BA=" + color + ":" + level + ";";
 	}
@@ -52,7 +50,6 @@ public class Banner {
 	 * @param b the other banner to compare.
 	 * @return true if the two banners have the same color.
 	 */
-
 	public boolean equalsColor(Banner b){
 		return this.getColor()==b.getColor();
 	}
@@ -62,7 +59,6 @@ public class Banner {
 	 * @param b the other banner to compare.
 	 * @return true if the two banners have the same level.
 	 */
-
 	public boolean equalsLevel(Banner b){
 		return this.getLevel()==b.getLevel();
 	}
@@ -72,7 +68,17 @@ public class Banner {
 	 * @param b the other banner to compare.
 	 * @return true if the two banners are equals.
 	 */
-
 	public boolean equals(Banner b) { return equalsColor(b) && equalsLevel(b); }
+
+
+	/**
+	 * Compares the color and the level of two banners.
+	 *
+	 * @param b the other banner to compare.
+	 * @return true if the two banners have the same color and b.level > b.level.
+	 */
+	public boolean isGreater(Banner b) {
+		return equalsColor(b) && b.level > this.level;
+	}
 
 }

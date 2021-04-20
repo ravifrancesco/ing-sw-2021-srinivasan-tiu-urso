@@ -96,7 +96,7 @@ public class ServerController {
 
 
     public boolean checkInitialPhaseCompletion(Dashboard d) {
-        int storedResources = d.getStoredResourceQty();
+        int storedResources = d.getDepositResourceQty();
         return switch(firstTurns) {
             case 0 -> storedResources >= 0;
             case 1, 2 -> storedResources >= 1;
@@ -196,7 +196,7 @@ public class ServerController {
         Player player = game.getPlayers().get(nickname);
         Dashboard dashboard = player.getDashboard();
         ProductionPower productionPower = dashboard.getDashBoardProductionPower();
-        Map<Resource, Integer> playerResources = dashboard.getResources();
+        Map<Resource, Integer> playerResources = dashboard.getResources(); // TODO Change
 
         if (!productionPower.isActivatable()) {
             throw new PowerNotActivatableException("Production already activated");
@@ -223,7 +223,6 @@ public class ServerController {
         Player player = game.getPlayers().get(nickname);
 
         if (!player.checkWMR(wmrs)) {
-            // check that each marble in WMRS is actually an activated special ability
             throw new WrongMoveException(currentPlayer + " doesn't have these white marble resources");
         }
 
@@ -237,23 +236,7 @@ public class ServerController {
 
         game.startUniquePhase(TurnPhase.MARKET);
 
-        ArrayList<Resource> marketRes = market.getResources(move, player);
-        // marketRes will return an arrayList of resources, where the white marbles will be converted to Resource.ANY
-        // if two whiteMarbleResource special abilities are activated (see WhiteMarble.getRes()) -- this doesn't happen
-        // when only WMR is activated.
-
-
-        // check to see that the WMRS size corresponds to the amount of white marbles (against hacked clients)
-        if (marketRes.stream().filter(r -> r == Resource.ANY).count() != wmrs.size()) {
-            throw new IllegalArgumentException(currentPlayer + " asked for too many white marble transformed resources.");
-        }
-
-        // removes all ANYs
-        marketRes.remove(Resource.ANY);
-        // substitutes with the user's choice of returned resource
-        wmrs.forEach(r -> marketRes.add(r.getRes()));
-
-        dashboard.addResourcesToSupply(marketRes);
+        dashboard.addResourcesToSupply(market.getResources(move, player));
     }
 
     public void buyDevelopmentCard(String nickname, int row, int column) throws WrongTurnException, CardNotBuyableException {
@@ -287,7 +270,8 @@ public class ServerController {
         developmentCard = developmentCardGrid.buy(row, column);
         game.startUniquePhase(TurnPhase.BUY);
 
-        dashboard.insertDevelopmentCard(developmentCard);
+        // handle exception and buy
+        dashboard.placeDevelopmentCard(developmentCard);
     }
 
     public void activateDevelopmentCardProductionPower(String nickname, int cardToActivate) throws WrongTurnException, PowerNotActivatableException {
@@ -408,9 +392,5 @@ public class ServerController {
         }
 
         currentPlayer = game.getNextPlayer();
-    }
-
-    public static void main(String[] args) {
-
     }
 }

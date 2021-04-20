@@ -32,22 +32,12 @@ public class LeaderCard implements Card {
 	 * @param bannerCost represents the banner cost to buy the card.
 	 * @param specialAbility represents the special ability of the card.
 	 */
-
 	public LeaderCard(int id, int victoryPoints, Map<Resource, Integer> resourceCost, Map<Banner, Integer> bannerCost, SpecialAbility specialAbility) {
 		this.id = id;
 		this.victoryPoints = victoryPoints;
 		this.resourceCost = resourceCost.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 		this.bannerCost = bannerCost.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 		this.specialAbility = specialAbility;
-	}
-
-	/**
-	 * Allows to put the card on the dashboard, changing its state.
-	 * @param dashboard the dashboard of the player who played the card.
-	 */
-	@Override
-	public void play(Dashboard dashboard, int position) {
-		dashboard.insertLeaderCard(this, position);
 	}
 
 	@Override
@@ -101,7 +91,6 @@ public class LeaderCard implements Card {
 	 * Getter for specialAbility.
 	 * @return the special ability of the card.
 	 */
-
 	public SpecialAbility getSpecialAbility() {
 		return specialAbility;
 	}
@@ -133,7 +122,6 @@ public class LeaderCard implements Card {
 	 * @param playerBanners all the banner of the player.
 	 * @return if the card is playable or not with the given resources and banners.
 	 */
-
 	public boolean isPlayable(Map<Resource, Integer> playerResources, Map<Banner, Integer> playerBanners) {
 		long contResources;
 		Map<Banner, Integer> playerBannersCopy = playerBanners.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
@@ -163,7 +151,6 @@ public class LeaderCard implements Card {
 	 * @param o the other leader card to compare.
 	 * @return true if the two cards have the same id.
 	 */
-
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;

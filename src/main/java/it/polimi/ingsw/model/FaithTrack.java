@@ -53,19 +53,16 @@ public class FaithTrack {
 	 * checking and eventually adding if the cross steps on a bonus cell.
 	 *
 	 * @param pos	number of positions for the movement.
-	 * @return		<code>true</code> if the player has reached the
-	 * 				last cell;
-	 * 				<code>false</code> otherwise.
 	 */
-	public boolean moveFaithMarker(int pos) {
+
+	public void moveFaithMarker(int pos) {
 		for (int i = 1; i <= pos; i++) {
 			position++;
 			victoryPoints += faithTrackVictoryPoints[position];
 			if (position == GameSettings.FAITH_TRACK_LENGTH - 1) {
-				return true;
+				return;
 			}
 		}
-		return false;
 	}
 
 	/**
