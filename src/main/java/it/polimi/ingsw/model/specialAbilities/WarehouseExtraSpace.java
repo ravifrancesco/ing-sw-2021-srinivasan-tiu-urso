@@ -5,7 +5,7 @@ import it.polimi.ingsw.model.Resource;
 
 public class WarehouseExtraSpace implements SpecialAbility {
 
-	Resource storedResource;
+	private final Resource storedResource;
 
 	public WarehouseExtraSpace(Resource storedResource) {
 		this.storedResource = storedResource;
@@ -22,5 +22,9 @@ public class WarehouseExtraSpace implements SpecialAbility {
 	//TODO doc
 	public SpecialAbilityType getType() {
 		return SpecialAbilityType.WAREHOUSE_EXTRA_SPACE;
+	}
+
+	public Resource getStoredResource() {
+		return storedResource;
 	}
 }

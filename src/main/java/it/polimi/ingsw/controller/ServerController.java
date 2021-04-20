@@ -96,7 +96,7 @@ public class ServerController {
 
 
     public boolean checkInitialPhaseCompletion(Dashboard d) {
-        int storedResources = d.getStoredResourceQty();
+        int storedResources = d.getDepositResourceQty();
         return switch(firstTurns) {
             case 0 -> storedResources >= 0;
             case 1, 2 -> storedResources >= 1;
@@ -270,7 +270,8 @@ public class ServerController {
         developmentCard = developmentCardGrid.buy(row, column);
         game.startUniquePhase(TurnPhase.BUY);
 
-        dashboard.insertDevelopmentCard(developmentCard);
+        // handle exception and buy
+        dashboard.placeDevelopmentCard(developmentCard);
     }
 
     public void activateDevelopmentCardProductionPower(String nickname, int cardToActivate) throws WrongTurnException, PowerNotActivatableException {

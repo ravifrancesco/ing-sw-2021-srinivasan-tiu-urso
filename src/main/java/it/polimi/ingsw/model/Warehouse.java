@@ -81,16 +81,16 @@ public class Warehouse {
 	 * @param resToAdd: ArrayList with the resources to add. The ArrayList collection is chosen due to the Market's
 	 * getResources() method, which returns an ArrayList of collected resources.
 	 */
-	public void storeInDeposit(ArrayList<Resource> resToAdd) {
-		resToAdd.forEach(r -> deposit.put(r, deposit.get(r)+1));
+	public void storeInDeposit(Resource resToAdd, int pos) throws IllegalStateException {
+		//TODO
 	}
 
 	/**
 	 * Stores resources in the locker, with no checks due to the fact that the locker has no restrictions.
 	 * @param resToAdd ArrayList with the resources to add.
 	 */
-	public void storeInLocker(ArrayList<Resource> resToAdd) {
-		resToAdd.forEach(r -> locker.put(r, locker.get(r)+1));
+	public void storeInLocker(Resource resToAdd, int qty) {
+		// TODO
 	}
 
 	/**
@@ -273,6 +273,15 @@ public class Warehouse {
 		return activatedExtraDeposit;
 	}
 
+	public Map<Resource, Integer> getResourcesInDeposit() {
+		// TODO
+		return null;
+	}
+
+	public Map<Resource, Integer> getResourcesInLocker() {
+		// TODO
+		return null;
+	}
 
 }
 

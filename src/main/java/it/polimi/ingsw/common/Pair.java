@@ -3,8 +3,9 @@ package it.polimi.ingsw.common;
 import java.util.Objects;
 
 public class Pair<A, B> {
-    private A first;
-    private B second;
+
+    public final A first;
+    public final B second;
 
     public Pair(A first, B second) {
         super();
@@ -27,4 +28,5 @@ public class Pair<A, B> {
 
         return (hashFirst + hashSecond) * hashSecond + hashFirst;
     }
+
 }
