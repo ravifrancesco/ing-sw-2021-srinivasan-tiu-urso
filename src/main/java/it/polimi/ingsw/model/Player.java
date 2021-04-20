@@ -19,7 +19,7 @@ public class Player {
 
 	private DevelopmentCardDiscount[] activeDiscounts;
 
-	private WhiteMarbleResource[] activatedWMR;
+	private Resource[] activatedWMR;
 
 	private int numActiveDiscounts;
 
@@ -29,7 +29,7 @@ public class Player {
 
 	public Player() {
 		this.activeDiscounts = new DevelopmentCardDiscount[NUM_PLAYABLE_LEADER_CARDS];
-		this.activatedWMR = new WhiteMarbleResource[NUM_WHITE_MARBLE_RESOURCE];
+		this.activatedWMR = new Resource[NUM_WHITE_MARBLE_RESOURCE];
 		this.numActiveDiscounts = 0;
 		this.numActiveWMR = 0;
 
@@ -78,11 +78,11 @@ public class Player {
 	 * @param wmr the WhiteMarbleResource being added
 	 */
 	public void addWMR(WhiteMarbleResource wmr) {
-		activatedWMR[numActiveWMR] = wmr;
+		activatedWMR[numActiveWMR] = wmr.getRes();
 		numActiveWMR = numActiveWMR + 1;
 	}
 
-	public WhiteMarbleResource[] getActivatedWMR() {
+	public Resource[] getActivatedWMR() {
 		return Arrays.copyOfRange(activatedWMR, 0, numActiveWMR);
 	}
 
@@ -96,8 +96,8 @@ public class Player {
 	}
 
 	public boolean checkWMR(ArrayList<WhiteMarbleResource> wmrs) {
-		// TODO
-		return true;
+		// checks to see that each WhiteMarbleResource passed in wmrs refers to a resource activated as a special ability
+		return wmrs.stream().filter(r -> Arrays.asList(getActivatedWMR()).contains(r.getRes())).count() == wmrs.size();
 	}
 
 }

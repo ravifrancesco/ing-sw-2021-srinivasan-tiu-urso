@@ -24,11 +24,18 @@ public class WhiteMarbleResource implements SpecialAbility {
 		p.addWMR(this);
 	}
 
+	/**
+	 * Returns the resource associated with the ability.
+	 * @return the returned resource
+	 */
 	public Resource getRes() {
 		return res;
 	}
 
-	//TODO doc
+	/**
+	 * Returnes the type of the special ability
+	 * @return the special ability's type
+	 */
 	public SpecialAbilityType getType() {
 		return SpecialAbilityType.WHITE_MARBLE_RESOURCES;
 	}
