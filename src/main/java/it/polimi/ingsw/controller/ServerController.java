@@ -96,7 +96,7 @@ public class ServerController {
 
 
     public boolean checkInitialPhaseCompletion(Dashboard d) {
-        int storedResources = d.getStoredResourceQty();
+        int storedResources = d.getDepositResourceQty();
         return switch(firstTurns) {
             case 0 -> storedResources >= 0;
             case 1, 2 -> storedResources >= 1;
@@ -196,7 +196,7 @@ public class ServerController {
         Player player = game.getPlayers().get(nickname);
         Dashboard dashboard = player.getDashboard();
         ProductionPower productionPower = dashboard.getDashBoardProductionPower();
-        Map<Resource, Integer> playerResources = dashboard.getResources();
+        Map<Resource, Integer> playerResources = dashboard.getResources(); // TODO Change
 
         if (!productionPower.isActivatable()) {
             throw new PowerNotActivatableException("Production already activated");
@@ -270,7 +270,8 @@ public class ServerController {
         developmentCard = developmentCardGrid.buy(row, column);
         game.startUniquePhase(TurnPhase.BUY);
 
-        dashboard.insertDevelopmentCard(developmentCard);
+        // handle exception and buy
+        dashboard.placeDevelopmentCard(developmentCard);
     }
 
     public void activateDevelopmentCardProductionPower(String nickname, int cardToActivate) throws WrongTurnException, PowerNotActivatableException {

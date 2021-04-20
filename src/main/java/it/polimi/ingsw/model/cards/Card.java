@@ -5,8 +5,6 @@ import it.polimi.ingsw.model.Player;
 
 public interface Card {
 
-	void play(Dashboard d, int position);
-
 	void activate(Player p);
 
 }
