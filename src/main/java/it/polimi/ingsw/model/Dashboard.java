@@ -9,13 +9,24 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+
 /**
- * The class represent a personal Dashboard of the game.
- * It has a Warehouse, a FaithTrack, the Played Leader Cards and
-
- * the reference of the player.
+ * This class represents the player dashboard. It contains references to:
+ *
+ * <ul>
+ * <li> The warehouse.
+ * <li> The faith track.
+ * <li> The played leader cards.
+ * <li> The played development cards.
+ * <li> The dashboard production power.
+ * <li> The resources supply.
+ * </ul>
+ * <p>
+ *
+ * The class also acts as a proxy for the warehouse and  the faith track, that are
+ * not directly visible from the outside.
+ *
  */
-
 public class Dashboard {
 
 	static final int NUM_DEVELOPMENT_CARD_STACKS = 3;
@@ -27,7 +38,7 @@ public class Dashboard {
 	private final List<LeaderCard> playedLeaderCards;
 	private ProductionPower dashBoardProductionPower;
 	private ArrayList<Resource> supply;
-	private List<Stack<DevelopmentCard>> playedDevelopmentCards;
+	private final List<Stack<DevelopmentCard>> playedDevelopmentCards;
 
 	/**
 	 * The constructor for a Dashboard object.
@@ -43,6 +54,8 @@ public class Dashboard {
 		this.playedDevelopmentCards = IntStream.range(0, NUM_DEVELOPMENT_CARD_STACKS)
 				.mapToObj(e->new Stack<DevelopmentCard>())
 				.collect(Collectors.toList());
+
+		// TODO add production power initialization
 
 	}
 

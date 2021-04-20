@@ -196,7 +196,7 @@ public class ServerController {
         Player player = game.getPlayers().get(nickname);
         Dashboard dashboard = player.getDashboard();
         ProductionPower productionPower = dashboard.getDashBoardProductionPower();
-        Map<Resource, Integer> playerResources = dashboard.getResources();
+        Map<Resource, Integer> playerResources = dashboard.getResources(); // TODO Change
 
         if (!productionPower.isActivatable()) {
             throw new PowerNotActivatableException("Production already activated");
