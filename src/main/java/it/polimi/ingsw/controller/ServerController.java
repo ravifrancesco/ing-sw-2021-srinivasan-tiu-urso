@@ -115,12 +115,11 @@ public class ServerController {
 
         Player player = game.getPlayers().get(nickname);
         Dashboard dashboard = player.getDashboard();
-        Map<Resource, Integer> playerResources = dashboard.getResources();
         Map<Banner, Integer> playerBanners = dashboard.getBanners();
 
         if (cardToPlay >= player.getHand().getCards().size() || cardToPlay < 0) {
             throw new CardNotPlayableException("Invalid index");
-        } else if (!player.getFromHand(cardToPlay).isPlayable(playerResources, playerBanners)) {
+        } else if (!player.getFromHand(cardToPlay).isPlayable(playerBanners)) {
             throw new CardNotPlayableException("Not enough resources or banners");
         }
 
@@ -128,7 +127,7 @@ public class ServerController {
 
     }
 
-    public void activateLeaderCardProduction(String nickname, int cardToActivate) throws WrongTurnException, PowerNotActivatableException {
+    public void activateLeaderCardProduction(String nickname, int cardToActivate, SelectedResources resourcesToPayCost) throws WrongTurnException, PowerNotActivatableException {
 
         if (!currentPlayer.equals(nickname)) {
             throw new WrongTurnException("Not " + nickname + " turn");
@@ -150,7 +149,7 @@ public class ServerController {
         }
 
         ProductionPower productionPower = (ProductionPower) specialAbility;
-        Map<Resource, Integer> playerResources = dashboard.getResources();
+        Map<Resource, Integer> playerResources = dashboard.getAllPlayerResources();
 
         if (!productionPower.isActivatable()) {
             throw new PowerNotActivatableException("Production already activated");
@@ -164,6 +163,7 @@ public class ServerController {
         }
 
         productionPower.activate(player);
+        dashboard.payPrice(resourcesToPayCost);
 
     }
 
@@ -185,7 +185,7 @@ public class ServerController {
 
     }
 
-    public void activateDashboardProduction(String nickname) throws WrongTurnException, PowerNotActivatableException {
+    public void activateDashboardProduction(String nickname, SelectedResources resourcesToPayCost) throws WrongTurnException, PowerNotActivatableException {
 
         if (!currentPlayer.equals(nickname)) {
             throw new WrongTurnException("Not " + nickname + " turn");
@@ -196,7 +196,7 @@ public class ServerController {
         Player player = game.getPlayers().get(nickname);
         Dashboard dashboard = player.getDashboard();
         ProductionPower productionPower = dashboard.getDashBoardProductionPower();
-        Map<Resource, Integer> playerResources = dashboard.getResources(); // TODO Change
+        Map<Resource, Integer> playerResources = dashboard.getAllPlayerResources();
 
         if (!productionPower.isActivatable()) {
             throw new PowerNotActivatableException("Production already activated");
@@ -210,6 +210,7 @@ public class ServerController {
         }
 
         productionPower.activate(player);
+        dashboard.payPrice(resourcesToPayCost);
 
     }
 
@@ -223,6 +224,7 @@ public class ServerController {
         Player player = game.getPlayers().get(nickname);
 
         if (!player.checkWMR(wmrs)) {
+            // check that each marble in WMRS is actually an activated special ability
             throw new WrongMoveException(currentPlayer + " doesn't have these white marble resources");
         }
 
@@ -236,10 +238,27 @@ public class ServerController {
 
         game.startUniquePhase(TurnPhase.MARKET);
 
-        dashboard.addResourcesToSupply(market.getResources(move, player));
+        ArrayList<Resource> marketRes = market.getResources(move, player);
+        // marketRes will return an arrayList of resources, where the white marbles will be converted to Resource.ANY
+        // if two whiteMarbleResource special abilities are activated (see WhiteMarble.getRes()) -- this doesn't happen
+        // when only WMR is activated.
+
+
+        // check to see that the WMRS size corresponds to the amount of white marbles (against hacked clients)
+        if (marketRes.stream().filter(r -> r == Resource.ANY).count() != wmrs.size()) {
+            throw new IllegalArgumentException(currentPlayer + " asked for too many white marble transformed resources.");
+        }
+
+        // removes all ANYs
+        marketRes.remove(Resource.ANY);
+        // substitutes with the user's choice of returned resource
+        wmrs.forEach(r -> marketRes.add(r.getRes()));
+
+        dashboard.addResourcesToSupply(marketRes);
     }
 
-    public void buyDevelopmentCard(String nickname, int row, int column) throws WrongTurnException, CardNotBuyableException {
+    public void buyDevelopmentCard(String nickname, int row, int column, SelectedResources resourcesToPayCost )
+            throws WrongTurnException, CardNotBuyableException {
         if (!currentPlayer.equals(nickname)) {
             throw new WrongTurnException("Not " + nickname + " turn");
         } else if (!game.getTurnPhase().equals(TurnPhase.COMMON)) {
@@ -255,7 +274,7 @@ public class ServerController {
         GameBoard gameBoard = game.getGameBoard();
         DevelopmentCardGrid developmentCardGrid = gameBoard.getDevelopmentCardGrid();
 
-        Map<Resource, Integer> playerResources = dashboard.getResources();
+        Map<Resource, Integer> playerResources = dashboard.getAllPlayerResources();
         DevelopmentCardDiscount[] activeDiscounts = player.getActiveDiscounts();
         DevelopmentCard developmentCard;
 
@@ -272,9 +291,11 @@ public class ServerController {
 
         // handle exception and buy
         dashboard.placeDevelopmentCard(developmentCard);
+        dashboard.payPrice(resourcesToPayCost);
     }
 
-    public void activateDevelopmentCardProductionPower(String nickname, int cardToActivate) throws WrongTurnException, PowerNotActivatableException {
+    public void activateDevelopmentCardProductionPower(String nickname, int cardToActivate, SelectedResources resourcesToPayCost)
+            throws WrongTurnException, PowerNotActivatableException {
 
         if (!currentPlayer.equals(nickname)) {
             throw new WrongTurnException("Not " + nickname + " turn");
@@ -291,7 +312,7 @@ public class ServerController {
 
         DevelopmentCard developmentCard = dashboard.getDevelopmentCard(cardToActivate);
         ProductionPower productionPower = developmentCard.getProductionPower();
-        Map<Resource, Integer> playerResources = dashboard.getResources();
+        Map<Resource, Integer> playerResources = dashboard.getAllPlayerResources();
 
         if (!productionPower.isActivatable(playerResources)) {
             throw new PowerNotActivatableException("Not enough resources");
@@ -302,6 +323,7 @@ public class ServerController {
         }
 
         developmentCard.activate(player);
+        dashboard.payPrice(resourcesToPayCost);
     }
 
     public void moveResources(String nickname, ArrayList<Pair<Integer, Integer>> moves) throws WrongTurnException, WrongMoveException, IllegalDepositStateException {
@@ -348,7 +370,7 @@ public class ServerController {
         Dashboard dashboard = player.getDashboard();
 
         try {
-            dashboard.storeInExtraDeposit(leaderCardPosition, from, to);
+            dashboard.moveExtraDepositResources(leaderCardPosition, from, to);
         } catch (IllegalArgumentException e) {
             throw new WrongMoveException("Invalid index");
         } catch (IllegalStateException e) {

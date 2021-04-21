@@ -19,7 +19,7 @@ public class Player {
 
 	private DevelopmentCardDiscount[] activeDiscounts;
 
-	private WhiteMarbleResource[] activatedWMR;
+	private Resource[] activatedWMR;
 
 	private int numActiveDiscounts;
 
@@ -29,7 +29,7 @@ public class Player {
 
 	public Player() {
 		this.activeDiscounts = new DevelopmentCardDiscount[NUM_PLAYABLE_LEADER_CARDS];
-		this.activatedWMR = new WhiteMarbleResource[NUM_WHITE_MARBLE_RESOURCE];
+		this.activatedWMR = new Resource[NUM_WHITE_MARBLE_RESOURCE];
 		this.numActiveDiscounts = 0;
 		this.numActiveWMR = 0;
 
@@ -43,6 +43,8 @@ public class Player {
 	}
 
 	public void playLeaderCard(int card) {
+		// By Rob: if the special ability is a warehouseextraspace, other than activation please use "leaderCardPos"
+		// setter to set the position.
 		// TODO check auto activation
 	}
 
@@ -78,11 +80,11 @@ public class Player {
 	 * @param wmr the WhiteMarbleResource being added
 	 */
 	public void addWMR(WhiteMarbleResource wmr) {
-		activatedWMR[numActiveWMR] = wmr;
+		activatedWMR[numActiveWMR] = wmr.getRes();
 		numActiveWMR = numActiveWMR + 1;
 	}
 
-	public WhiteMarbleResource[] getActivatedWMR() {
+	public Resource[] getActivatedWMR() {
 		return Arrays.copyOfRange(activatedWMR, 0, numActiveWMR);
 	}
 
