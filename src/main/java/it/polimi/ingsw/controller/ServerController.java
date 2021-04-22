@@ -112,6 +112,8 @@ public class ServerController {
 
     public void playLeaderCard(String nickname, int cardToPlay) throws WrongTurnException, CardNotPlayableException {
 
+        // TODO allow the player choose the position or change Card interface
+
         if (!currentPlayer.equals(nickname)) {
             throw new WrongTurnException("Not " + nickname + " turn");
         } else if (game.getTurnPhase().equals(TurnPhase.FIRST_TURN)) {
@@ -128,7 +130,12 @@ public class ServerController {
             throw new CardNotPlayableException("Not enough resources or banners");
         }
 
-        player.playLeaderCard(cardToPlay);
+        int position=0;
+        try {
+            player.playLeaderCard(cardToPlay, position);
+        }
+        catch (IllegalStateException e) { throw new CardNotPlayableException("Leader Card places are full"); }
+        catch (IllegalArgumentException e) { throw new CardNotPlayableException("Position given is already full"); }
 
     }
 
@@ -264,6 +271,9 @@ public class ServerController {
 
     public void buyDevelopmentCard(String nickname, int row, int column, ResourceContainer resourcesToPayCost )
             throws WrongTurnException, CardNotBuyableException {
+
+        //TODO choose the position where to play the card
+
         if (!currentPlayer.equals(nickname)) {
             throw new WrongTurnException("Not " + nickname + " turn");
         } else if (!game.getTurnPhase().equals(TurnPhase.COMMON)) {
@@ -295,7 +305,8 @@ public class ServerController {
         game.startUniquePhase(TurnPhase.BUY);
 
         // handle exception and buy
-        developmentCard.play(dashboard);
+        int position=0;
+        developmentCard.play(dashboard, position);
         dashboard.payPrice(resourcesToPayCost);
     }
 

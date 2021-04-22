@@ -37,6 +37,22 @@ public class LeaderCard implements Card {
 		this.specialAbility = specialAbility;
 	}
 
+	/**
+	 * Allows to place the card in the player dashboard.
+	 * @param d represents the dashboard of the player.
+	 * @param position represent the position where to place the card.
+	 */
+
+	@Override
+	public void play(Dashboard d, int position) {
+		d.placeLeaderCard(this, position);
+	}
+
+	/**
+	 * Allows to activate the special ability of the leader card.
+	 * @param p represents the player.
+	 */
+
 	@Override
 	public void activate(Player p) {
 		specialAbility.activate(p);

@@ -20,10 +20,6 @@ public class Hand {
 		return cards.remove(c);
 	}
 
-	public void playLeaderCard(int c) {
-		// TODO
-	}
-
 	public ArrayList<LeaderCard> getCards() {
 		return cards;
 	}

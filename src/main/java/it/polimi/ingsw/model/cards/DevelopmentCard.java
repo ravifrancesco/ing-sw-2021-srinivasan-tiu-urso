@@ -45,11 +45,12 @@ public class DevelopmentCard implements Card {
 	/**
 	 * Allows to place the card in the player dashboard.
 	 * @param d represents the dashboard of the player.
+	 * @param position represent the position where to place the card.
 	 */
 
 	@Override
-	public void play(Dashboard d) {
-		d.placeDevelopmentCard(this);
+	public void play(Dashboard d, int position) {
+		d.placeDevelopmentCard(this, position);
 	}
 
 	/**

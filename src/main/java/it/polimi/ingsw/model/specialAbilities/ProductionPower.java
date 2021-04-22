@@ -44,14 +44,14 @@ public class ProductionPower implements SpecialAbility {
 
 	@Override
 	public void activate(Player p) {
-		// TODO: clean this code, null check is useless
-		if(p!=null) {
-			if (numberFaithPoints != 0) {
-				p.getDashboard().moveFaithMarker(numberFaithPoints);
-			}
-			if (resourceProduced != null && !resourceProduced.isEmpty()) {
-				resourceProduced.forEach((k, v) -> p.getDashboard().storeResourceInLocker(k, v)); //TODO store separatly
-			}
+		if (numberFaithPoints != 0) {
+			p.getDashboard().moveFaithMarker(numberFaithPoints);
+		}
+		if (resourceProduced != null && !resourceProduced.isEmpty()) {
+			resourceProduced.entrySet()
+					.stream()
+					.filter(entry -> entry.getKey() != Resource.ANY)
+					.forEach(entry -> p.getDashboard().storeResourceInLocker(entry.getKey(), entry.getValue()));
 		}
 		// In order to not activate the same production power twice in one turn, after activation 'activated'
 		// flag is set to true.

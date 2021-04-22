@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.controller.exceptions.CardNotBuyableException;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.specialAbilities.DevelopmentCardDiscount;
 
@@ -20,17 +21,22 @@ public class DevelopmentCardGrid {
 
 	/**
 	 * Init method for the class.
-	 * It fills the grid with all Development Cards of the game.
-	 * @param developmentCardDeck the deck of Development Cards.
+	 * It fills the grid with empty stacks of cards.
 	 */
 
-	public void init(Deck developmentCardDeck) {
+	public void init() {
 
 		this.grid = IntStream.range(0, GRID_ROW_LENGTH*GRID_COL_LENGTH)
 				.mapToObj(e->new Stack<DevelopmentCard>())
 				.collect(Collectors.toList());
 
 	}
+
+	/**
+	 * Fill method for the class.
+	 * It fills the grid with all Development Cards of the game.
+	 * @param developmentCardDeck the deck of Development Cards.
+	 */
 
 	public void fillCardGrid(Deck developmentCardDeck) {
 		IntStream.range(0, DEVELOPMENT_CARD_NUM)
@@ -86,10 +92,17 @@ public class DevelopmentCardGrid {
 
 	public boolean isBuyable(int row, int column, Map<Resource, Integer> playerResources, DevelopmentCardDiscount[] activeDiscounts)
 			throws IllegalArgumentException {
-		// TODO add check for errors
 		long contResources;
 		int position = getPosition(row, column);
-		DevelopmentCard developmentCard = grid.get(position).peek();
+		DevelopmentCard developmentCard;
+
+		try {
+			developmentCard = grid.get(position).peek();
+		}
+		catch (EmptyStackException e) {
+			throw new IllegalArgumentException();
+		}
+
 		Map<Resource, Integer> resourceCost = developmentCard.getResourceCost();
 
 		List<DevelopmentCardDiscount> activeDiscountsList = Arrays.asList(Arrays.copyOfRange(activeDiscounts, 0, activeDiscounts.length));
@@ -106,9 +119,4 @@ public class DevelopmentCardGrid {
 
 		return contResources>=resourceCost.size();
 	}
-
-	// buying a card from an empty stack for example
-
-
-
 }
