@@ -16,12 +16,8 @@ public class Hand {
 		cards.add(c);
 	}
 
-	public void discardCardInExcess(int c) {
-		// TODO
-	}
-
-	public void discardCard(int c) {
-		// TODO
+	public LeaderCard removeCard(int c) {
+		return cards.remove(c);
 	}
 
 	public void playLeaderCard(int c) {

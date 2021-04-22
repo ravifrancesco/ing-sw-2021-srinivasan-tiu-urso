@@ -94,17 +94,20 @@ public class Dashboard {
 
 	}
 
+
 	/**
 	 * Allows to place a Leader Card onto the Dashboard.
 	 *
 	 * @param c 						the Leader Card to place.
 	 * @throws IllegalStateException  	in case the leader card slots are full.
+	 * @return the index where the card is placed.
 	 */
-	public void placeLeaderCard(LeaderCard c) throws IllegalStateException {
+	public int placeLeaderCard(LeaderCard c) throws IllegalStateException {
 		if (playedLeaderCards.size() == NUM_LEADER_CARDS) {
 			throw new IllegalStateException();
 		} else {
 			playedLeaderCards.add(c);
+			return playedLeaderCards.indexOf(c);
 		}
 	}
 

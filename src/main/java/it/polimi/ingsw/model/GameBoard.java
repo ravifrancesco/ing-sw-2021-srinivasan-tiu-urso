@@ -30,7 +30,6 @@ public class GameBoard {
 	/**
 	 * The constructor for a GameBoard object.
 	 * It initializes the three decks from the game settings and it creates the market and the development card grid.
-	 * @param gameSettings the settings for the current game.
 	 */
 
 	public GameBoard() {
@@ -66,6 +65,16 @@ public class GameBoard {
 		LeaderCard leaderCard = (LeaderCard) c;
 		discardDeck.add(leaderCard);
 		leaderCard.discard(d);
+	}
+
+	/**
+	 * Allows to add a card to the discard deck.
+	 * @param c the card to be discarded.
+	 */
+
+	public void discardCardInExcess(Card c) {
+		LeaderCard leaderCard = (LeaderCard) c;
+		discardDeck.add(leaderCard);
 	}
 
 	/**

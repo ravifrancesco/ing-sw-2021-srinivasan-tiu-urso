@@ -38,6 +38,7 @@ public class ServerController {
     }
 
     public void reset() {
+        // TODO
         // shouldn't these two be inverted?
         // first we reset the game then we get the next player
         currentPlayer = game.getNextPlayer();
@@ -68,7 +69,7 @@ public class ServerController {
         }
 
         GameBoard gameboard = game.getGameBoard();
-        player.discardLeaderCard(cardToDiscard, gameboard);
+        player.discardLeaderCardInExcess(cardToDiscard, gameboard);
     }
 
     public void getInitialResources(String nickname, Resource resource, int position) throws WrongTurnException, WrongMoveException, DepositCellNotEmpty, IllegalDepositStateException {
@@ -115,12 +116,11 @@ public class ServerController {
 
         Player player = game.getPlayers().get(nickname);
         Dashboard dashboard = player.getDashboard();
-        Map<Resource, Integer> playerResources = dashboard.getResources();
         Map<Banner, Integer> playerBanners = dashboard.getBanners();
 
         if (cardToPlay >= player.getHand().getCards().size() || cardToPlay < 0) {
             throw new CardNotPlayableException("Invalid index");
-        } else if (!player.getFromHand(cardToPlay).isPlayable(playerResources, playerBanners)) {
+        } else if (!player.getFromHand(cardToPlay).isPlayable(playerBanners)) {
             throw new CardNotPlayableException("Not enough resources or banners");
         }
 
@@ -271,7 +271,7 @@ public class ServerController {
         game.startUniquePhase(TurnPhase.BUY);
 
         // handle exception and buy
-        dashboard.placeDevelopmentCard(developmentCard);
+        developmentCard.play(dashboard);
     }
 
     public void activateDevelopmentCardProductionPower(String nickname, int cardToActivate) throws WrongTurnException, PowerNotActivatableException {

@@ -52,7 +52,10 @@ public class DevelopmentCardDiscount implements SpecialAbility {
 		return quantity;
 	}
 
-	//TODO doc
+	/**
+	 * Method to get the type of this special ability.
+	 * @return the type of this special ability.
+	 */
 	public SpecialAbilityType getType() {
 		return SpecialAbilityType.DEVELOPMENT_CARD_DISCOUNT;
 	}

@@ -2,6 +2,7 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.specialAbilities.DevelopmentCardDiscount;
+import it.polimi.ingsw.model.specialAbilities.SpecialAbilityType;
 import it.polimi.ingsw.model.specialAbilities.WhiteMarbleResource;
 
 import java.util.ArrayList;
@@ -43,11 +44,25 @@ public class Player {
 	}
 
 	public void playLeaderCard(int card) {
-		// TODO check auto activation
+		LeaderCard leaderCard = hand.removeCard(card);
+		int pos = dashboard.placeLeaderCard(leaderCard);
+		SpecialAbilityType saType = leaderCard.getSpecialAbility().getType();
+		if(saType == SpecialAbilityType.DEVELOPMENT_CARD_DISCOUNT || saType == SpecialAbilityType.WHITE_MARBLE_RESOURCES) {
+			leaderCard.activate(this);
+		}
+		else if(saType == SpecialAbilityType.WAREHOUSE_EXTRA_SPACE) {
+			leaderCard.activate(this);
+			leaderCard.getSpecialAbility().setLeaderCardPos(pos);
+		}
 	}
 
 	public void discardLeaderCard(int card, GameBoard gameBoard) {
-		// TODO
+		gameBoard.discardCard(hand.removeCard(card), dashboard);
+		hand.removeCard(card);
+	}
+
+	public void discardLeaderCardInExcess(int card, GameBoard gameBoard) {
+		gameBoard.discardCardInExcess(hand.removeCard(card));
 	}
 
 	public Dashboard getDashboard() {
