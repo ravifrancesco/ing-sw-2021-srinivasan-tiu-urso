@@ -177,6 +177,8 @@ public class ServerController {
         productionPower.activate(player);
         dashboard.payPrice(resourcesToPayCost);
 
+        // TODO choice of selectable resources
+
     }
 
     public void discardLeaderCard(String nickname, int cardToDiscard) throws WrongTurnException, CardNotPlayableException {
@@ -223,6 +225,8 @@ public class ServerController {
 
         productionPower.activate(player);
         dashboard.payPrice(resourcesToPayCost);
+
+        //TODO choice of selectable resources
 
     }
 
@@ -340,6 +344,8 @@ public class ServerController {
 
         developmentCard.activate(player);
         dashboard.payPrice(resourcesToPayCost);
+
+        // TODO choice of selectable resources
     }
 
     public void moveResources(String nickname, ArrayList<Pair<Integer, Integer>> moves) throws WrongTurnException, WrongMoveException, IllegalDepositStateException {
