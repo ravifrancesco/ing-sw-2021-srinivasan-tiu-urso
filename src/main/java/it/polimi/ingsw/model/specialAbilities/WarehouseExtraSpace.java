@@ -7,11 +7,12 @@ public class WarehouseExtraSpace implements SpecialAbility {
 
 	private final Resource storedResource;
 
+	private int leaderCardPos;
+
 	public void setLeaderCardPos(int leaderCardPos) {
 		this.leaderCardPos = leaderCardPos;
 	}
 
-	private int leaderCardPos;
 
 	public WarehouseExtraSpace(Resource storedResource) {
 		this.storedResource = storedResource;

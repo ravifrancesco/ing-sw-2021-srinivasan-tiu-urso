@@ -269,7 +269,7 @@ public class Dashboard {
 		Resource[] newDeposit = new Resource[Warehouse.MAX_DEPOSIT_SLOTS];
 		IntStream.range(0, Warehouse.MAX_DEPOSIT_SLOTS).forEach(i -> newDeposit[i] = warehouse.getDeposit()[i]);
 		// making all the moves
-		moves.forEach(p -> swapDepositResources(newDeposit, p.getFirst(), p.getSecond()));
+		moves.forEach(p -> swapDepositResources(newDeposit, p.first, p.second));
 		if(!warehouse.checkShelvesRule(newDeposit)) {
 			throw new IllegalStateException("Moves create an illegal deposit");
 		}
@@ -386,11 +386,11 @@ public class Dashboard {
 	 * Removes the resources from the warehouse
 	 * @param resToPayWith 	a SelectedResource data structure containing the player's choices of where to take the resources from
 	 */
-	public void payPrice(SelectedResources resToPayWith) {
-		resToPayWith.getSelectedDepositPositions().forEach(warehouse::removeFromDeposit);
-		resToPayWith.getSelectedLockerPositions().forEach(warehouse::removeFromLocker);
+	public void payPrice(ResourceContainer resToPayWith) {
+		resToPayWith.getContainedDepositResources().forEach(warehouse::removeFromDeposit);
+		resToPayWith.getContainedLockerResources().forEach(warehouse::removeFromLocker);
 		IntStream.range(0, 1).forEach(i ->
-				resToPayWith.getSelectedExtraDepositsPosition()[i].forEach(pos ->
+				resToPayWith.getContainedExtraDepositResources()[i].forEach(pos ->
 						warehouse.removeFromExtraDeposit(i, pos)));
 	}
 

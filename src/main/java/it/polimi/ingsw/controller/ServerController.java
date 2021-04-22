@@ -11,6 +11,8 @@ import java.util.Map;
 
 public class ServerController {
 
+    // TODO: add checks for ResourceSelector legality
+
 
     private final Game game;
 
@@ -94,6 +96,8 @@ public class ServerController {
         }
     }
 
+    // TODO storeFromSupplyInExtraDeposit
+
 
     public boolean checkInitialPhaseCompletion(Dashboard d) {
         int storedResources = d.getDepositResourceQty();
@@ -127,7 +131,7 @@ public class ServerController {
 
     }
 
-    public void activateLeaderCardProduction(String nickname, int cardToActivate, SelectedResources resourcesToPayCost) throws WrongTurnException, PowerNotActivatableException {
+    public void activateLeaderCardProduction(String nickname, int cardToActivate, ResourceContainer resourcesToPayCost) throws WrongTurnException, PowerNotActivatableException {
 
         if (!currentPlayer.equals(nickname)) {
             throw new WrongTurnException("Not " + nickname + " turn");
@@ -185,7 +189,7 @@ public class ServerController {
 
     }
 
-    public void activateDashboardProduction(String nickname, SelectedResources resourcesToPayCost) throws WrongTurnException, PowerNotActivatableException {
+    public void activateDashboardProduction(String nickname, ResourceContainer resourcesToPayCost) throws WrongTurnException, PowerNotActivatableException {
 
         if (!currentPlayer.equals(nickname)) {
             throw new WrongTurnException("Not " + nickname + " turn");
@@ -257,7 +261,7 @@ public class ServerController {
         dashboard.addResourcesToSupply(marketRes);
     }
 
-    public void buyDevelopmentCard(String nickname, int row, int column, SelectedResources resourcesToPayCost )
+    public void buyDevelopmentCard(String nickname, int row, int column, ResourceContainer resourcesToPayCost )
             throws WrongTurnException, CardNotBuyableException {
         if (!currentPlayer.equals(nickname)) {
             throw new WrongTurnException("Not " + nickname + " turn");
@@ -294,7 +298,7 @@ public class ServerController {
         dashboard.payPrice(resourcesToPayCost);
     }
 
-    public void activateDevelopmentCardProductionPower(String nickname, int cardToActivate, SelectedResources resourcesToPayCost)
+    public void activateDevelopmentCardProductionPower(String nickname, int cardToActivate, ResourceContainer resourcesToPayCost)
             throws WrongTurnException, PowerNotActivatableException {
 
         if (!currentPlayer.equals(nickname)) {

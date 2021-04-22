@@ -95,9 +95,9 @@ public class Warehouse {
 	 * @param move 									a Pair datastructure, containing the two indexes to move.
 	 */
 	public void doDepositMove(Pair<Integer, Integer> move) {
-		Resource temp = deposit[move.getFirst()];
-		deposit[move.getFirst()] = deposit[move.getSecond()];
-		deposit[move.getSecond()] = temp;
+		Resource temp = deposit[move.first];
+		deposit[move.first] = deposit[move.second];
+		deposit[move.second] = temp;
 	}
 
 	/**
@@ -125,7 +125,7 @@ public class Warehouse {
 	 * @param qty							the amount of resource quantity to remove
 	 */
 	public void removeFromLocker(Resource resToRemove, int qty) {
-		locker.put(resToRemove, locker.get(resToRemove) + qty);
+		locker.put(resToRemove, locker.get(resToRemove) - qty);
 	}
 
 	/**
