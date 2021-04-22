@@ -54,9 +54,7 @@ public class Dashboard {
 		this.playedDevelopmentCards = IntStream.range(0, NUM_DEVELOPMENT_CARD_STACKS)
 				.mapToObj(e->new Stack<DevelopmentCard>())
 				.collect(Collectors.toList());
-
 		// TODO add production power initialization
-
 	}
 
 	/**
@@ -83,7 +81,7 @@ public class Dashboard {
 		int faithTrackVP = faithTrack.getVictoryPoints();
 
 		int leaderCardsVP = playedLeaderCards.stream()
-				.map(lc -> lc.getVictoryPoints())
+				.map(LeaderCard::getVictoryPoints)
 				.reduce(0, Integer::sum);
 
 		int developmentCardsVP = playedDevelopmentCards.stream()
@@ -91,6 +89,7 @@ public class Dashboard {
 				.reduce(0, Integer::sum);
 
 		return faithTrackVP + leaderCardsVP + developmentCardsVP;
+
 
 	}
 
@@ -175,7 +174,10 @@ public class Dashboard {
 
 	public Map<Banner, Integer> getBanners() {
 		// TODO
+		return null;
 	}
+
+
 
 	/**
 	 * Returns a Leader Card on the dashboard given the index.
@@ -249,11 +251,10 @@ public class Dashboard {
 
 	/**
 	 * Returns the quantity of resources stored in the Warehouse Deposit.
-	 *
 	 * @return	the quantity of resources stored in the Warehouse Deposit.
 	 */
 	public int getDepositResourceQty() {
-		warehouse.getDepositResourceQty();
+		return warehouse.getDepositResourceQty();
 	}
 
 	/**
@@ -267,7 +268,41 @@ public class Dashboard {
 		if (moves.stream().anyMatch(m -> ((m.first < 0 || m.first > 5) || m.second < 0 || m.second > 5))) {
 			throw new IllegalArgumentException();
 		}
-		// TODO continue
+		// copying current deposit
+		Resource[] newDeposit = new Resource[Warehouse.MAX_DEPOSIT_SLOTS];
+		IntStream.range(0, Warehouse.MAX_DEPOSIT_SLOTS).forEach(i -> newDeposit[i] = warehouse.getDeposit()[i]);
+		// making all the moves
+		moves.forEach(p -> swapDepositResources(newDeposit, p.first, p.second));
+		if(!warehouse.checkShelvesRule(newDeposit)) {
+			throw new IllegalStateException("Moves create an illegal deposit");
+		}
+		moves.forEach(warehouse::doDepositMove);
+	}
+
+	public void moveExtraDepositResources(int leaderCardPosition, int from, int to) {
+		if (leaderCardPosition < 0 || leaderCardPosition > 1 || from < 0 || from > 1 || to < 0 || to > 1) {
+			throw new IllegalArgumentException();
+		}
+		SpecialAbility specialAbility = playedLeaderCards.get(leaderCardPosition).getSpecialAbility();
+
+		if (!specialAbility.getType().equals(SpecialAbilityType.WAREHOUSE_EXTRA_SPACE)) {
+			throw new IllegalArgumentException();
+		}
+
+		warehouse.swapExtraDeposit(leaderCardPosition, from, to);
+	}
+
+	/**
+	 * Support function used by moveDeposit, swaps two positions of a Resource[] array.
+	 *
+	 * @param deposit 					the Resource array
+	 * @param p1 						first position
+	 * @param p2 						second position
+	 */
+	private void swapDepositResources(Resource[] deposit, int p1, int p2) {
+		Resource temp = deposit[p1];
+		deposit[p1] = deposit[p2];
+		deposit[p2] = temp;
 	}
 
 	/**
@@ -279,11 +314,15 @@ public class Dashboard {
 	 * @throws IllegalStateException	if the move does not compile to the game rules.
 	 */
 	public void storeFromSupply(int from, int to) throws IllegalArgumentException, IllegalStateException {
-		// TODO
 		if (from < 0 || from > 3 || to < 0 || to > 5) {
+			// invalid indexes
 			throw new IllegalArgumentException();
 		}
-		// TODO checks that the moves generate a legal deposit -> else IllegalState
+		try {
+			warehouse.storeInDeposit(supply.get(from), to);
+		} catch(IllegalStateException e) {
+			throw new IllegalStateException("Illegal deposit");
+		}
 	}
 
 	/**
@@ -304,7 +343,12 @@ public class Dashboard {
 		if (!specialAbility.getType().equals(SpecialAbilityType.WAREHOUSE_EXTRA_SPACE)) {
 			throw new IllegalArgumentException();
 		}
-		// TODO Continue
+		WarehouseExtraSpace wes = (WarehouseExtraSpace) specialAbility;
+		Resource addedResource = supply.get(from);
+		if(addedResource != wes.getStoredResource()) {
+			throw new IllegalStateException("Added resource does not match extra deposit resource");
+		}
+		warehouse.storeInExtraDeposit(leaderCardPosition, supply.get(from), to);
 	}
 
 	/**
@@ -319,6 +363,38 @@ public class Dashboard {
 				playedDevelopmentCards.stream().
 						mapToInt(Vector::size).
 						reduce(0, Integer::sum) == NUM_DEVELOPMENT_CARDS_TO_WIN;
+	}
+
+	/**
+	 * Activates new extra deposit inside the warehouse
+	 */
+	public void activateExtraDeposit(int leaderCardPos) {
+		// Resource is not needed as a parameter because the check is done each time a new resource is stored,
+		// by the warehouse
+		warehouse.activateExtraDeposit(leaderCardPos);
+	}
+
+
+	/**
+	 * Returns all of the player's resources.
+	 *
+	 * @return 							a map with a count of each total qty of each resource in the warehouse.
+	 */
+	public Map<Resource, Integer> getAllPlayerResources() {
+		return warehouse.getAllResources();
+	}
+
+
+	/**
+	 * Removes the resources from the warehouse
+	 * @param resToPayWith 	a SelectedResource data structure containing the player's choices of where to take the resources from
+	 */
+	public void payPrice(ResourceContainer resToPayWith) {
+		resToPayWith.getContainedDepositResources().forEach(warehouse::removeFromDeposit);
+		resToPayWith.getContainedLockerResources().forEach(warehouse::removeFromLocker);
+		IntStream.range(0, 1).forEach(i ->
+				resToPayWith.getContainedExtraDepositResources()[i].forEach(pos ->
+						warehouse.removeFromExtraDeposit(i, pos)));
 	}
 
 }

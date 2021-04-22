@@ -53,6 +53,7 @@ public class Market {
 	 * @return an ArrayList of collected Resource from the move.
 	 */
 	public ArrayList<Resource> getResources(int move, Player p) {
+		// The check that the 'wmrs' AL contains only activated WhiteMarbleResources is done by the controller
 		return isRowMove(move) ? doRowMove(move, p) : doColMove(move-3, p);
 	}
 

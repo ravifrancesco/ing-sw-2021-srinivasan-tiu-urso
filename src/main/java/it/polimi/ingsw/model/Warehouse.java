@@ -1,33 +1,17 @@
 package it.polimi.ingsw.model;
+import it.polimi.ingsw.common.Pair;
+
 import java.util.*;
 import java.util.stream.IntStream;
 
 public class Warehouse {
 
-	// TODO add free movements of resources
-
-	// TODO remove smart positioning/removal
-
-
-	private Map<Resource, Integer> deposit;
-
-	public Map<Resource, Integer> getDeposit() {
-		return deposit;
-	}
-
-	private Map<Resource, Integer> locker;
-
-	public Map<Resource, Integer> getLocker() {
-		return locker;
-	}
-
 	static final int MAX_EXTRA_DEPOSIT_SLOTS = 2;
+	static final int MAX_DEPOSIT_SLOTS = 6;
 
-	private Map<Resource, Integer> extraDeposit;
-
-	private ArrayList<Resource> extraDepositResources;
-
-	private boolean activatedExtraDeposit;
+	private Resource[] deposit;
+	private Map<Resource, Integer> locker;
+	private Resource[][] extraDeposits;
 
 	/**
 	 * The constructor for the class.
@@ -36,7 +20,7 @@ public class Warehouse {
 	 */
 	public Warehouse() {
 		locker = new HashMap<>();
-		deposit = new HashMap<>();
+		deposit = new Resource[MAX_DEPOSIT_SLOTS];
 		this.clearDeposit();
 		this.clearLocker();
 
@@ -46,11 +30,7 @@ public class Warehouse {
 	 * Initializes the deposit, by setting each resource's stored quantity to 0.
 	 */
 	public void clearDeposit() {
-		deposit.put(Resource.STONE, 0);
-		deposit.put(Resource.SHIELD, 0);
-		deposit.put(Resource.GOLD, 0);
-		deposit.put(Resource.SERVANT, 0);
-
+		deposit = new Resource[MAX_DEPOSIT_SLOTS];
 	}
 
 	/**
@@ -67,81 +47,127 @@ public class Warehouse {
 	 * Clears everything related to extra deposits. (for game reset purposes)
 	 */
 	public void clearExtraDeposits() {
-		activatedExtraDeposit = false;
-		extraDeposit.clear();
-		extraDepositResources.clear();
-		extraDeposit.put(Resource.GOLD, 0);
-		extraDeposit.put(Resource.STONE, 0);
-		extraDeposit.put(Resource.SERVANT, 0);
-		extraDeposit.put(Resource.SHIELD, 0);
+		extraDeposits[0] = new Resource[MAX_EXTRA_DEPOSIT_SLOTS];
+		extraDeposits[1] = new Resource[MAX_EXTRA_DEPOSIT_SLOTS];
 	}
 
 	/**
-	 * Stores resources in the deposit, with no checks on the legality (there's a separate method for that).
-	 * @param resToAdd: ArrayList with the resources to add. The ArrayList collection is chosen due to the Market's
-	 * getResources() method, which returns an ArrayList of collected resources.
+	 * Inits a map with all possible resources. (helper method)
+	 * @param resCtr the map to be init'd.
+	 */
+	public void resCtrInit(HashMap<Resource, Integer> resCtr) {
+		resCtr.put(Resource.STONE, 0);
+		resCtr.put(Resource.GOLD, 0);
+		resCtr.put(Resource.SHIELD, 0);
+		resCtr.put(Resource.SERVANT, 0);
+	}
+
+	/**
+	 * Stores a resource from the dashboard's supply inside the deposit.
+	 * @param resToAdd 					resource to store
+	 * @param pos						deposit position in which the resource is stored
+	 * @throws IllegalStateException	if resource is stored in an illegal position
 	 */
 	public void storeInDeposit(Resource resToAdd, int pos) throws IllegalStateException {
-		//TODO
+		Resource[] newDeposit = new Resource[MAX_DEPOSIT_SLOTS];
+		IntStream.range(0, MAX_DEPOSIT_SLOTS).forEach(i -> newDeposit[i] = deposit[i]);
+		// adding new resource
+		newDeposit[pos] = resToAdd;
+		// checking deposit legality
+		if(!checkShelvesRule(newDeposit)) {
+			throw new IllegalStateException("Deposit positioning is illegal");
+		}
+		// deposit is legal => adding resource to real deposit
+		deposit[pos] = resToAdd;
+	}
+
+	/**
+	 * Clears a deposit position
+	 *
+	 * @param pos							position to clear
+	 */
+	public void removeFromDeposit(int pos) {
+		deposit[pos] = null;
+	}
+
+	/**
+	 * Moves two deposit positions.
+	 * @param move 									a Pair datastructure, containing the two indexes to move.
+	 */
+	public void doDepositMove(Pair<Integer, Integer> move) {
+		Resource temp = deposit[move.first];
+		deposit[move.first] = deposit[move.second];
+		deposit[move.second] = temp;
+	}
+
+	/**
+	 * Returns the amount of stored resources inside the deposit.
+	 *
+	 * @return										the amount of resources inside the deposit
+	 */
+	public int getDepositResourceQty() {
+		return deposit.length;
 	}
 
 	/**
 	 * Stores resources in the locker, with no checks due to the fact that the locker has no restrictions.
-	 * @param resToAdd ArrayList with the resources to add.
+	 *
+	 * @param resToAdd 						ArrayList with the resources to add.
 	 */
 	public void storeInLocker(Resource resToAdd, int qty) {
-		// TODO
+		locker.put(resToAdd, locker.get(resToAdd) + qty);
 	}
 
 	/**
-	 * Stores resources in the extra deposit for that resource. Checks on its legality are done with a separate method.
-	 * @param resToAdd ArrayList with the resources to add.
+	 * Removes resources from the locker
+	 *
+	 * @param resToRemove					resource to remove from
+	 * @param qty							the amount of resource quantity to remove
 	 */
-	public void storeInExtraDeposit(ArrayList<Resource> resToAdd) { resToAdd.forEach(r -> extraDeposit.put(r, extraDeposit.get(r) + 1));}
-
-	/**
-	 * Removes the resources from the warehouse: the resources will at first be taken from the deposit,
-	 * followed by the locker.
-	 * @param cost HashMap Resource-Integer, where the integer is quantity to be removed. (the cost)
-	 */
-	public void removeFromWarehouse(Map<Resource, Integer> cost) {
-		// cost is updated throughout; if deposit has enough then it will just be a map of zeros
-		// 1. remove from deposit
-		cost.forEach((key, value) -> { // for each resource to be removed
-			if(deposit.get(key) - value >= 0) {
-				// deposit has enough of the resource to be removed
-				deposit.put(key, deposit.get(key) - value);
-				cost.put(key, 0);
-			} else {
-				// deposit has less than the required amount of resource to removed:
-				// set the deposit qty to 0 and take the remaining from the locker
-				cost.put(key, value - deposit.get(key));
-				deposit.put(key, 0);
-			}
-		});
-		// 2. remove from extra deposit (leader card abilities) if possible
-		if(hasExtraDeposit()) { attemptRemovalFromExtraDeposit(cost); }
-		// 3. remove from locker
-		removeFromLocker(cost);
+	public void removeFromLocker(Resource resToRemove, int qty) {
+		locker.put(resToRemove, locker.get(resToRemove) - qty);
 	}
 
 	/**
-	 * Used for warehouse removal operations: checks to see if any of the resources to be removed
-	 * are part of an extraDeposit. If so, they will be removed from the extra deposit and the cost HashMap
-	 * will be updated with the remaining (if any) needed quantity.
-	 * @param cost a HashMap Resource-Integer representing the resources to be removed from the warehouse.
+	 * Activates an extra deposit, allowing to store MAX_EXTRA_DEPOSIT_SLOTS extra units of a single resource type.
+	 *
+	 * @param extraDepositLeaderCardPos				position of the extra deposit (leader card)
 	 */
-	public void attemptRemovalFromExtraDeposit(Map<Resource, Integer> cost) {
-		// checks too see what can be removed from the extra warehouses from the cost
-		cost.forEach((key, value) -> {
-			if (extraDeposit.get(key) - value >= 0) {
-				cost.put(key, 0);
-				extraDeposit.put(key, extraDeposit.get(key) - value);
-			} else {
-				cost.put(key, value - extraDeposit.get(key));
-				extraDeposit.put(key, 0);
-			}
-		});
+	public void activateExtraDeposit(int extraDepositLeaderCardPos) {
+		extraDeposits[extraDepositLeaderCardPos] = new Resource[MAX_EXTRA_DEPOSIT_SLOTS];
+	}
+
+	/**
+	 * Stores a resource inside an extra deposit.
+	 *
+	 * @param extraDepositLeaderCardPos				position of the extra deposit (leader card)
+	 * @param r										resource to be stored
+	 * @param pos									position where to store the resource
+	 */
+	public void storeInExtraDeposit(int extraDepositLeaderCardPos, Resource r, int pos) {
+		extraDeposits[extraDepositLeaderCardPos][pos] = r;
+	}
+
+	/**
+	 * Swaps two positions of an extra deposit.
+	 *
+	 * @param extraDepositLeaderCardPos				position of the extra deposit (leader card)
+	 * @param from									first position to swap
+	 * @param to									second position to swap
+	 */
+	public void swapExtraDeposit(int extraDepositLeaderCardPos, int from, int to) {
+		Resource fromResource = extraDeposits[extraDepositLeaderCardPos][from];
+		extraDeposits[extraDepositLeaderCardPos][from] = extraDeposits[extraDepositLeaderCardPos][to];
+		extraDeposits[extraDepositLeaderCardPos][to] = fromResource;
+	}
+
+	/**
+	 * Removes the resource from an extra deposit slot.
+	 * @param extraDepositLeaderCardPos				position of the extra deposit (leader card)
+	 * @param pos									position of the resource to remove
+	 */
+	public void removeFromExtraDeposit(int extraDepositLeaderCardPos, int pos) {
+		extraDeposits[extraDepositLeaderCardPos][pos] = null;
 	}
 
 	/**
@@ -153,21 +179,6 @@ public class Warehouse {
 	}
 
 	/**
-	 * Verifies if the added resources respect the game rules.
-	 * @param resToAdd ArrayList of resources trying to be added
-	 * @return true if the move is legal, false otherwise.
-	 */
-	public boolean checkAddLegality(ArrayList<Resource> resToAdd) {
-		/*
-		 newDeposit is how the deposit would look like after the addition of resToAdd.
-		 */
-		HashMap<Resource, Integer> newDeposit = new HashMap<>(deposit);
-		resToAdd.forEach(r -> newDeposit.put(r, newDeposit.get(r) == null ? 1 : newDeposit.get(r) + 1));
-
-		return checkShelvesRule(newDeposit);
-	}
-
-	/**
 	 * Checks the 'shelves rules' for the deposit:
 	 * <ul>
 	 * <li> The maximum amount of stored resources is 6.
@@ -176,7 +187,7 @@ public class Warehouse {
 	 * @param newDeposit the hypothetical deposit after storage
 	 * @return true if game rules are respected, false otherwise.
 	 */
-	private boolean checkShelvesRule(HashMap<Resource, Integer> newDeposit) {
+	public boolean checkShelvesRule(Resource[] newDeposit) {
 		/*
 		To check whether the shelves rule is respected, we take each quantity from the deposit, sort them in ascending
 		 order and transform it into an array.
@@ -196,92 +207,45 @@ public class Warehouse {
 		If any of those checks is false, then false is returned since the operation is illegal.
 		In this case we return false due to 4 > 3, since we can't store 4 of the same resource.
 		 */
-		Integer[] arr = newDeposit.values().stream().sorted().toArray(Integer[]::new);
+		HashMap<Resource, Integer> resourceCounter = new HashMap<>();
+		resCtrInit(resourceCounter);
+		IntStream.range(0, Warehouse.MAX_DEPOSIT_SLOTS).forEach(i ->
+				resourceCounter.put(newDeposit[i], resourceCounter.get(newDeposit[i]) + 1));
+		Integer[] arr = resourceCounter.values().stream().sorted().toArray(Integer[]::new);
 		return IntStream.range(0, 4).filter(i -> arr[i] <= i).count() == 4;
 	}
 
 	/**
-	 * Check to see if an add operation on an extraDeposit is legal. The check rules are:
-	 * 1. Resources are stored only if an extra deposit of that kind has been activated.
-	 * 2. The stored quantity for each extra warehouse is not over the limit (MAX_EXTRA_DEPOSIT_SLOTS)
-	 * @param resToAdd the resources to be added.
-	 * @return true if the add is legal, false if it is not.
+	 * Returns all the resources contained inside the warehouse. (deposit + locker + extraDeposits if present)
+	 * @return										a Resource Integer map containing all of the warehouse's resources.
 	 */
-	public boolean checkExtraDepositAddLegality(ArrayList<Resource> resToAdd) {
-		// copying current extra deposit
-		HashMap<Resource, Integer> changedExtraD = new HashMap<>(extraDeposit);
-		// adding the desired resources
-		resToAdd.forEach(r -> changedExtraD.put(r, changedExtraD.get(r) + 1));
+	public HashMap<Resource, Integer> getAllResources() {
+		HashMap<Resource, Integer> resourceCounter = new HashMap<>(locker);
 
-		return changedExtraD.values().stream().filter(v -> v > 0 & v <= MAX_EXTRA_DEPOSIT_SLOTS).count() == extraDepositResources.size()
-				& changedExtraD.entrySet().stream().filter(v -> v.getValue() == 0 || extraDepositResources.contains(v.getKey())).count() == changedExtraD.size();
+		Arrays.stream(deposit)
+				.filter(Objects::nonNull)
+				.forEach(r -> resourceCounter.put(r, resourceCounter.get(r)+1));
+
+		Arrays.stream(extraDeposits) // for each extra deposit
+				.filter(Objects::nonNull) // if not null => extraDeposit was activated
+				.forEach(extraDepo ->
+						Arrays.stream(extraDepo)
+								.filter(Objects::nonNull)
+								.forEach(r -> resourceCounter.put(r, resourceCounter.get(r)+1)));
+
+		return resourceCounter;
 	}
 
-	/**
-	 * Checks if there are enough resources to withdraw from the warehouse.
-	 * @param cost a HashMap Resource-Integer, where the integer is the quantity to be removed. (the cost)
-	 * @return true if the warehouse has enough resources, false otherwise.
-	 */
-	public boolean checkRemoveLegality(Map<Resource, Integer> cost) {
-		/*
-		 The check is done through the creation of a HashMap 'remainingResources'
-		 which at first is the union of resources inside the locker and the deposit.
-		 After the merger, each resource cost is subtracted and the map is checked for negative
-		 values: if there are none, it means that the warehouse had enough resources inside and the
-		 operation was legal.
-		 */
-		HashMap<Resource, Integer> remainingResources = new HashMap<>(locker);
-		deposit.forEach((k, v) -> remainingResources.merge(k, v, Integer::sum));
-		if(hasExtraDeposit()) { extraDeposit.forEach((k, v) -> remainingResources.merge(k, v, Integer::sum)); }
-		cost.forEach((k, v) -> remainingResources.merge(k, v, (a, b) -> a-b));
-
-		return remainingResources.values().stream().noneMatch(v -> v < 0);
+	public Resource[] getDeposit() {
+		return deposit;
 	}
 
-	/**
-	 * Activates an extra deposit, allowing to store MAX_EXTRA_DEPOSIT_SLOTS extra units of a single resource type.
-	 * @param r the resource type of which to store MAX_EXTRA_DEPOSIT_SLOTS extra units.
-	 */
-	public void activateExtraDeposit(Resource r) {
-		if(!hasExtraDeposit()) {
-			extraDeposit = new HashMap<>();
-			extraDepositResources = new ArrayList<>();
-			activatedExtraDeposit = true;
-		}
-		extraDeposit.put(Resource.GOLD, 0);
-		extraDeposit.put(Resource.STONE, 0);
-		extraDeposit.put(Resource.SERVANT, 0);
-		extraDeposit.put(Resource.SHIELD, 0);
-		extraDepositResources.add(r);
+	public Map<Resource, Integer> getLocker() {
+		return locker;
 	}
 
-	public boolean hasExtraDeposit() {
-		return activatedExtraDeposit;
+	public Resource[][] getExtraDeposits() {
+		return extraDeposits;
 	}
-
-	// required for tests
-
-	public Map<Resource, Integer> getExtraDeposit() {
-		return extraDeposit;
-	}
-
-	public ArrayList<Resource> getExtraDepositResources() {
-		return extraDepositResources;
-	}
-
-	public boolean isActivatedExtraDeposit() {
-		return activatedExtraDeposit;
-	}
-
-	public Map<Resource, Integer> getResourcesInDeposit() {
-		// TODO
-		return null;
-	}
-
-	public Map<Resource, Integer> getResourcesInLocker() {
-		// TODO
-		return null;
-	}
-
 }
 
