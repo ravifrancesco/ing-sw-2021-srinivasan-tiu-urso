@@ -16,6 +16,8 @@ import java.util.stream.Collectors;
 
 public class LeaderCard implements Card {
 
+	// TODO leader cards don't have resource cost, remove resourceCost and change isActivatable
+
 	private final int id;
 	private final int victoryPoints;
 	private final Map<Resource, Integer> resourceCost;
@@ -122,7 +124,7 @@ public class LeaderCard implements Card {
 	 * @param playerBanners all the banner of the player.
 	 * @return if the card is playable or not with the given resources and banners.
 	 */
-	public boolean isPlayable(Map<Resource, Integer> playerResources, Map<Banner, Integer> playerBanners) {
+	public boolean isPlayable(Map<Banner, Integer> playerBanners) {
 		long contResources;
 		Map<Banner, Integer> playerBannersCopy = playerBanners.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 		Map<Banner, Integer> bannerCostCopy = bannerCost.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));

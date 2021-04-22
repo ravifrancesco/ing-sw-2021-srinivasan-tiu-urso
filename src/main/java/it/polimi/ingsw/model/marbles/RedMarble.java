@@ -10,7 +10,7 @@ public class RedMarble implements Marble {
      */
     @Override
     public Resource getResource(Player p) {
-        // p.getDashboard().moveFaithMarker(1); // TODO implement after dashboard implementation
+        p.getDashboard().moveFaithMarker(1);
         return null;
     }
 }

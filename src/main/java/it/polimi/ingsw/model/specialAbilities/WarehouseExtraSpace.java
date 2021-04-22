@@ -7,6 +7,13 @@ public class WarehouseExtraSpace implements SpecialAbility {
 
 	private final Resource storedResource;
 
+	private int leaderCardPos;
+
+	public void setLeaderCardPos(int leaderCardPos) {
+		this.leaderCardPos = leaderCardPos;
+	}
+
+
 	public WarehouseExtraSpace(Resource storedResource) {
 		this.storedResource = storedResource;
 	}
@@ -16,7 +23,7 @@ public class WarehouseExtraSpace implements SpecialAbility {
 	 */
 	@Override
 	public void activate(Player p) {
-		p.getDashboard().getWarehouse().activateExtraDeposit(storedResource);
+		p.getDashboard().activateExtraDeposit(leaderCardPos);
 	}
 
 	//TODO doc
@@ -27,4 +34,5 @@ public class WarehouseExtraSpace implements SpecialAbility {
 	public Resource getStoredResource() {
 		return storedResource;
 	}
+
 }
