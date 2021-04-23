@@ -1,7 +1,5 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.specialAbilities.TurnPhase;
-
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -19,6 +17,8 @@ public class Game {
 
 	private TurnPhase turnPhase;
 
+	private boolean gameEnded;
+
 	public Game(String gameId) {
 		this.gameId = gameId;
 		this.players = new LinkedHashMap<>();
@@ -28,10 +28,11 @@ public class Game {
 		this.gameSettings = gameSettings;
 	}
 
-	public void init() {
-		gameBoard.init(gameSettings);
-		players.values().forEach(p -> p.init(gameSettings));
+	public void reset() {
+		gameBoard.reset(gameSettings);
+		players.values().forEach(p -> p.reset(gameSettings));
 		this.playerOrder = players.keySet().iterator();
+		this.gameEnded = false;
 	}
 
 	public boolean checkEnd() {
@@ -81,4 +82,12 @@ public class Game {
 		return turnPhase;
 	}
 
+	public void endGame() {
+
+	}
+
+	public Game getGameStatus() {
+		players.values().forEach(Player::updateVictoryPoints);
+		return this;
+	}
 }

@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model.specialAbilities;
+package it.polimi.ingsw.model;
 
 public enum TurnPhase {
 
@@ -10,6 +10,8 @@ public enum TurnPhase {
 
     PRODUCTION,
 
-    BUY
+    BUY,
+
+    ENDGAME
 
 }

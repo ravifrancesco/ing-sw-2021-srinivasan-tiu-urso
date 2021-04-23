@@ -27,6 +27,8 @@ public class Player {
 
 	private int numActiveWMR;
 
+	private int victoryPoints;
+
 	// WMR = white marble resource
 
 	public Player() {
@@ -41,7 +43,9 @@ public class Player {
 		return hand;
 	}
 
-	public void init(GameSettings gameSettings) {
+	public void reset(GameSettings gameSettings) {
+		//TODO reset everything
+		this.victoryPoints = 0;
 	}
 
 	public void playLeaderCard(int card, int position) {
@@ -115,6 +119,10 @@ public class Player {
 	public boolean checkWMR(ArrayList<WhiteMarbleResource> wmrs) {
 		// TODO
 		return true;
+	}
+
+	public void updateVictoryPoints() {
+		this.victoryPoints = dashboard.computePlayerPoints();
 	}
 
 }

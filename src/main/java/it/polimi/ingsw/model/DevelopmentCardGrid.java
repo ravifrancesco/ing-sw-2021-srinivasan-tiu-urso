@@ -24,7 +24,7 @@ public class DevelopmentCardGrid {
 	 * It fills the grid with empty stacks of cards.
 	 */
 
-	public void init() {
+	public void reset() {
 
 		this.grid = IntStream.range(0, GRID_ROW_LENGTH*GRID_COL_LENGTH)
 				.mapToObj(e->new Stack<DevelopmentCard>())
@@ -109,7 +109,7 @@ public class DevelopmentCardGrid {
 
 		resourceCost.entrySet().forEach(e-> activeDiscountsList.stream()
 				.filter(e2 -> e.getKey() == e2.getResource())
-				.forEach(e2 -> e.setValue(e.getValue()-e2.getQuantity()>=0 ? e.getValue()-e2.getQuantity() : 0)));
+				.forEach(e2 -> e.setValue(Math.max(e.getValue() - e2.getQuantity(), 0))));
 
 		resourceCost.values().removeIf(v -> v==0);
 

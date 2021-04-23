@@ -17,7 +17,10 @@ public class ServerController {
     private final Game game;
 
     private final int numberOfPlayers;
+
     private String currentPlayer;
+    private String firstPlayer;
+
     private int firstTurns;
 
     public ServerController(String gameId, int numberOfPlayers) {
@@ -40,11 +43,9 @@ public class ServerController {
     }
 
     public void reset() {
-        // TODO
-        // shouldn't these two be inverted?
-        // first we reset the game then we get the next player
+        game.reset();
         currentPlayer = game.getNextPlayer();
-        game.init();
+        firstPlayer = currentPlayer;
         firstTurns = 0;
     }
 
@@ -400,7 +401,7 @@ public class ServerController {
         }
     }
 
-    public void endTurn(String nickname) throws WrongTurnException, LeaderCardInExcessException, WrongMoveException {
+    public boolean endTurn(String nickname) throws WrongTurnException, LeaderCardInExcessException, WrongMoveException {
         if (!currentPlayer.equals(nickname)) {
             throw new WrongTurnException("Not " + nickname + " turn");
         }
@@ -427,7 +428,9 @@ public class ServerController {
             throw new WrongMoveException(currentPlayer + " has not acquired all due resources.");
         }
 
-        if(firstTurns < numberOfPlayers) {
+        if(player.getDashboard().checkGameEnd() && game.getTurnPhase() != TurnPhase.ENDGAME) {
+            game.startUniquePhase(TurnPhase.ENDGAME);
+        } else if(firstTurns < numberOfPlayers) {
             dashboard.moveFaithMarker(firstTurns < 2 ? 0 : 1);
             firstTurns += 1;
             game.startUniquePhase(TurnPhase.FIRST_TURN);
@@ -436,5 +439,11 @@ public class ServerController {
         }
 
         currentPlayer = game.getNextPlayer();
+
+        return game.getTurnPhase() == TurnPhase.ENDGAME && currentPlayer.equals(firstPlayer);
+    }
+
+    public Game getGameStatus() {
+        return game.getGameStatus();
     }
 }
