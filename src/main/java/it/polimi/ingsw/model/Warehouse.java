@@ -6,6 +6,7 @@ import java.util.stream.IntStream;
 
 public class Warehouse {
 
+	static final int MAX_EXTRA_DEPOSIT_SPACE = 2;
 	static final int MAX_EXTRA_DEPOSIT_SLOTS = 2;
 	static final int MAX_DEPOSIT_SLOTS = 6;
 
@@ -24,6 +25,12 @@ public class Warehouse {
 		this.clearDeposit();
 		this.clearLocker();
 
+	}
+
+	public void reset() {
+		this.clearDeposit();
+		this.clearLocker();
+		extraDeposits = new Resource[MAX_EXTRA_DEPOSIT_SLOTS][MAX_EXTRA_DEPOSIT_SPACE];
 	}
 
 	/**

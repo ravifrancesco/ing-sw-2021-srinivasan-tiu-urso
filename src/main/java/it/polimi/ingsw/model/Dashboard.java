@@ -57,6 +57,15 @@ public class Dashboard {
 		// TODO add production power initialization
 	}
 
+	public void reset() {
+		warehouse.reset();
+		faithTrack.reset();
+		playedLeaderCards.clear();
+		dashBoardProductionPower.reset();
+		supply.clear();
+		playedDevelopmentCards.forEach(Vector::clear);
+	}
+
 	/**
 	 * Allows to move the Faith Marker on the FaithTrack.
 	 * @param pos represents how many positions to go on.
@@ -105,10 +114,7 @@ public class Dashboard {
 		if (playedLeaderCards.size() == NUM_LEADER_CARDS) {
 			throw new IllegalStateException();
 		} else {
-			if (playedLeaderCards.get(position)!=null) {
-				playedLeaderCards.add(position, c);
-			}
-			else { throw new IllegalArgumentException(); }
+			playedLeaderCards.add(c);
 		}
 	}
 

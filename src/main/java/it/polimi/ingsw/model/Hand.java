@@ -12,6 +12,10 @@ public class Hand {
 		this.cards = new ArrayList<>();
 	}
 
+	public void reset() {
+		this.cards.clear();
+	}
+
 	public void addCard(LeaderCard c) {
 		cards.add(c);
 	}
@@ -20,7 +24,11 @@ public class Hand {
 		return cards.remove(c);
 	}
 
-	public ArrayList<LeaderCard> getCards() {
-		return cards;
+	public LeaderCard getCard(int c) {
+		return cards.get(c);
+	}
+
+	public int getHandSize() {
+		return cards.size();
 	}
 }

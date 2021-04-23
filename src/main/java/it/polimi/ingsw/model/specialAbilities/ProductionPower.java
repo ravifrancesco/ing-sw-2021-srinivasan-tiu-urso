@@ -16,10 +16,11 @@ import java.util.stream.Collectors;
 
 public class ProductionPower implements SpecialAbility {
 
-	private Map<Resource, Integer> resourceRequired;
-	private Map<Resource, Integer> resourceProduced;
+	private final Map<Resource, Integer> resourceRequired;
+	private Map<Resource, Integer> resourceRequiredModified;
+	private final Map<Resource, Integer> resourceProduced;
+	private Map<Resource, Integer> resourceProducedModified;
 	private int numberFaithPoints;
-	private boolean selectableResource;
 	private boolean activated;
 
 	/**
@@ -27,14 +28,12 @@ public class ProductionPower implements SpecialAbility {
 	 * @param resourceRequired represents the cost to activate the production power.
 	 * @param resourceProduced represents the resources produced.
 	 * @param numberFaithPoints represents the faith points given by the production power.
-	 * @param selectableResource represents if the production power gives a selectable resource or not.
 	 */
 
-	public ProductionPower(Map<Resource, Integer> resourceRequired, Map<Resource, Integer> resourceProduced, int numberFaithPoints, boolean selectableResource) {
+	public ProductionPower(Map<Resource, Integer> resourceRequired, Map<Resource, Integer> resourceProduced, int numberFaithPoints) {
 		this.resourceRequired = resourceRequired.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 		this.resourceProduced = resourceProduced != null ? resourceProduced.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)) : null;
 		this.numberFaithPoints = numberFaithPoints;
-		this.selectableResource = selectableResource;
 		this.activated = false;
 	}
 
@@ -95,16 +94,6 @@ public class ProductionPower implements SpecialAbility {
 	}
 
 	/**
-	 * Getter for selectable resources.
-	 * @return if the production power gives a selectable resource or not.
-	 */
-
-	public boolean isSelectableResource() {
-		return selectableResource;
-	}
-
-
-	/**
 	 * Allows to know if this card is activatable.
 	 * @param playerResources all the resources of the player.
 	 * @return if this card is activatable or not with the given resources.
@@ -117,12 +106,7 @@ public class ProductionPower implements SpecialAbility {
 				.forEach(e2 -> {int diff = e.getValue()-e2.getValue(); e.setValue(Math.max(diff, 0));
 					e2.setValue(-diff); } ));
 
-		if(playerResourcesCopy.values().stream().anyMatch(v -> v<0)) { return false; }
-
-		if(selectableResource) {
-			contAny = resourceRequired.get(Resource.ANY);
-			return playerResourcesCopy.values().stream().reduce(0, Integer::sum) >= contAny;
-		}
+		if(playerResources.values().stream().anyMatch(v -> v<0)) { return false; }
 
 		return true;
 	}
@@ -156,8 +140,6 @@ public class ProductionPower implements SpecialAbility {
 		}
 
 		result += "FP=" + numberFaithPoints + ";";
-
-		result += "SR=" + (selectableResource ? "y" : "n") + ";";
 
 		return result;
 	}

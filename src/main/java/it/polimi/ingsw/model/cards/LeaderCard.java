@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.controller.exceptions.PowerNotActivatableException;
 import it.polimi.ingsw.model.Banner;
 import it.polimi.ingsw.model.Dashboard;
 import it.polimi.ingsw.model.Player;
