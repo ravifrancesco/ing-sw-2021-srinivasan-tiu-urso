@@ -16,11 +16,8 @@ import java.util.stream.Collectors;
 
 public class LeaderCard implements Card {
 
-	// TODO leader cards don't have resource cost, remove resourceCost and change isActivatable
-
 	private final int id;
 	private final int victoryPoints;
-	private final Map<Resource, Integer> resourceCost;
 	private final Map<Banner, Integer> bannerCost;
 	private final SpecialAbility specialAbility;
 
@@ -30,21 +27,35 @@ public class LeaderCard implements Card {
 	 * and the special ability.
 	 * @param id represents the unique id of the card.
 	 * @param victoryPoints represents the victory points given by the card.
-	 * @param resourceCost represents the resource cost to buy the card.
 	 * @param bannerCost represents the banner cost to buy the card.
 	 * @param specialAbility represents the special ability of the card.
 	 */
 	public LeaderCard(int id, int victoryPoints, Map<Resource, Integer> resourceCost, Map<Banner, Integer> bannerCost, SpecialAbility specialAbility) {
 		this.id = id;
 		this.victoryPoints = victoryPoints;
-		this.resourceCost = resourceCost.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 		this.bannerCost = bannerCost.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 		this.specialAbility = specialAbility;
 	}
 
+	/**
+	 * Allows to place the card in the player dashboard.
+	 * @param d represents the dashboard of the player.
+	 * @param position represent the position where to place the card.
+	 */
+
+	@Override
+	public void play(Dashboard d, int position) {
+		d.placeLeaderCard(this, position);
+	}
+
+	/**
+	 * Allows to activate the special ability of the leader card.
+	 * @param p represents the player.
+	 */
+
 	@Override
 	public void activate(Player p) {
-		//Implementing later..
+		specialAbility.activate(p);
 	}
 
 	/**
@@ -69,15 +80,6 @@ public class LeaderCard implements Card {
 	 */
 	public int getVictoryPoints() {
 		return victoryPoints;
-	}
-
-	/**
-	 * Getter for resourceCost.
-	 * @return the resource cost of the card.
-	 */
-
-	public Map<Resource, Integer> getResourceCost() {
-		return resourceCost.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 	}
 
 	/**
@@ -106,10 +108,6 @@ public class LeaderCard implements Card {
 		String result="";
 		result+="ID="+id+";VP="+victoryPoints+";";
 
-		result += resourceCost.keySet().stream()
-				.map(key -> key + ":" + resourceCost.get(key))
-				.collect(Collectors.joining(",", "RC=", ";"));
-
 		result += bannerCost.keySet().stream()
 				.map(key -> key.getColor().name() + ":" + key.getLevel() + ":" + bannerCost.get(key))
 				.collect(Collectors.joining(",", "BC=", ";"));
@@ -120,20 +118,12 @@ public class LeaderCard implements Card {
 
 	/**
 	 * Allows to know if the card is playable.
-	 * @param playerResources all the resources of the player.
 	 * @param playerBanners all the banner of the player.
-	 * @return if the card is playable or not with the given resources and banners.
+	 * @return if the card is playable or not with the given banners.
 	 */
 	public boolean isPlayable(Map<Banner, Integer> playerBanners) {
-		long contResources;
 		Map<Banner, Integer> playerBannersCopy = playerBanners.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 		Map<Banner, Integer> bannerCostCopy = bannerCost.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-
-		contResources=resourceCost.entrySet().stream()
-				.filter(entry -> playerResources.get(entry.getKey())!=null && playerResources.get(entry.getKey())>=entry.getValue())
-				.count();
-
-		if(contResources<resourceCost.size()){ return false; }
 
 		bannerCostCopy.entrySet().forEach(e-> playerBannersCopy.entrySet().stream()
 				.filter(e2 -> e.getKey().equalsColor(e2.getKey()) && e.getKey().equalsLevel(e2.getKey()))

@@ -93,17 +93,22 @@ public class Dashboard {
 
 	}
 
+
 	/**
 	 * Allows to place a Leader Card onto the Dashboard.
 	 *
 	 * @param c 						the Leader Card to place.
 	 * @throws IllegalStateException  	in case the leader card slots are full.
+	 * @throws IllegalArgumentException in case the place is already full.
 	 */
-	public void placeLeaderCard(LeaderCard c) throws IllegalStateException {
+	public void placeLeaderCard(LeaderCard c, int position) throws IllegalStateException {
 		if (playedLeaderCards.size() == NUM_LEADER_CARDS) {
 			throw new IllegalStateException();
 		} else {
-			playedLeaderCards.add(c);
+			if (playedLeaderCards.get(position)!=null) {
+				playedLeaderCards.add(position, c);
+			}
+			else { throw new IllegalArgumentException(); }
 		}
 	}
 
@@ -114,7 +119,9 @@ public class Dashboard {
 	 * @throws IllegalStateException 	in case the are no slots available
 	 * 									for the development card.
 	 */
-	public void placeDevelopmentCard(DevelopmentCard c) throws IllegalStateException {
+	public void placeDevelopmentCard(DevelopmentCard c, int position) throws IllegalStateException {
+
+		//TODO give the choice to the player if there are two banner of the same color and the same level
 
 		Banner banner = c.getBanner();
 		Stack<DevelopmentCard> stack;

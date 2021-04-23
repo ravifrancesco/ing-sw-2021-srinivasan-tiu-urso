@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.specialAbilities;
 
+import it.polimi.ingsw.model.Banner;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Resource;
 
@@ -13,8 +14,6 @@ import java.util.stream.Collectors;
 
 public class ProductionPower implements SpecialAbility {
 
-	//TODO allow to have any resourceRequired (for the base production power of the dashboard)
-
 	private Map<Resource, Integer> resourceRequired;
 	private Map<Resource, Integer> resourceProduced;
 	private int numberFaithPoints;
@@ -24,7 +23,7 @@ public class ProductionPower implements SpecialAbility {
 	/**
 	 * The constructor for a Production Power object.
 	 * @param resourceRequired represents the cost to activate the production power.
-	 * @param resourceProduced represents the resources producted.
+	 * @param resourceProduced represents the resources produced.
 	 * @param numberFaithPoints represents the faith points given by the production power.
 	 * @param selectableResource represents if the production power gives a selectable resource or not.
 	 */
@@ -44,19 +43,23 @@ public class ProductionPower implements SpecialAbility {
 
 	@Override
 	public void activate(Player p) {
-		// TODO: clean this code, null check is useless
-		if(p!=null) {
-			if (numberFaithPoints != 0) {
-				p.getDashboard().moveFaithMarker(numberFaithPoints);
-			}
-			if (resourceProduced != null && !resourceProduced.isEmpty()) {
-				resourceProduced.forEach((k, v) -> p.getDashboard().storeResourceInLocker(k, v)); //TODO store separatly
-			}
+		if (numberFaithPoints != 0) {
+			p.getDashboard().moveFaithMarker(numberFaithPoints);
+		}
+		if (resourceProduced != null && !resourceProduced.isEmpty()) {
+			resourceProduced.entrySet()
+					.stream()
+					.filter(entry -> entry.getKey() != Resource.ANY)
+					.forEach(entry -> p.getDashboard().storeResourceInLocker(entry.getKey(), entry.getValue()));
 		}
 		// In order to not activate the same production power twice in one turn, after activation 'activated'
 		// flag is set to true.
 		activated = true;
 	}
+
+	/**
+	 * Allows to activate again the production power in the next turns.
+	 */
 
 	public void reset() {
 		activated = false;
@@ -118,14 +121,32 @@ public class ProductionPower implements SpecialAbility {
 	 */
 
 	public boolean isActivatable(Map<Resource, Integer> playerResources) {
-		long contResources;
+		int contAny;
 
-		contResources=resourceRequired.entrySet().stream()
-				.filter(entry -> playerResources.get(entry.getKey())!=null && playerResources.get(entry.getKey())>=entry.getValue())
-				.count();
+		Map<Resource, Integer> resourceRequiredNoSelectable = resourceRequired.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+		Map<Resource, Integer> playerResourcesCopy = playerResources.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
-		return contResources>=resourceRequired.size();
+		resourceRequiredNoSelectable.remove(Resource.ANY);
+
+		resourceRequiredNoSelectable.entrySet().forEach(e-> playerResourcesCopy.entrySet().stream()
+				.filter(e2 -> e.getKey() == e2.getKey())
+				.forEach(e2 -> {int diff = e.getValue()-e2.getValue(); e.setValue(Math.max(diff, 0));
+					e2.setValue(-diff); } ));
+
+		if(playerResourcesCopy.values().stream().anyMatch(v -> v<0)) { return false; }
+
+		if(selectableResource) {
+			contAny = resourceRequired.get(Resource.ANY);
+			return playerResourcesCopy.values().stream().reduce(0, Integer::sum) >= contAny;
+		}
+
+		return true;
 	}
+
+	/**
+	 * Allows to know if this production power has been activated in the current turn.
+	 * @return true if the production power is activatable, false otherwise.
+	 */
 
 	public boolean isActivatable() {
 		return !activated;
@@ -157,7 +178,11 @@ public class ProductionPower implements SpecialAbility {
 		return result;
 	}
 
-	//TODO doc
+	/**
+	 * Method to get the type of this special ability.
+	 * @return the type of this special ability.
+	 */
+
 	public SpecialAbilityType getType() {
 		return SpecialAbilityType.PRODUCTION_POWER;
 	}

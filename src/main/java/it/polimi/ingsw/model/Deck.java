@@ -67,6 +67,11 @@ public class Deck {
 
 	public int getSize() { return deck.size(); }
 
+	/**
+	 * Creates a copy of the deck.
+	 * @return a copy of the deck.
+	 */
+
 	public Deck copy() {
 		return new Deck(this.deck);
 	}

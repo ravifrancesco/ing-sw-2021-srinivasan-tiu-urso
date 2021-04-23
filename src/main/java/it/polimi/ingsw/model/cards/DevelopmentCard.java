@@ -45,12 +45,12 @@ public class DevelopmentCard implements Card {
 	/**
 	 * Allows to place the card in the player dashboard.
 	 * @param d represents the dashboard of the player.
-	 * @param position represents the position where to place the card.
+	 * @param position represent the position where to place the card.
 	 */
 
 	@Override
 	public void play(Dashboard d, int position) {
-		d.insertDevelopmentCard(this, position);
+		d.placeDevelopmentCard(this, position);
 	}
 
 	/**
@@ -113,10 +113,6 @@ public class DevelopmentCard implements Card {
 	 * @return a string representation of the object.
 	 */
 
-	public void resetProductionPower() {
-		this.productionPower.reset();
-	}
-
 	@Override
 	public String toString() {
 		String result="";
@@ -130,6 +126,14 @@ public class DevelopmentCard implements Card {
 		result += productionPower.toString();
 
 		return result;
+	}
+
+	/**
+	 * Allows to reset the production power of the card (in order to not activate the same production power twice in one turn).
+	 */
+
+	public void resetProductionPower() {
+		this.productionPower.reset();
 	}
 
 	/**

@@ -30,7 +30,6 @@ public class GameBoard {
 	/**
 	 * The constructor for a GameBoard object.
 	 * It initializes the three decks from the game settings and it creates the market and the development card grid.
-	 * @param gameSettings the settings for the current game.
 	 */
 
 	public GameBoard() {
@@ -43,17 +42,17 @@ public class GameBoard {
 
 	/**
 	 * The init method for the class. It shuffles the development cards and the leader cards decks.
-	 * It also reset the market and it fills the development card grid.
+	 * It also resets the market and it resets and fills the development card grid.
 	 */
 
-	// TODO Change
 	public void init(GameSettings gameSettings) {
 		developmentDeck.init(Arrays.asList(gameSettings.getDevelopmentCards()));
 		leaderDeck.init(Arrays.asList(gameSettings.getLeaderCards()));
 		developmentDeck.shuffle();
 		leaderDeck.shuffle();
 		market.reset();
-		developmentCardGrid.init(developmentDeck);
+		developmentCardGrid.init();
+		developmentCardGrid.fillCardGrid(developmentDeck);
 	}
 
 	/**
@@ -66,6 +65,16 @@ public class GameBoard {
 		LeaderCard leaderCard = (LeaderCard) c;
 		discardDeck.add(leaderCard);
 		leaderCard.discard(d);
+	}
+
+	/**
+	 * Allows to add a card to the discard deck without moving the faith marker (first discarding).
+	 * @param c the card to be discarded.
+	 */
+
+	public void discardCardInExcess(Card c) {
+		LeaderCard leaderCard = (LeaderCard) c;
+		discardDeck.add(leaderCard);
 	}
 
 	/**
