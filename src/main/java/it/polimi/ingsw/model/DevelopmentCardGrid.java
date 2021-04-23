@@ -90,24 +90,26 @@ public class DevelopmentCardGrid {
 	 * @return if the development card is buyable or not with the given resources.
 	 */
 
-	public boolean isBuyable(int row, int column, Map<Resource, Integer> playerResources, DevelopmentCardDiscount[] activeDiscounts)
+	public boolean isBuyable(int row, int column, Map<Resource, Integer> playerResources, ArrayList<DevelopmentCardDiscount> activeDiscounts)
 			throws IllegalArgumentException {
 		long contResources;
 		int position = getPosition(row, column);
 		DevelopmentCard developmentCard;
 
+		if (row < 1 || row > 3 || column < 1 || column > 4) {
+			throw new IllegalArgumentException("Invalid position");
+		}
+
 		try {
 			developmentCard = grid.get(position).peek();
 		}
 		catch (EmptyStackException e) {
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("Invalid position");
 		}
 
 		Map<Resource, Integer> resourceCost = developmentCard.getResourceCost();
 
-		List<DevelopmentCardDiscount> activeDiscountsList = Arrays.asList(Arrays.copyOfRange(activeDiscounts, 0, activeDiscounts.length));
-
-		resourceCost.entrySet().forEach(e-> activeDiscountsList.stream()
+		resourceCost.entrySet().forEach(e-> activeDiscounts.stream()
 				.filter(e2 -> e.getKey() == e2.getResource())
 				.forEach(e2 -> e.setValue(Math.max(e.getValue() - e2.getQuantity(), 0))));
 

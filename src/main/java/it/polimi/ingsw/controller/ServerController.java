@@ -63,7 +63,7 @@ public class ServerController {
         }
 
         Player player = game.getPlayers().get(currentPlayer);
-        int handSize = player.getHand().getCards().size();
+        int handSize = player.getHand().getHandSize();
 
         if (handSize <= 2) {
             throw new WrongMoveException("Already discarded initial leader cards.");
@@ -191,7 +191,7 @@ public class ServerController {
 
         Player player = game.getPlayers().get(currentPlayer);
 
-        if (cardToDiscard >= player.getHand().getCards().size() || cardToDiscard < 0) {
+        if (cardToDiscard >= player.getHand().getHandSize() || cardToDiscard < 0) {
             throw new CardNotPlayableException("Invalid index");
         }
 
@@ -274,19 +274,13 @@ public class ServerController {
         dashboard.addResourcesToSupply(marketRes);
     }
 
-    public void buyDevelopmentCard(String nickname, int row, int column, ResourceContainer resourcesToPayCost )
-            throws WrongTurnException, CardNotBuyableException {
-
-        //TODO choose the position where to play the card
+    public void buyDevelopmentCard(String nickname, int row, int column, ResourceContainer resourcesToPayCost, int position)
+            throws WrongTurnException, CardNotBuyableException, CardNotPlayableException {
 
         if (!currentPlayer.equals(nickname)) {
             throw new WrongTurnException("Not " + nickname + " turn");
         } else if (!game.getTurnPhase().equals(TurnPhase.COMMON)) {
             throw new WrongTurnPhaseException("Turn phase is " + game.getTurnPhase().name());
-        }
-
-        if (row < 1 || row > 3 || column < 1 || column > 4) {
-            throw new CardNotBuyableException("Invalid index");
         }
 
         Player player = game.getPlayers().get(nickname);
@@ -295,7 +289,7 @@ public class ServerController {
         DevelopmentCardGrid developmentCardGrid = gameBoard.getDevelopmentCardGrid();
 
         Map<Resource, Integer> playerResources = dashboard.getAllPlayerResources();
-        DevelopmentCardDiscount[] activeDiscounts = player.getActiveDiscounts();
+        ArrayList<DevelopmentCardDiscount> activeDiscounts = player.getActiveDiscounts();
         DevelopmentCard developmentCard;
 
         try {
@@ -309,10 +303,14 @@ public class ServerController {
         developmentCard = developmentCardGrid.buy(row, column);
         game.startUniquePhase(TurnPhase.BUY);
 
-        // handle exception and buy
-        int position=0;
-        developmentCard.play(dashboard, position);
-        dashboard.payPrice(resourcesToPayCost);
+       try {
+           dashboard.placeDevelopmentCard(developmentCard, position);
+       }
+       catch (IllegalStateException e) {
+           throw new CardNotPlayableException("Not a valid index");
+       }
+
+       dashboard.payPrice(resourcesToPayCost);
     }
 
     public void activateDevelopmentCardProductionPower(String nickname, int cardToActivate, ResourceContainer resourcesToPayCost)
@@ -410,7 +408,7 @@ public class ServerController {
         Player player = game.getPlayers().get(nickname);
         Dashboard dashboard = player.getDashboard();
 
-        if (player.getHand().getCards().size() > 2) {
+        if (player.getHand().getHandSize() > 2) {
             throw new LeaderCardInExcessException(currentPlayer + " hasn't discarded enough cards");
         }
 

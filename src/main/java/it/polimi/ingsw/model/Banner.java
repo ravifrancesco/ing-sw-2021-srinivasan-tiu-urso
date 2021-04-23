@@ -75,10 +75,10 @@ public class Banner {
 	 * Compares the color and the level of two banners.
 	 *
 	 * @param b the other banner to compare.
-	 * @return true if the two banners have the same color and b.level > b.level.
+	 * @return true if the two banners have the same color and this.level = b.level-1.
 	 */
-	public boolean isGreater(Banner b) {
-		return equalsColor(b) && b.level > this.level;
+	public boolean isOneLess(Banner b) {
+		return equalsColor(b) && this.level==b.getLevel()-1;
 	}
 
 }

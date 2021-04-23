@@ -4,7 +4,9 @@ import it.polimi.ingsw.model.Banner;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Resource;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -66,18 +68,6 @@ public class ProductionPower implements SpecialAbility {
 	}
 
 	/**
-	 * It allows to store one selectable resource.
-	 * @param p the player who activated the production power.
-	 * @param r the resource chosen by the player.
-	 */
-
-	public void giveOneSelectableResource(Player p, Resource r) {
-		if(selectableResource){
-			p.getDashboard().storeResourceInLocker(r, 1);
-		}
-	}
-
-	/**
 	 * Getter for resource required.
 	 * @return the resource cost of the production power.
 	 */
@@ -121,14 +111,8 @@ public class ProductionPower implements SpecialAbility {
 	 */
 
 	public boolean isActivatable(Map<Resource, Integer> playerResources) {
-		int contAny;
 
-		Map<Resource, Integer> resourceRequiredNoSelectable = resourceRequired.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-		Map<Resource, Integer> playerResourcesCopy = playerResources.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-
-		resourceRequiredNoSelectable.remove(Resource.ANY);
-
-		resourceRequiredNoSelectable.entrySet().forEach(e-> playerResourcesCopy.entrySet().stream()
+		resourceRequiredModified.entrySet().forEach(e-> playerResources.entrySet().stream()
 				.filter(e2 -> e.getKey() == e2.getKey())
 				.forEach(e2 -> {int diff = e.getValue()-e2.getValue(); e.setValue(Math.max(diff, 0));
 					e2.setValue(-diff); } ));
@@ -186,4 +170,35 @@ public class ProductionPower implements SpecialAbility {
 	public SpecialAbilityType getType() {
 		return SpecialAbilityType.PRODUCTION_POWER;
 	}
+
+	public void setSelectableResource(Optional<Map<Resource, Integer>> resourceRequiredOptional,
+									  Optional<Map<Resource, Integer>> resourceProducedOptional)
+			throws IllegalArgumentException, IllegalStateException {
+
+		int numOfResourceRequiredOptional = resourceRequiredOptional.isPresent() ? resourceRequiredOptional.get().values().stream().reduce(0, Integer::sum) : 0;
+		int numOfResourceRequiredAvailable = resourceRequired.get(Resource.ANY) != null ? resourceRequired.get(Resource.ANY) : 0;
+
+		int numOfResourceProducedOptional = resourceProducedOptional.isPresent() ? resourceProducedOptional.get().values().stream().reduce(0, Integer::sum) : 0;
+		int numOfResourceProducedAvailable = resourceProduced.get(Resource.ANY) != null ? resourceProduced.get(Resource.ANY) : 0;
+
+		if (numOfResourceProducedAvailable != numOfResourceProducedOptional || numOfResourceRequiredAvailable != numOfResourceRequiredOptional) {
+			throw new IllegalArgumentException();
+		}
+
+		resourceRequiredModified = resourceRequired.entrySet().stream()
+				.filter(e -> e.getKey() != Resource.ANY).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+		resourceRequiredOptional.ifPresent(rro -> rro.
+				forEach((k, v) -> resourceRequiredModified.merge(k, v, Integer::sum)));
+
+		resourceProducedModified = resourceProduced.entrySet().stream()
+				.filter(e -> e.getKey() != Resource.ANY).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+		resourceProducedOptional.ifPresent(rpo -> rpo.
+				forEach((k, v) -> resourceProducedModified.merge(k, v, Integer::sum)));
+
+		if (resourceRequiredModified.containsKey(Resource.ANY) || resourceProduced.containsKey(Resource.ANY)) {
+			throw new IllegalStateException();
+		}
+
+	}
+
 }

@@ -121,27 +121,18 @@ public class Dashboard {
 	 */
 	public void placeDevelopmentCard(DevelopmentCard c, int position) throws IllegalStateException {
 
-		//TODO give the choice to the player if there are two banner of the same color and the same level
-
 		Banner banner = c.getBanner();
-		Stack<DevelopmentCard> stack;
 
-		if (playedDevelopmentCards.stream()
-				.filter(s -> !s.isEmpty())
-				.anyMatch(s -> s.peek().getBanner().isGreater(banner))) {
-			stack = playedDevelopmentCards.stream().
-					filter(s -> s.peek().getBanner().isGreater(banner))
-					.findFirst().orElseThrow(IllegalStateException::new);
-			stack.push(c);
-		} else if (playedDevelopmentCards.stream().anyMatch((Vector::isEmpty))) {
-			stack = playedDevelopmentCards.stream().
-					filter(Vector::isEmpty)
-					.findFirst().orElseThrow(IllegalStateException::new);
-			stack.push(c);
-		} else {
-			throw new IllegalStateException();
+		if (position < 0 || position > 2) {
+			throw new IllegalStateException("Not a valid index");
 		}
 
+		if (playedDevelopmentCards.get(position).peek().getBanner().isOneLess(banner)) {
+			playedDevelopmentCards.get(position).push(c);
+		}
+		else {
+			throw new IllegalStateException("Not a valid index");
+		}
 	}
 
 	/**
