@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.common.Pair;
+import it.polimi.ingsw.controller.exceptions.PowerNotActivatableException;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.specialAbilities.*;
@@ -107,12 +108,12 @@ public class Dashboard {
 	 * Allows to place a Leader Card onto the Dashboard.
 	 *
 	 * @param c 						the Leader Card to place.
-	 * @throws IllegalStateException  	in case the leader card slots are full.
-	 * @throws IllegalArgumentException in case the place is already full.
+	 * @throws NullPointerException  	if the Leader Card to place is null.
+	 * @throws IllegalArgumentException if no more Leader Card slots are available.
 	 */
-	public void placeLeaderCard(LeaderCard c, int position) throws IllegalStateException {
+	public void placeLeaderCard(LeaderCard c) throws IllegalStateException {
 		if (playedLeaderCards.size() == NUM_LEADER_CARDS) {
-			throw new IllegalStateException();
+			throw new IllegalStateException("Leader Card grid is full");
 		} else {
 			playedLeaderCards.add(c);
 		}
@@ -186,7 +187,13 @@ public class Dashboard {
 	 * @param c	index to retrieve Leader Card
 	 * @return	played Leader Card at index c
 	 */
-	public LeaderCard getLeaderCard(int c) {
+	public LeaderCard getLeaderCard(int c) throws IllegalArgumentException, NullPointerException {
+		if (c < 0 || c > 1) {
+			throw new IllegalArgumentException("Invalid index");
+		}
+		if(playedLeaderCards.get(c) == null) {
+			throw new NullPointerException("Card is null");
+		}
 		return playedLeaderCards.get(c);
 	}
 

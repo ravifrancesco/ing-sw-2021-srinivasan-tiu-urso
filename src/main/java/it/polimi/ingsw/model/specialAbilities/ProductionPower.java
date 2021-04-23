@@ -44,6 +44,11 @@ public class ProductionPower implements SpecialAbility {
 
 	@Override
 	public void activate(Player p) {
+		if(!this.isActivatable()) {
+			throw new UnsupportedOperationException();
+		} else if (!this.isActivatable(p.getDashboard().getAllPlayerResources())) {
+			throw new IllegalStateException();
+		}
 		if (numberFaithPoints != 0) {
 			p.getDashboard().moveFaithMarker(numberFaithPoints);
 		}

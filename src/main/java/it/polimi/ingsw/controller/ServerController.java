@@ -125,7 +125,7 @@ public class ServerController {
         Dashboard dashboard = player.getDashboard();
         Map<Banner, Integer> playerBanners = dashboard.getBanners();
 
-        if (cardToPlay >= player.getHand().getCards().size() || cardToPlay < 0) {
+        if (cardToPlay >= player.getHand().getHandSize() || cardToPlay < 0) {
             throw new CardNotPlayableException("Invalid index");
         } else if (!player.getFromHand(cardToPlay).isPlayable(playerBanners)) {
             throw new CardNotPlayableException("Not enough resources or banners");
@@ -138,9 +138,10 @@ public class ServerController {
         catch (IllegalStateException e) { throw new CardNotPlayableException("Leader Card places are full"); }
         catch (IllegalArgumentException e) { throw new CardNotPlayableException("Position given is already full"); }
 
+
     }
 
-    public void activateLeaderCardProduction(String nickname, int cardToActivate, ResourceContainer resourcesToPayCost) throws WrongTurnException, PowerNotActivatableException {
+    public void activateLeaderCardProduction(String nickname, int cardToActivate, ResourceContainer resourcesToPayCost) throws WrongTurnException, PowerNotActivatableException, CardNotPlayableException {
 
         if (!currentPlayer.equals(nickname)) {
             throw new WrongTurnException("Not " + nickname + " turn");
@@ -150,32 +151,33 @@ public class ServerController {
 
         Player player = game.getPlayers().get(nickname);
         Dashboard dashboard = player.getDashboard();
+        SpecialAbility specialAbility;
 
-        if (cardToActivate < 0 || cardToActivate > 1 || dashboard.getLeaderCard(cardToActivate) == null) {
+        try {
+            specialAbility = dashboard.getLeaderCard(cardToActivate).getSpecialAbility();
+        } catch (IllegalArgumentException e) {
             throw new PowerNotActivatableException("Invalid index");
+        } catch (NullPointerException e) {
+            throw new PowerNotActivatableException("Card is null");
         }
-
-        SpecialAbility specialAbility = dashboard.getLeaderCard(cardToActivate).getSpecialAbility();
 
         if (!specialAbility.getType().equals(SpecialAbilityType.PRODUCTION_POWER)) {
             throw new PowerNotActivatableException("Card doesn't have a production power special ability");
         }
 
         ProductionPower productionPower = (ProductionPower) specialAbility;
-        Map<Resource, Integer> playerResources = dashboard.getAllPlayerResources();
-
-        if (!productionPower.isActivatable()) {
-            throw new PowerNotActivatableException("Production already activated");
-        }
-        if (!productionPower.isActivatable(playerResources)) {
-            throw new PowerNotActivatableException("Not enough resources");
-        }
 
         if (game.getTurnPhase().equals(TurnPhase.COMMON)) {
             game.startUniquePhase(TurnPhase.PRODUCTION);
         }
 
-        productionPower.activate(player);
+        try {
+            productionPower.activate(player);
+        } catch (IllegalStateException e) {
+            throw new PowerNotActivatableException("Not enough resources");
+        } catch (UnsupportedOperationException e) {
+            throw new PowerNotActivatableException("Production already activated");
+        }
         dashboard.payPrice(resourcesToPayCost);
 
         // TODO choice of selectable resources

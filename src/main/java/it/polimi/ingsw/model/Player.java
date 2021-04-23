@@ -94,8 +94,8 @@ public class Player {
 		activeDiscounts.add(discount);
 	}
 
-	public DevelopmentCardDiscount[] getActiveDiscounts() {
-		return Arrays.copyOfRange(activeDiscounts, 0, numActiveDiscounts);
+	public ArrayList<DevelopmentCardDiscount> getActiveDiscounts() {
+		return activeDiscounts;
 	}
 
 	/**

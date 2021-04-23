@@ -22,9 +22,7 @@ public class Warehouse {
 	public Warehouse() {
 		locker = new HashMap<>();
 		deposit = new Resource[MAX_DEPOSIT_SLOTS];
-		this.clearDeposit();
-		this.clearLocker();
-
+		extraDeposits = new Resource[MAX_EXTRA_DEPOSIT_SLOTS][MAX_EXTRA_DEPOSIT_SPACE];
 	}
 
 	public void reset() {
