@@ -172,11 +172,17 @@ public class Dashboard {
 		}
 	}
 
-	// TODO method to get resources as object
+	// TODO check if it's okay
 
 	public Map<Banner, Integer> getBanners() {
-		// TODO
-		return null;
+		HashMap<Banner, Integer> playerBanners = new HashMap<>();
+		IntStream.range(0, NUM_DEVELOPMENT_CARD_STACKS)
+				.forEach(i -> IntStream.range(0, playedDevelopmentCards.get(i).size())
+				.forEach(j -> playerBanners.put(playedDevelopmentCards.get(i).elementAt(j).getBanner(),
+						playerBanners.containsKey(playedDevelopmentCards.get(i).elementAt(j).getBanner()) ?
+								playerBanners.get(playedDevelopmentCards.get(i).elementAt(j).getBanner()) + 1 : 1)));
+
+		return playerBanners;
 	}
 
 

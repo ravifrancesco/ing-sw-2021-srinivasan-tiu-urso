@@ -116,17 +116,12 @@ public class LeaderCard implements Card {
 		Map<Banner, Integer> playerBannersCopy = playerBanners.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 		Map<Banner, Integer> bannerCostCopy = bannerCost.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
-		bannerCostCopy.entrySet().forEach(e-> playerBannersCopy.entrySet().stream()
+		bannerCostCopy.entrySet().forEach(e -> playerBannersCopy.entrySet().stream()
 				.filter(e2 -> e.getKey().equalsColor(e2.getKey()) && e.getKey().equalsLevel(e2.getKey()))
 				.forEach(e2 -> {int diff = e.getValue()-e2.getValue(); e.setValue(Math.max(diff, 0));
 					e2.setValue(diff<0 ? -diff : 0); } ));
 
-		bannerCostCopy.entrySet().forEach(e-> playerBannersCopy.entrySet().stream()
-				.filter(e2 -> e.getKey().equalsColor(e2.getKey()) && e2.getKey().getLevel()>e.getKey().getLevel())
-				.forEach(e2 -> {int diff = e.getValue()-e2.getValue(); e.setValue(Math.max(diff, 0));
-					e2.setValue(diff<0 ? -diff : 0); } ));
-
-		return bannerCostCopy.entrySet().stream().allMatch(e->e.getValue()==0);
+		return bannerCostCopy.entrySet().stream().allMatch(e -> e.getValue()==0);
 	}
 
 	/**

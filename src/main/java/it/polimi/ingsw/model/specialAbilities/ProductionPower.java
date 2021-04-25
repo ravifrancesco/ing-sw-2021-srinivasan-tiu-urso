@@ -52,11 +52,8 @@ public class ProductionPower implements SpecialAbility {
 		if (numberFaithPoints != 0) {
 			p.getDashboard().moveFaithMarker(numberFaithPoints);
 		}
-		if (resourceProduced != null && !resourceProduced.isEmpty()) {
-			resourceProduced.entrySet()
-					.stream()
-					.filter(entry -> entry.getKey() != Resource.ANY)
-					.forEach(entry -> p.getDashboard().storeResourceInLocker(entry.getKey(), entry.getValue()));
+		if (resourceProducedModified != null && !resourceProducedModified.isEmpty()) {
+			resourceProducedModified.forEach((k, v) -> p.getDashboard().storeResourceInLocker(k, v));
 		}
 		// In order to not activate the same production power twice in one turn, after activation 'activated'
 		// flag is set to true.
@@ -111,9 +108,7 @@ public class ProductionPower implements SpecialAbility {
 				.forEach(e2 -> {int diff = e.getValue()-e2.getValue(); e.setValue(Math.max(diff, 0));
 					e2.setValue(-diff); } ));
 
-		if(playerResources.values().stream().anyMatch(v -> v<0)) { return false; }
-
-		return true;
+		return playerResources.values().stream().noneMatch(v -> v < 0);
 	}
 
 	/**
