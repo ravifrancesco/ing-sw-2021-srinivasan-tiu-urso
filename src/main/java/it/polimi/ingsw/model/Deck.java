@@ -1,6 +1,10 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.cards.Card;
+import it.polimi.ingsw.model.cards.DevelopmentCard;
+import it.polimi.ingsw.model.cards.LeaderCard;
+import it.polimi.ingsw.model.specialAbilities.ProductionPower;
+import it.polimi.ingsw.model.specialAbilities.SpecialAbilityType;
 
 import java.util.*;
 
@@ -31,7 +35,8 @@ public class Deck {
 	 */
 
 	public void reset(List<Card> cards) {
-			cards.forEach(deck::push);
+		deck.clear();
+		cards.forEach(deck::push);
 	}
 
 	/**
@@ -74,6 +79,18 @@ public class Deck {
 
 	public Deck copy() {
 		return new Deck(this.deck);
+	}
+
+	//TODO is it okay?
+
+	public void resetProductionPowerDevelopmentCards() {
+		deck.stream().map(card -> (DevelopmentCard) card).forEach(DevelopmentCard::resetProductionPower);
+	}
+
+	public void resetProductionPowerLeaderCards() {
+		deck.stream().map(card -> (LeaderCard) card).filter(card -> card.getSpecialAbility().getType()== SpecialAbilityType.PRODUCTION_POWER)
+				.map(card -> (ProductionPower) card.getSpecialAbility())
+				.forEach(ProductionPower::reset);
 	}
 
 }
