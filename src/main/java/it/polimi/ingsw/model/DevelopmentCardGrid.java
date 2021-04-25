@@ -74,12 +74,23 @@ public class DevelopmentCardGrid {
 	 * Allows to buy a card.
 	 * @param row index of the row where the card is placed (starting from 1).
 	 * @param column index of the column where the card is placed (starting from 1).
-	 * @return the bought card.
 	 */
 
-	public DevelopmentCard buy(int row, int column) {
+	public void buy(int row, int column) {
 		int position = getPosition(row, column);
-		return grid.get(position).pop();
+		grid.get(position).pop();
+	}
+
+	/**
+	 * Allows to peek a card.
+	 * @param row index of the row where the card is placed (starting from 1).
+	 * @param column index of the column where the card is placed (starting from 1).
+	 * @return the "peek" card.
+	 */
+
+	public DevelopmentCard peek(int row, int column) {
+		int position = getPosition(row, column);
+		return grid.get(position).peek();
 	}
 
 	/**

@@ -13,7 +13,7 @@ import java.util.Optional;
 public class ServerController {
 
     // TODO: add checks for ResourceSelector legality
-
+    // TODO: check that illegal actions don't change the state
 
     private final Game game;
 
@@ -320,7 +320,7 @@ public class ServerController {
             throw new CardNotBuyableException("Card doesn't exist");
         }
 
-        developmentCard = developmentCardGrid.buy(row, column);
+        developmentCard = developmentCardGrid.peek(row, column);
         game.startUniquePhase(TurnPhase.BUY);
 
        try {
@@ -329,6 +329,15 @@ public class ServerController {
        catch (IllegalStateException e) {
            throw new CardNotPlayableException("Not a valid index");
        }
+
+       developmentCardGrid.buy(row, column);
+
+       Map<Resource, Integer> cost = developmentCard.getResourceCost();
+       activeDiscounts.forEach(discount -> cost.entrySet().stream().filter(e -> e.getKey() == discount.getResource())
+               .forEach(e -> cost.put(e.getKey(), Math.max(e.getValue() - discount.getQuantity(), 0))));
+
+       // TODO check for cleaner options
+
 
        dashboard.payPrice(resourcesToPayCost);
     }

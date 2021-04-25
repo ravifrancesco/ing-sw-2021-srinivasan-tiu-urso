@@ -87,6 +87,24 @@ public class ProductionPower implements SpecialAbility {
 	}
 
 	/**
+	 * Getter for resource required modified.
+	 * @return the resource cost of the production power.
+	 */
+
+	public Map<Resource, Integer> getResourceRequiredModified() {
+		return resourceRequiredModified.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+	}
+
+	/**
+	 * Getter for resource produced modified.
+	 * @return the resources produced by the production power.
+	 */
+
+	public Map<Resource, Integer> getResourceProducedModified() {
+		return resourceProducedModified != null ? resourceProducedModified.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)) : null;
+	}
+
+	/**
 	 * Getter for number faith points.
 	 * @return the number of faith points given by the production power.
 	 */
