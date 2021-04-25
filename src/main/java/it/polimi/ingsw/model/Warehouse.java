@@ -6,6 +6,7 @@ import java.util.stream.IntStream;
 
 public class Warehouse {
 
+	static final int MAX_EXTRA_DEPOSIT_SPACE = 2;
 	static final int MAX_EXTRA_DEPOSIT_SLOTS = 2;
 	static final int MAX_DEPOSIT_SLOTS = 6;
 
@@ -21,9 +22,13 @@ public class Warehouse {
 	public Warehouse() {
 		locker = new HashMap<>();
 		deposit = new Resource[MAX_DEPOSIT_SLOTS];
+		extraDeposits = new Resource[MAX_EXTRA_DEPOSIT_SLOTS][MAX_EXTRA_DEPOSIT_SPACE];
+	}
+
+	public void reset() {
 		this.clearDeposit();
 		this.clearLocker();
-
+		extraDeposits = new Resource[MAX_EXTRA_DEPOSIT_SLOTS][MAX_EXTRA_DEPOSIT_SPACE];
 	}
 
 	/**

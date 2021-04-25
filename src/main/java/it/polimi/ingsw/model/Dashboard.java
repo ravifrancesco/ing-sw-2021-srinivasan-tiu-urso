@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.common.Pair;
+import it.polimi.ingsw.controller.exceptions.PowerNotActivatableException;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.specialAbilities.*;
@@ -57,6 +58,15 @@ public class Dashboard {
 		// TODO add production power initialization
 	}
 
+	public void reset() {
+		warehouse.reset();
+		faithTrack.reset();
+		playedLeaderCards.clear();
+		dashBoardProductionPower.reset();
+		supply.clear();
+		playedDevelopmentCards.forEach(Vector::clear);
+	}
+
 	/**
 	 * Allows to move the Faith Marker on the FaithTrack.
 	 * @param pos represents how many positions to go on.
@@ -98,17 +108,14 @@ public class Dashboard {
 	 * Allows to place a Leader Card onto the Dashboard.
 	 *
 	 * @param c 						the Leader Card to place.
-	 * @throws IllegalStateException  	in case the leader card slots are full.
-	 * @throws IllegalArgumentException in case the place is already full.
+	 * @throws NullPointerException  	if the Leader Card to place is null.
+	 * @throws IllegalArgumentException if no more Leader Card slots are available.
 	 */
-	public void placeLeaderCard(LeaderCard c, int position) throws IllegalStateException {
+	public void placeLeaderCard(LeaderCard c) throws IllegalStateException {
 		if (playedLeaderCards.size() == NUM_LEADER_CARDS) {
-			throw new IllegalStateException();
+			throw new IllegalStateException("Leader Card grid is full");
 		} else {
-			if (playedLeaderCards.get(position)!=null) {
-				playedLeaderCards.add(position, c);
-			}
-			else { throw new IllegalArgumentException(); }
+			playedLeaderCards.add(c);
 		}
 	}
 
@@ -121,27 +128,18 @@ public class Dashboard {
 	 */
 	public void placeDevelopmentCard(DevelopmentCard c, int position) throws IllegalStateException {
 
-		//TODO give the choice to the player if there are two banner of the same color and the same level
-
 		Banner banner = c.getBanner();
-		Stack<DevelopmentCard> stack;
 
-		if (playedDevelopmentCards.stream()
-				.filter(s -> !s.isEmpty())
-				.anyMatch(s -> s.peek().getBanner().isGreater(banner))) {
-			stack = playedDevelopmentCards.stream().
-					filter(s -> s.peek().getBanner().isGreater(banner))
-					.findFirst().orElseThrow(IllegalStateException::new);
-			stack.push(c);
-		} else if (playedDevelopmentCards.stream().anyMatch((Vector::isEmpty))) {
-			stack = playedDevelopmentCards.stream().
-					filter(Vector::isEmpty)
-					.findFirst().orElseThrow(IllegalStateException::new);
-			stack.push(c);
-		} else {
-			throw new IllegalStateException();
+		if (position < 0 || position > 2) {
+			throw new IllegalStateException("Not a valid index");
 		}
 
+		if (playedDevelopmentCards.get(position).peek().getBanner().isOneLess(banner)) {
+			playedDevelopmentCards.get(position).push(c);
+		}
+		else {
+			throw new IllegalStateException("Not a valid index");
+		}
 	}
 
 	/**
@@ -189,7 +187,13 @@ public class Dashboard {
 	 * @param c	index to retrieve Leader Card
 	 * @return	played Leader Card at index c
 	 */
-	public LeaderCard getLeaderCard(int c) {
+	public LeaderCard getLeaderCard(int c) throws IllegalArgumentException, NullPointerException {
+		if (c < 0 || c > 1) {
+			throw new IllegalArgumentException("Invalid index");
+		}
+		if(playedLeaderCards.get(c) == null) {
+			throw new NullPointerException("Card is null");
+		}
 		return playedLeaderCards.get(c);
 	}
 

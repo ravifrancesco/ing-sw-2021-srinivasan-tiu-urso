@@ -17,7 +17,10 @@ public class ServerController {
     private final Game game;
 
     private final int numberOfPlayers;
+
     private String currentPlayer;
+    private String firstPlayer;
+
     private int firstTurns;
 
     public ServerController(String gameId, int numberOfPlayers) {
@@ -40,11 +43,9 @@ public class ServerController {
     }
 
     public void reset() {
-        // TODO
-        // shouldn't these two be inverted?
-        // first we reset the game then we get the next player
+        game.reset();
         currentPlayer = game.getNextPlayer();
-        game.init();
+        firstPlayer = currentPlayer;
         firstTurns = 0;
     }
 
@@ -62,7 +63,7 @@ public class ServerController {
         }
 
         Player player = game.getPlayers().get(currentPlayer);
-        int handSize = player.getHand().getCards().size();
+        int handSize = player.getHand().getHandSize();
 
         if (handSize <= 2) {
             throw new WrongMoveException("Already discarded initial leader cards.");
@@ -124,7 +125,7 @@ public class ServerController {
         Dashboard dashboard = player.getDashboard();
         Map<Banner, Integer> playerBanners = dashboard.getBanners();
 
-        if (cardToPlay >= player.getHand().getCards().size() || cardToPlay < 0) {
+        if (cardToPlay >= player.getHand().getHandSize() || cardToPlay < 0) {
             throw new CardNotPlayableException("Invalid index");
         } else if (!player.getFromHand(cardToPlay).isPlayable(playerBanners)) {
             throw new CardNotPlayableException("Not enough resources or banners");
@@ -137,9 +138,10 @@ public class ServerController {
         catch (IllegalStateException e) { throw new CardNotPlayableException("Leader Card places are full"); }
         catch (IllegalArgumentException e) { throw new CardNotPlayableException("Position given is already full"); }
 
+
     }
 
-    public void activateLeaderCardProduction(String nickname, int cardToActivate, ResourceContainer resourcesToPayCost) throws WrongTurnException, PowerNotActivatableException {
+    public void activateLeaderCardProduction(String nickname, int cardToActivate, ResourceContainer resourcesToPayCost) throws WrongTurnException, PowerNotActivatableException, CardNotPlayableException {
 
         if (!currentPlayer.equals(nickname)) {
             throw new WrongTurnException("Not " + nickname + " turn");
@@ -149,32 +151,33 @@ public class ServerController {
 
         Player player = game.getPlayers().get(nickname);
         Dashboard dashboard = player.getDashboard();
+        SpecialAbility specialAbility;
 
-        if (cardToActivate < 0 || cardToActivate > 1 || dashboard.getLeaderCard(cardToActivate) == null) {
+        try {
+            specialAbility = dashboard.getLeaderCard(cardToActivate).getSpecialAbility();
+        } catch (IllegalArgumentException e) {
             throw new PowerNotActivatableException("Invalid index");
+        } catch (NullPointerException e) {
+            throw new PowerNotActivatableException("Card is null");
         }
-
-        SpecialAbility specialAbility = dashboard.getLeaderCard(cardToActivate).getSpecialAbility();
 
         if (!specialAbility.getType().equals(SpecialAbilityType.PRODUCTION_POWER)) {
             throw new PowerNotActivatableException("Card doesn't have a production power special ability");
         }
 
         ProductionPower productionPower = (ProductionPower) specialAbility;
-        Map<Resource, Integer> playerResources = dashboard.getAllPlayerResources();
-
-        if (!productionPower.isActivatable()) {
-            throw new PowerNotActivatableException("Production already activated");
-        }
-        if (!productionPower.isActivatable(playerResources)) {
-            throw new PowerNotActivatableException("Not enough resources");
-        }
 
         if (game.getTurnPhase().equals(TurnPhase.COMMON)) {
             game.startUniquePhase(TurnPhase.PRODUCTION);
         }
 
-        productionPower.activate(player);
+        try {
+            productionPower.activate(player);
+        } catch (IllegalStateException e) {
+            throw new PowerNotActivatableException("Not enough resources");
+        } catch (UnsupportedOperationException e) {
+            throw new PowerNotActivatableException("Production already activated");
+        }
         dashboard.payPrice(resourcesToPayCost);
 
         // TODO choice of selectable resources
@@ -190,7 +193,7 @@ public class ServerController {
 
         Player player = game.getPlayers().get(currentPlayer);
 
-        if (cardToDiscard >= player.getHand().getCards().size() || cardToDiscard < 0) {
+        if (cardToDiscard >= player.getHand().getHandSize() || cardToDiscard < 0) {
             throw new CardNotPlayableException("Invalid index");
         }
 
@@ -273,19 +276,13 @@ public class ServerController {
         dashboard.addResourcesToSupply(marketRes);
     }
 
-    public void buyDevelopmentCard(String nickname, int row, int column, ResourceContainer resourcesToPayCost )
-            throws WrongTurnException, CardNotBuyableException {
-
-        //TODO choose the position where to play the card
+    public void buyDevelopmentCard(String nickname, int row, int column, ResourceContainer resourcesToPayCost, int position)
+            throws WrongTurnException, CardNotBuyableException, CardNotPlayableException {
 
         if (!currentPlayer.equals(nickname)) {
             throw new WrongTurnException("Not " + nickname + " turn");
         } else if (!game.getTurnPhase().equals(TurnPhase.COMMON)) {
             throw new WrongTurnPhaseException("Turn phase is " + game.getTurnPhase().name());
-        }
-
-        if (row < 1 || row > 3 || column < 1 || column > 4) {
-            throw new CardNotBuyableException("Invalid index");
         }
 
         Player player = game.getPlayers().get(nickname);
@@ -294,7 +291,7 @@ public class ServerController {
         DevelopmentCardGrid developmentCardGrid = gameBoard.getDevelopmentCardGrid();
 
         Map<Resource, Integer> playerResources = dashboard.getAllPlayerResources();
-        DevelopmentCardDiscount[] activeDiscounts = player.getActiveDiscounts();
+        ArrayList<DevelopmentCardDiscount> activeDiscounts = player.getActiveDiscounts();
         DevelopmentCard developmentCard;
 
         try {
@@ -308,10 +305,14 @@ public class ServerController {
         developmentCard = developmentCardGrid.buy(row, column);
         game.startUniquePhase(TurnPhase.BUY);
 
-        // handle exception and buy
-        int position=0;
-        developmentCard.play(dashboard, position);
-        dashboard.payPrice(resourcesToPayCost);
+       try {
+           dashboard.placeDevelopmentCard(developmentCard, position);
+       }
+       catch (IllegalStateException e) {
+           throw new CardNotPlayableException("Not a valid index");
+       }
+
+       dashboard.payPrice(resourcesToPayCost);
     }
 
     public void activateDevelopmentCardProductionPower(String nickname, int cardToActivate, ResourceContainer resourcesToPayCost)
@@ -400,7 +401,7 @@ public class ServerController {
         }
     }
 
-    public void endTurn(String nickname) throws WrongTurnException, LeaderCardInExcessException, WrongMoveException {
+    public boolean endTurn(String nickname) throws WrongTurnException, LeaderCardInExcessException, WrongMoveException {
         if (!currentPlayer.equals(nickname)) {
             throw new WrongTurnException("Not " + nickname + " turn");
         }
@@ -409,7 +410,7 @@ public class ServerController {
         Player player = game.getPlayers().get(nickname);
         Dashboard dashboard = player.getDashboard();
 
-        if (player.getHand().getCards().size() > 2) {
+        if (player.getHand().getHandSize() > 2) {
             throw new LeaderCardInExcessException(currentPlayer + " hasn't discarded enough cards");
         }
 
@@ -427,7 +428,9 @@ public class ServerController {
             throw new WrongMoveException(currentPlayer + " has not acquired all due resources.");
         }
 
-        if(firstTurns < numberOfPlayers) {
+        if(player.getDashboard().checkGameEnd() && game.getTurnPhase() != TurnPhase.ENDGAME) {
+            game.startUniquePhase(TurnPhase.ENDGAME);
+        } else if(firstTurns < numberOfPlayers) {
             dashboard.moveFaithMarker(firstTurns < 2 ? 0 : 1);
             firstTurns += 1;
             game.startUniquePhase(TurnPhase.FIRST_TURN);
@@ -436,5 +439,11 @@ public class ServerController {
         }
 
         currentPlayer = game.getNextPlayer();
+
+        return game.getTurnPhase() == TurnPhase.ENDGAME && currentPlayer.equals(firstPlayer);
+    }
+
+    public Game getGameStatus() {
+        return game.getGameStatus();
     }
 }

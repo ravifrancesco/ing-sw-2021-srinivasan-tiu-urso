@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.specialAbilities.WhiteMarbleResource;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.stream.Collectors;
 
 public class Player {
 
@@ -19,34 +20,47 @@ public class Player {
 
 	private Hand hand;
 
-	private DevelopmentCardDiscount[] activeDiscounts;
+	private ArrayList<DevelopmentCardDiscount> activeDiscounts;
 
-	private Resource[] activatedWMR;
+	private ArrayList<Resource> activatedWMR;
 
-	private int numActiveDiscounts;
-
-	private int numActiveWMR;
+	private int victoryPoints;
 
 	// WMR = white marble resource
 
 	public Player() {
-		this.activeDiscounts = new DevelopmentCardDiscount[NUM_PLAYABLE_LEADER_CARDS];
-		this.activatedWMR = new Resource[NUM_WHITE_MARBLE_RESOURCE];
-		this.numActiveDiscounts = 0;
-		this.numActiveWMR = 0;
-
+		this.activeDiscounts = new ArrayList<>();
+		this.activatedWMR = new ArrayList<>();
 	}
 
 	public Hand getHand() {
 		return hand;
 	}
 
-	public void init(GameSettings gameSettings) {
+	public void reset(GameSettings gameSettings) {
+		this.dashboard.reset();
+		this.hand.reset();
+		this.activeDiscounts.clear();
+		this.activatedWMR.clear();
+		this.victoryPoints = 0;
 	}
 
-	public void playLeaderCard(int card, int position) {
-		LeaderCard leaderCard = hand.removeCard(card);
-		leaderCard.play(dashboard, position);
+	public void playLeaderCard(int card, int position) throws IllegalArgumentException, IllegalStateException {
+
+		if (card < 0 || card >= hand.getHandSize()) {
+			throw new IllegalArgumentException();
+		}
+
+		LeaderCard leaderCard = hand.getCard(card);
+
+		try {
+			dashboard.placeLeaderCard(leaderCard);
+		} catch (IllegalStateException e) {
+			throw new IllegalStateException();
+		}
+
+		hand.removeCard(card);
+
 		SpecialAbilityType saType = leaderCard.getSpecialAbility().getType();
 		if(saType == SpecialAbilityType.DEVELOPMENT_CARD_DISCOUNT || saType == SpecialAbilityType.WHITE_MARBLE_RESOURCES) {
 			leaderCard.activate(this);
@@ -73,13 +87,15 @@ public class Player {
 
 	public void setDashboard(Dashboard dashboard) { this.dashboard = dashboard; }
 
-	public void addActiveDiscount(DevelopmentCardDiscount discount) {
-		activeDiscounts[numActiveDiscounts] = discount;
-		numActiveDiscounts++;
+	public void addActiveDiscount(DevelopmentCardDiscount discount) throws IllegalStateException {
+		if (activeDiscounts.size() + activatedWMR.size() > NUM_PLAYABLE_LEADER_CARDS) {
+			throw new IllegalStateException();
+		}
+		activeDiscounts.add(discount);
 	}
 
-	public DevelopmentCardDiscount[] getActiveDiscounts() {
-		return Arrays.copyOfRange(activeDiscounts, 0, numActiveDiscounts);
+	public ArrayList<DevelopmentCardDiscount> getActiveDiscounts() {
+		return activeDiscounts;
 	}
 
 	/**
@@ -87,7 +103,7 @@ public class Player {
 	 * @return true if there are, false if not.
 	 */
 	public boolean checkActiveWMR() {
-		return numActiveWMR > 0;
+		return !activatedWMR.isEmpty();
 	}
 
 	/**
@@ -95,26 +111,35 @@ public class Player {
 	 * @param wmr the WhiteMarbleResource being added
 	 */
 	public void addWMR(WhiteMarbleResource wmr) {
-		activatedWMR[numActiveWMR] = wmr.getRes();
-		numActiveWMR = numActiveWMR + 1;
+		if (activeDiscounts.size() + activatedWMR.size() > NUM_PLAYABLE_LEADER_CARDS) {
+			throw new IllegalStateException();
+		}
+		activatedWMR.add(wmr.getRes());
 	}
 
 	public Resource[] getActivatedWMR() {
-		return Arrays.copyOfRange(activatedWMR, 0, numActiveWMR);
+		return activatedWMR.toArray(Resource[]::new);
 	}
 
 	public int getNumActiveWMR() {
-		return numActiveWMR;
+		return activatedWMR.size();
 	}
 
-	public LeaderCard getFromHand(int c) {
-		// TODO
-		return null;
+	public LeaderCard getFromHand(int c) throws IllegalArgumentException {
+		if (c < 0 || c >= hand.getHandSize()) {
+			throw new IllegalArgumentException();
+		}
+		return hand.getCard(c);
 	}
 
 	public boolean checkWMR(ArrayList<WhiteMarbleResource> wmrs) {
-		// TODO
-		return true;
+		return activatedWMR.containsAll(wmrs.stream()
+				.map(WhiteMarbleResource::getRes)
+				.collect(Collectors.toList()));
+	}
+
+	public void updateVictoryPoints() {
+		this.victoryPoints = dashboard.computePlayerPoints();
 	}
 
 }

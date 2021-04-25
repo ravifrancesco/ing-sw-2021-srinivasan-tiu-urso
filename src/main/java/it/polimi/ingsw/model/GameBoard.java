@@ -45,13 +45,13 @@ public class GameBoard {
 	 * It also resets the market and it resets and fills the development card grid.
 	 */
 
-	public void init(GameSettings gameSettings) {
-		developmentDeck.init(Arrays.asList(gameSettings.getDevelopmentCards()));
-		leaderDeck.init(Arrays.asList(gameSettings.getLeaderCards()));
+	public void reset(GameSettings gameSettings) {
+		developmentDeck.reset(Arrays.asList(gameSettings.getDevelopmentCards()));
+		leaderDeck.reset(Arrays.asList(gameSettings.getLeaderCards()));
 		developmentDeck.shuffle();
 		leaderDeck.shuffle();
 		market.reset();
-		developmentCardGrid.init();
+		developmentCardGrid.reset();
 		developmentCardGrid.fillCardGrid(developmentDeck);
 	}
 

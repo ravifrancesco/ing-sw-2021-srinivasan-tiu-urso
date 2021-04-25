@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.controller.exceptions.PowerNotActivatableException;
 import it.polimi.ingsw.model.Banner;
 import it.polimi.ingsw.model.Dashboard;
 import it.polimi.ingsw.model.Player;
@@ -37,16 +38,6 @@ public class LeaderCard implements Card {
 		this.specialAbility = specialAbility;
 	}
 
-	/**
-	 * Allows to place the card in the player dashboard.
-	 * @param d represents the dashboard of the player.
-	 * @param position represent the position where to place the card.
-	 */
-
-	@Override
-	public void play(Dashboard d, int position) {
-		d.placeLeaderCard(this, position);
-	}
 
 	/**
 	 * Allows to activate the special ability of the leader card.
