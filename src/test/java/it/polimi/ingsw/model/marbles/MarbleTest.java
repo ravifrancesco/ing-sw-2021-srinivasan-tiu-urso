@@ -1,5 +1,7 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.marbles;
 
+import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.marbles.*;
 import org.junit.Assert;
 import org.junit.Test;

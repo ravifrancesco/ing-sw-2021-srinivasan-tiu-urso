@@ -1,5 +1,6 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.specialAbilities.ProductionPower;
 import org.junit.Assert;
