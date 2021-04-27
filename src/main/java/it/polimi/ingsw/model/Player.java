@@ -10,6 +10,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
+/**
+ * This class represents the player. It contains references to:
+ * <ul>
+ * <li> The player's dashboard.
+ * <li> The player's hand.
+ * <li> The player's active discounts.
+ * <li> The player's active WMRs.
+ * <li> The player's victory points.
+ * </ul>
+ * <p>
+ * TODO testing
+ */
 public class Player {
 
 	static final int NUM_PLAYABLE_LEADER_CARDS = 2;
@@ -28,15 +40,28 @@ public class Player {
 
 	// WMR = white marble resource
 
+	/**
+	 * Constructor of the Player class.
+	 */
 	public Player() {
 		this.activeDiscounts = new ArrayList<>();
 		this.activatedWMR = new ArrayList<>();
 	}
 
+	/**
+	 * Getter for the player's hand.
+	 *
+	 * @return the player's hand.
+	 */
 	public Hand getHand() {
 		return hand;
 	}
 
+	/**
+	 * Resets the class to the starting/initial state.
+	 *
+	 * @param gameSettings game settings to initialize the class.
+	 */
 	public void reset(GameSettings gameSettings) {
 		this.dashboard.reset();
 		this.hand.reset();
@@ -45,6 +70,14 @@ public class Player {
 		this.victoryPoints = 0;
 	}
 
+	/**
+	 * Method to place a leader card on the dashboard.
+	 *
+	 * @param card						position of the hand to play the card.
+	 * @param position					position on the dashboard to place the card.
+	 * @throws IllegalArgumentException	if the card index is out of bounds.
+	 * @throws IllegalStateException	if the card cannot be placed.
+	 */
 	public void playLeaderCard(int card, int position) throws IllegalArgumentException, IllegalStateException {
 
 		if (card < 0 || card >= hand.getHandSize()) {
@@ -64,29 +97,46 @@ public class Player {
 		SpecialAbilityType saType = leaderCard.getSpecialAbility().getType();
 		if(saType == SpecialAbilityType.DEVELOPMENT_CARD_DISCOUNT || saType == SpecialAbilityType.WHITE_MARBLE_RESOURCES) {
 			leaderCard.activate(this);
-		}
-		else if(saType == SpecialAbilityType.WAREHOUSE_EXTRA_SPACE) {
+		} else if(saType == SpecialAbilityType.WAREHOUSE_EXTRA_SPACE) {
 			leaderCard.activate(this);
 			WarehouseExtraSpace wes = (WarehouseExtraSpace) leaderCard.getSpecialAbility();
 			wes.setLeaderCardPos(position);
 		}
 	}
 
-	public void discardLeaderCard(int card, GameBoard gameBoard) {
-		gameBoard.discardCard(hand.removeCard(card), dashboard);
-		hand.removeCard(card);
+	/**
+	 * Allows the player to discard a leader card.
+	 * TODO check the controller for exception
+	 * TODO handle faith marker points
+	 *
+	 * @param card		index of the hand to discard the card.
+	 * @param gameBoard
+	 * @throws IllegalArgumentException
+	 */
+	public void discardLeaderCard(int card, GameBoard gameBoard) throws IllegalArgumentException {
+
+		if (card < 0 || card >= hand.getHandSize()) {
+			throw new IllegalArgumentException();
+		}
+
+		gameBoard.discardCard(hand.removeCard(card));
 	}
 
-	public void discardLeaderCardInExcess(int card, GameBoard gameBoard) {
-		gameBoard.discardCardInExcess(hand.removeCard(card));
-	}
-
+	/**
+	 * Getter for the player dashboard.
+	 *
+	 * @return the player's dashboard.
+	 */
 	public Dashboard getDashboard() {
 		return dashboard;
 	}
 
-	public void setDashboard(Dashboard dashboard) { this.dashboard = dashboard; }
-
+	/**
+	 * Allow to add a discount to the player's dashboard.
+	 *
+	 * @param discount					discount to add to the dashboard.
+	 * @throws IllegalStateException	if the dashboard cannot accomodate any more discoounts.
+	 */
 	public void addActiveDiscount(DevelopmentCardDiscount discount) throws IllegalStateException {
 		if (activeDiscounts.size() + activatedWMR.size() > NUM_PLAYABLE_LEADER_CARDS) {
 			throw new IllegalStateException();
@@ -94,6 +144,11 @@ public class Player {
 		activeDiscounts.add(discount);
 	}
 
+	/**
+	 * Getter for the active player's discount.
+	 *
+	 * @return	an arraylist of the player's active discounts.
+	 */
 	public ArrayList<DevelopmentCardDiscount> getActiveDiscounts() {
 		return activeDiscounts;
 	}
@@ -117,14 +172,31 @@ public class Player {
 		activatedWMR.add(wmr.getRes());
 	}
 
+	/**
+	 * Getter for the active WMRs.
+	 *
+	 * @return	the active WMRs.
+	 */
 	public Resource[] getActivatedWMR() {
 		return activatedWMR.toArray(Resource[]::new);
 	}
 
+	/**
+	 * Getter for the number of active WMRs.
+	 *
+	 * @return	number of active WRMs.
+	 */
 	public int getNumActiveWMR() {
 		return activatedWMR.size();
 	}
 
+	/**
+	 * Getter for a card from the player's hand.
+	 *
+	 * @param c							index of card to get.
+	 * @return							the indexed card.
+	 * @throws IllegalArgumentException	if the index is out of bounds.
+	 */
 	public LeaderCard getFromHand(int c) throws IllegalArgumentException {
 		if (c < 0 || c >= hand.getHandSize()) {
 			throw new IllegalArgumentException();
@@ -132,12 +204,22 @@ public class Player {
 		return hand.getCard(c);
 	}
 
+	/**
+	 * Check if the input WMRs are in the dashboard WMRs.
+	 *
+	 * @param wmrs	WMRs to check.
+	 * @return 		<code>true</code> player has the input WMRs.
+	 * 				<code>false</code> otherwise.
+	 */
 	public boolean checkWMR(ArrayList<WhiteMarbleResource> wmrs) {
 		return activatedWMR.containsAll(wmrs.stream()
 				.map(WhiteMarbleResource::getRes)
 				.collect(Collectors.toList()));
 	}
 
+	/**
+	 * Allows to update the player's victory points.
+	 */
 	public void updateVictoryPoints() {
 		this.victoryPoints = dashboard.computePlayerPoints();
 	}

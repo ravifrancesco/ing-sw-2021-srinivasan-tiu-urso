@@ -61,21 +61,9 @@ public class GameBoard {
 	/**
 	 * Allows to add a card to the discard deck.
 	 * @param c the card to be discarded.
-	 * @param d the dashboard of the player who discarded the card.
 	 */
 
-	public void discardCard(Card c, Dashboard d) {
-		LeaderCard leaderCard = (LeaderCard) c;
-		discardDeck.add(leaderCard);
-		leaderCard.discard(d);
-	}
-
-	/**
-	 * Allows to add a card to the discard deck without moving the faith marker (first discarding).
-	 * @param c the card to be discarded.
-	 */
-
-	public void discardCardInExcess(Card c) {
+	public void discardCard(Card c) {
 		LeaderCard leaderCard = (LeaderCard) c;
 		discardDeck.add(leaderCard);
 	}

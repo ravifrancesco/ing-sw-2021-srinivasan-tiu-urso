@@ -50,14 +50,6 @@ public class LeaderCard implements Card {
 	}
 
 	/**
-	 * Add the card to the discard deck and add a faith point.
-	 * @param d the dashboard of the player who discarded this card.
-	 */
-	public void discard(Dashboard d){
-		d.moveFaithMarker(1);
-	}
-
-	/**
 	 * Getter for the id.
 	 * @return the id of the card.
 	 */
