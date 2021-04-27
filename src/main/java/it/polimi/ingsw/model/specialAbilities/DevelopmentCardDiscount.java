@@ -59,4 +59,23 @@ public class DevelopmentCardDiscount implements SpecialAbility {
 	public SpecialAbilityType getType() {
 		return SpecialAbilityType.DEVELOPMENT_CARD_DISCOUNT;
 	}
+
+	/**
+	 * To string method of the class.
+	 * TODO test
+	 * @return a string representation of the object.
+	 */
+	public String toString() {
+
+		String result = "";
+
+		result += "SA=DCD;";
+
+		result += "R=" + resource.toString() + ";";
+
+		result += "Q=" + String.valueOf(quantity) + ";";
+
+		return result;
+
+	}
 }

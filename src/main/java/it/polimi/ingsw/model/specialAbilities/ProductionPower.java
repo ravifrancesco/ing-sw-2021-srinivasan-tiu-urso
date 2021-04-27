@@ -166,7 +166,7 @@ public class ProductionPower implements SpecialAbility {
 	 * Method to get the type of this special ability.
 	 * @return the type of this special ability.
 	 */
-
+	@Override
 	public SpecialAbilityType getType() {
 		return SpecialAbilityType.PRODUCTION_POWER;
 	}

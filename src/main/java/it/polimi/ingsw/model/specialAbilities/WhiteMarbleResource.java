@@ -28,8 +28,31 @@ public class WhiteMarbleResource implements SpecialAbility {
 		return res;
 	}
 
-	//TODO doc
+	/**
+	 * Method to get the type of this special ability.
+	 * @return the type of this special ability.
+	 */
+	@Override
 	public SpecialAbilityType getType() {
 		return SpecialAbilityType.WHITE_MARBLE_RESOURCES;
 	}
+
+	/**
+	 * To string method of the class.
+	 * TODO test
+	 * @return a string representation of the object.
+	 */
+	public String toString() {
+
+		String result = "";
+
+		result += "SA=WMR;";
+
+		result += "R=" + res.toString() + ";";
+
+		return result;
+
+	}
+
+
 }
