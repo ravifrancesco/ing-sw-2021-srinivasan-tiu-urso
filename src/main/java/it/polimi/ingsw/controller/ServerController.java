@@ -8,11 +8,12 @@ import it.polimi.ingsw.model.specialAbilities.*;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Optional;
 
 public class ServerController {
 
     // TODO: add checks for ResourceSelector legality
-
+    // TODO: check that illegal actions don't change the state
 
     private final Game game;
 
@@ -111,9 +112,7 @@ public class ServerController {
         };
     }
 
-    public void playLeaderCard(String nickname, int cardToPlay) throws WrongTurnException, CardNotPlayableException {
-
-        // TODO allow the player choose the position or change Card interface
+    public void playLeaderCard(String nickname, int cardToPlay, int position) throws WrongTurnException, CardNotPlayableException {
 
         if (!currentPlayer.equals(nickname)) {
             throw new WrongTurnException("Not " + nickname + " turn");
@@ -131,17 +130,16 @@ public class ServerController {
             throw new CardNotPlayableException("Not enough resources or banners");
         }
 
-        int position=0;
         try {
             player.playLeaderCard(cardToPlay, position);
         }
         catch (IllegalStateException e) { throw new CardNotPlayableException("Leader Card places are full"); }
         catch (IllegalArgumentException e) { throw new CardNotPlayableException("Position given is already full"); }
 
-
     }
 
-    public void activateLeaderCardProduction(String nickname, int cardToActivate, ResourceContainer resourcesToPayCost) throws WrongTurnException, PowerNotActivatableException, CardNotPlayableException {
+    public void activateLeaderCardProduction(String nickname, int cardToActivate, ResourceContainer resourcesToPayCost,
+                                             Optional<Map<Resource, Integer>> resourceRequiredOptional, Optional<Map<Resource, Integer>> resourceProducedOptional) throws WrongTurnException, PowerNotActivatableException {
 
         if (!currentPlayer.equals(nickname)) {
             throw new WrongTurnException("Not " + nickname + " turn");
@@ -172,6 +170,14 @@ public class ServerController {
         }
 
         try {
+            productionPower.setSelectableResource(resourceRequiredOptional, resourceProducedOptional);
+        } catch(IllegalArgumentException e) {
+            throw new PowerNotActivatableException("Illegal amount of required/produced resources");
+        } catch(IllegalStateException e) {
+            throw new PowerNotActivatableException("Selectable resources setting failed");
+        }
+
+        try {
             productionPower.activate(player);
         } catch (IllegalStateException e) {
             throw new PowerNotActivatableException("Not enough resources");
@@ -179,8 +185,6 @@ public class ServerController {
             throw new PowerNotActivatableException("Production already activated");
         }
         dashboard.payPrice(resourcesToPayCost);
-
-        // TODO choice of selectable resources
 
     }
 
@@ -202,7 +206,8 @@ public class ServerController {
 
     }
 
-    public void activateDashboardProduction(String nickname, ResourceContainer resourcesToPayCost) throws WrongTurnException, PowerNotActivatableException {
+    public void activateDashboardProduction(String nickname, ResourceContainer resourcesToPayCost,
+                                            Optional<Map<Resource, Integer>> resourceRequiredOptional, Optional<Map<Resource, Integer>> resourceProducedOptional) throws WrongTurnException, PowerNotActivatableException {
 
         if (!currentPlayer.equals(nickname)) {
             throw new WrongTurnException("Not " + nickname + " turn");
@@ -226,10 +231,23 @@ public class ServerController {
             game.startUniquePhase(TurnPhase.PRODUCTION);
         }
 
-        productionPower.activate(player);
-        dashboard.payPrice(resourcesToPayCost);
+        try {
+            productionPower.setSelectableResource(resourceRequiredOptional, resourceProducedOptional);
+        } catch(IllegalArgumentException e) {
+            throw new PowerNotActivatableException("Illegal amount of required/produced resources");
+        } catch(IllegalStateException e) {
+            throw new PowerNotActivatableException("Selectable resources setting failed");
+        }
 
-        //TODO choice of selectable resources
+        try {
+            productionPower.activate(player);
+        } catch (IllegalStateException e) {
+            throw new PowerNotActivatableException("Not enough resources");
+        } catch (UnsupportedOperationException e) {
+            throw new PowerNotActivatableException("Production already activated");
+        }
+
+        dashboard.payPrice(resourcesToPayCost);
 
     }
 
@@ -302,7 +320,7 @@ public class ServerController {
             throw new CardNotBuyableException("Card doesn't exist");
         }
 
-        developmentCard = developmentCardGrid.buy(row, column);
+        developmentCard = developmentCardGrid.peek(row, column);
         game.startUniquePhase(TurnPhase.BUY);
 
        try {
@@ -312,11 +330,20 @@ public class ServerController {
            throw new CardNotPlayableException("Not a valid index");
        }
 
+       developmentCardGrid.buy(row, column);
+
+       Map<Resource, Integer> cost = developmentCard.getResourceCost();
+       activeDiscounts.forEach(discount -> cost.entrySet().stream().filter(e -> e.getKey() == discount.getResource())
+               .forEach(e -> cost.put(e.getKey(), Math.max(e.getValue() - discount.getQuantity(), 0))));
+
+       // TODO check for cleaner options
+
+
        dashboard.payPrice(resourcesToPayCost);
     }
 
-    public void activateDevelopmentCardProductionPower(String nickname, int cardToActivate, ResourceContainer resourcesToPayCost)
-            throws WrongTurnException, PowerNotActivatableException {
+    public void activateDevelopmentCardProductionPower(String nickname, int cardToActivate, ResourceContainer resourcesToPayCost,
+                                                       Optional<Map<Resource, Integer>> resourceRequiredOptional, Optional<Map<Resource, Integer>> resourceProducedOptional) throws WrongTurnException, PowerNotActivatableException {
 
         if (!currentPlayer.equals(nickname)) {
             throw new WrongTurnException("Not " + nickname + " turn");
@@ -343,10 +370,24 @@ public class ServerController {
             game.startUniquePhase(TurnPhase.PRODUCTION);
         }
 
-        developmentCard.activate(player);
+        try {
+            productionPower.setSelectableResource(resourceRequiredOptional, resourceProducedOptional);
+        } catch(IllegalArgumentException e) {
+            throw new PowerNotActivatableException("Illegal amount of required/produced resources");
+        } catch(IllegalStateException e) {
+            throw new PowerNotActivatableException("Selectable resources setting failed");
+        }
+
+        try {
+            developmentCard.activate(player);
+        } catch (IllegalStateException e) {
+            throw new PowerNotActivatableException("Not enough resources");
+        } catch (UnsupportedOperationException e) {
+            throw new PowerNotActivatableException("Production already activated");
+        }
+
         dashboard.payPrice(resourcesToPayCost);
 
-        // TODO choice of selectable resources
     }
 
     public void moveResources(String nickname, ArrayList<Pair<Integer, Integer>> moves) throws WrongTurnException, WrongMoveException, IllegalDepositStateException {

@@ -48,6 +48,9 @@ public class GameBoard {
 	public void reset(GameSettings gameSettings) {
 		developmentDeck.reset(Arrays.asList(gameSettings.getDevelopmentCards()));
 		leaderDeck.reset(Arrays.asList(gameSettings.getLeaderCards()));
+		discardDeck.reset(new ArrayList<>());
+		developmentDeck.resetProductionPowerDevelopmentCards();
+		developmentDeck.resetProductionPowerLeaderCards();
 		developmentDeck.shuffle();
 		leaderDeck.shuffle();
 		market.reset();

@@ -52,11 +52,8 @@ public class ProductionPower implements SpecialAbility {
 		if (numberFaithPoints != 0) {
 			p.getDashboard().moveFaithMarker(numberFaithPoints);
 		}
-		if (resourceProduced != null && !resourceProduced.isEmpty()) {
-			resourceProduced.entrySet()
-					.stream()
-					.filter(entry -> entry.getKey() != Resource.ANY)
-					.forEach(entry -> p.getDashboard().storeResourceInLocker(entry.getKey(), entry.getValue()));
+		if (resourceProducedModified != null && !resourceProducedModified.isEmpty()) {
+			resourceProducedModified.forEach((k, v) -> p.getDashboard().storeResourceInLocker(k, v));
 		}
 		// In order to not activate the same production power twice in one turn, after activation 'activated'
 		// flag is set to true.
@@ -90,6 +87,24 @@ public class ProductionPower implements SpecialAbility {
 	}
 
 	/**
+	 * Getter for resource required modified.
+	 * @return the resource cost of the production power.
+	 */
+
+	public Map<Resource, Integer> getResourceRequiredModified() {
+		return resourceRequiredModified.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+	}
+
+	/**
+	 * Getter for resource produced modified.
+	 * @return the resources produced by the production power.
+	 */
+
+	public Map<Resource, Integer> getResourceProducedModified() {
+		return resourceProducedModified != null ? resourceProducedModified.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)) : null;
+	}
+
+	/**
 	 * Getter for number faith points.
 	 * @return the number of faith points given by the production power.
 	 */
@@ -111,9 +126,7 @@ public class ProductionPower implements SpecialAbility {
 				.forEach(e2 -> {int diff = e.getValue()-e2.getValue(); e.setValue(Math.max(diff, 0));
 					e2.setValue(-diff); } ));
 
-		if(playerResources.values().stream().anyMatch(v -> v<0)) { return false; }
-
-		return true;
+		return playerResources.values().stream().noneMatch(v -> v < 0);
 	}
 
 	/**
