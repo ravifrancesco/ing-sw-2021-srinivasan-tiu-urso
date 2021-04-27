@@ -17,7 +17,7 @@ public class Banner {
 	 * @param color represents the color of the banner.
 	 * @param level represent the level of the banner.
 	 */
-	Banner(BannerEnum color, int level) {
+	public Banner(BannerEnum color, int level) {
 		this.color=color;
 		this.level=level;
 	}
