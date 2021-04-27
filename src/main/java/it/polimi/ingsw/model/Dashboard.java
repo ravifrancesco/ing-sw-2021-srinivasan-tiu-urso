@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.specialAbilities.*;
 
+import java.sql.Array;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -403,12 +404,22 @@ public class Dashboard {
 	 * Removes the resources from the warehouse
 	 * @param resToPayWith 	a SelectedResource data structure containing the player's choices of where to take the resources from
 	 */
-	public void payPrice(ResourceContainer resToPayWith) {
+	public void payPrice(ResourceContainer resToPayWith, Map<Resource, Integer> cost) throws IllegalArgumentException {
+		HashMap<Resource, Integer> rcAllRes = (HashMap<Resource, Integer>) resToPayWith.getAllResources(warehouse);
+		cost.forEach((k, v) -> rcAllRes.merge(k, v, (v1, v2) -> v1-v2));
+		if (rcAllRes.values().stream().noneMatch(v -> v == 0)) {
+			throw new IllegalArgumentException("Resources do not match the cost");
+		}
 		resToPayWith.getContainedDepositResources().forEach(warehouse::removeFromDeposit);
 		resToPayWith.getContainedLockerResources().forEach(warehouse::removeFromLocker);
 		IntStream.range(0, 1).forEach(i ->
-				resToPayWith.getContainedExtraDepositResources()[i].forEach(pos ->
+				resToPayWith.getContainedExtraDepositResources().get(i).forEach(pos ->
 						warehouse.removeFromExtraDeposit(i, pos)));
 	}
+
+
+
+
+
 
 }
