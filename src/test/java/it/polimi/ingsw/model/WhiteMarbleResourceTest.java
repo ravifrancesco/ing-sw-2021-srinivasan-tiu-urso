@@ -7,6 +7,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 public class WhiteMarbleResourceTest {
+    /*
     @Test
     public void activateTest() {
         Player p = new Player("rbta-svg", "001");
@@ -24,4 +25,6 @@ public class WhiteMarbleResourceTest {
         Assert.assertEquals(m.getResource(p), Resource.GOLD);
         Assert.assertNull(m.getResource(p2));
     }
+
+     */
 }

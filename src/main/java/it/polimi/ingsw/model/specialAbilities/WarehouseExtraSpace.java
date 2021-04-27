@@ -26,7 +26,7 @@ public class WarehouseExtraSpace implements SpecialAbility {
 		p.getDashboard().activateExtraDeposit(leaderCardPos);
 	}
 
-	//TODO doc
+
 	public SpecialAbilityType getType() {
 		return SpecialAbilityType.WAREHOUSE_EXTRA_SPACE;
 	}

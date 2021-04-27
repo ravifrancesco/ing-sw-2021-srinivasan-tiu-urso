@@ -337,7 +337,7 @@ public class GameSettings {
         int numberFaithPoints = Integer.parseInt(propertyMap.get("FP"));
         boolean selectableResource = propertyMap.get("SR").equals("y");
 
-        return new ProductionPower(resourceRequired, resourceProduced, numberFaithPoints, selectableResource);
+        return new ProductionPower(resourceRequired, resourceProduced, numberFaithPoints);
 
     }
 

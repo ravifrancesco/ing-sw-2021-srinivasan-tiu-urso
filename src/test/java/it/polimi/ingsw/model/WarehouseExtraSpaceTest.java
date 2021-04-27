@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 public class WarehouseExtraSpaceTest  {
-
+    /*
     @Test
     public void activateTest() {
         // copy paste from Giuseppe's DevelopmentCardTest
@@ -79,4 +79,6 @@ public class WarehouseExtraSpaceTest  {
 
 
     }
+
+     */
 }
