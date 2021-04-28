@@ -49,4 +49,26 @@ public class BannerTest {
         Assert.assertFalse(banner2.equals(banner4));
         Assert.assertFalse(banner3.equals(banner4));
     }
+
+    @Test
+    public void toStringTest() {
+        Banner banner1 = new Banner(BannerEnum.BLUE, 3);
+
+        Assert.assertEquals(banner1.toString(), "BA=BLUE:3;");
+    }
+
+    @Test
+    public void isOneLessTest() {
+        Banner banner1 = new Banner(BannerEnum.BLUE, 1);
+        Banner banner2 = new Banner(BannerEnum.BLUE, 2);
+        Banner banner3 = new Banner(BannerEnum.GREEN, 3);
+        Banner banner4 = new Banner(BannerEnum.YELLOW, 3);
+
+        Assert.assertTrue(banner1.isOneLess(banner2));
+        Assert.assertFalse(banner1.isOneLess(banner3));
+        Assert.assertFalse(banner1.isOneLess(banner4));
+        Assert.assertTrue(banner2.isOneLess(banner3));
+        Assert.assertTrue(banner2.isOneLess(banner4));
+        Assert.assertFalse(banner3.isOneLess(banner4));
+    }
 }
