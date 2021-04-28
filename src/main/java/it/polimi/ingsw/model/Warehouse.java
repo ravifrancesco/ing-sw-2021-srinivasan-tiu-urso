@@ -6,6 +6,9 @@ import java.util.stream.IntStream;
 
 public class Warehouse {
 
+	static final int FIRST_SHELF_THRESHOLD = 1;
+	static final int SECOND_SHELF_THRESHOLD = 3;
+	static final int THIRD_SHELF_THRESHOLD = 5;
 	static final int MAX_EXTRA_DEPOSIT_SPACE = 2;
 	static final int MAX_EXTRA_DEPOSIT_SLOTS = 2;
 	static final int MAX_DEPOSIT_SLOTS = 6;
@@ -212,13 +215,13 @@ public class Warehouse {
 				Arrays.stream(newDeposit, 3, 6).filter(res -> res != Resource.EMPTY).distinct().count() <= 1 &&
 				// You can’t place the same type of Resource in two different depots.
 		allResources.stream().noneMatch(resType ->
-				((Arrays.stream(newDeposit, 0, 1).filter(res -> res == resType).count() *
-								Arrays.stream(newDeposit, 1, 3).filter(res -> res == resType).count()) != 0)
+				((Arrays.stream(newDeposit, 0, FIRST_SHELF_THRESHOLD).filter(res -> res == resType).count() *
+								Arrays.stream(newDeposit, FIRST_SHELF_THRESHOLD, SECOND_SHELF_THRESHOLD).filter(res -> res == resType).count()) != 0)
 										||
-						((Arrays.stream(newDeposit, 1, 3).filter(res -> res == resType).count() *
-												Arrays.stream(newDeposit, 3, 6).filter(res -> res == resType).count()) != 0)
-						|| ((Arrays.stream(newDeposit, 0, 1).filter(res -> res == resType).count() *
-										Arrays.stream(newDeposit, 3, 6).filter(res -> res == resType).count()) != 0));
+						((Arrays.stream(newDeposit, FIRST_SHELF_THRESHOLD, SECOND_SHELF_THRESHOLD).filter(res -> res == resType).count() *
+												Arrays.stream(newDeposit, SECOND_SHELF_THRESHOLD, THIRD_SHELF_THRESHOLD).filter(res -> res == resType).count()) != 0)
+						|| ((Arrays.stream(newDeposit, 0, FIRST_SHELF_THRESHOLD).filter(res -> res == resType).count() *
+										Arrays.stream(newDeposit, SECOND_SHELF_THRESHOLD, THIRD_SHELF_THRESHOLD).filter(res -> res == resType).count()) != 0));
 
 	}
 
