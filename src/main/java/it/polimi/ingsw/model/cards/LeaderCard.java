@@ -31,7 +31,7 @@ public class LeaderCard implements Card {
 	 * @param bannerCost represents the banner cost to buy the card.
 	 * @param specialAbility represents the special ability of the card.
 	 */
-	public LeaderCard(int id, int victoryPoints, Map<Resource, Integer> resourceCost, Map<Banner, Integer> bannerCost, SpecialAbility specialAbility) {
+	public LeaderCard(int id, int victoryPoints, Map<Banner, Integer> bannerCost, SpecialAbility specialAbility) {
 		this.id = id;
 		this.victoryPoints = victoryPoints;
 		this.bannerCost = bannerCost.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));

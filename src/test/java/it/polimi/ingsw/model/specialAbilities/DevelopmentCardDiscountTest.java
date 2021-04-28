@@ -115,7 +115,7 @@ public class DevelopmentCardDiscountTest {
 
         return  IntStream.range(0, leaderCardNum)
                 .boxed()
-                .map(i -> new LeaderCard(i, 2, resourceCost, bannerCost, sa))
+                .map(i -> new LeaderCard(i, 2, bannerCost, sa))
                 .toArray(LeaderCard[]::new);
 
     }
