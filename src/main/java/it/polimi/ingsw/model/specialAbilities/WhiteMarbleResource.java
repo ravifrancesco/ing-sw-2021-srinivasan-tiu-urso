@@ -33,10 +33,30 @@ public class WhiteMarbleResource implements SpecialAbility {
 	}
 
 	/**
-	 * Returns the type of the special ability
-	 * @return the special ability type
+	 * Method to get the type of this special ability.
+	 * @return the type of this special ability.
 	 */
+	@Override
 	public SpecialAbilityType getType() {
 		return SpecialAbilityType.WHITE_MARBLE_RESOURCES;
 	}
+
+	/**
+	 * To string method of the class.
+	 * TODO test
+	 * @return a string representation of the object.
+	 */
+	public String toString() {
+
+		String result = "";
+
+		result += "SA=WMR;";
+
+		result += "R=" + res.toString() + ";";
+
+		return result;
+
+	}
+
+
 }

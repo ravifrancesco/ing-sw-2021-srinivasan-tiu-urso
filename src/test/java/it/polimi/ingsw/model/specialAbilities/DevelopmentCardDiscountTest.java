@@ -1,5 +1,7 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.specialAbilities;
 
+import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.specialAbilities.DevelopmentCardDiscount;
 import org.junit.Assert;
 import org.junit.Test;

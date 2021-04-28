@@ -27,7 +27,7 @@ import java.util.stream.IntStream;
  *
  * The class also acts as a proxy for the warehouse and  the faith track, that are
  * not directly visible from the outside.
- *
+ * TODO testing
  */
 public class Dashboard {
 
@@ -56,9 +56,13 @@ public class Dashboard {
 		this.playedDevelopmentCards = IntStream.range(0, NUM_DEVELOPMENT_CARD_STACKS)
 				.mapToObj(e->new Stack<DevelopmentCard>())
 				.collect(Collectors.toList());
-		// TODO add production power initialization
+
+		this.dashBoardProductionPower = gameSettings.getDashBoardProductionPower();
 	}
 
+	/**
+	 * Resets the dashboard to the initial state.
+	 */
 	public void reset() {
 		warehouse.reset();
 		faithTrack.reset();
@@ -101,7 +105,6 @@ public class Dashboard {
 
 		return faithTrackVP + leaderCardsVP + developmentCardsVP;
 
-
 	}
 
 
@@ -124,6 +127,7 @@ public class Dashboard {
 	 * Allows to place a Development Card onto the Dashboard
 	 *
 	 * @param c 						the Development Card to place.
+	 * @param position					position to place the development card.
 	 * @throws IllegalStateException 	in case the are no slots available
 	 * 									for the development card.
 	 */
@@ -173,8 +177,11 @@ public class Dashboard {
 		}
 	}
 
-	// TODO check if it's okay
-
+	/**
+	 * Gets the player's banners on the dashboard.
+	 *
+	 * @return a map with keys being the banners and values being the quantities.
+	 */
 	public Map<Banner, Integer> getBanners() {
 		HashMap<Banner, Integer> playerBanners = new HashMap<>();
 		IntStream.range(0, NUM_DEVELOPMENT_CARD_STACKS)
@@ -191,8 +198,10 @@ public class Dashboard {
 	/**
 	 * Returns a Leader Card on the dashboard given the index.
 	 *
-	 * @param c	index to retrieve Leader Card
-	 * @return	played Leader Card at index c
+	 * @param c							index to retrieve Leader Card.
+	 * @return							played Leader Card at index c.
+	 * @throws IllegalArgumentException if the index is out of bounds.
+	 * @throws NullPointerException 	if the selected slot is empty.
 	 */
 	public LeaderCard getLeaderCard(int c) throws IllegalArgumentException, NullPointerException {
 		if (c < 0 || c > 1) {
@@ -247,7 +256,6 @@ public class Dashboard {
 	/**
 	 * Resets the flag "activated" in all the production
 	 * powers to false.
-	 *
 	 */
 	public void resetProductionPowers() {
 
@@ -292,19 +300,6 @@ public class Dashboard {
 			throw new IllegalStateException("Moves create an illegal deposit");
 		}
 		moves.forEach(warehouse::doDepositMove);
-	}
-
-	public void moveExtraDepositResources(int leaderCardPosition, int from, int to) {
-		if (leaderCardPosition < 0 || leaderCardPosition > 1 || from < 0 || from > 1 || to < 0 || to > 1) {
-			throw new IllegalArgumentException();
-		}
-		SpecialAbility specialAbility = playedLeaderCards.get(leaderCardPosition).getSpecialAbility();
-
-		if (!specialAbility.getType().equals(SpecialAbilityType.WAREHOUSE_EXTRA_SPACE)) {
-			throw new IllegalArgumentException();
-		}
-
-		warehouse.swapExtraDeposit(leaderCardPosition, from, to);
 	}
 
 	/**

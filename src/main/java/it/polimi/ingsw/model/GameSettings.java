@@ -2,8 +2,7 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
-import it.polimi.ingsw.model.specialAbilities.ProductionPower;
-import it.polimi.ingsw.model.specialAbilities.SpecialAbility;
+import it.polimi.ingsw.model.specialAbilities.*;
 
 import java.io.*;
 import java.util.*;
@@ -64,7 +63,7 @@ public class GameSettings {
     }
 
     /**
-     * Construtor to use to create GameSettings from .properties file.
+     * Constructor to use to create GameSettings from .properties file.
      *
      * @param path path of the .properties file.
      */
@@ -194,8 +193,7 @@ public class GameSettings {
                 .map(e -> e.split(":"))
                 .collect(Collectors.toMap(e -> parseBanner(e[0], e[1]), e -> Integer.parseInt(e[2])));
 
-        SpecialAbility specialAbility = parseProductionPower(propertyMap);
-        // TODO add special ability parser
+        SpecialAbility specialAbility = parseSpecialAbility(propertyMap);
 
         return new LeaderCard(id, victoryPoints, resourceCost, bannerCost, specialAbility);
 
@@ -293,6 +291,8 @@ public class GameSettings {
             case "SERVANT" -> Resource.SERVANT;
             case "STONE" -> Resource.STONE;
             case "GOLD" -> Resource.GOLD;
+            case "ANY" -> Resource.ANY;
+            case "EMPTY" -> Resource.EMPTY;
             default -> null;
         };
 
@@ -319,6 +319,26 @@ public class GameSettings {
     }
 
     /**
+     * Converts a map representing the properties of a special ability into a special ability.
+     * TODO test
+     * @param propertyMap   map with keys being the property, values being the property value.
+     * @return              a ProductionPower built using the propertyMap properties.
+     */
+    private SpecialAbility parseSpecialAbility(Map<String, String> propertyMap) {
+
+        String specialAbilityType = propertyMap.get("SA");
+
+        return switch (specialAbilityType) {
+            case "DCD" -> parseDevelopmentCardDiscount(propertyMap);
+            case "PP" -> parseProductionPower(propertyMap);
+            case "WES" -> parseWarehouseExtraSpace(propertyMap);
+            case "WMR" -> parseWhiteMarbleResource(propertyMap);
+            default -> null;
+        };
+
+    }
+
+    /**
      * Converts a map representing the properties of a production power into a production power
      *
      * @param propertyMap   map with keys being the property, values being the property value
@@ -335,9 +355,52 @@ public class GameSettings {
                 .collect(Collectors.toMap(e -> parseResource(e[0]), e -> Integer.parseInt(e[1])));
 
         int numberFaithPoints = Integer.parseInt(propertyMap.get("FP"));
-        boolean selectableResource = propertyMap.get("SR").equals("y");
 
         return new ProductionPower(resourceRequired, resourceProduced, numberFaithPoints);
+
+    }
+
+    /**
+     * Converts a map representing the properties of a production power into a development card discount.
+     * TODO test
+     * @param propertyMap   map with keys being the property, values being the property value
+     * @return              a DevelopmentCardDiscount built using the propertyMap properties
+     */
+    private DevelopmentCardDiscount parseDevelopmentCardDiscount(Map<String, String> propertyMap) {
+
+        Resource resource = parseResource(propertyMap.get("R"));
+
+        int quantity = Integer.parseInt(propertyMap.get("Q"));
+
+        return new DevelopmentCardDiscount(resource, quantity);
+
+    }
+
+    /**
+     * Converts a map representing the properties of a production power into a white marble resource.
+     * TODO test
+     * @param propertyMap   map with keys being the property, values being the property value
+     * @return              a WhiteMarbleResource built using the propertyMap properties
+     */
+    private WhiteMarbleResource parseWhiteMarbleResource(Map<String, String> propertyMap) {
+
+        Resource resource = parseResource(propertyMap.get("R"));
+
+        return new WhiteMarbleResource(resource);
+
+    }
+
+    /**
+     * Converts a map representing the properties of a production power into a warehouse extra space.
+     * TODO test
+     * @param propertyMap   map with keys being the property, values being the property value
+     * @return              a WarehouseExtraSpace built using the propertyMap properties
+     */
+    private WarehouseExtraSpace parseWarehouseExtraSpace(Map<String, String> propertyMap) {
+
+        Resource resource = parseResource(propertyMap.get("R"));
+
+        return new WarehouseExtraSpace(resource);
 
     }
 

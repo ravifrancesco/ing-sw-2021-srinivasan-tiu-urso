@@ -1,5 +1,6 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.specialAbilities.ProductionPower;
 import it.polimi.ingsw.model.specialAbilities.SpecialAbility;
@@ -15,6 +16,7 @@ public class LeaderCardTest{
     /*
     @Test
     public void toStringTestWithNullRP() {
+
         Map<Resource, Integer> resourceCost = new HashMap<>();
 
         resourceCost.put(Resource.SHIELD, 1);
@@ -27,7 +29,7 @@ public class LeaderCardTest{
         Map<Resource, Integer> resourceRequired = new HashMap<>();
         resourceRequired.put(Resource.GOLD, 1);
 
-        SpecialAbility sa = new ProductionPower(resourceRequired, null, 1, true);
+        SpecialAbility sa = new ProductionPower(resourceRequired, null, 1);
 
         LeaderCard leaderCard = new LeaderCard(1, 5, resourceCost, bannerCost, sa);
 
@@ -52,7 +54,7 @@ public class LeaderCardTest{
         Map<Resource, Integer> resourceRequired = new HashMap<>();
         resourceRequired.put(Resource.GOLD, 1);
 
-        SpecialAbility sa = new ProductionPower(resourceRequired, null, 1, true);
+        SpecialAbility sa = new ProductionPower(resourceRequired, null, 1);
 
         LeaderCard leaderCard = new LeaderCard(1, 5, resourceCost, bannerCost, sa);
 
