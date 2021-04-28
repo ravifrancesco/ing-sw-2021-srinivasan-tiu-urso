@@ -53,8 +53,9 @@ public class BannerTest {
     @Test
     public void toStringTest() {
         Banner banner1 = new Banner(BannerEnum.BLUE, 3);
+        String string = "BA=BLUE:3;";
 
-        Assert.assertEquals(banner1.toString(), "BA=BLUE:3;");
+        Assert.assertEquals(banner1.toString(), string);
     }
 
     @Test
