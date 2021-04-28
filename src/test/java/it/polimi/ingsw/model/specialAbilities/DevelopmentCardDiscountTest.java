@@ -97,10 +97,6 @@ public class DevelopmentCardDiscountTest {
 
     private LeaderCard[] leaderCardDeckBuilder(int leaderCardNum) {
 
-        Map<Resource, Integer> resourceCost = new HashMap<>();
-
-        resourceCost.put(Resource.SHIELD, 1);
-
         Map<Banner, Integer> bannerCost = new HashMap<>();
 
         bannerCost.put(new Banner(BannerEnum.GREEN, 1), 2);
@@ -110,7 +106,7 @@ public class DevelopmentCardDiscountTest {
         resourceRequired.put(Resource.GOLD, 1);
 
         Map<Resource, Integer> resourceProduced = new HashMap<>();
-        resourceProduced.put(Resource.SHIELD, 1);
+        resourceProduced.put(Resource.ANY, 1);
         SpecialAbility sa = new ProductionPower(resourceRequired, resourceProduced, 1);
 
         return  IntStream.range(0, leaderCardNum)

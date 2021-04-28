@@ -2,14 +2,11 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
-import it.polimi.ingsw.model.specialAbilities.ProductionPower;
-import it.polimi.ingsw.model.specialAbilities.SpecialAbility;
+import it.polimi.ingsw.model.specialAbilities.*;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.IntStream;
 
 public class DeckTest {
@@ -19,7 +16,7 @@ public class DeckTest {
         DevelopmentCard[] developmentCards = developmentCardDeckBuilder();
         Deck developmentDeck = new Deck();
 
-        developmentDeck.init(Arrays.asList(developmentCards));
+        developmentDeck.reset(Arrays.asList(developmentCards));
 
         Assert.assertEquals(developmentDeck.getSize(), developmentCards.length);
 
@@ -40,7 +37,7 @@ public class DeckTest {
         LeaderCard[] leaderCards = leaderCardDeckBuilder(leaderCardNum);
         Deck leaderDeck = new Deck();
 
-        leaderDeck.init(Arrays.asList(leaderCards));
+        leaderDeck.reset(Arrays.asList(leaderCards));
 
         Assert.assertEquals(leaderDeck.getSize(), leaderCards.length);
 
@@ -75,6 +72,118 @@ public class DeckTest {
 
     }
 
+    @Test
+    public void copyTest() {
+        DevelopmentCard[] developmentCards = developmentCardDeckBuilder();
+        Deck developmentDeck = new Deck();
+
+        developmentDeck.reset(Arrays.asList(developmentCards));
+
+        Assert.assertEquals(developmentDeck.getSize(), developmentCards.length);
+
+        developmentDeck.shuffle();
+
+        Deck developmentDeckCopy = developmentDeck.copy();
+        developmentDeckCopy.shuffle();
+
+        DevelopmentCard[] dc = new DevelopmentCard[developmentDeck.getSize()];
+
+        IntStream.range(0, dc.length)
+                .forEach(i -> dc[i] = (DevelopmentCard) developmentDeck.getCard());
+
+        DevelopmentCard[] dcCopy = new DevelopmentCard[developmentDeckCopy.getSize()];
+
+        IntStream.range(0, dcCopy.length)
+                .forEach(i -> dcCopy[i] = (DevelopmentCard) developmentDeckCopy.getCard());
+
+        Assert.assertTrue(Arrays.asList(dc).containsAll(Arrays.asList(dcCopy)));
+        Assert.assertTrue(Arrays.asList(dcCopy).containsAll(Arrays.asList(dc)));
+    }
+
+    @Test
+    public void resetProductionPowerDevelopmentCardsTest() {
+        DevelopmentCard[] developmentCards = developmentCardDeckBuilder();
+        Deck developmentDeck = new Deck();
+        Player player = new Player(buildGameSettings());
+
+        developmentDeck.reset(Arrays.asList(developmentCards));
+
+        Assert.assertEquals(developmentDeck.getSize(), developmentCards.length);
+
+        developmentDeck.shuffle();
+
+        DevelopmentCard[] dc = new DevelopmentCard[developmentDeck.getSize()];
+
+        IntStream.range(0, dc.length)
+                .forEach(i -> dc[i] = (DevelopmentCard) developmentDeck.getCard());
+
+        IntStream.range(0, dc.length)
+                .filter(i -> i%2 == 0)
+                .forEach(i -> dc[i].activate(player));
+
+        IntStream.range(0, dc.length)
+                .forEach(i -> developmentDeck.add(dc[i]));
+
+        developmentDeck.resetProductionPowerDevelopmentCards();
+
+        Assert.assertTrue(IntStream.range(0, developmentDeck.getSize()).noneMatch(i -> ((DevelopmentCard) developmentDeck.getCard()).getProductionPower().isActivatable()));
+    }
+
+    @Test
+    public void resetProductionPowerLeaderCards() {
+        int leaderCardNum = 16;
+        LeaderCard[] leaderCards = leaderCardDeckBuilder(leaderCardNum);
+        Deck leaderDeck = new Deck();
+        Player player = new Player(buildGameSettings());
+
+        leaderDeck.reset(Arrays.asList(leaderCards));
+
+        Assert.assertEquals(leaderDeck.getSize(), leaderCards.length);
+
+        leaderDeck.shuffle();
+
+        LeaderCard[] lc = new LeaderCard[leaderDeck.getSize()];
+
+        IntStream.range(0, lc.length)
+                .forEach(i -> lc[i] = (LeaderCard) leaderDeck.getCard());
+
+        IntStream.range(0, lc.length)
+                .filter(i -> i%2 == 0)
+                .forEach(i -> lc[i].activate(player));
+
+        IntStream.range(0, lc.length)
+                .forEach(i -> leaderDeck.add(lc[i]));
+
+        leaderDeck.resetProductionPowerLeaderCards();
+
+        Assert.assertTrue(IntStream.range(0, leaderDeck.getSize())
+                .mapToObj(i -> ((LeaderCard) leaderDeck.getCard()).getSpecialAbility())
+                .filter(specialAbility -> specialAbility.getType()==SpecialAbilityType.PRODUCTION_POWER)
+                .map(specialAbility -> (ProductionPower) specialAbility)
+                .noneMatch(ProductionPower::isActivatable));
+
+       }
+
+    private GameSettings buildGameSettings() {
+
+
+        DevelopmentCard[] developmentCards = developmentCardDeckBuilder();
+
+        int leaderCardNum = 16;
+        LeaderCard[] leaderCards = leaderCardDeckBuilder(leaderCardNum);
+
+        ProductionPower dashboardProductionPower = productionPowerBuilder();
+
+        int vaticanReportsNum = 3;
+        List<VaticanReport> vaticanReports = vaticanReportsListBuilder();
+
+        int[] faithTrackVictoryPoints = {0,0,0,1,0,0,2,0,0,4,0,0,6,0,0,9,0,0,12,0,0,16,0,0,0};
+
+        return new GameSettings(developmentCards, leaderCardNum, leaderCards,
+                dashboardProductionPower, vaticanReports, faithTrackVictoryPoints);
+
+    }
+
     private DevelopmentCard[] developmentCardDeckBuilder() {
 
         Banner banner = new Banner(BannerEnum.BLUE, 2);
@@ -89,7 +198,7 @@ public class DeckTest {
         Map<Resource, Integer> resourceProduced = new HashMap<>();
         resourceProduced.put(Resource.SHIELD, 1);
 
-        ProductionPower p = new ProductionPower(resourceRequired, resourceProduced,2, false);
+        ProductionPower p = new ProductionPower(resourceRequired, resourceProduced,2);
 
         return IntStream.range(0, GameSettings.DEVELOPMENT_CARD_NUM)
                 .boxed()
@@ -100,27 +209,60 @@ public class DeckTest {
 
     private LeaderCard[] leaderCardDeckBuilder(int leaderCardNum) {
 
-        Map<Resource, Integer> resourceCost = new HashMap<>();
-
-        resourceCost.put(Resource.SHIELD, 1);
-
         Map<Banner, Integer> bannerCost = new HashMap<>();
 
         bannerCost.put(new Banner(BannerEnum.GREEN, 1), 2);
         bannerCost.put(new Banner(BannerEnum.BLUE, 2), 1);
 
+        return  IntStream.range(0, leaderCardNum)
+                .boxed()
+                .map(i -> new LeaderCard(i, 2, bannerCost, specialAbilityBuilder(i)))
+                .toArray(LeaderCard[]::new);
+
+    }
+
+    private ProductionPower productionPowerBuilder() {
+
+        Map<Resource, Integer> resourceRequired = new HashMap<>();
+        resourceRequired.put(Resource.GOLD, 1);
+        resourceRequired.put(Resource.STONE, 1);
+
+        Map<Resource, Integer> resourceProduced = new HashMap<>();
+        resourceProduced.put(Resource.SHIELD, 1);
+
+        return new ProductionPower(resourceRequired, resourceProduced,2);
+
+    }
+
+    private List<VaticanReport> vaticanReportsListBuilder() {
+
+        List<VaticanReport> vaticanReportsList = new ArrayList<>();
+        vaticanReportsList.add(new VaticanReport(5, 8, 2));
+        vaticanReportsList.add(new VaticanReport(12, 16, 3));
+        vaticanReportsList.add(new VaticanReport(19, 24, 4));
+
+        return vaticanReportsList;
+
+
+    }
+
+    private SpecialAbility specialAbilityBuilder(int i) {
+
         Map<Resource, Integer> resourceRequired = new HashMap<>();
         resourceRequired.put(Resource.GOLD, 1);
 
         Map<Resource, Integer> resourceProduced = new HashMap<>();
-        resourceProduced.put(Resource.SHIELD, 1);
-        SpecialAbility sa = new ProductionPower(resourceRequired, resourceProduced, 1, true);
-        // TODO change special abilities
+        resourceProduced.put(Resource.ANY, 1);
 
-        return  IntStream.range(0, leaderCardNum)
-                .boxed()
-                .map(i -> new LeaderCard(i, 2, resourceCost, bannerCost, sa))
-                .toArray(LeaderCard[]::new);
-
+        return switch (i % 4) {
+            case 1 ->
+                new DevelopmentCardDiscount(Resource.GOLD, 1);
+            case 2 ->
+                new WarehouseExtraSpace(Resource.SHIELD);
+            case 3 ->
+                new WhiteMarbleResource(Resource.STONE);
+            default ->
+                new ProductionPower(resourceRequired, resourceProduced, 1);
+        };
     }
 }
