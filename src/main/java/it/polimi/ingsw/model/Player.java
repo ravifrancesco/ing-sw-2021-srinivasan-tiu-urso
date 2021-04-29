@@ -63,10 +63,8 @@ public class Player {
 
 	/**
 	 * Resets the class to the starting/initial state.
-	 *
-	 * @param gameSettings game settings to initialize the class.
 	 */
-	public void reset(GameSettings gameSettings) {
+	public void reset() {
 		this.dashboard.reset();
 		this.hand.reset();
 		this.activeDiscounts.clear();

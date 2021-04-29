@@ -36,6 +36,7 @@ public class DevelopmentCardDiscountTest {
         GameSettings gameSettings = buildGameSettings();
 
         Player p = new Player(gameSettings);
+        p.reset();
 
         discount.activate(p);
 

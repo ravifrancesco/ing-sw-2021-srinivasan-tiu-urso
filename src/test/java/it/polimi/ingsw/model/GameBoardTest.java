@@ -78,6 +78,7 @@ public class GameBoardTest {
         gameBoard.reset(gameSettings);
 
         Player player = new Player(gameSettings);
+        player.reset();
 
         Deck leaderCardDeck = gameBoard.getLeaderDeck();
         Deck discardDeck = gameBoard.getDiscardDeck();

@@ -83,6 +83,7 @@ public class DevelopmentCardGridTest {
         playerResources.put(Resource.SERVANT, 3);
 
         Player p = new Player(gameSettings);
+        p.reset();
 
         DevelopmentCardDiscount discount1 = new DevelopmentCardDiscount(Resource.SHIELD, 1);
 
@@ -108,6 +109,7 @@ public class DevelopmentCardGridTest {
         playerResources.put(Resource.GOLD, 2);
 
         Player p = new Player(gameSettings);
+        p.reset();
 
         DevelopmentCardDiscount discount1 = new DevelopmentCardDiscount(Resource.SHIELD, 1);
         DevelopmentCardDiscount discount2 = new DevelopmentCardDiscount(Resource.SERVANT, 1);
