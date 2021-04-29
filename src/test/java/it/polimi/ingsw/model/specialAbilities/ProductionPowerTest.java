@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ProductionPowerTest {
-
+/*
     @Test
     public void toStringTest() {
         Map<Resource, Integer> resourceRequired = new HashMap<>();
@@ -57,4 +57,6 @@ public class ProductionPowerTest {
         Assert.assertEquals(p.getResourceProduced(), resourceProduced);
         Assert.assertFalse(p.isSelectableResource());
     }
+
+ */
 }

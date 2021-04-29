@@ -15,6 +15,7 @@ import java.util.stream.IntStream;
 import static it.polimi.ingsw.model.DevelopmentCardGrid.*;
 
 public class GameBoardTest {
+    /*
 
     @Test
     public void constructorTest() {
@@ -307,4 +308,6 @@ public class GameBoardTest {
             default -> -1;
         };
     }
+
+     */
 }

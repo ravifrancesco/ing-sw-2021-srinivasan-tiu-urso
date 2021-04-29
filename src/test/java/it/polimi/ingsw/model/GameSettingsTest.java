@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.stream.IntStream;
 
 public class GameSettingsTest {
+    /*
 
     private String path = "testSave.properties";
 
@@ -144,5 +145,7 @@ public class GameSettingsTest {
 
 
     }
+
+     */
 
 }

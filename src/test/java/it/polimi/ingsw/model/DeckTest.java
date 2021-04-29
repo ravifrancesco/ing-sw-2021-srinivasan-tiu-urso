@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.stream.IntStream;
 
 public class DeckTest {
+    /*
 
     @Test
     public void developmentCardDeckTest() {
@@ -123,4 +124,6 @@ public class DeckTest {
                 .toArray(LeaderCard[]::new);
 
     }
+
+     */
 }
