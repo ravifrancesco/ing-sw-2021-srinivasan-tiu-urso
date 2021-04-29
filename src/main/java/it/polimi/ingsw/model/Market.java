@@ -166,6 +166,7 @@ public class Market {
 	private void shiftCol(int col) {
 		for(int i = 0; i < gridRowLength-1; i++) {
 			swapMarble(i, col, i+1, col);
+
 		}
 	}
 

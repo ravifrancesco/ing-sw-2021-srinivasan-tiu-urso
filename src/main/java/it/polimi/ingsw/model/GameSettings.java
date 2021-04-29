@@ -292,7 +292,6 @@ public class GameSettings {
             case "STONE" -> Resource.STONE;
             case "GOLD" -> Resource.GOLD;
             case "ANY" -> Resource.ANY;
-            case "EMPTY" -> Resource.EMPTY;
             default -> null;
         };
 

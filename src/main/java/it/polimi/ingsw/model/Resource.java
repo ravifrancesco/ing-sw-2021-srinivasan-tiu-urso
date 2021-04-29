@@ -10,7 +10,5 @@ public enum Resource {
 
 	GOLD,
 
-	ANY,
-
-	EMPTY
+	ANY
 }

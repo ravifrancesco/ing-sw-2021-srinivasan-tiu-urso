@@ -48,6 +48,5 @@ public class ResourceContainerTest {
         Assert.assertEquals(Optional.ofNullable(resources.get(Resource.SHIELD)), Optional.of(0));
         Assert.assertEquals(Optional.ofNullable(resources.get(Resource.GOLD)), Optional.of(1));
         Assert.assertEquals(Optional.ofNullable(resources.get(Resource.SERVANT)), Optional.of(1));
-
     }
 }

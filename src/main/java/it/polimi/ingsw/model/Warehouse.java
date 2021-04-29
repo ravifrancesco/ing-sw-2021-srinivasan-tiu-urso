@@ -8,7 +8,7 @@ public class Warehouse {
 
 	static final int FIRST_SHELF_THRESHOLD = 1;
 	static final int SECOND_SHELF_THRESHOLD = 3;
-	static final int THIRD_SHELF_THRESHOLD = 5;
+	static final int THIRD_SHELF_THRESHOLD = 6;
 	static final int MAX_EXTRA_DEPOSIT_SPACE = 2;
 	static final int MAX_EXTRA_DEPOSIT_SLOTS = 2;
 	static final int MAX_DEPOSIT_SLOTS = 6;
@@ -40,7 +40,6 @@ public class Warehouse {
 	 */
 	public void clearDeposit() {
 		deposit = new Resource[MAX_DEPOSIT_SLOTS];
-		IntStream.range(0, MAX_DEPOSIT_SLOTS).forEach(i -> deposit[i] = Resource.EMPTY);
 	}
 
 	/**
@@ -68,7 +67,7 @@ public class Warehouse {
 		if (!checkShelvesRule(newDeposit)) {
 			throw new IllegalStateException("Deposit positioning is illegal");
 		}
-		if(deposit[pos] != Resource.EMPTY) {
+		if(deposit[pos] != null) {
 			throw new IllegalArgumentException();
 		}
 		// deposit is legal => adding resource to real deposit
@@ -81,7 +80,7 @@ public class Warehouse {
 	 * @param pos							position to clear
 	 */
 	public void removeFromDeposit(int pos) {
-		deposit[pos] = Resource.EMPTY;
+		deposit[pos] = null;
 	}
 
 	/**
@@ -100,7 +99,7 @@ public class Warehouse {
 	 * @return										the amount of resources inside the deposit
 	 */
 	public int getDepositResourceQty() {
-		return (int) Arrays.stream(deposit).filter(r -> r != Resource.EMPTY).count();
+		return (int) Arrays.stream(deposit).filter(Objects::nonNull).count();
 	}
 
 	/**
@@ -129,7 +128,7 @@ public class Warehouse {
 	 */
 	public void activateExtraDeposit(int extraDepositLeaderCardPos) {
 		extraDeposits[extraDepositLeaderCardPos] = new Resource[MAX_EXTRA_DEPOSIT_SLOTS];
-		IntStream.range(0, MAX_EXTRA_DEPOSIT_SLOTS).forEach(i -> extraDeposits[extraDepositLeaderCardPos][i] = Resource.EMPTY);
+		IntStream.range(0, MAX_EXTRA_DEPOSIT_SLOTS).forEach(i -> extraDeposits[extraDepositLeaderCardPos][i] = null);
 	}
 
 
@@ -141,7 +140,7 @@ public class Warehouse {
 	 * @param pos									position where to store the resource
 	 */
 	public void storeInExtraDeposit(int extraDepositLeaderCardPos, Resource r, int pos) throws IllegalArgumentException {
-		if(extraDeposits[extraDepositLeaderCardPos][pos] != Resource.EMPTY) {
+		if(extraDeposits[extraDepositLeaderCardPos][pos] != null) {
 			throw new IllegalArgumentException();
 		}
 		extraDeposits[extraDepositLeaderCardPos][pos] = r;
@@ -166,7 +165,7 @@ public class Warehouse {
 	 * @param pos									position of the resource to remove
 	 */
 	public void removeFromExtraDeposit(int extraDepositLeaderCardPos, int pos) {
-		extraDeposits[extraDepositLeaderCardPos][pos] = Resource.EMPTY;
+		extraDeposits[extraDepositLeaderCardPos][pos] = null;
 	}
 
 	/**
@@ -185,23 +184,44 @@ public class Warehouse {
 		allResources.add(Resource.SHIELD);
 		allResources.add(Resource.GOLD);
 
-
-
-
 		// You can place only one type of Resource in a single depot.
-		return Arrays.stream(newDeposit, 0, 1).filter(res -> res != Resource.EMPTY).distinct().count() <= 1 &&
-				Arrays.stream(newDeposit, 1, 3).filter(res -> res != Resource.EMPTY).distinct().count() <= 1 &&
-				Arrays.stream(newDeposit, 3, 6).filter(res -> res != Resource.EMPTY).distinct().count() <= 1 &&
+		return checkNoDistinctResource(newDeposit, 0, FIRST_SHELF_THRESHOLD) &&
+				checkNoDistinctResource(newDeposit, FIRST_SHELF_THRESHOLD, SECOND_SHELF_THRESHOLD) &&
+				checkNoDistinctResource(newDeposit, SECOND_SHELF_THRESHOLD, THIRD_SHELF_THRESHOLD) &&
 				// You can’t place the same type of Resource in two different depots.
 		allResources.stream().noneMatch(resType ->
-				((Arrays.stream(newDeposit, 0, FIRST_SHELF_THRESHOLD).filter(res -> res == resType).count() *
-								Arrays.stream(newDeposit, FIRST_SHELF_THRESHOLD, SECOND_SHELF_THRESHOLD).filter(res -> res == resType).count()) != 0)
-										||
-						((Arrays.stream(newDeposit, FIRST_SHELF_THRESHOLD, SECOND_SHELF_THRESHOLD).filter(res -> res == resType).count() *
-												Arrays.stream(newDeposit, SECOND_SHELF_THRESHOLD, THIRD_SHELF_THRESHOLD).filter(res -> res == resType).count()) != 0)
-						|| ((Arrays.stream(newDeposit, 0, FIRST_SHELF_THRESHOLD).filter(res -> res == resType).count() *
-										Arrays.stream(newDeposit, SECOND_SHELF_THRESHOLD, THIRD_SHELF_THRESHOLD).filter(res -> res == resType).count()) != 0));
+				checkNoSameResourceTwoShelves(newDeposit, 0, FIRST_SHELF_THRESHOLD, FIRST_SHELF_THRESHOLD, SECOND_SHELF_THRESHOLD, resType) ||
+						checkNoSameResourceTwoShelves(newDeposit, FIRST_SHELF_THRESHOLD, SECOND_SHELF_THRESHOLD, SECOND_SHELF_THRESHOLD,  THIRD_SHELF_THRESHOLD, resType) ||
+						checkNoSameResourceTwoShelves(newDeposit, 0, FIRST_SHELF_THRESHOLD, SECOND_SHELF_THRESHOLD, THIRD_SHELF_THRESHOLD, resType));
+	}
 
+	/**
+	 * Checks to see that a certain part of a Resource array doesn't have more than one type of resource.
+	 * @param arr the array to check
+	 * @param startIndex the first position to check
+	 * @param endIndex the last position to check
+	 * @return true if there is only one type, false if not.
+	 */
+	private boolean checkNoDistinctResource(Resource[] arr, int startIndex, int endIndex) {
+		return Arrays.stream(arr, startIndex, endIndex).filter(Objects::nonNull).distinct().count() <= 1;
+
+	}
+
+	/**
+	 * Counts occurences of a certain resource in two different parts of the deposit and checks to see if their
+	 * product is 0. If it is, then only one shelve contained the resource and true is returned. If not, false.
+	 * @param arr the array of resources to check
+	 * @param firstPartStartIndex first index of first shelve to check
+	 * @param firstPartEndIndex   second index of first shelve to check
+	 * @param secondPartStartIndex first index of second shelve to check
+	 * @param secondPartEndIndex end index of second shelve to check
+	 * @param toCount resource to count
+	 * @return true if resource appears only on one shelve
+	 */
+	private boolean checkNoSameResourceTwoShelves(Resource[] arr, int firstPartStartIndex, int firstPartEndIndex,
+												int secondPartStartIndex, int secondPartEndIndex, Resource toCount) {
+		return (Arrays.stream(arr, firstPartStartIndex, firstPartEndIndex).filter(res -> res == toCount).count() *
+				Arrays.stream(arr, secondPartStartIndex, secondPartEndIndex).filter(res -> res == toCount).count()) != 0;
 	}
 
 	/**
@@ -212,7 +232,7 @@ public class Warehouse {
 		HashMap<Resource, Integer> resourceCounter = new HashMap<>(locker);
 
 		Arrays.stream(deposit)
-				.filter(r -> r != Resource.EMPTY)
+				.filter(Objects::nonNull)
 				.forEach(r -> resourceCounter.put(r, resourceCounter.get(r) + 1));
 
 		Arrays.stream(extraDeposits) // for each extra deposit
@@ -220,7 +240,7 @@ public class Warehouse {
 
 				.forEach(extraDepo ->
 						Arrays.stream(extraDepo)
-								.filter(res -> res != Resource.EMPTY)
+								.filter(Objects::nonNull)
 								.forEach(r -> resourceCounter.put(r, resourceCounter.get(r)+1)));
 
 		return resourceCounter;
