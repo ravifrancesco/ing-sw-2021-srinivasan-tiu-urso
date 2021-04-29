@@ -11,7 +11,7 @@ import java.util.*;
 import java.util.stream.IntStream;
 
 public class ProductionPowerTest {
-
+/*
     @Test
     public void constructorTest() {
         Map<Resource, Integer> resourceRequired = new HashMap<>();
@@ -700,4 +700,6 @@ public class ProductionPowerTest {
             default -> -1;
         };
     }
+
+ */
 }

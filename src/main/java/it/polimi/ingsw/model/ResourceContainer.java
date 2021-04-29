@@ -3,20 +3,20 @@ package it.polimi.ingsw.model;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.IntStream;
 
 public class ResourceContainer {
 
     private ArrayList<Integer> containedDepositResources;
     private Map<Resource, Integer> containedLockerResources;
-    private ArrayList[] containedExtraDepositResources;
+    private Map<Integer, ArrayList<Integer>> containedExtraDepositResources;
 
     public ResourceContainer() {
         containedDepositResources = new ArrayList<>();
-        containedExtraDepositResources = new ArrayList[2];
-        containedExtraDepositResources[0] = new ArrayList<Integer>();
-        containedExtraDepositResources[1] = new ArrayList<Integer>();
         containedLockerResources = new HashMap<>();
+        containedExtraDepositResources = new HashMap<>();
         selectedLockerPosInit();
+        selectedExtraDepositInit();
     }
 
     public void selectedLockerPosInit() {
@@ -26,15 +26,21 @@ public class ResourceContainer {
         containedLockerResources.put(Resource.SHIELD, 0);
     }
 
-    public void addDepositSelectedResource(int pos) {
+    public void selectedExtraDepositInit() {
+        IntStream.range(0, Warehouse.MAX_EXTRA_DEPOSIT_SLOTS).forEach(i ->
+                containedExtraDepositResources.put(i, new ArrayList<>()));
+    }
+
+    // TODO during view coding: add checks to never select an empty slot
+    public void addDepositSelectedResource(int pos, Warehouse wh) {
         containedDepositResources.add(pos);
     }
 
-    public void addExtraDepositSelectedResource(int leaderCardPos, int pos) {
-        containedExtraDepositResources[leaderCardPos].add(pos);
+    public void addExtraDepositSelectedResource(int leaderCardPos, int pos, Warehouse wh) {
+        containedExtraDepositResources.get(leaderCardPos).add(pos);
     }
 
-    public void addLockerSelectedResource(Resource r, int qty) {
+    public void addLockerSelectedResource(Resource r, int qty, Warehouse wh) {
         containedLockerResources.put(r, qty);
     }
 
@@ -46,7 +52,21 @@ public class ResourceContainer {
         return containedLockerResources;
     }
 
-    public ArrayList<Integer>[] getContainedExtraDepositResources() {
+    public Map<Integer, ArrayList<Integer>> getContainedExtraDepositResources() {
         return containedExtraDepositResources;
     }
+
+    public Map<Resource, Integer> getAllResources(Warehouse wh) {
+        HashMap<Resource, Integer> res = new HashMap<>(containedLockerResources);
+
+        containedDepositResources.forEach(i ->
+                res.put(wh.getDeposit()[i], res.get(wh.getDeposit()[i]) + 1));
+
+        IntStream.range(0, Warehouse.MAX_EXTRA_DEPOSIT_SLOTS)
+                .forEach(i -> containedExtraDepositResources.get(i)
+                        .forEach(j -> res.put(wh.getExtraDeposits()[i][j],
+                            res.get(wh.getExtraDeposits()[i][j]) + 1)));
+        return res;
+    }
+
 }
