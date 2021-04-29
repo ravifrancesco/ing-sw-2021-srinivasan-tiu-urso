@@ -2,19 +2,18 @@ package it.polimi.ingsw.model.specialAbilities;
 
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
+import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.specialAbilities.ProductionPower;
 import it.polimi.ingsw.model.specialAbilities.SpecialAbility;
 import it.polimi.ingsw.model.specialAbilities.WarehouseExtraSpace;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.lang.reflect.Array;
+import java.util.*;
 
 public class WarehouseExtraSpaceTest  {
-    /*
+
     @Test
     public void activateTest() {
         // copy paste from Giuseppe's DevelopmentCardTest
@@ -23,7 +22,7 @@ public class WarehouseExtraSpaceTest  {
         resourceCostPP.put(Resource.STONE, 1);
         Map<Resource, Integer> resourceProduced = new HashMap<>();
         resourceProduced.put(Resource.SHIELD, 1);
-        ProductionPower p = new ProductionPower(resourceCostPP, resourceProduced,2, false);
+        ProductionPower p = new ProductionPower(resourceCostPP, resourceProduced,2);
         Map<Resource, Integer> resCost = new HashMap<>();
         DevelopmentCard c = new DevelopmentCard(1, 5, resCost, p, null);
         int[] faithTrackVictoryPoints = {0,0,0,1,0,0,2,0,0,4,0,0,6,0,0,9,0,0,12,0,0,16,0,0,0};
@@ -37,49 +36,86 @@ public class WarehouseExtraSpaceTest  {
 
         GameSettings gameSettings = new GameSettings(null, 0, null, null, vaticanReports, faithTrackVictoryPoints);
 
-        Player player = new Player("rbta-svg", "RRT00");
-
-        Dashboard dashboard = new Dashboard(gameSettings, player);
-        player.setDashboard(dashboard);
-
-        Warehouse wh = new Warehouse();
-        dashboard.setWarehouse(wh);
-
+        int thrownExceptions = 0;
+        Player player = new Player(gameSettings);
         ArrayList<Resource> res = new ArrayList<>();
         res.add(Resource.STONE);
+        // no wes, shit shouldn't work
+        Assert.assertEquals(thrownExceptions, 0);
+        try {
+            player.getDashboard().addResourcesToSupply(res);
+            player.getDashboard().storeFromSupplyInExtraDeposit(0, 0, 1);
+        } catch (Exception ignored) {
+            thrownExceptions += 1;
+        }
+        Assert.assertEquals(thrownExceptions, 1);
 
-        wh.storeInDeposit(res);
+        WarehouseExtraSpace wes = new WarehouseExtraSpace(Resource.GOLD);
+        wes.setLeaderCardPos(0);
+        wes.activate(player);
+        player.getDashboard().placeLeaderCard(createLeaderCard(wes));
+        // shouldn't work, wrong resource
+        try {
+            player.getDashboard().storeFromSupplyInExtraDeposit(0, 0, 1);
+        } catch (IllegalStateException e) {
+            thrownExceptions += 1;
+        }
 
-        SpecialAbility sa = new WarehouseExtraSpace(Resource.GOLD);
-        Warehouse whDoubleCheck = player.getDashboard().getWarehouse();
+        Assert.assertEquals(thrownExceptions, 2);
 
-        // no special abilities activated means no extra deposit
-        Assert.assertFalse(whDoubleCheck.hasExtraDeposit());
+        ArrayList<Resource> res2 = new ArrayList<>();
+        res2.add(Resource.GOLD);
+        player.getDashboard().addResourcesToSupply(res2);
 
-        sa.activate(player);
-
-        // extra deposit flag has been activated
-        Assert.assertTrue(whDoubleCheck.hasExtraDeposit());
-        // only one resource should have an extra deposit for now
-        Assert.assertEquals(whDoubleCheck.getExtraDepositResources().size(), 1);
-        // that one resource has to be gold
-        Assert.assertEquals(whDoubleCheck.getExtraDepositResources().get(0), Resource.GOLD);
-
-        SpecialAbility sa2 = new WarehouseExtraSpace(Resource.SHIELD);
-
-        // activating a second extra storage for shields
-        sa2.activate(player);
-
-        // resources with extra storages must be two now
-        Assert.assertEquals(whDoubleCheck.getExtraDepositResources().size(), 2);
-        // gold extra storage remains unchanged
-        Assert.assertEquals(whDoubleCheck.getExtraDepositResources().get(0), Resource.GOLD);
-        // additional shield extra storage is created
-        Assert.assertEquals(whDoubleCheck.getExtraDepositResources().get(1), Resource.SHIELD);
-
+        player.getDashboard().storeFromSupplyInExtraDeposit(0, 1, 0);
 
 
+        Map<Resource, Integer> resources = player.getDashboard().getAllPlayerResources();
+
+        Assert.assertEquals(java.util.Optional.ofNullable(resources.get(Resource.GOLD)), Optional.of(1));
+        Assert.assertEquals(java.util.Optional.ofNullable(resources.get(Resource.STONE)), Optional.of(0));
+        Assert.assertEquals(java.util.Optional.ofNullable(resources.get(Resource.SERVANT)), Optional.of(0));
+        Assert.assertEquals(java.util.Optional.ofNullable(resources.get(Resource.SHIELD)), Optional.of(0));
     }
 
-     */
+    public LeaderCard createLeaderCard(WarehouseExtraSpace wes) {
+        Map<Resource, Integer> resourceCost = new HashMap<>();
+
+        resourceCost.put(Resource.SHIELD, 1);
+
+        Map<Banner, Integer> bannerCost = new HashMap<>();
+
+        bannerCost.put(new Banner(BannerEnum.GREEN, 1), 2);
+        bannerCost.put(new Banner(BannerEnum.BLUE, 2), 1);
+
+        return new LeaderCard(1, 5, resourceCost, bannerCost, wes);
+    }
+
+    @Test
+    public void getTypeTest() {
+        WarehouseExtraSpace wes = new WarehouseExtraSpace(Resource.GOLD);
+        Assert.assertEquals(wes.getType(), SpecialAbilityType.WAREHOUSE_EXTRA_SPACE);
+    }
+
+    @Test
+    public void getStoredResources() {
+        WarehouseExtraSpace wes = new WarehouseExtraSpace(Resource.GOLD);
+        Assert.assertEquals(wes.getStoredResource(), Resource.GOLD);
+    }
+
+    @Test
+    public void toStringTest() {
+        WarehouseExtraSpace wes1 = new WarehouseExtraSpace(Resource.GOLD);
+        WarehouseExtraSpace wes2 = new WarehouseExtraSpace(Resource.STONE);
+        WarehouseExtraSpace wes3 = new WarehouseExtraSpace(Resource.SHIELD);
+        WarehouseExtraSpace wes4 = new WarehouseExtraSpace(Resource.SERVANT);
+
+        Assert.assertEquals(wes1.toString(),"SA=WES;R=GOLD;");
+        Assert.assertEquals(wes2.toString(),"SA=WES;R=STONE;");
+        Assert.assertEquals(wes3.toString(),"SA=WES;R=SHIELD;");
+        Assert.assertEquals(wes4.toString(),"SA=WES;R=SERVANT;");
+    }
+
+
+
 }

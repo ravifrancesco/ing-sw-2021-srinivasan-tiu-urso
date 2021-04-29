@@ -7,14 +7,13 @@ import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.specialAbilities.*;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
 public class ServerController {
 
-    // TODO: add checks for ResourceContainer legality
     // TODO: check that illegal actions don't change the state
+    // TODO: check if we need to add movements between deposit and extradeposit(s)
 
     private final Game game;
 
@@ -24,6 +23,8 @@ public class ServerController {
     private String firstPlayer;
 
     private int firstTurns;
+
+    GameSettings gameSettings;
 
     public ServerController(String gameId, int numberOfPlayers) {
         this.game = new Game(gameId);
@@ -40,7 +41,7 @@ public class ServerController {
         } else if (game.getPlayers().containsKey(nickname)) {
             throw new NicknameException("Nickname " + nickname + " is already in use");
         } else {
-            game.addPlayer(nickname, new Player());
+            game.addPlayer(nickname, new Player(gameSettings));
         }
     }
 
@@ -74,7 +75,7 @@ public class ServerController {
         }
 
         GameBoard gameboard = game.getGameBoard();
-        player.discardLeaderCardInExcess(cardToDiscard, gameboard);
+        // player.discardLeaderCardInExcess(cardToDiscard, gameboard);
     }
 
     public void getInitialResources(String nickname, Resource resource, int position) throws WrongTurnException, WrongMoveException, DepositCellNotEmpty, IllegalDepositStateException {
@@ -452,13 +453,15 @@ public class ServerController {
         try {
             dashboard.storeFromSupplyInExtraDeposit(leaderCardPos, from, to);
         } catch (IllegalArgumentException e) {
-            throw new WrongMoveException("Invalid indexes");
+            throw new WrongMoveException("Invalid index(es)");
         } catch (IllegalStateException e) {
             throw new IllegalDepositStateException("Invalid deposit state");
         }
     }
 
 
+    /*
+    We have another methods
     public void moveResources(String nickname, int leaderCardPosition, int from, int to) throws WrongTurnException, WrongMoveException, IllegalDepositStateException {
         if (!currentPlayer.equals(nickname)) {
             throw new WrongTurnException("Not " + nickname + " turn");
@@ -468,13 +471,16 @@ public class ServerController {
         Dashboard dashboard = player.getDashboard();
 
         try {
-            dashboard.moveExtraDepositResources(leaderCardPosition, from, to);
+            dashboard.moveDepositResources();
+            // dashboard.moveExtraDepositResources(leaderCardPosition, from, to);
         } catch (IllegalArgumentException e) {
             throw new WrongMoveException("Invalid index");
         } catch (IllegalStateException e) {
             throw new IllegalDepositStateException("Invalid extra deposit state");
         }
     }
+
+     */
 
     public boolean endTurn(String nickname) throws WrongTurnException, LeaderCardInExcessException, WrongMoveException {
         if (!currentPlayer.equals(nickname)) {

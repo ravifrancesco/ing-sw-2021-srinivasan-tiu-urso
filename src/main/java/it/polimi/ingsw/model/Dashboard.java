@@ -58,6 +58,7 @@ public class Dashboard {
 				.collect(Collectors.toList());
 
 		this.dashBoardProductionPower = gameSettings.getDashBoardProductionPower();
+		this.supply = new ArrayList<>();
 	}
 
 	/**
@@ -332,6 +333,8 @@ public class Dashboard {
 			warehouse.storeInDeposit(supply.get(from), to);
 		} catch(IllegalStateException e) {
 			throw new IllegalStateException("Illegal deposit");
+		} catch(IllegalArgumentException e) {
+			throw new IllegalArgumentException();
 		}
 	}
 
@@ -358,7 +361,12 @@ public class Dashboard {
 		if(addedResource != wes.getStoredResource()) {
 			throw new IllegalStateException("Added resource does not match extra deposit resource");
 		}
-		warehouse.storeInExtraDeposit(leaderCardPosition, supply.get(from), to);
+
+		try {
+			warehouse.storeInExtraDeposit(leaderCardPosition, supply.get(from), to);
+		} catch (IllegalArgumentException e) {
+			throw new IllegalArgumentException();
+		}
 	}
 
 	/**
@@ -411,6 +419,11 @@ public class Dashboard {
 				resToPayWith.getContainedExtraDepositResources().get(i).forEach(pos ->
 						warehouse.removeFromExtraDeposit(i, pos)));
 	}
+
+
+
+
+	//
 
 
 

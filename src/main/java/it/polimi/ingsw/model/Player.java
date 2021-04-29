@@ -43,9 +43,10 @@ public class Player {
 	/**
 	 * Constructor of the Player class.
 	 */
-	public Player() {
+	public Player(GameSettings gs) {
 		this.activeDiscounts = new ArrayList<>();
 		this.activatedWMR = new ArrayList<>();
+		this.dashboard = new Dashboard(gs);
 	}
 
 	/**
@@ -108,10 +109,9 @@ public class Player {
 	 * Allows the player to discard a leader card.
 	 * TODO check the controller for exception
 	 * TODO handle faith marker points
-	 *
 	 * @param card		index of the hand to discard the card.
-	 * @param gameBoard
-	 * @throws IllegalArgumentException
+	 * @param gameBoard gameBoard that will "receive" the discarded card.
+	 * @throws IllegalArgumentException if if the card argument is out of index
 	 */
 	public void discardLeaderCard(int card, GameBoard gameBoard) throws IllegalArgumentException {
 

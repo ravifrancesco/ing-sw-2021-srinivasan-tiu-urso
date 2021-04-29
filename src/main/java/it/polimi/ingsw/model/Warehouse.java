@@ -54,38 +54,22 @@ public class Warehouse {
 	}
 
 	/**
-	 * Clears everything related to extra deposits. (for game reset purposes)
-	 */
-	public void clearExtraDeposits() {
-		extraDeposits[0] = new Resource[MAX_EXTRA_DEPOSIT_SLOTS];
-		extraDeposits[1] = new Resource[MAX_EXTRA_DEPOSIT_SLOTS];
-	}
-
-	/**
-	 * Inits a map with all possible resources. (helper method)
-	 * @param resCtr the map to be init'd.
-	 */
-	private void resCtrInit(HashMap<Resource, Integer> resCtr) {
-		resCtr.put(Resource.STONE, 0);
-		resCtr.put(Resource.GOLD, 0);
-		resCtr.put(Resource.SHIELD, 0);
-		resCtr.put(Resource.SERVANT, 0);
-	}
-
-	/**
 	 * Stores a resource from the dashboard's supply inside the deposit.
 	 * @param resToAdd 					resource to store
 	 * @param pos						deposit position in which the resource is stored
 	 * @throws IllegalStateException	if resource is stored in an illegal position
 	 */
-	public void storeInDeposit(Resource resToAdd, int pos) throws IllegalStateException {
+	public void storeInDeposit(Resource resToAdd, int pos) throws IllegalStateException, IllegalArgumentException {
 		Resource[] newDeposit = new Resource[MAX_DEPOSIT_SLOTS];
 		IntStream.range(0, MAX_DEPOSIT_SLOTS).forEach(i -> newDeposit[i] = deposit[i]);
 		// adding new resource
 		newDeposit[pos] = resToAdd;
 		// checking deposit legality
-		if(!checkShelvesRule(newDeposit)) {
+		if (!checkShelvesRule(newDeposit)) {
 			throw new IllegalStateException("Deposit positioning is illegal");
+		}
+		if(deposit[pos] != Resource.EMPTY) {
+			throw new IllegalArgumentException();
 		}
 		// deposit is legal => adding resource to real deposit
 		deposit[pos] = resToAdd;
@@ -156,7 +140,10 @@ public class Warehouse {
 	 * @param r										resource to be stored
 	 * @param pos									position where to store the resource
 	 */
-	public void storeInExtraDeposit(int extraDepositLeaderCardPos, Resource r, int pos) {
+	public void storeInExtraDeposit(int extraDepositLeaderCardPos, Resource r, int pos) throws IllegalArgumentException {
+		if(extraDeposits[extraDepositLeaderCardPos][pos] != Resource.EMPTY) {
+			throw new IllegalArgumentException();
+		}
 		extraDeposits[extraDepositLeaderCardPos][pos] = r;
 	}
 
@@ -179,19 +166,11 @@ public class Warehouse {
 	 * @param pos									position of the resource to remove
 	 */
 	public void removeFromExtraDeposit(int extraDepositLeaderCardPos, int pos) {
-		extraDeposits[extraDepositLeaderCardPos][pos] = null;
+		extraDeposits[extraDepositLeaderCardPos][pos] = Resource.EMPTY;
 	}
 
 	/**
-	 * Removes resources from the LOCKER, with no checks on the legality (there's a separate method for that).
-	 * @param cost: HashMap Resource-Integer, where the integer is quantity to be removed. (the cost)
-	 */
-	public void removeFromLocker(Map<Resource, Integer> cost) {
-		cost.forEach((key, value) -> locker.put(key, locker.get(key) - value));
-	}
-
-	/**
-	 * Checks the 'shelves rules' for the deposit:
+	 * Checks the 'shelves rules' for the deposit
 	 * <ul>
 	 * <li> The maximum amount of stored resources is 6.
 	 * <li> Only 3 different types of resources can be stored.
@@ -233,14 +212,15 @@ public class Warehouse {
 		HashMap<Resource, Integer> resourceCounter = new HashMap<>(locker);
 
 		Arrays.stream(deposit)
-				.filter(Objects::nonNull)
-				.forEach(r -> resourceCounter.put(r, resourceCounter.get(r)+1));
+				.filter(r -> r != Resource.EMPTY)
+				.forEach(r -> resourceCounter.put(r, resourceCounter.get(r) + 1));
 
 		Arrays.stream(extraDeposits) // for each extra deposit
 				.filter(Objects::nonNull) // if not null => extraDeposit was activated
+
 				.forEach(extraDepo ->
 						Arrays.stream(extraDepo)
-								.filter(Objects::nonNull)
+								.filter(res -> res != Resource.EMPTY)
 								.forEach(r -> resourceCounter.put(r, resourceCounter.get(r)+1)));
 
 		return resourceCounter;
@@ -256,14 +236,7 @@ public class Warehouse {
 	public Resource[][] getExtraDeposits() {
 		return extraDeposits;
 	}
-
-	public void printDepositActually() {
-		IntStream.range(0, 1).forEach(i -> System.out.print(deposit[i] + " "));
-		System.out.println();
-		IntStream.range(1, 3).forEach(i -> System.out.print(deposit[i] + " "));
-		System.out.println();
-		IntStream.range(3, 6).forEach(i -> System.out.print(deposit[i] + " "));
-	}
 }
+
 
 

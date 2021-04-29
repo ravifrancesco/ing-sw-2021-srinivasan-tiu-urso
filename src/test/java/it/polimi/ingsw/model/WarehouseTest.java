@@ -4,6 +4,7 @@ import it.polimi.ingsw.common.Pair;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.Map;
 
 
 public class WarehouseTest {
@@ -95,6 +96,17 @@ public class WarehouseTest {
         Assert.assertEquals(wh.getDeposit()[4], Resource.GOLD);
         wh.storeInDeposit(Resource.GOLD, 5);
         Assert.assertEquals(wh.getDeposit()[5], Resource.GOLD);
+
+        // SECTION 3: depositing on an already full position
+        wh.reset();
+        wh.storeInDeposit(Resource.GOLD, 0);
+        try {
+            wh.storeInDeposit(Resource.GOLD, 0);
+        } catch (IllegalArgumentException e) {
+            thrownExceptions += 1;
+        }
+
+        Assert.assertEquals(thrownExceptions, 6);
     }
 
     @Test
@@ -224,10 +236,22 @@ public class WarehouseTest {
         Assert.assertEquals(wh.getExtraDeposits()[0][1], Resource.EMPTY);
         Assert.assertEquals(wh.getExtraDeposits()[1][0], Resource.EMPTY);
         Assert.assertEquals(wh.getExtraDeposits()[1][1], Resource.GOLD);
+
+        // Testing for mistakes
+        wh.reset();
+        int thrownExceptions = 0;
+        wh.activateExtraDeposit(1);
+        wh.storeInExtraDeposit(1, Resource.STONE, 0);
+        try {
+            wh.storeInExtraDeposit(1, Resource.STONE, 0);
+        } catch (IllegalArgumentException e) {
+            thrownExceptions += 1;
+        }
+        Assert.assertEquals(thrownExceptions, 1);
     }
 
     @Test
-    public void swapExtraDeposit() {
+    public void swapExtraDepositTest() {
         Warehouse wh = new Warehouse();
 
         wh.activateExtraDeposit(0);
@@ -240,6 +264,78 @@ public class WarehouseTest {
         Assert.assertEquals(wh.getExtraDeposits()[0][1], Resource.STONE);
         Assert.assertEquals(wh.getExtraDeposits()[0][0], Resource.EMPTY);
         Assert.assertNull(wh.getExtraDeposits()[1]);
+    }
+
+    @Test
+    public void removeFromExtraDepositTest() {
+        Warehouse wh = new Warehouse();
+
+        wh.activateExtraDeposit(0);
+        wh.storeInExtraDeposit(0, Resource.STONE, 0);
+        Assert.assertEquals(wh.getExtraDeposits()[0][0], Resource.STONE);
+        Assert.assertEquals(wh.getExtraDeposits()[0][1], Resource.EMPTY);
+
+        wh.removeFromExtraDeposit(0, 0);
+        Assert.assertEquals(wh.getExtraDeposits()[0][0], Resource.EMPTY);
+        Assert.assertEquals(wh.getExtraDeposits()[0][1], Resource.EMPTY);
+
+
+
+
+    }
+
+    @Test
+    public void getAllResourcesTest() {
+        Warehouse wh = new Warehouse();
+
+
+        // case 1: no extraDeposits
+        wh.storeInDeposit(Resource.STONE, 0);
+        wh.storeInDeposit(Resource.GOLD, 1);
+        wh.storeInLocker(Resource.SHIELD, 3);
+        Map<Resource, Integer> res = wh.getAllResources();
+
+        int fuckYouJava;
+        fuckYouJava = res.get(Resource.STONE);
+        Assert.assertEquals(fuckYouJava, 1);
+        fuckYouJava = res.get(Resource.GOLD);
+        Assert.assertEquals(fuckYouJava, 1);
+        fuckYouJava = res.get(Resource.SHIELD);
+        Assert.assertEquals(fuckYouJava, 3);
+        fuckYouJava = res.get(Resource.SERVANT);
+        Assert.assertEquals(fuckYouJava, 0);
+
+        // case 2: adding one extra warehouse
+
+        wh.activateExtraDeposit(0);
+        wh.storeInExtraDeposit(0, Resource.SERVANT, 0);
+        wh.storeInExtraDeposit(0, Resource.SERVANT, 1);
+        res = wh.getAllResources();
+        fuckYouJava = res.get(Resource.STONE);
+        Assert.assertEquals(fuckYouJava, 1);
+        fuckYouJava = res.get(Resource.GOLD);
+        Assert.assertEquals(fuckYouJava, 1);
+        fuckYouJava = res.get(Resource.SHIELD);
+        Assert.assertEquals(fuckYouJava, 3);
+        fuckYouJava = res.get(Resource.SERVANT);
+        Assert.assertEquals(fuckYouJava, 2);
+
+        // case 3: adding another extra warehouse for a total of two
+        wh.activateExtraDeposit(1);
+        wh.storeInExtraDeposit(1, Resource.GOLD, 0);
+        res = wh.getAllResources();
+        fuckYouJava = res.get(Resource.STONE);
+        Assert.assertEquals(fuckYouJava, 1);
+        fuckYouJava = res.get(Resource.GOLD);
+        Assert.assertEquals(fuckYouJava, 2);
+        fuckYouJava = res.get(Resource.SHIELD);
+        Assert.assertEquals(fuckYouJava, 3);
+        fuckYouJava = res.get(Resource.SERVANT);
+        Assert.assertEquals(fuckYouJava, 2);
+
+
+
+
     }
 
 

@@ -19,6 +19,7 @@ public class Market {
 	 */
 	public Market() {
 		this.marblesGrid = new Marble[(gridRowLength * gridColLength) + 1];
+		this.reset();
 	}
 
 
@@ -166,14 +167,6 @@ public class Market {
 		for(int i = 0; i < gridRowLength-1; i++) {
 			swapMarble(i, col, i+1, col);
 		}
-	}
-
-	public static int getGridRowLength() {
-		return gridRowLength;
-	}
-
-	public static int getGridColLength() {
-		return gridColLength;
 	}
 
 	public Marble[] getMarblesGrid() {
