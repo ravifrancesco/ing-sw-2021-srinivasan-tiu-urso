@@ -94,8 +94,11 @@ public class Deck {
 	 */
 
 	public void resetProductionPowerLeaderCards() {
+		// TODO check this method
+
 		deck.stream().map(card -> (LeaderCard) card).filter(card -> card.getSpecialAbility().getType()== SpecialAbilityType.PRODUCTION_POWER)
-				.map(card -> (ProductionPower) card.getSpecialAbility())
+				.map(card -> card.getSpecialAbility())
+				.map(specialAbility -> (ProductionPower) specialAbility)
 				.forEach(ProductionPower::reset);
 	}
 

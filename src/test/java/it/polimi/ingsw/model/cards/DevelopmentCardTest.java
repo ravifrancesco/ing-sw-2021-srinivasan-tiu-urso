@@ -197,8 +197,8 @@ public class DevelopmentCardTest {
 
         c.activate(player);
 
-        Assert.assertEquals(player.getDashboard().getFaithMarkerPosition(), 2);
-        Assert.assertEquals(Optional.ofNullable(playerResources.get(Resource.SERVANT)), Optional.of(0));
+        Assert.assertEquals(player.getDashboard().getFaithMarkerPosition(), 4);
+        Assert.assertEquals(Optional.ofNullable(playerResources.get(Resource.SERVANT)), Optional.empty());
         Assert.assertEquals(Optional.ofNullable(playerResources.get(Resource.GOLD)), Optional.of(2));
         Assert.assertEquals(Optional.ofNullable(playerResources.get(Resource.STONE)), Optional.of(3));
         Assert.assertEquals(Optional.ofNullable(playerResources.get(Resource.SHIELD)), Optional.of(3));

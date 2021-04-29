@@ -125,6 +125,8 @@ public class DeckTest {
         IntStream.range(0, dc.length)
                 .forEach(i -> dc[i] = (DevelopmentCard) developmentDeck.getCard());
 
+        //TODO set selectable resource, because you get null pointer to modified maps
+
         IntStream.range(0, dc.length)
                 .filter(i -> i%2 == 0)
                 .forEach(i -> dc[i].activate(player));
