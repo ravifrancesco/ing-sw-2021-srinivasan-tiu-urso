@@ -69,24 +69,6 @@ public class GameBoardTest {
         Assert.assertNotEquals(market, null);
         Assert.assertNotEquals(dvGrid, null);
         Assert.assertNotEquals(discardDeck, null);
-
-        /*
-                LeaderCard[] lc = new LeaderCard[leaderCardDeck.getSize()];
-
-        IntStream.range(0, lc.length)
-                .forEach(i -> lc[i] = (LeaderCard) leaderCardDeck.getCard());
-
-        DevelopmentCard[] dc = new DevelopmentCard[developmentCardDeck.getSize()];
-
-        IntStream.range(0, dc.length)
-                .forEach(i -> dc[i] = (DevelopmentCard) developmentCardDeck.getCard());
-
-        Assert.assertTrue(Arrays.asList(gameSettings.getLeaderCards()).containsAll(Arrays.asList(lc)));
-        Assert.assertTrue(Arrays.asList(lc).containsAll(Arrays.asList(gameSettings.getLeaderCards())));
-
-        Assert.assertTrue(Arrays.asList(gameSettings.getDevelopmentCards()).containsAll(Arrays.asList(dc)));
-        Assert.assertTrue(Arrays.asList(dc).containsAll(Arrays.asList(gameSettings.getDevelopmentCards())));
-         */
     }
 
     @Test
@@ -105,12 +87,11 @@ public class GameBoardTest {
         Assert.assertEquals(discardDeck.getSize(), 0);
         Assert.assertEquals(player.getDashboard().getFaithMarkerPosition(), 0);
 
-        gameBoard.discardCard(c, player.getDashboard());
+        gameBoard.discardCard(c);
 
         discardDeck = gameBoard.getDiscardDeck();
 
         Assert.assertEquals(discardDeck.getSize(), 1);
-        Assert.assertEquals(player.getDashboard().getFaithMarkerPosition(), 1);
         Assert.assertEquals(discardDeck.getCard(), c);
     }
 
@@ -133,11 +114,13 @@ public class GameBoardTest {
 
     @Test
     public void marketTest() {
+        // TODO when MarketTest will be finished
+        /*
         GameSettings gameSettings = buildGameSettings();
         GameBoard gameBoard = new GameBoard();
         gameBoard.reset(gameSettings);
 
-        Player p = new Player("test", "0");
+        //Player p = new Player("test", "0");
 
         Market market = gameBoard.getMarket();
 
@@ -170,6 +153,7 @@ public class GameBoardTest {
             Assert.assertEquals(testRes.get(Resource.SERVANT), actualRes.get(Resource.SERVANT));
             Assert.assertEquals(testRes.get(Resource.SHIELD), actualRes.get(Resource.SHIELD));
         }
+         */
     }
 
     private GameSettings buildGameSettings() {
