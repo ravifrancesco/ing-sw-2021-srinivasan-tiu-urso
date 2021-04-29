@@ -12,8 +12,8 @@ import java.util.Optional;
 
 public class ServerController {
 
-    // TODO: add checks for ResourceSelector legality
     // TODO: check that illegal actions don't change the state
+    // TODO: check if we need to add movements between deposit and extradeposit(s)
 
     private final Game game;
 
@@ -23,6 +23,8 @@ public class ServerController {
     private String firstPlayer;
 
     private int firstTurns;
+
+    GameSettings gameSettings;
 
     public ServerController(String gameId, int numberOfPlayers) {
         this.game = new Game(gameId);
@@ -39,7 +41,7 @@ public class ServerController {
         } else if (game.getPlayers().containsKey(nickname)) {
             throw new NicknameException("Nickname " + nickname + " is already in use");
         } else {
-            game.addPlayer(nickname, new Player());
+            game.addPlayer(nickname, new Player(gameSettings));
         }
     }
 
@@ -73,7 +75,7 @@ public class ServerController {
         }
 
         GameBoard gameboard = game.getGameBoard();
-        player.discardLeaderCardInExcess(cardToDiscard, gameboard);
+        // player.discardLeaderCardInExcess(cardToDiscard, gameboard);
     }
 
     public void getInitialResources(String nickname, Resource resource, int position) throws WrongTurnException, WrongMoveException, DepositCellNotEmpty, IllegalDepositStateException {
@@ -99,7 +101,7 @@ public class ServerController {
         }
     }
 
-    // TODO storeFromSupplyInExtraDeposit
+
 
 
     public boolean checkInitialPhaseCompletion(Dashboard d) {
@@ -139,7 +141,7 @@ public class ServerController {
     }
 
     public void activateLeaderCardProduction(String nickname, int cardToActivate, ResourceContainer resourcesToPayCost,
-                                             Optional<Map<Resource, Integer>> resourceRequiredOptional, Optional<Map<Resource, Integer>> resourceProducedOptional) throws WrongTurnException, PowerNotActivatableException {
+                                             Optional<Map<Resource, Integer>> resourceRequiredOptional, Optional<Map<Resource, Integer>> resourceProducedOptional) throws WrongTurnException, PowerNotActivatableException, WrongMoveException {
 
         if (!currentPlayer.equals(nickname)) {
             throw new WrongTurnException("Not " + nickname + " turn");
@@ -184,9 +186,14 @@ public class ServerController {
         } catch (UnsupportedOperationException e) {
             throw new PowerNotActivatableException("Production already activated");
         }
-        dashboard.payPrice(resourcesToPayCost);
 
+        try {
+            dashboard.payPrice(resourcesToPayCost, productionPower.getResourceRequiredModified());
+        } catch (IllegalArgumentException e) {
+            throw new WrongMoveException("Resources do not match the cost");
+        }
     }
+
 
     public void discardLeaderCard(String nickname, int cardToDiscard) throws WrongTurnException, CardNotPlayableException {
         if (!currentPlayer.equals(nickname)) {
@@ -207,7 +214,7 @@ public class ServerController {
     }
 
     public void activateDashboardProduction(String nickname, ResourceContainer resourcesToPayCost,
-                                            Optional<Map<Resource, Integer>> resourceRequiredOptional, Optional<Map<Resource, Integer>> resourceProducedOptional) throws WrongTurnException, PowerNotActivatableException {
+                                            Optional<Map<Resource, Integer>> resourceRequiredOptional, Optional<Map<Resource, Integer>> resourceProducedOptional) throws WrongTurnException, PowerNotActivatableException, WrongMoveException {
 
         if (!currentPlayer.equals(nickname)) {
             throw new WrongTurnException("Not " + nickname + " turn");
@@ -247,7 +254,11 @@ public class ServerController {
             throw new PowerNotActivatableException("Production already activated");
         }
 
-        dashboard.payPrice(resourcesToPayCost);
+        try {
+            dashboard.payPrice(resourcesToPayCost, productionPower.getResourceRequiredModified());
+        } catch (IllegalArgumentException e) {
+            throw new WrongMoveException("Resources do not match the cost");
+        }
 
     }
 
@@ -295,7 +306,7 @@ public class ServerController {
     }
 
     public void buyDevelopmentCard(String nickname, int row, int column, ResourceContainer resourcesToPayCost, int position)
-            throws WrongTurnException, CardNotBuyableException, CardNotPlayableException {
+            throws WrongTurnException, CardNotBuyableException, CardNotPlayableException, WrongMoveException {
 
         if (!currentPlayer.equals(nickname)) {
             throw new WrongTurnException("Not " + nickname + " turn");
@@ -338,12 +349,15 @@ public class ServerController {
 
        // TODO check for cleaner options
 
-
-       dashboard.payPrice(resourcesToPayCost);
+        try {
+            dashboard.payPrice(resourcesToPayCost, cost);
+        } catch (IllegalArgumentException e) {
+            throw new WrongMoveException("Resources do not match the cost");
+        }
     }
 
     public void activateDevelopmentCardProductionPower(String nickname, int cardToActivate, ResourceContainer resourcesToPayCost,
-                                                       Optional<Map<Resource, Integer>> resourceRequiredOptional, Optional<Map<Resource, Integer>> resourceProducedOptional) throws WrongTurnException, PowerNotActivatableException {
+                                                       Optional<Map<Resource, Integer>> resourceRequiredOptional, Optional<Map<Resource, Integer>> resourceProducedOptional) throws WrongTurnException, PowerNotActivatableException, WrongMoveException {
 
         if (!currentPlayer.equals(nickname)) {
             throw new WrongTurnException("Not " + nickname + " turn");
@@ -386,7 +400,11 @@ public class ServerController {
             throw new PowerNotActivatableException("Production already activated");
         }
 
-        dashboard.payPrice(resourcesToPayCost);
+        try {
+            dashboard.payPrice(resourcesToPayCost, productionPower.getResourceRequiredModified());
+        } catch (IllegalArgumentException e) {
+            throw new WrongMoveException("Resources do not match the cost");
+        }
 
     }
 
@@ -424,7 +442,26 @@ public class ServerController {
         }
     }
 
+    public void storeFromSupplyInExtraDeposit(String nickname, int leaderCardPos, int from, int to) throws WrongTurnException, WrongMoveException, IllegalDepositStateException {
+        if (!currentPlayer.equals(nickname)) {
+            throw new WrongTurnException("Not " + nickname + " turn");
+        }
 
+        Player player = game.getPlayers().get(currentPlayer);
+        Dashboard dashboard = player.getDashboard();
+
+        try {
+            dashboard.storeFromSupplyInExtraDeposit(leaderCardPos, from, to);
+        } catch (IllegalArgumentException e) {
+            throw new WrongMoveException("Invalid index(es)");
+        } catch (IllegalStateException e) {
+            throw new IllegalDepositStateException("Invalid deposit state");
+        }
+    }
+
+
+    /*
+    We have another methods
     public void moveResources(String nickname, int leaderCardPosition, int from, int to) throws WrongTurnException, WrongMoveException, IllegalDepositStateException {
         if (!currentPlayer.equals(nickname)) {
             throw new WrongTurnException("Not " + nickname + " turn");
@@ -434,13 +471,16 @@ public class ServerController {
         Dashboard dashboard = player.getDashboard();
 
         try {
-            dashboard.moveExtraDepositResources(leaderCardPosition, from, to);
+            dashboard.moveDepositResources();
+            // dashboard.moveExtraDepositResources(leaderCardPosition, from, to);
         } catch (IllegalArgumentException e) {
             throw new WrongMoveException("Invalid index");
         } catch (IllegalStateException e) {
             throw new IllegalDepositStateException("Invalid extra deposit state");
         }
     }
+
+     */
 
     public boolean endTurn(String nickname) throws WrongTurnException, LeaderCardInExcessException, WrongMoveException {
         if (!currentPlayer.equals(nickname)) {

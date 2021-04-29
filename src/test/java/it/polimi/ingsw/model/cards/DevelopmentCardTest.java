@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 public class DevelopmentCardTest {
+    /*
 
     @Test
     public void toStringTest() {
@@ -187,4 +188,6 @@ public class DevelopmentCardTest {
 
         Assert.assertFalse(c.isActivatable(playerResources));
     }
+
+     */
 }

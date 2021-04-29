@@ -7,5 +7,4 @@ public interface SpecialAbility {
 	void activate(Player p);
 
 	SpecialAbilityType getType();
-
 }

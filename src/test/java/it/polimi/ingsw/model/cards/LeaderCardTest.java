@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 public class LeaderCardTest{
+    /*
     @Test
     public void toStringTestWithNullRP() {
 
@@ -265,5 +266,7 @@ public class LeaderCardTest{
 
         Assert.assertFalse(leaderCard.isPlayable(playerResources, playerBanners));
     }
+
+     */
 
 }

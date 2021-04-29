@@ -63,7 +63,7 @@ public class GameSettings {
     }
 
     /**
-     * Construtor to use to create GameSettings from .properties file.
+     * Constructor to use to create GameSettings from .properties file.
      *
      * @param path path of the .properties file.
      */
