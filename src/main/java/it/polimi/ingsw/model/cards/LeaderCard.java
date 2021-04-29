@@ -12,7 +12,11 @@ import java.util.stream.Collectors;
 
 /**
  * The class represents a Leader Card of the game.
- * The object memorizes the state of a Leader Card.
+ * The object memorizes the state of a Leader Card. The state includes:
+ * The id.
+ * The victory points.
+ * The cost in terms of banner.
+ * The special ability of the card.
  */
 
 public class LeaderCard implements Card {
@@ -53,6 +57,7 @@ public class LeaderCard implements Card {
 	 * Getter for the id.
 	 * @return the id of the card.
 	 */
+
 	public int getId() {
 		return id;
 	}
@@ -61,6 +66,7 @@ public class LeaderCard implements Card {
 	 * Getter for the victory points.
 	 * @return the victory points given by the card.
 	 */
+
 	public int getVictoryPoints() {
 		return victoryPoints;
 	}
@@ -78,6 +84,7 @@ public class LeaderCard implements Card {
 	 * Getter for specialAbility.
 	 * @return the special ability of the card.
 	 */
+
 	public SpecialAbility getSpecialAbility() {
 		return specialAbility;
 	}
@@ -86,6 +93,7 @@ public class LeaderCard implements Card {
 	 * To string method of the class.
 	 * @return a string representation of the object.
 	 */
+
 	@Override
 	public String toString() {
 		String result="";
@@ -104,6 +112,7 @@ public class LeaderCard implements Card {
 	 * @param playerBanners all the banner of the player.
 	 * @return if the card is playable or not with the given banners.
 	 */
+
 	public boolean isPlayable(Map<Banner, Integer> playerBanners) {
 		Map<Banner, Integer> playerBannersCopy = playerBanners.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 		Map<Banner, Integer> bannerCostCopy = bannerCost.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
@@ -119,8 +128,9 @@ public class LeaderCard implements Card {
 	/**
 	 * Equals method for the class.
 	 * @param o the other leader card to compare.
-	 * @return true if the two cards have the same id.
+	 * @return true if the two cards have the same id, false otherwise.
 	 */
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;

@@ -361,10 +361,11 @@ public class ProductionPowerTest {
         Assert.assertEquals(Optional.ofNullable(playerResources.get(Resource.GOLD)), Optional.of(2));
         Assert.assertEquals(Optional.ofNullable(playerResources.get(Resource.STONE)), Optional.of(3));
         Assert.assertEquals(Optional.ofNullable(playerResources.get(Resource.SHIELD)), Optional.of(1));
+        Assert.assertFalse(p.isActivatable());
     }
 
     @Test
-    public void activateWithouFaithPointsTest() {
+    public void activateWithoutFaithPointsTest() {
         GameSettings gameSettings = buildGameSettings();
         Player player = new Player(gameSettings);
         player.reset();
@@ -399,6 +400,7 @@ public class ProductionPowerTest {
         Assert.assertEquals(Optional.ofNullable(playerResources.get(Resource.GOLD)), Optional.of(2));
         Assert.assertEquals(Optional.ofNullable(playerResources.get(Resource.STONE)), Optional.of(3));
         Assert.assertEquals(Optional.ofNullable(playerResources.get(Resource.SHIELD)), Optional.of(1));
+        Assert.assertFalse(p.isActivatable());
     }
 
     @Test
@@ -433,6 +435,7 @@ public class ProductionPowerTest {
         Assert.assertEquals(Optional.ofNullable(playerResources.get(Resource.GOLD)), Optional.of(2));
         Assert.assertEquals(Optional.ofNullable(playerResources.get(Resource.STONE)), Optional.of(3));
         Assert.assertEquals(Optional.ofNullable(playerResources.get(Resource.SHIELD)), Optional.of(1));
+        Assert.assertFalse(p.isActivatable());
     }
 
     @Test
@@ -467,6 +470,7 @@ public class ProductionPowerTest {
         Assert.assertEquals(Optional.ofNullable(playerResources.get(Resource.GOLD)), Optional.of(0));
         Assert.assertEquals(Optional.ofNullable(playerResources.get(Resource.STONE)), Optional.of(0));
         Assert.assertEquals(Optional.ofNullable(playerResources.get(Resource.SHIELD)), Optional.of(0));
+        Assert.assertTrue(p.isActivatable());
         Assert.assertEquals(thrownExceptions, 1);
     }
 
@@ -510,6 +514,7 @@ public class ProductionPowerTest {
         Assert.assertEquals(Optional.ofNullable(playerResources.get(Resource.GOLD)), Optional.of(1));
         Assert.assertEquals(Optional.ofNullable(playerResources.get(Resource.STONE)), Optional.of(1));
         Assert.assertEquals(Optional.ofNullable(playerResources.get(Resource.SHIELD)), Optional.of(0));
+        Assert.assertFalse(p.isActivatable());
         Assert.assertEquals(thrownExceptions, 1);
     }
 
@@ -543,6 +548,8 @@ public class ProductionPowerTest {
 
         p.reset();
 
+        Assert.assertTrue(p.isActivatable());
+
         p.activate(player);
 
         playerResources = player.getDashboard().getAllPlayerResources();
@@ -552,6 +559,7 @@ public class ProductionPowerTest {
         Assert.assertEquals(Optional.ofNullable(playerResources.get(Resource.GOLD)), Optional.of(1));
         Assert.assertEquals(Optional.ofNullable(playerResources.get(Resource.STONE)), Optional.of(1));
         Assert.assertEquals(Optional.ofNullable(playerResources.get(Resource.SHIELD)), Optional.of(0));
+        Assert.assertFalse(p.isActivatable());
     }
 
     private GameSettings buildGameSettings() {
