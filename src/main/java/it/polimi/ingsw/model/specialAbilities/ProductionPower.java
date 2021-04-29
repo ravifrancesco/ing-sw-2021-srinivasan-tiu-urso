@@ -1,10 +1,8 @@
 package it.polimi.ingsw.model.specialAbilities;
 
-import it.polimi.ingsw.model.Banner;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Resource;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -88,7 +86,7 @@ public class ProductionPower implements SpecialAbility {
 
 	/**
 	 * Getter for resource required modified.
-	 * @return the resource cost of the production power.
+	 * @return the resource cost of the production power (without selectable resources).
 	 */
 
 	public Map<Resource, Integer> getResourceRequiredModified() {
@@ -97,7 +95,7 @@ public class ProductionPower implements SpecialAbility {
 
 	/**
 	 * Getter for resource produced modified.
-	 * @return the resources produced by the production power.
+	 * @return the resources produced by the production power (without selectable resources).
 	 */
 
 	public Map<Resource, Integer> getResourceProducedModified() {
@@ -142,6 +140,7 @@ public class ProductionPower implements SpecialAbility {
 	 * To string method of the class.
 	 * @return a string representation of the object.
 	 */
+
 	public String toString() {
 		String result="";
 
@@ -166,10 +165,19 @@ public class ProductionPower implements SpecialAbility {
 	 * Method to get the type of this special ability.
 	 * @return the type of this special ability.
 	 */
+
 	@Override
 	public SpecialAbilityType getType() {
 		return SpecialAbilityType.PRODUCTION_POWER;
 	}
+
+	/**
+	 * Allows to change resource required and produced in order to remove the selectable resources.
+	 * @param resourceRequiredOptional the resource required which replace the selectable resources.
+	 * @param resourceProducedOptional the resource produced which replace the selectable resources.
+	 * @throws IllegalArgumentException if the number of resources chosen doesn't match.
+	 * @throws IllegalStateException if the resource required or produced still contain selectable resources.
+	 */
 
 	public void setSelectableResource(Optional<Map<Resource, Integer>> resourceRequiredOptional,
 									  Optional<Map<Resource, Integer>> resourceProducedOptional)
