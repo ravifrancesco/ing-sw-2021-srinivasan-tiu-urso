@@ -11,7 +11,7 @@ import java.util.*;
 import java.util.stream.IntStream;
 
 public class ProductionPowerTest {
-/*
+
     @Test
     public void constructorTest() {
         Map<Resource, Integer> resourceRequired = new HashMap<>();
@@ -681,25 +681,4 @@ public class ProductionPowerTest {
             default -> null;
         };
     }
-
-    private int getRow(int val) {
-        return switch (val % 12) {
-            case 0, 1, 2, 3 -> 1;
-            case 4, 5, 6, 7 -> 2;
-            case 8, 9, 10, 11 -> 3;
-            default -> -1;
-        };
-    }
-
-    private int getColumn(int val) {
-        return switch (val % 12) {
-            case 0, 4, 8 -> 1;
-            case 1, 5, 9 -> 2;
-            case 2, 6, 10 -> 3;
-            case 3, 7, 11 -> 4;
-            default -> -1;
-        };
-    }
-
- */
 }

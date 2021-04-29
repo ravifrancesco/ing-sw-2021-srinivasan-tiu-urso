@@ -14,7 +14,6 @@ import java.util.stream.IntStream;
 import static it.polimi.ingsw.model.DevelopmentCardGrid.DEVELOPMENT_CARD_NUM;
 
 public class DevelopmentCardGridTest {
-    /*
 
     @Test
     public void constructorTest() {
@@ -401,6 +400,4 @@ public class DevelopmentCardGridTest {
         };
     }
 
-
-     */
 }

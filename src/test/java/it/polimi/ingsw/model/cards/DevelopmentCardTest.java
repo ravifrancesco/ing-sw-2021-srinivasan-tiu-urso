@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.model.*;
-import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.specialAbilities.*;
 import org.junit.Assert;
 import org.junit.Test;
@@ -10,7 +9,6 @@ import java.util.*;
 import java.util.stream.IntStream;
 
 public class DevelopmentCardTest {
-    /*
 
     @Test
     public void constructorTest() {
@@ -325,6 +323,4 @@ public class DevelopmentCardTest {
             default -> null;
         };
     }
-
-     */
 }

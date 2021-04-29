@@ -7,18 +7,14 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static it.polimi.ingsw.model.DevelopmentCardGrid.*;
 
 public class GameBoardTest {
-    /*
 
     @Test
     public void constructorTest() {
-        GameSettings gameSettings = buildGameSettings();
         GameBoard gameBoard = new GameBoard();
 
         Deck leaderCardDeck = gameBoard.getLeaderDeck();
@@ -121,18 +117,13 @@ public class GameBoardTest {
         GameSettings gameSettings = buildGameSettings();
         GameBoard gameBoard = new GameBoard();
         gameBoard.reset(gameSettings);
-
         //Player p = new Player("test", "0");
-
         Market market = gameBoard.getMarket();
-
         for (int possibleMove = 0; possibleMove < 7; possibleMove++) {
             ArrayList<Resource> testResList = new ArrayList<>();
             Map<Resource, Long> testRes;
-
             ArrayList<Resource> actualResList;
             Map<Resource, Long> actualRes;
-
             int pM = possibleMove;
             if (possibleMove < 3) {
                 // row move
@@ -143,13 +134,10 @@ public class GameBoardTest {
                 IntStream.range(0, GRID_ROW_LENGTH).forEach(i -> testResList.add(market.getMarble(i, pM - 3).getResource(p)));
                 actualResList = market.getResources(pM, p);
             }
-
             testRes = testResList.stream().filter(Objects::nonNull)
                     .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
-
             actualRes = actualResList.stream().filter(Objects::nonNull)
                     .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
-
             Assert.assertEquals(testRes.get(Resource.STONE), actualRes.get(Resource.STONE));
             Assert.assertEquals(testRes.get(Resource.GOLD), actualRes.get(Resource.GOLD));
             Assert.assertEquals(testRes.get(Resource.SERVANT), actualRes.get(Resource.SERVANT));
@@ -296,6 +284,4 @@ public class GameBoardTest {
             default -> -1;
         };
     }
-
-     */
 }

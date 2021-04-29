@@ -171,7 +171,7 @@ public class DeckTest {
                 .map(specialAbility -> (ProductionPower) specialAbility)
                 .noneMatch(ProductionPower::isActivatable));
 
-       }
+    }
 
     private GameSettings buildGameSettings() {
 
@@ -265,13 +265,13 @@ public class DeckTest {
 
         return switch (i % 4) {
             case 1 ->
-                new DevelopmentCardDiscount(Resource.GOLD, 1);
+                    new DevelopmentCardDiscount(Resource.GOLD, 1);
             case 2 ->
-                new WarehouseExtraSpace(Resource.SHIELD);
+                    new WarehouseExtraSpace(Resource.SHIELD);
             case 3 ->
-                new WhiteMarbleResource(Resource.STONE);
+                    new WhiteMarbleResource(Resource.STONE);
             default ->
-                new ProductionPower(resourceRequired, resourceProduced, 1);
+                    new ProductionPower(resourceRequired, resourceProduced, 1);
         };
     }
 }
