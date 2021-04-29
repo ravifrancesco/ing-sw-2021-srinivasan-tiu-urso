@@ -19,6 +19,14 @@ public class DevelopmentCardGrid {
 	private List<Stack<DevelopmentCard>> grid;
 
 	/**
+	 * Constructor for a DevelopmentCardGrid object.
+	 */
+
+	public DevelopmentCardGrid() {
+		reset();
+	}
+
+	/**
 	 * Reset method for the class.
 	 * It fills the grid with empty stacks of cards.
 	 */

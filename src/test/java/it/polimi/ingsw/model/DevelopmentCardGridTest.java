@@ -16,6 +16,22 @@ import static it.polimi.ingsw.model.DevelopmentCardGrid.DEVELOPMENT_CARD_NUM;
 public class DevelopmentCardGridTest {
 
     @Test
+    public void constructorTest() {
+        DevelopmentCardGrid dvGrid = new DevelopmentCardGrid();
+        int cont = 0;
+
+        for(int i=0; i < DevelopmentCardGrid.GRID_ROW_LENGTH; i++) {
+            for(int j=0; j < DevelopmentCardGrid.GRID_COL_LENGTH; j++) {
+                try {
+                    dvGrid.isBuyable(i, j, new HashMap<>(), new ArrayList<>());
+                } catch(IllegalArgumentException e) { cont++; }
+            }
+        }
+
+        Assert.assertEquals(cont, DevelopmentCardGrid.GRID_ROW_LENGTH * DevelopmentCardGrid.GRID_COL_LENGTH);
+    }
+
+    @Test
     public void isBuyableTrueTest() {
         Deck developmentCardDeck = new Deck();
         developmentCardDeck.reset(Arrays.asList(developmentCardDeckBuilder()));

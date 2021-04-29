@@ -12,6 +12,13 @@ import java.util.stream.IntStream;
 public class DeckTest {
 
     @Test
+    public void constructorTest() {
+        Deck deck = new Deck();
+
+        Assert.assertEquals(deck.getSize(), 0);
+    }
+
+    @Test
     public void developmentCardDeckTest() {
         DevelopmentCard[] developmentCards = developmentCardDeckBuilder();
         Deck developmentDeck = new Deck();

@@ -14,7 +14,6 @@ import java.util.Arrays;
  * The leader card deck
  * The market
  * The development card grid
- * The game it belongs to
  */
 
 public class GameBoard {
@@ -87,7 +86,7 @@ public class GameBoard {
 
 	/**
 	 * Getter for the discard deck.
-	 * @return the discard deck.
+	 * @return a copy of the discard deck.
 	 */
 
 	public Deck getDiscardDeck() {
@@ -96,7 +95,7 @@ public class GameBoard {
 
 	/**
 	 * Getter for the development cards deck.
-	 * @return the development cards deck.
+	 * @return a copy of the development cards deck.
 	 */
 
 	public Deck getDevelopmentDeck() {
@@ -105,7 +104,7 @@ public class GameBoard {
 
 	/**
 	 * Getter for the leader cards deck.
-	 * @return the leader cards deck.
+	 * @return a copy of the leader cards deck.
 	 */
 
 	public Deck getLeaderDeck() {
