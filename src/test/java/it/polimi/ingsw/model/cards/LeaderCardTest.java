@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.cards.LeaderCard;
+import it.polimi.ingsw.model.marbles.WhiteMarble;
 import it.polimi.ingsw.model.specialAbilities.*;
 import org.junit.Assert;
 import org.junit.Test;
@@ -254,12 +255,63 @@ public class LeaderCardTest{
 
     @Test
     public void activateWarehouseExtraSpaceTest() {
-        //TODO
+        Map<Banner, Integer> bannerCost = new HashMap<>();
+
+        bannerCost.put(new Banner(BannerEnum.GREEN, 1), 2);
+        bannerCost.put(new Banner(BannerEnum.BLUE, 2), 1);
+
+        WarehouseExtraSpace warehouseExtraSpace = new WarehouseExtraSpace(Resource.GOLD);
+        warehouseExtraSpace.setLeaderCardPos(0);
+
+        LeaderCard leaderCard = new LeaderCard(1, 5, bannerCost, warehouseExtraSpace);
+
+        GameSettings gameSettings = buildGameSettings();
+        Player player = new Player(gameSettings);
+        player.reset();
+
+        player.getDashboard().placeLeaderCard(leaderCard);
+
+        leaderCard.activate(player);
+
+        ArrayList<Resource> res = new ArrayList<>();
+        res.add(Resource.GOLD);
+        player.getDashboard().addResourcesToSupply(res);
+
+        player.getDashboard().addResourcesToSupply(res);
+        player.getDashboard().storeFromSupplyInExtraDeposit(0, 0, 0);
+        player.getDashboard().storeResourceInLocker(Resource.GOLD, 1);
+        player.getDashboard().storeResourceInLocker(Resource.SHIELD, 1);
+
+        Map<Resource, Integer> resources = player.getDashboard().getAllPlayerResources();
+
+        Assert.assertEquals((int) resources.get(Resource.GOLD), 2);
+        Assert.assertEquals((int) resources.get(Resource.STONE), 0);
+        Assert.assertEquals((int) resources.get(Resource.SERVANT), 0);
+        Assert.assertEquals((int) resources.get(Resource.SHIELD), 1);
     }
 
     @Test
     public void activateWhiteMarbleResourceTest() {
-        //TODO
+        Map<Banner, Integer> bannerCost = new HashMap<>();
+
+        bannerCost.put(new Banner(BannerEnum.GREEN, 1), 2);
+        bannerCost.put(new Banner(BannerEnum.BLUE, 2), 1);
+
+        WhiteMarbleResource whiteMarbleResource = new WhiteMarbleResource(Resource.GOLD);
+
+        LeaderCard leaderCard = new LeaderCard(1, 5, bannerCost, whiteMarbleResource);
+
+        GameSettings gameSettings = buildGameSettings();
+        Player player = new Player(gameSettings);
+        player.reset();
+
+        leaderCard.activate(player);
+
+        Assert.assertEquals(player.getNumActiveWMR(), 1);
+        Assert.assertEquals(player.getActivatedWMR().length, 1);
+        Assert.assertEquals(player.getActivatedWMR()[0], Resource.GOLD);
+        WhiteMarble m = new WhiteMarble();
+        Assert.assertEquals(m.getResource(player), Resource.GOLD);
     }
 
     private GameSettings buildGameSettings() {
