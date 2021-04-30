@@ -179,14 +179,13 @@ public class ProductionPower implements SpecialAbility {
 	 * @throws IllegalStateException if the resource required or produced still contain selectable resources.
 	 */
 
-	public void setSelectableResource(Optional<Map<Resource, Integer>> resourceRequiredOptional,
-									  Optional<Map<Resource, Integer>> resourceProducedOptional)
+	public void setSelectableResource(Map<Resource, Integer> resourceRequiredOptional, Map<Resource, Integer> resourceProducedOptional)
 			throws IllegalArgumentException, IllegalStateException {
 
-		int numOfResourceRequiredOptional = resourceRequiredOptional.isPresent() ? resourceRequiredOptional.get().values().stream().reduce(0, Integer::sum) : 0;
+		int numOfResourceRequiredOptional = resourceRequiredOptional.values().stream().reduce(0, Integer::sum);
 		int numOfResourceRequiredAvailable = resourceRequired.get(Resource.ANY) != null ? resourceRequired.get(Resource.ANY) : 0;
 
-		int numOfResourceProducedOptional = resourceProducedOptional.isPresent() ? resourceProducedOptional.get().values().stream().reduce(0, Integer::sum) : 0;
+		int numOfResourceProducedOptional = resourceProducedOptional.values().stream().reduce(0, Integer::sum);
 		int numOfResourceProducedAvailable = resourceProduced.get(Resource.ANY) != null ? resourceProduced.get(Resource.ANY) : 0;
 
 		if (numOfResourceProducedAvailable != numOfResourceProducedOptional || numOfResourceRequiredAvailable != numOfResourceRequiredOptional) {
@@ -195,15 +194,13 @@ public class ProductionPower implements SpecialAbility {
 
 		resourceRequiredModified = resourceRequired.entrySet().stream()
 				.filter(e -> e.getKey() != Resource.ANY).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-		resourceRequiredOptional.ifPresent(rro -> rro.
-				forEach((k, v) -> resourceRequiredModified.merge(k, v, Integer::sum)));
+		resourceRequiredOptional.forEach((k, v) -> resourceRequiredModified.merge(k, v, Integer::sum));
 
 		resourceProducedModified = resourceProduced.entrySet().stream()
 				.filter(e -> e.getKey() != Resource.ANY).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-		resourceProducedOptional.ifPresent(rpo -> rpo.
-				forEach((k, v) -> resourceProducedModified.merge(k, v, Integer::sum)));
+		resourceProducedOptional.forEach((k, v) -> resourceProducedModified.merge(k, v, Integer::sum));
 
-		if (resourceRequiredModified.containsKey(Resource.ANY) || resourceProduced.containsKey(Resource.ANY)) {
+		if (resourceRequiredModified.containsKey(Resource.ANY) || resourceProducedModified.containsKey(Resource.ANY)) {
 			throw new IllegalStateException();
 		}
 

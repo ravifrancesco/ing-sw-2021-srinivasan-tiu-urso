@@ -79,7 +79,7 @@ public class DevelopmentCardTest {
         DevelopmentCard c = new DevelopmentCard(1, 5, resourceCost, p, banner);
         DevelopmentCard c2 = new DevelopmentCard(1, 5, resourceCost, p, banner);
 
-        Assert.assertTrue(c.equals(c2));
+        Assert.assertEquals(c, c2);
     }
 
     @Test
@@ -109,7 +109,7 @@ public class DevelopmentCardTest {
 
         DevelopmentCard c2 = new DevelopmentCard(2, 3, resourceCost, p2, banner2);
 
-        Assert.assertFalse(c.equals(c2));
+        Assert.assertNotEquals(c, c2);
     }
 
     @Test
@@ -134,15 +134,14 @@ public class DevelopmentCardTest {
         Player player = new Player(gameSettings);
         player.reset();
 
-        Optional<Map<Resource, Integer>> emptyOptional = Optional.empty();
-
-        p.setSelectableResource(emptyOptional, emptyOptional);
+        p.setSelectableResource(new HashMap<>(), new HashMap<>());
 
         Map<Resource, Integer> playerResources = new HashMap<>();
 
         playerResources.put(Resource.GOLD, 2);
         playerResources.put(Resource.STONE, 3);
         playerResources.put(Resource.SHIELD, 1);
+        playerResources.put(Resource.SERVANT, 0);
 
         playerResources.forEach((key, value) -> player.getDashboard().storeResourceInLocker(key, value));
 
@@ -151,10 +150,10 @@ public class DevelopmentCardTest {
         playerResources = player.getDashboard().getAllPlayerResources();
 
         Assert.assertEquals(player.getDashboard().getFaithMarkerPosition(), 2);
-        Assert.assertEquals(Optional.ofNullable(playerResources.get(Resource.SERVANT)), Optional.of(0));
-        Assert.assertEquals(Optional.ofNullable(playerResources.get(Resource.GOLD)), Optional.of(2));
-        Assert.assertEquals(Optional.ofNullable(playerResources.get(Resource.STONE)), Optional.of(3));
-        Assert.assertEquals(Optional.ofNullable(playerResources.get(Resource.SHIELD)), Optional.of(2));
+        Assert.assertEquals((int) playerResources.get(Resource.SERVANT), 0);
+        Assert.assertEquals((int) playerResources.get(Resource.GOLD), 2);
+        Assert.assertEquals((int) playerResources.get(Resource.STONE), 3);
+        Assert.assertEquals((int) playerResources.get(Resource.SHIELD), 2);
     }
 
     @Test
@@ -179,15 +178,14 @@ public class DevelopmentCardTest {
         Player player = new Player(gameSettings);
         player.reset();
 
-        Optional<Map<Resource, Integer>> emptyOptional = Optional.empty();
-
-        p.setSelectableResource(emptyOptional, emptyOptional);
+        p.setSelectableResource(new HashMap<>(), new HashMap<>());
 
         Map<Resource, Integer> playerResources = new HashMap<>();
 
         playerResources.put(Resource.GOLD, 2);
         playerResources.put(Resource.STONE, 3);
         playerResources.put(Resource.SHIELD, 1);
+        playerResources.put(Resource.SERVANT, 0);
 
         playerResources.forEach((key, value) -> player.getDashboard().storeResourceInLocker(key, value));
 
@@ -197,11 +195,13 @@ public class DevelopmentCardTest {
 
         c.activate(player);
 
+        playerResources = player.getDashboard().getAllPlayerResources();
+
         Assert.assertEquals(player.getDashboard().getFaithMarkerPosition(), 4);
-        Assert.assertEquals(Optional.ofNullable(playerResources.get(Resource.SERVANT)), Optional.empty());
-        Assert.assertEquals(Optional.ofNullable(playerResources.get(Resource.GOLD)), Optional.of(2));
-        Assert.assertEquals(Optional.ofNullable(playerResources.get(Resource.STONE)), Optional.of(3));
-        Assert.assertEquals(Optional.ofNullable(playerResources.get(Resource.SHIELD)), Optional.of(3));
+        Assert.assertEquals((int) playerResources.get(Resource.SERVANT), 0);
+        Assert.assertEquals((int) playerResources.get(Resource.GOLD), 2);
+        Assert.assertEquals((int) playerResources.get(Resource.STONE), 3);
+        Assert.assertEquals((int) playerResources.get(Resource.SHIELD), 3);
     }
 
     private GameSettings buildGameSettings() {

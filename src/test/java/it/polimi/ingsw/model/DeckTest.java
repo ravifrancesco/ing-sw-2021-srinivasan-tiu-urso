@@ -125,7 +125,15 @@ public class DeckTest {
         IntStream.range(0, dc.length)
                 .forEach(i -> dc[i] = (DevelopmentCard) developmentDeck.getCard());
 
-        //TODO set selectable resource, because you get null pointer to modified maps
+        Map<Resource, Integer> playerResources = new HashMap<>();
+
+        playerResources.put(Resource.GOLD, 1);
+        playerResources.put(Resource.STONE, 1);
+
+        playerResources.forEach((key, value) -> player.getDashboard().storeResourceInLocker(key, value));
+
+        IntStream.range(0, dc.length)
+                .forEach(i -> dc[i].getProductionPower().setSelectableResource(new HashMap<>(), new HashMap<>()));
 
         IntStream.range(0, dc.length)
                 .filter(i -> i%2 == 0)
@@ -136,7 +144,7 @@ public class DeckTest {
 
         developmentDeck.resetProductionPowerDevelopmentCards();
 
-        Assert.assertTrue(IntStream.range(0, developmentDeck.getSize()).noneMatch(i -> ((DevelopmentCard) developmentDeck.getCard()).getProductionPower().isActivatable()));
+        Assert.assertTrue(IntStream.range(0, developmentDeck.getSize()).allMatch(i -> ((DevelopmentCard) developmentDeck.getCard()).getProductionPower().isActivatable()));
     }
 
     @Test
@@ -158,6 +166,19 @@ public class DeckTest {
         IntStream.range(0, lc.length)
                 .forEach(i -> lc[i] = (LeaderCard) leaderDeck.getCard());
 
+        Map<Resource, Integer> resourceProduced = new HashMap<>();
+        resourceProduced.put(Resource.SHIELD, 1);
+
+        Map<Resource, Integer> playerResources = new HashMap<>();
+
+        playerResources.put(Resource.GOLD, 1);
+
+        playerResources.forEach((key, value) -> player.getDashboard().storeResourceInLocker(key, value));
+
+        IntStream.range(0, lc.length)
+                .filter(i -> lc[i].getSpecialAbility().getType() == SpecialAbilityType.PRODUCTION_POWER)
+                .forEach(i -> ((ProductionPower) lc[i].getSpecialAbility()).setSelectableResource(new HashMap<>(), resourceProduced));
+
         IntStream.range(0, lc.length)
                 .filter(i -> i%2 == 0)
                 .forEach(i -> lc[i].activate(player));
@@ -171,7 +192,7 @@ public class DeckTest {
                 .mapToObj(i -> ((LeaderCard) leaderDeck.getCard()).getSpecialAbility())
                 .filter(specialAbility -> specialAbility.getType()==SpecialAbilityType.PRODUCTION_POWER)
                 .map(specialAbility -> (ProductionPower) specialAbility)
-                .noneMatch(ProductionPower::isActivatable));
+                .allMatch(ProductionPower::isActivatable));
 
     }
 
@@ -209,11 +230,9 @@ public class DeckTest {
         Map<Resource, Integer> resourceProduced = new HashMap<>();
         resourceProduced.put(Resource.SHIELD, 1);
 
-        ProductionPower p = new ProductionPower(resourceRequired, resourceProduced,2);
-
         return IntStream.range(0, GameSettings.DEVELOPMENT_CARD_NUM)
                 .boxed()
-                .map(i -> new DevelopmentCard(i, 4, resourceCost, p, banner))
+                .map(i -> new DevelopmentCard(i, 4, resourceCost, new ProductionPower(resourceRequired, resourceProduced,0), banner))
                 .toArray(DevelopmentCard[]::new);
 
     }
@@ -265,15 +284,6 @@ public class DeckTest {
         Map<Resource, Integer> resourceProduced = new HashMap<>();
         resourceProduced.put(Resource.ANY, 1);
 
-        return switch (i % 4) {
-            case 1 ->
-                    new DevelopmentCardDiscount(Resource.GOLD, 1);
-            case 2 ->
-                    new WarehouseExtraSpace(Resource.SHIELD);
-            case 3 ->
-                    new WhiteMarbleResource(Resource.STONE);
-            default ->
-                    new ProductionPower(resourceRequired, resourceProduced, 1);
-        };
+        return new ProductionPower(resourceRequired, resourceProduced, 1);
     }
 }

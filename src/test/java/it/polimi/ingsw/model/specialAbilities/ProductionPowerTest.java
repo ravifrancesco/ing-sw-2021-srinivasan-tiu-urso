@@ -72,15 +72,14 @@ public class ProductionPowerTest {
 
         ProductionPower p = new ProductionPower(resourceRequired, resourceProduced,2);
 
-        Optional<Map<Resource, Integer>> emptyOptional = Optional.empty();
-
-        p.setSelectableResource(emptyOptional, emptyOptional);
+        p.setSelectableResource(new HashMap<>(), new HashMap<>());
 
         Map<Resource, Integer> playerResources = new HashMap<>();
 
         playerResources.put(Resource.GOLD, 2);
         playerResources.put(Resource.STONE, 3);
         playerResources.put(Resource.SHIELD, 1);
+        playerResources.put(Resource.SERVANT, 0);
 
         Assert.assertTrue(p.isActivatable(playerResources));
     }
@@ -96,15 +95,14 @@ public class ProductionPowerTest {
 
         ProductionPower p = new ProductionPower(resourceRequired, resourceProduced,2);
 
-        Optional<Map<Resource, Integer>> emptyOptional = Optional.empty();
-
-        p.setSelectableResource(emptyOptional, emptyOptional);
+        p.setSelectableResource(new HashMap<>(), new HashMap<>());
 
         Map<Resource, Integer> playerResources = new HashMap<>();
 
         playerResources.put(Resource.GOLD, 2);
         playerResources.put(Resource.SERVANT, 3);
         playerResources.put(Resource.SHIELD, 1);
+        playerResources.put(Resource.STONE, 0);
 
         Assert.assertFalse(p.isActivatable(playerResources));
     }
@@ -125,16 +123,14 @@ public class ProductionPowerTest {
 
         resourceRequiredSelectable.put(Resource.GOLD, 1);
 
-        Optional<Map<Resource, Integer>> resourceRequiredOptional = Optional.of(resourceRequiredSelectable);
-
-        Optional<Map<Resource, Integer>> emptyOptional = Optional.empty();
-
-        p.setSelectableResource(resourceRequiredOptional, emptyOptional);
+        p.setSelectableResource(resourceRequiredSelectable, new HashMap<>());
 
         Map<Resource, Integer> playerResources = new HashMap<>();
 
         playerResources.put(Resource.GOLD, 2);
         playerResources.put(Resource.SHIELD, 2);
+        playerResources.put(Resource.STONE, 0);
+        playerResources.put(Resource.SERVANT, 0);
 
         Assert.assertTrue(p.isActivatable(playerResources));
     }
@@ -155,97 +151,16 @@ public class ProductionPowerTest {
 
         resourceRequiredSelectable.put(Resource.GOLD, 1);
 
-        Optional<Map<Resource, Integer>> resourceRequiredOptional = Optional.of(resourceRequiredSelectable);
-
-        Optional<Map<Resource, Integer>> emptyOptional = Optional.empty();
-
-        p.setSelectableResource(resourceRequiredOptional, emptyOptional);
+        p.setSelectableResource(resourceRequiredSelectable, new HashMap<>());
 
         Map<Resource, Integer> playerResources = new HashMap<>();
 
         playerResources.put(Resource.GOLD, 2);
         playerResources.put(Resource.SHIELD, 1);
+        playerResources.put(Resource.STONE, 0);
+        playerResources.put(Resource.SERVANT, 0);
 
         Assert.assertFalse(p.isActivatable(playerResources));
-    }
-
-    @Test
-    public void isActivatableExceptionTest1() {
-        int thrownExceptions = 0;
-
-        Map<Resource, Integer> resourceRequired = new HashMap<>();
-        resourceRequired.put(Resource.GOLD, 1);
-        resourceRequired.put(Resource.SHIELD, 2);
-        resourceRequired.put(Resource.ANY, 1);
-
-        Map<Resource, Integer> resourceProduced = new HashMap<>();
-        resourceProduced.put(Resource.SERVANT, 3);
-
-        ProductionPower p = new ProductionPower(resourceRequired, resourceProduced,2);
-
-        Map<Resource, Integer> resourceRequiredSelectable = new HashMap<>();
-
-        resourceRequiredSelectable.put(Resource.GOLD, 1);
-        resourceRequiredSelectable.put(Resource.STONE, 1);
-
-        Optional<Map<Resource, Integer>> resourceRequiredOptional = Optional.of(resourceRequiredSelectable);
-
-        Optional<Map<Resource, Integer>> emptyOptional = Optional.empty();
-
-        p.setSelectableResource(resourceRequiredOptional, emptyOptional);
-
-        Map<Resource, Integer> playerResources = new HashMap<>();
-
-        playerResources.put(Resource.GOLD, 2);
-        playerResources.put(Resource.SHIELD, 1);
-
-        try{
-            p.isActivatable(playerResources);
-        } catch(IllegalArgumentException e) {
-            thrownExceptions++;
-        }
-
-        Assert.assertEquals(thrownExceptions, 1);
-    }
-
-    @Test
-    public void isActivatableExceptionTest2() {
-        int thrownExceptions = 0;
-
-        Map<Resource, Integer> resourceRequired = new HashMap<>();
-        resourceRequired.put(Resource.GOLD, 1);
-        resourceRequired.put(Resource.SHIELD, 2);
-
-        Map<Resource, Integer> resourceProduced = new HashMap<>();
-        resourceProduced.put(Resource.ANY, 1);
-
-        ProductionPower p = new ProductionPower(resourceRequired, resourceProduced,2);
-
-        Map<Resource, Integer> resourceProducedSelectable = new HashMap<>();
-
-        resourceProducedSelectable.put(Resource.GOLD, 1);
-        resourceProducedSelectable.put(Resource.STONE, 1);
-
-        Optional<Map<Resource, Integer>> resourceProducedOptional = Optional.of(resourceProducedSelectable);
-
-        Optional<Map<Resource, Integer>> emptyOptional = Optional.empty();
-
-        p.setSelectableResource(emptyOptional, resourceProducedOptional);
-
-        Map<Resource, Integer> playerResources = new HashMap<>();
-
-        playerResources.put(Resource.GOLD, 3);
-        playerResources.put(Resource.SHIELD, 3);
-        playerResources.put(Resource.STONE, 1);
-        playerResources.put(Resource.SERVANT, 2);
-
-        try{
-            p.isActivatable(playerResources);
-        } catch(IllegalArgumentException e) {
-            thrownExceptions++;
-        }
-
-        Assert.assertEquals(thrownExceptions, 1);
     }
 
     @Test
@@ -262,11 +177,9 @@ public class ProductionPowerTest {
 
         ProductionPower p = new ProductionPower(resourceRequired, resourceProduced,2);
 
-        Optional<Map<Resource, Integer>> emptyOptional = Optional.empty();
-
         try{
-            p.setSelectableResource(emptyOptional, emptyOptional);
-        } catch(IllegalStateException e) {
+            p.setSelectableResource(new HashMap<>(), new HashMap<>());
+        } catch(IllegalArgumentException e) {
             thrownExceptions++;
         }
 
@@ -286,11 +199,9 @@ public class ProductionPowerTest {
 
         ProductionPower p = new ProductionPower(resourceRequired, resourceProduced,2);
 
-        Optional<Map<Resource, Integer>> emptyOptional = Optional.empty();
-
         try{
-            p.setSelectableResource(emptyOptional, emptyOptional);
-        } catch(IllegalStateException e) {
+            p.setSelectableResource(new HashMap<>(), new HashMap<>());
+        } catch(IllegalArgumentException e) {
             thrownExceptions++;
         }
 
@@ -303,7 +214,7 @@ public class ProductionPowerTest {
         resourceRequired.put(Resource.ANY, 1);
 
         Map<Resource, Integer> resourceProduced = new HashMap<>();
-        resourceProduced.put(Resource.ANY, 3);
+        resourceProduced.put(Resource.ANY, 1);
 
         ProductionPower p = new ProductionPower(resourceRequired, resourceProduced,2);
 
@@ -313,10 +224,7 @@ public class ProductionPowerTest {
         resourceRequiredSelectable.put(Resource.GOLD, 1);
         resourceProducedSelectable.put(Resource.SHIELD, 1);
 
-        Optional<Map<Resource, Integer>> resourceRequiredOptional = Optional.of(resourceRequiredSelectable);
-        Optional<Map<Resource, Integer>> resourceProducedOptional = Optional.of(resourceProducedSelectable);
-
-        p.setSelectableResource(resourceRequiredOptional, resourceProducedOptional);
+        p.setSelectableResource(resourceRequiredSelectable, resourceProducedSelectable);
 
         Map<Resource, Integer> resourceRequiredModified = p.getResourceRequiredModified();
         Map<Resource, Integer> resourceProducedModified = p.getResourceProducedModified();
@@ -340,15 +248,14 @@ public class ProductionPowerTest {
 
         ProductionPower p = new ProductionPower(resourceRequired, resourceProduced,2);
 
-        Optional<Map<Resource, Integer>> emptyOptional = Optional.empty();
-
-        p.setSelectableResource(emptyOptional, emptyOptional);
+        p.setSelectableResource(new HashMap<>(), new HashMap<>());
 
         Map<Resource, Integer> playerResources = new HashMap<>();
 
         playerResources.put(Resource.GOLD, 2);
         playerResources.put(Resource.STONE, 3);
         playerResources.put(Resource.SHIELD, 1);
+        playerResources.put(Resource.SERVANT, 0);
 
         playerResources.forEach((key, value) -> player.getDashboard().storeResourceInLocker(key, value));
 
@@ -357,10 +264,10 @@ public class ProductionPowerTest {
         playerResources = player.getDashboard().getAllPlayerResources();
 
         Assert.assertEquals(player.getDashboard().getFaithMarkerPosition(), 2);
-        Assert.assertEquals(Optional.ofNullable(playerResources.get(Resource.SERVANT)), Optional.of(1));
-        Assert.assertEquals(Optional.ofNullable(playerResources.get(Resource.GOLD)), Optional.of(2));
-        Assert.assertEquals(Optional.ofNullable(playerResources.get(Resource.STONE)), Optional.of(3));
-        Assert.assertEquals(Optional.ofNullable(playerResources.get(Resource.SHIELD)), Optional.of(1));
+        Assert.assertEquals((int) playerResources.get(Resource.SERVANT), 1);
+        Assert.assertEquals((int) playerResources.get(Resource.GOLD), 2);
+        Assert.assertEquals((int) playerResources.get(Resource.STONE), 3);
+        Assert.assertEquals((int) playerResources.get(Resource.SHIELD), 1);
         Assert.assertFalse(p.isActivatable());
     }
 
@@ -379,15 +286,14 @@ public class ProductionPowerTest {
 
         ProductionPower p = new ProductionPower(resourceRequired, resourceProduced,0);
 
-        Optional<Map<Resource, Integer>> emptyOptional = Optional.empty();
-
-        p.setSelectableResource(emptyOptional, emptyOptional);
+        p.setSelectableResource(new HashMap<>(), new HashMap<>());
 
         Map<Resource, Integer> playerResources = new HashMap<>();
 
         playerResources.put(Resource.GOLD, 2);
         playerResources.put(Resource.STONE, 3);
         playerResources.put(Resource.SHIELD, 1);
+        playerResources.put(Resource.SERVANT, 0);
 
         playerResources.forEach((key, value) -> player.getDashboard().storeResourceInLocker(key, value));
 
@@ -396,10 +302,10 @@ public class ProductionPowerTest {
         playerResources = player.getDashboard().getAllPlayerResources();
 
         Assert.assertEquals(player.getDashboard().getFaithMarkerPosition(), 0);
-        Assert.assertEquals(Optional.ofNullable(playerResources.get(Resource.SERVANT)), Optional.of(1));
-        Assert.assertEquals(Optional.ofNullable(playerResources.get(Resource.GOLD)), Optional.of(2));
-        Assert.assertEquals(Optional.ofNullable(playerResources.get(Resource.STONE)), Optional.of(3));
-        Assert.assertEquals(Optional.ofNullable(playerResources.get(Resource.SHIELD)), Optional.of(1));
+        Assert.assertEquals((int) playerResources.get(Resource.SERVANT), 1);
+        Assert.assertEquals((int) playerResources.get(Resource.GOLD), 2);
+        Assert.assertEquals((int) playerResources.get(Resource.STONE), 3);
+        Assert.assertEquals((int) playerResources.get(Resource.SHIELD), 1);
         Assert.assertFalse(p.isActivatable());
     }
 
@@ -415,15 +321,14 @@ public class ProductionPowerTest {
 
         ProductionPower p = new ProductionPower(resourceRequired, new HashMap<>(),2);
 
-        Optional<Map<Resource, Integer>> emptyOptional = Optional.empty();
-
-        p.setSelectableResource(emptyOptional, emptyOptional);
+        p.setSelectableResource(new HashMap<>(), new HashMap<>());
 
         Map<Resource, Integer> playerResources = new HashMap<>();
 
         playerResources.put(Resource.GOLD, 2);
         playerResources.put(Resource.STONE, 3);
         playerResources.put(Resource.SHIELD, 1);
+        playerResources.put(Resource.SERVANT, 0);
 
         playerResources.forEach((key, value) -> player.getDashboard().storeResourceInLocker(key, value));
 
@@ -432,9 +337,9 @@ public class ProductionPowerTest {
         playerResources = player.getDashboard().getAllPlayerResources();
 
         Assert.assertEquals(player.getDashboard().getFaithMarkerPosition(), 2);
-        Assert.assertEquals(Optional.ofNullable(playerResources.get(Resource.GOLD)), Optional.of(2));
-        Assert.assertEquals(Optional.ofNullable(playerResources.get(Resource.STONE)), Optional.of(3));
-        Assert.assertEquals(Optional.ofNullable(playerResources.get(Resource.SHIELD)), Optional.of(1));
+        Assert.assertEquals((int) playerResources.get(Resource.GOLD), 2);
+        Assert.assertEquals((int) playerResources.get(Resource.STONE), 3);
+        Assert.assertEquals((int) playerResources.get(Resource.SHIELD), 1);
         Assert.assertFalse(p.isActivatable());
     }
 
@@ -455,9 +360,7 @@ public class ProductionPowerTest {
 
         ProductionPower p = new ProductionPower(resourceRequired, resourceProduced,2);
 
-        Optional<Map<Resource, Integer>> emptyOptional = Optional.empty();
-
-        p.setSelectableResource(emptyOptional, emptyOptional);
+        p.setSelectableResource(new HashMap<>(), new HashMap<>());
 
         try {
             p.activate(player);
@@ -466,10 +369,10 @@ public class ProductionPowerTest {
         Map<Resource, Integer> playerResources = player.getDashboard().getAllPlayerResources();
 
         Assert.assertEquals(player.getDashboard().getFaithMarkerPosition(), 0);
-        Assert.assertEquals(Optional.ofNullable(playerResources.get(Resource.SERVANT)), Optional.of(0));
-        Assert.assertEquals(Optional.ofNullable(playerResources.get(Resource.GOLD)), Optional.of(0));
-        Assert.assertEquals(Optional.ofNullable(playerResources.get(Resource.STONE)), Optional.of(0));
-        Assert.assertEquals(Optional.ofNullable(playerResources.get(Resource.SHIELD)), Optional.of(0));
+        Assert.assertEquals((int) playerResources.get(Resource.SERVANT), 0);
+        Assert.assertEquals((int) playerResources.get(Resource.GOLD), 0);
+        Assert.assertEquals((int) playerResources.get(Resource.STONE), 0);
+        Assert.assertEquals((int) playerResources.get(Resource.SHIELD), 0);
         Assert.assertTrue(p.isActivatable());
         Assert.assertEquals(thrownExceptions, 1);
     }
@@ -490,14 +393,14 @@ public class ProductionPowerTest {
 
         ProductionPower p = new ProductionPower(resourceRequired, resourceProduced,2);
 
-        Optional<Map<Resource, Integer>> emptyOptional = Optional.empty();
-
-        p.setSelectableResource(emptyOptional, emptyOptional);
+        p.setSelectableResource(new HashMap<>(), new HashMap<>());
 
         Map<Resource, Integer> playerResources = new HashMap<>();
 
         playerResources.put(Resource.GOLD, 1);
         playerResources.put(Resource.STONE, 1);
+        playerResources.put(Resource.SHIELD, 0);
+        playerResources.put(Resource.SERVANT, 0);
 
         playerResources.forEach((key, value) -> player.getDashboard().storeResourceInLocker(key, value));
 
@@ -510,10 +413,10 @@ public class ProductionPowerTest {
         playerResources = player.getDashboard().getAllPlayerResources();
 
         Assert.assertEquals(player.getDashboard().getFaithMarkerPosition(), 2);
-        Assert.assertEquals(Optional.ofNullable(playerResources.get(Resource.SERVANT)), Optional.of(1));
-        Assert.assertEquals(Optional.ofNullable(playerResources.get(Resource.GOLD)), Optional.of(1));
-        Assert.assertEquals(Optional.ofNullable(playerResources.get(Resource.STONE)), Optional.of(1));
-        Assert.assertEquals(Optional.ofNullable(playerResources.get(Resource.SHIELD)), Optional.of(0));
+        Assert.assertEquals((int) playerResources.get(Resource.SERVANT), 1);
+        Assert.assertEquals((int) playerResources.get(Resource.GOLD), 1);
+        Assert.assertEquals((int) playerResources.get(Resource.STONE), 1);
+        Assert.assertEquals((int) playerResources.get(Resource.SHIELD), 0);
         Assert.assertFalse(p.isActivatable());
         Assert.assertEquals(thrownExceptions, 1);
     }
@@ -533,14 +436,14 @@ public class ProductionPowerTest {
 
         ProductionPower p = new ProductionPower(resourceRequired, resourceProduced,2);
 
-        Optional<Map<Resource, Integer>> emptyOptional = Optional.empty();
-
-        p.setSelectableResource(emptyOptional, emptyOptional);
+        p.setSelectableResource(new HashMap<>(), new HashMap<>());
 
         Map<Resource, Integer> playerResources = new HashMap<>();
 
         playerResources.put(Resource.GOLD, 1);
         playerResources.put(Resource.STONE, 1);
+        playerResources.put(Resource.SHIELD, 0);
+        playerResources.put(Resource.SERVANT, 0);
 
         playerResources.forEach((key, value) -> player.getDashboard().storeResourceInLocker(key, value));
 
@@ -554,11 +457,11 @@ public class ProductionPowerTest {
 
         playerResources = player.getDashboard().getAllPlayerResources();
 
-        Assert.assertEquals(player.getDashboard().getFaithMarkerPosition(), 2);
-        Assert.assertEquals(Optional.ofNullable(playerResources.get(Resource.SERVANT)), Optional.of(2));
-        Assert.assertEquals(Optional.ofNullable(playerResources.get(Resource.GOLD)), Optional.of(1));
-        Assert.assertEquals(Optional.ofNullable(playerResources.get(Resource.STONE)), Optional.of(1));
-        Assert.assertEquals(Optional.ofNullable(playerResources.get(Resource.SHIELD)), Optional.of(0));
+        Assert.assertEquals(player.getDashboard().getFaithMarkerPosition(), 4);
+        Assert.assertEquals((int) playerResources.get(Resource.SERVANT), 2);
+        Assert.assertEquals((int) playerResources.get(Resource.GOLD), 1);
+        Assert.assertEquals((int) playerResources.get(Resource.STONE), 1);
+        Assert.assertEquals((int) playerResources.get(Resource.SHIELD), 0);
         Assert.assertFalse(p.isActivatable());
     }
 

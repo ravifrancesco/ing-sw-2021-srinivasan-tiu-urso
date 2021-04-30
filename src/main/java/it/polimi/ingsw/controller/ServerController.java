@@ -141,7 +141,7 @@ public class ServerController {
     }
 
     public void activateLeaderCardProduction(String nickname, int cardToActivate, ResourceContainer resourcesToPayCost,
-                                             Optional<Map<Resource, Integer>> resourceRequiredOptional, Optional<Map<Resource, Integer>> resourceProducedOptional) throws WrongTurnException, PowerNotActivatableException, WrongMoveException {
+                                             Map<Resource, Integer> resourceRequiredOptional, Map<Resource, Integer> resourceProducedOptional) throws WrongTurnException, PowerNotActivatableException, WrongMoveException {
 
         if (!currentPlayer.equals(nickname)) {
             throw new WrongTurnException("Not " + nickname + " turn");
@@ -214,7 +214,7 @@ public class ServerController {
     }
 
     public void activateDashboardProduction(String nickname, ResourceContainer resourcesToPayCost,
-                                            Optional<Map<Resource, Integer>> resourceRequiredOptional, Optional<Map<Resource, Integer>> resourceProducedOptional) throws WrongTurnException, PowerNotActivatableException, WrongMoveException {
+                                            Map<Resource, Integer> resourceRequiredOptional, Map<Resource, Integer> resourceProducedOptional) throws WrongTurnException, PowerNotActivatableException, WrongMoveException {
 
         if (!currentPlayer.equals(nickname)) {
             throw new WrongTurnException("Not " + nickname + " turn");
@@ -357,7 +357,7 @@ public class ServerController {
     }
 
     public void activateDevelopmentCardProductionPower(String nickname, int cardToActivate, ResourceContainer resourcesToPayCost,
-                                                       Optional<Map<Resource, Integer>> resourceRequiredOptional, Optional<Map<Resource, Integer>> resourceProducedOptional) throws WrongTurnException, PowerNotActivatableException, WrongMoveException {
+                                                       Map<Resource, Integer> resourceRequiredOptional, Map<Resource, Integer> resourceProducedOptional) throws WrongTurnException, PowerNotActivatableException, WrongMoveException {
 
         if (!currentPlayer.equals(nickname)) {
             throw new WrongTurnException("Not " + nickname + " turn");

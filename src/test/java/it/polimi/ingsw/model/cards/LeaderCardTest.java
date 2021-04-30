@@ -74,7 +74,7 @@ public class LeaderCardTest{
         LeaderCard leaderCard = new LeaderCard(1, 5, bannerCost, sa);
         LeaderCard leaderCard2 = new LeaderCard(1, 5, bannerCost, sa);
 
-        Assert.assertTrue(leaderCard.equals(leaderCard2));
+        Assert.assertEquals(leaderCard, leaderCard2);
     }
 
     @Test
@@ -99,7 +99,7 @@ public class LeaderCardTest{
 
         LeaderCard leaderCard2 = new LeaderCard(2, 3, bannerCost2, sa);
 
-        Assert.assertFalse(leaderCard.equals(leaderCard2));
+        Assert.assertNotEquals(leaderCard, leaderCard2);
     }
 
     @Test
@@ -195,7 +195,7 @@ public class LeaderCardTest{
         Map<Resource, Integer> resourceProduced = new HashMap<>();
         resourceProduced.put(Resource.ANY, 1);
 
-        SpecialAbility sa = new ProductionPower(resourceRequired, resourceProduced, 1);
+        ProductionPower sa = new ProductionPower(resourceRequired, resourceProduced, 1);
 
         LeaderCard leaderCard = new LeaderCard(1, 5, bannerCost, sa);
 
@@ -207,15 +207,14 @@ public class LeaderCardTest{
 
         resourceSelectable.put(Resource.GOLD, 1);
 
-        Optional<Map<Resource, Integer>> resourceOptional = Optional.of(resourceSelectable);
-
-        ((ProductionPower) sa).setSelectableResource(resourceOptional, resourceOptional);
+        sa.setSelectableResource(resourceSelectable, resourceSelectable);
 
         Map<Resource, Integer> playerResources = new HashMap<>();
 
         playerResources.put(Resource.GOLD, 2);
         playerResources.put(Resource.STONE, 3);
         playerResources.put(Resource.SHIELD, 1);
+        playerResources.put(Resource.SERVANT, 0);
 
         playerResources.forEach((key, value) -> player.getDashboard().storeResourceInLocker(key, value));
 
@@ -223,12 +222,12 @@ public class LeaderCardTest{
 
         playerResources = player.getDashboard().getAllPlayerResources();
 
-        Assert.assertEquals(player.getDashboard().getFaithMarkerPosition(), 2);
-        Assert.assertEquals(Optional.ofNullable(playerResources.get(Resource.SERVANT)), Optional.of(0));
-        Assert.assertEquals(Optional.ofNullable(playerResources.get(Resource.GOLD)), Optional.of(3));
-        Assert.assertEquals(Optional.ofNullable(playerResources.get(Resource.STONE)), Optional.of(3));
-        Assert.assertEquals(Optional.ofNullable(playerResources.get(Resource.SHIELD)), Optional.of(1));
-        Assert.assertFalse(((ProductionPower) sa).isActivatable());
+        Assert.assertEquals(player.getDashboard().getFaithMarkerPosition(), 1);
+        Assert.assertEquals((int) playerResources.get(Resource.SERVANT), 0);
+        Assert.assertEquals((int) playerResources.get(Resource.GOLD), 3);
+        Assert.assertEquals((int) playerResources.get(Resource.STONE), 3);
+        Assert.assertEquals((int) playerResources.get(Resource.SHIELD), 1);
+        Assert.assertFalse(sa.isActivatable());
     }
 
     @Test
