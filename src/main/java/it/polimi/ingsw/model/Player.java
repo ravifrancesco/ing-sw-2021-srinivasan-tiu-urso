@@ -42,11 +42,14 @@ public class Player {
 
 	/**
 	 * Constructor of the Player class.
+	 *
+	 * @param gameSettings the settings for the current game.
 	 */
-	public Player(GameSettings gs) {
+	public Player(GameSettings gameSettings) {
+		this.dashboard = new Dashboard(gameSettings);
+		this.hand = new Hand();
 		this.activeDiscounts = new ArrayList<>();
 		this.activatedWMR = new ArrayList<>();
-		this.dashboard = new Dashboard(gs);
 	}
 
 	/**
@@ -60,10 +63,8 @@ public class Player {
 
 	/**
 	 * Resets the class to the starting/initial state.
-	 *
-	 * @param gameSettings game settings to initialize the class.
 	 */
-	public void reset(GameSettings gameSettings) {
+	public void reset() {
 		this.dashboard.reset();
 		this.hand.reset();
 		this.activeDiscounts.clear();
@@ -224,4 +225,12 @@ public class Player {
 		this.victoryPoints = dashboard.computePlayerPoints();
 	}
 
+	/**
+	 * Getter for the victory points.
+	 *
+	 * @return	the current victory points of the player.
+	 */
+	public int getVictoryPoints() {
+		return victoryPoints;
+	}
 }

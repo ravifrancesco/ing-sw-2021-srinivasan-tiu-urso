@@ -30,7 +30,7 @@ public class Game {
 
 	public void reset() {
 		gameBoard.reset(gameSettings);
-		players.values().forEach(p -> p.reset(gameSettings));
+		players.values().forEach(p -> p.reset());
 		this.playerOrder = players.keySet().iterator();
 		this.gameEnded = false;
 	}

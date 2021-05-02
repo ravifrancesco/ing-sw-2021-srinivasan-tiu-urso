@@ -48,7 +48,7 @@ public class Banner {
 	/**
 	 * Compares the color of two banners.
 	 * @param b the other banner to compare.
-	 * @return true if the two banners have the same color.
+	 * @return true if the two banners have the same color, false otherwise.
 	 */
 	public boolean equalsColor(Banner b){
 		return this.getColor()==b.getColor();
@@ -57,7 +57,7 @@ public class Banner {
 	/**
 	 * Compares the level of two banners.
 	 * @param b the other banner to compare.
-	 * @return true if the two banners have the same level.
+	 * @return true if the two banners have the same level, false otherwise.
 	 */
 	public boolean equalsLevel(Banner b){
 		return this.getLevel()==b.getLevel();
@@ -66,19 +66,18 @@ public class Banner {
 	/**
 	 * Compares the color and the level of two banners.
 	 * @param b the other banner to compare.
-	 * @return true if the two banners are equals.
+	 * @return true if the two banners are equals, false otherwise.
 	 */
 	public boolean equals(Banner b) { return equalsColor(b) && equalsLevel(b); }
 
 
 	/**
-	 * Compares the color and the level of two banners.
-	 *
+	 * Compares the level of two banners.
 	 * @param b the other banner to compare.
-	 * @return true if the two banners have the same color and this.level = b.level-1.
+	 * @return true if this banner is a lower level than b level, false otherwise.
 	 */
 	public boolean isOneLess(Banner b) {
-		return equalsColor(b) && this.level==b.getLevel()-1;
+		return this.level==b.getLevel()-1;
 	}
 
 }

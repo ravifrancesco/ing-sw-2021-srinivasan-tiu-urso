@@ -2,8 +2,7 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
-import it.polimi.ingsw.model.specialAbilities.ProductionPower;
-import it.polimi.ingsw.model.specialAbilities.SpecialAbility;
+import it.polimi.ingsw.model.specialAbilities.*;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -15,57 +14,35 @@ import java.util.stream.IntStream;
 import static it.polimi.ingsw.model.DevelopmentCardGrid.*;
 
 public class GameBoardTest {
-    /*
 
     @Test
     public void constructorTest() {
-        GameSettings gameSettings = buildGameSettings();
-        GameBoard gameBoard = new GameBoard(gameSettings);
+        GameBoard gameBoard = new GameBoard();
 
         Deck leaderCardDeck = gameBoard.getLeaderDeck();
         Deck developmentCardDeck = gameBoard.getDevelopmentDeck();
         Deck discardDeck = gameBoard.getDiscardDeck();
         Market market = gameBoard.getMarket();
-        DevelopmentCardGrid dcGrid = gameBoard.getDevelopmentCardGrid();
-
-        Assert.assertEquals(leaderCardDeck.getSize(), gameSettings.getLeaderCardNum());
-        Assert.assertEquals(developmentCardDeck.getSize(), DEVELOPMENT_CARD_NUM);
-
-        LeaderCard[] lc = new LeaderCard[leaderCardDeck.getSize()];
-
-        IntStream.range(0, lc.length)
-                .forEach(i -> lc[i] = (LeaderCard) leaderCardDeck.getCard());
-
-        DevelopmentCard[] dc = new DevelopmentCard[developmentCardDeck.getSize()];
-
-        IntStream.range(0, dc.length)
-                .forEach(i -> dc[i] = (DevelopmentCard) developmentCardDeck.getCard());
-
-        Assert.assertTrue(Arrays.asList(gameSettings.getLeaderCards()).containsAll(Arrays.asList(lc)));
-        Assert.assertTrue(Arrays.asList(lc).containsAll(Arrays.asList(gameSettings.getLeaderCards())));
-
-        Assert.assertTrue(Arrays.asList(gameSettings.getDevelopmentCards()).containsAll(Arrays.asList(dc)));
-        Assert.assertTrue(Arrays.asList(dc).containsAll(Arrays.asList(gameSettings.getDevelopmentCards())));
+        DevelopmentCardGrid dvGrid = gameBoard.getDevelopmentCardGrid();
 
         Assert.assertEquals(leaderCardDeck.getSize(), 0);
         Assert.assertEquals(developmentCardDeck.getSize(), 0);
+        Assert.assertEquals(discardDeck.getSize(), 0);
         Assert.assertNotEquals(market, null);
-        Assert.assertNotEquals(dcGrid, null);
-        Assert.assertNotEquals(discardDeck, null);
+        Assert.assertNotEquals(dvGrid, null);
     }
 
     @Test
-    public void initTest() {
+    public void resetTest() {
         GameSettings gameSettings = buildGameSettings();
-        GameBoard gameBoard = new GameBoard(gameSettings);
-
-        gameBoard.init();
+        GameBoard gameBoard = new GameBoard();
+        gameBoard.reset(gameSettings);
 
         Deck leaderCardDeck = gameBoard.getLeaderDeck();
         Deck developmentCardDeck = gameBoard.getDevelopmentDeck();
         Deck discardDeck = gameBoard.getDiscardDeck();
         Market market = gameBoard.getMarket();
-        DevelopmentCardGrid dcGrid = gameBoard.getDevelopmentCardGrid();
+        DevelopmentCardGrid dvGrid = gameBoard.getDevelopmentCardGrid();
 
         Assert.assertEquals(leaderCardDeck.getSize(), gameSettings.getLeaderCardNum());
         Assert.assertEquals(developmentCardDeck.getSize(), 0);
@@ -78,7 +55,7 @@ public class GameBoardTest {
         List<DevelopmentCard> dvCardsFromGrid = new ArrayList<>();
 
         IntStream.range(0, DEVELOPMENT_CARD_NUM)
-                .forEach(i -> dvCardsFromGrid.add(dcGrid.buy(getRow(i), getColumn(i))));
+                .forEach(i -> dvCardsFromGrid.add(dvGrid.buy(getRow(i), getColumn(i))));
 
         Assert.assertTrue(Arrays.asList(gameSettings.getLeaderCards()).containsAll(Arrays.asList(lc)));
         Assert.assertTrue(Arrays.asList(lc).containsAll(Arrays.asList(gameSettings.getLeaderCards())));
@@ -89,17 +66,18 @@ public class GameBoardTest {
         Assert.assertEquals(leaderCardDeck.getSize(), 0);
         Assert.assertEquals(developmentCardDeck.getSize(), 0);
         Assert.assertNotEquals(market, null);
-        Assert.assertNotEquals(dcGrid, null);
+        Assert.assertNotEquals(dvGrid, null);
         Assert.assertNotEquals(discardDeck, null);
     }
 
     @Test
     public void discardLeaderCardTest() {
         GameSettings gameSettings = buildGameSettings();
-        GameBoard gameBoard = new GameBoard(gameSettings);
-        Dashboard dashboard = new Dashboard(gameSettings, null);
+        GameBoard gameBoard = new GameBoard();
+        gameBoard.reset(gameSettings);
 
-        gameBoard.init();
+        Player player = new Player(gameSettings);
+        player.reset();
 
         Deck leaderCardDeck = gameBoard.getLeaderDeck();
         Deck discardDeck = gameBoard.getDiscardDeck();
@@ -107,23 +85,21 @@ public class GameBoardTest {
         LeaderCard c = (LeaderCard) leaderCardDeck.getCard();
 
         Assert.assertEquals(discardDeck.getSize(), 0);
-        Assert.assertEquals(dashboard.getFaithMarkerPosition(), 0);
+        Assert.assertEquals(player.getDashboard().getFaithMarkerPosition(), 0);
 
-        gameBoard.discardCard(c, dashboard);
+        gameBoard.discardCard(c);
 
         discardDeck = gameBoard.getDiscardDeck();
 
         Assert.assertEquals(discardDeck.getSize(), 1);
-        Assert.assertEquals(dashboard.getFaithMarkerPosition(), 1);
         Assert.assertEquals(discardDeck.getCard(), c);
     }
 
     @Test
     public void getLeaderCardTest() {
         GameSettings gameSettings = buildGameSettings();
-        GameBoard gameBoard = new GameBoard(gameSettings);
-
-        gameBoard.init();
+        GameBoard gameBoard = new GameBoard();
+        gameBoard.reset(gameSettings);
 
         Deck leaderCardDeck = gameBoard.getLeaderDeck();
 
@@ -139,15 +115,12 @@ public class GameBoardTest {
     @Test
     public void marketTest() {
         GameSettings gameSettings = buildGameSettings();
-        GameBoard gameBoard = new GameBoard(gameSettings);
-
-        gameBoard.init();
-
-        Player p = new Player("test", "0");
-
+        GameBoard gameBoard = new GameBoard();
+        gameBoard.reset(gameSettings);
+        Player p = new Player(gameSettings);
         Market market = gameBoard.getMarket();
 
-        for (int possibleMove = 0; possibleMove < 7; possibleMove++) {
+        for(int possibleMove = 0; possibleMove < 7; possibleMove++) {
             ArrayList<Resource> testResList = new ArrayList<>();
             Map<Resource, Long> testRes;
 
@@ -155,14 +128,14 @@ public class GameBoardTest {
             Map<Resource, Long> actualRes;
 
             int pM = possibleMove;
-            if (possibleMove < 3) {
+            if(possibleMove < 3) {
                 // row move
-                IntStream.range(0, GRID_COL_LENGTH).forEach(i -> testResList.add(market.getMarble(pM, i).getResource(p)));
-                actualResList = market.getResources(pM, p);
+                IntStream.range(0, Market.gridColLength).forEach(i -> testResList.add(market.getMarble(pM, i).getResource(p)));
+                actualResList = gameBoard.getResourcesFromMarket(pM, p);
             } else {
                 // col move
-                IntStream.range(0, GRID_ROW_LENGTH).forEach(i -> testResList.add(market.getMarble(i, pM - 3).getResource(p)));
-                actualResList = market.getResources(pM, p);
+                IntStream.range(0, Market.gridRowLength).forEach(i -> testResList.add(market.getMarble(i, pM-3).getResource(p)));
+                actualResList = gameBoard.getResourcesFromMarket(pM, p);
             }
 
             testRes = testResList.stream().filter(Objects::nonNull)
@@ -175,6 +148,7 @@ public class GameBoardTest {
             Assert.assertEquals(testRes.get(Resource.GOLD), actualRes.get(Resource.GOLD));
             Assert.assertEquals(testRes.get(Resource.SERVANT), actualRes.get(Resource.SERVANT));
             Assert.assertEquals(testRes.get(Resource.SHIELD), actualRes.get(Resource.SHIELD));
+
         }
     }
 
@@ -212,7 +186,7 @@ public class GameBoardTest {
         Map<Resource, Integer> resourceProduced = new HashMap<>();
         resourceProduced.put(Resource.SHIELD, 1);
 
-        ProductionPower p = new ProductionPower(resourceRequired, resourceProduced,2, false);
+        ProductionPower p = new ProductionPower(resourceRequired, resourceProduced,2);
 
         return IntStream.range(0, GameSettings.DEVELOPMENT_CARD_NUM)
                 .boxed()
@@ -223,26 +197,14 @@ public class GameBoardTest {
 
     private LeaderCard[] leaderCardDeckBuilder(int leaderCardNum) {
 
-        Map<Resource, Integer> resourceCost = new HashMap<>();
-
-        resourceCost.put(Resource.SHIELD, 1);
-
         Map<Banner, Integer> bannerCost = new HashMap<>();
 
         bannerCost.put(new Banner(BannerEnum.GREEN, 1), 2);
         bannerCost.put(new Banner(BannerEnum.BLUE, 2), 1);
 
-        Map<Resource, Integer> resourceRequired = new HashMap<>();
-        resourceRequired.put(Resource.GOLD, 1);
-
-        Map<Resource, Integer> resourceProduced = new HashMap<>();
-        resourceProduced.put(Resource.SHIELD, 1);
-        SpecialAbility sa = new ProductionPower(resourceRequired, resourceProduced, 1, true);
-        // TODO change special abilities
-
         return  IntStream.range(0, leaderCardNum)
                 .boxed()
-                .map(i -> new LeaderCard(i, 2, resourceCost, bannerCost, sa))
+                .map(i -> new LeaderCard(i, 2, bannerCost, specialAbilityBuilder(i)))
                 .toArray(LeaderCard[]::new);
 
     }
@@ -256,7 +218,7 @@ public class GameBoardTest {
         Map<Resource, Integer> resourceProduced = new HashMap<>();
         resourceProduced.put(Resource.SHIELD, 1);
 
-        return new ProductionPower(resourceRequired, resourceProduced,2, false);
+        return new ProductionPower(resourceRequired, resourceProduced,2);
 
     }
 
@@ -270,6 +232,26 @@ public class GameBoardTest {
         return vaticanReportsList;
 
 
+    }
+
+    private SpecialAbility specialAbilityBuilder(int i) {
+
+        Map<Resource, Integer> resourceRequired = new HashMap<>();
+        resourceRequired.put(Resource.GOLD, 1);
+
+        Map<Resource, Integer> resourceProduced = new HashMap<>();
+        resourceProduced.put(Resource.ANY, 1);
+
+        return switch (i % 4) {
+            case 1 ->
+                    new DevelopmentCardDiscount(Resource.GOLD, 1);
+            case 2 ->
+                    new WarehouseExtraSpace(Resource.SHIELD);
+            case 3 ->
+                    new WhiteMarbleResource(Resource.STONE);
+            default ->
+                    new ProductionPower(resourceRequired, resourceProduced, 1);
+        };
     }
 
     private Banner chooseBanner(int val) {
@@ -308,6 +290,4 @@ public class GameBoardTest {
             default -> -1;
         };
     }
-
-     */
 }

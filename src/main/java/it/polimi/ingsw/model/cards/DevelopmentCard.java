@@ -12,9 +12,11 @@ import java.util.stream.Collectors;
 /**
  * The class represents a Development Card of the game.
  * The object memorizes the state of a Development Card. The state includes:
+ * The id.
  * The victory points.
  * The resource cost to buy the card.
  * The production power.
+ * The banner of the card.
  */
 
 public class DevelopmentCard implements Card {

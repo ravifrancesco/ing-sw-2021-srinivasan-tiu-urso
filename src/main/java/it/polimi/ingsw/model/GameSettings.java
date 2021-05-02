@@ -24,8 +24,8 @@ import java.util.stream.IntStream;
  */
 public class GameSettings {
 
-    static final int DEVELOPMENT_CARD_NUM = 48;
-    static final int FAITH_TRACK_LENGTH = 25;
+    public static final int DEVELOPMENT_CARD_NUM = 48;
+    public static final int FAITH_TRACK_LENGTH = 25;
 
     private DevelopmentCard[] developmentCards;
 
@@ -195,7 +195,7 @@ public class GameSettings {
 
         SpecialAbility specialAbility = parseSpecialAbility(propertyMap);
 
-        return new LeaderCard(id, victoryPoints, resourceCost, bannerCost, specialAbility);
+        return new LeaderCard(id, victoryPoints, bannerCost, specialAbility);
 
     }
 
