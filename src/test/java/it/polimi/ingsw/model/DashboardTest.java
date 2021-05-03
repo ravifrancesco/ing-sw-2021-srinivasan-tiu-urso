@@ -8,24 +8,21 @@ import it.polimi.ingsw.model.specialAbilities.WhiteMarbleResource;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.jupiter.params.converter.ConvertWith;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 import static org.junit.Assert.fail;
 
 public class DashboardTest {
 
     private static Dashboard dashboard;
-    private static GameSettings gameSettings;
 
     @BeforeClass
     static public void constructorTest() {
 
-        gameSettings =  new GameSettingsTest().buildGameSettings();
+        GameSettings gameSettings = new GameSettingsTest().buildGameSettings();
         dashboard = new Dashboard(gameSettings);
 
         Assert.assertNotNull(dashboard);
@@ -103,6 +100,7 @@ public class DashboardTest {
 
         try {
             dashboard.placeDevelopmentCard(developmentCard3, 2);
+            fail();
         } catch (IllegalArgumentException e) {
             fail();
         } catch (IllegalStateException e) {
@@ -113,6 +111,7 @@ public class DashboardTest {
 
         try {
             dashboard.placeDevelopmentCard(developmentCard4, 0);
+            fail();
         } catch (IllegalArgumentException e) {
             fail();
         } catch (IllegalStateException e) {
@@ -302,6 +301,200 @@ public class DashboardTest {
         dashboard.placeLeaderCard(leaderCard2);
 
         dashboard.resetProductionPowers();
+
+    }
+
+    // TODO fix warehouse
+    @Test
+    public void moveDepositResourcesTest() {
+
+        dashboard.reset();
+
+        dashboard.storeResourceInDeposit(Resource.GOLD, 0);
+        dashboard.storeResourceInDeposit(Resource.SHIELD, 1);
+        dashboard.storeResourceInDeposit(Resource.SERVANT, 5);
+
+        try {
+            dashboard.moveDepositResources(0, 7);
+            fail();
+        } catch (IllegalStateException e) {
+            fail();
+        } catch (IllegalArgumentException e) {
+            Assert.assertTrue(true);
+        }
+
+        try {
+            dashboard.moveDepositResources(0, 2);
+            fail();
+        } catch (IllegalArgumentException e) {
+            fail();
+        } catch (IllegalStateException e) {
+            Assert.assertTrue(true);
+        }
+
+        dashboard.moveDepositResources(5, 2);
+
+    }
+
+    // TODO wait for fix
+    @Test
+    public void moveDepositExtraDepositResources() {
+
+        dashboard.reset();
+
+        dashboard.storeResourceInDeposit(Resource.GOLD, 0);
+        dashboard.storeResourceInDeposit(Resource.SHIELD, 1);
+        dashboard.storeResourceInDeposit(Resource.SERVANT, 5);
+
+        LeaderCard leaderCard1 = new LeaderCard(1, 2, new HashMap<>(), new HashMap<>(), new WarehouseExtraSpace(Resource.SHIELD));
+        LeaderCard leaderCard2 = new LeaderCard(1, 2, new HashMap<>(), new HashMap<>(), new WhiteMarbleResource(Resource.SHIELD));
+        dashboard.placeLeaderCard(leaderCard1);
+
+    }
+
+    @Test
+    public void storeFromSupply() {
+
+        dashboard.reset();
+
+        ArrayList<Resource> res = new ArrayList<>();
+        res.add(Resource.GOLD);
+        dashboard.addResourcesToSupply(res);
+
+        dashboard.storeResourceInDeposit(Resource.GOLD, 5);
+
+        try {
+            dashboard.storeFromSupply(5, 2);
+            fail();
+        } catch (IllegalStateException e) {
+            fail();
+        } catch (IllegalArgumentException e) {
+            Assert.assertTrue(true);
+        }
+
+        try {
+            dashboard.storeFromSupply(1, 4);
+            fail();
+        } catch (IllegalStateException e) {
+            fail();
+        } catch (IllegalArgumentException e) {
+            Assert.assertTrue(true);
+        }
+
+        try {
+            dashboard.storeFromSupply(0, 1);
+            fail();
+        } catch (IllegalArgumentException e) {
+            fail();
+        } catch (IllegalStateException e) {
+            Assert.assertTrue(true);
+        }
+
+        dashboard.storeFromSupply(0,4);
+
+    }
+
+    @Test
+    public void storeFromSupplyInExtraDepositTest() {
+
+        dashboard.reset();
+
+        dashboard.reset();
+
+        LeaderCard leaderCard1 = new LeaderCard(1, 2, new HashMap<>(), new HashMap<>(), new WarehouseExtraSpace(Resource.SHIELD));
+        LeaderCard leaderCard2 = new LeaderCard(1, 2, new HashMap<>(), new HashMap<>(), new WhiteMarbleResource(Resource.SHIELD));
+        dashboard.placeLeaderCard(leaderCard1);
+        dashboard.placeLeaderCard(leaderCard2);
+        dashboard.activateExtraDeposit(0);
+
+        ArrayList<Resource> res = new ArrayList<>();
+        res.add(Resource.SHIELD);
+        res.add(Resource.SHIELD);
+        res.add(Resource.GOLD);
+        dashboard.addResourcesToSupply(res);
+
+        try {
+            dashboard.storeFromSupplyInExtraDeposit(3, 5, 2);
+            fail();
+        } catch (IllegalStateException e) {
+            fail();
+        } catch (IllegalArgumentException e) {
+            Assert.assertTrue(true);
+        }
+
+        try {
+            dashboard.storeFromSupplyInExtraDeposit(1, 0, 4);
+            fail();
+        } catch (IllegalStateException e) {
+            fail();
+        } catch (IllegalArgumentException e) {
+            Assert.assertTrue(true);
+        }
+
+        try {
+            dashboard.storeFromSupplyInExtraDeposit(0,2, 1);
+            fail();
+        } catch (IllegalArgumentException e) {
+            fail();
+        } catch (IllegalStateException e) {
+            Assert.assertTrue(true);
+        }
+
+        dashboard.storeFromSupplyInExtraDeposit(0,1, 0);
+
+        try {
+            dashboard.storeFromSupplyInExtraDeposit(0,0, 0);
+            fail();
+        } catch (IllegalStateException e) {
+            fail();
+        } catch (IllegalArgumentException e) {
+            Assert.assertTrue(true);
+        }
+
+    }
+
+    @Test
+    public void checkGameEndTest() {
+
+        dashboard.reset();
+
+        Assert.assertFalse(dashboard.checkGameEnd());
+
+        dashboard.moveFaithMarker(54);
+
+        Assert.assertTrue(dashboard.checkGameEnd());
+
+        dashboard.reset();
+
+        DevelopmentCard developmentCard1  = new DevelopmentCard(0,1, new HashMap<>(),null, new Banner(BannerEnum.BLUE, 1));
+        DevelopmentCard developmentCard2 = new DevelopmentCard(0,1, new HashMap<>(),null, new Banner(BannerEnum.BLUE, 2));
+        DevelopmentCard developmentCard3 = new DevelopmentCard(0,1, new HashMap<>(),null, new Banner(BannerEnum.BLUE, 3));
+
+        dashboard.placeDevelopmentCard(developmentCard1, 0);
+        dashboard.placeDevelopmentCard(developmentCard2, 0);
+        dashboard.placeDevelopmentCard(developmentCard3, 0);
+
+        DevelopmentCard developmentCard4  = new DevelopmentCard(0,1, new HashMap<>(),null, new Banner(BannerEnum.GREEN, 1));
+        DevelopmentCard developmentCard5 = new DevelopmentCard(0,1, new HashMap<>(),null, new Banner(BannerEnum.GREEN, 2));
+        DevelopmentCard developmentCard6 = new DevelopmentCard(0,1, new HashMap<>(),null, new Banner(BannerEnum.GREEN, 3));
+
+        dashboard.placeDevelopmentCard(developmentCard4, 1);
+        dashboard.placeDevelopmentCard(developmentCard5, 1);
+        dashboard.placeDevelopmentCard(developmentCard6, 1);
+
+        Assert.assertFalse(dashboard.checkGameEnd());
+
+        DevelopmentCard developmentCard7  = new DevelopmentCard(0,1,new HashMap<>(),null,new Banner(BannerEnum.YELLOW, 1));
+
+        dashboard.placeDevelopmentCard(developmentCard7, 2);
+
+        Assert.assertTrue(dashboard.checkGameEnd());
+
+    }
+
+    // TODO wait for explanation
+    @Test
+    public void payPriceTest() {
 
     }
 
