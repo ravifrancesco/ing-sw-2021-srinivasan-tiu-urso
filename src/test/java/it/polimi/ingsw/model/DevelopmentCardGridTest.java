@@ -2,9 +2,7 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
-import it.polimi.ingsw.model.specialAbilities.DevelopmentCardDiscount;
-import it.polimi.ingsw.model.specialAbilities.ProductionPower;
-import it.polimi.ingsw.model.specialAbilities.SpecialAbility;
+import it.polimi.ingsw.model.specialAbilities.*;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -284,6 +282,10 @@ public class DevelopmentCardGridTest {
 
     private LeaderCard[] leaderCardDeckBuilder(int leaderCardNum) {
 
+        Map<Resource, Integer> resourceCost = new HashMap<>();
+
+        resourceCost.put(Resource.SHIELD, 1);
+
         Map<Banner, Integer> bannerCost = new HashMap<>();
 
         bannerCost.put(new Banner(BannerEnum.GREEN, 1), 2);
@@ -291,14 +293,20 @@ public class DevelopmentCardGridTest {
 
         Map<Resource, Integer> resourceRequired = new HashMap<>();
         resourceRequired.put(Resource.GOLD, 1);
+        resourceRequired.put(Resource.ANY, 1);
 
         Map<Resource, Integer> resourceProduced = new HashMap<>();
-        resourceProduced.put(Resource.ANY, 1);
-        SpecialAbility sa = new ProductionPower(resourceRequired, resourceProduced, 1);
+        resourceProduced.put(Resource.SHIELD, 1);
+
+        SpecialAbility[] SAs = new SpecialAbility[4];
+        SAs[0] = new ProductionPower(resourceRequired, resourceProduced, 1);
+        SAs[1] = new DevelopmentCardDiscount(Resource.GOLD, 3);
+        SAs[2] = new WarehouseExtraSpace(Resource.SERVANT);
+        SAs[3] = new WhiteMarbleResource(Resource.SHIELD);
 
         return  IntStream.range(0, leaderCardNum)
                 .boxed()
-                .map(i -> new LeaderCard(i, 2, bannerCost, sa))
+                .map(i -> new LeaderCard(i, 2, bannerCost, resourceCost, SAs[i%4]))
                 .toArray(LeaderCard[]::new);
 
     }

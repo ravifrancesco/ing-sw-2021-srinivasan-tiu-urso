@@ -19,6 +19,10 @@ public class LeaderCardTest{
         bannerCost.put(new Banner(BannerEnum.GREEN, 1), 2);
         bannerCost.put(new Banner(BannerEnum.BLUE, 2), 1);
 
+        Map<Resource, Integer> resourceCost = new HashMap<>();
+
+        resourceCost.put(Resource.GOLD, 3);
+
         Map<Resource, Integer> resourceRequired = new HashMap<>();
         resourceRequired.put(Resource.ANY, 1);
 
@@ -27,7 +31,7 @@ public class LeaderCardTest{
 
         SpecialAbility sa = new ProductionPower(resourceRequired, resourceProduced, 1);
 
-        LeaderCard leaderCard = new LeaderCard(1, 5, bannerCost, sa);
+        LeaderCard leaderCard = new LeaderCard(1, 5, bannerCost, resourceCost, sa);
 
         Assert.assertEquals(leaderCard.getId(), 1);
         Assert.assertEquals(leaderCard.getVictoryPoints(), 5);
@@ -43,15 +47,19 @@ public class LeaderCardTest{
         bannerCost.put(new Banner(BannerEnum.GREEN, 1), 2);
         bannerCost.put(new Banner(BannerEnum.BLUE, 2), 1);
 
+        Map<Resource, Integer> resourceCost = new HashMap<>();
+
+        resourceCost.put(Resource.GOLD, 3);
+
         Map<Resource, Integer> resourceRequired = new HashMap<>();
         resourceRequired.put(Resource.ANY, 1);
 
         SpecialAbility sa = new ProductionPower(resourceRequired, new HashMap<>(), 1);
 
-        LeaderCard leaderCard = new LeaderCard(1, 5, bannerCost, sa);
+        LeaderCard leaderCard = new LeaderCard(1, 5, bannerCost, resourceCost, sa);
 
-        String s1 = "ID=1;VP=5;BC=BLUE:2:1,GREEN:1:2;SA=PP;RR=ANY:1;FP=1;";
-        String s2 = "ID=1;VP=5;BC=GREEN:1:2,BLUE:2:1;SA=PP;RR=ANY:1;FP=1;";
+        String s1 = "ID=1;VP=5;BC=BLUE:2:1,GREEN:1:2;RC=GOLD:3;SA=PP;RR=ANY:1;FP=1;";
+        String s2 = "ID=1;VP=5;BC=GREEN:1:2,BLUE:2:1;RC=GOLD:3;SA=PP;RR=ANY:1;FP=1;";
 
         Assert.assertTrue(s1.equals(leaderCard.toString()) || s2.equals(leaderCard.toString()));
 
@@ -64,6 +72,10 @@ public class LeaderCardTest{
         bannerCost.put(new Banner(BannerEnum.GREEN, 1), 2);
         bannerCost.put(new Banner(BannerEnum.BLUE, 2), 1);
 
+        Map<Resource, Integer> resourceCost = new HashMap<>();
+
+        resourceCost.put(Resource.GOLD, 3);
+
         Map<Resource, Integer> resourceRequired = new HashMap<>();
         resourceRequired.put(Resource.ANY, 1);
 
@@ -72,8 +84,8 @@ public class LeaderCardTest{
 
         SpecialAbility sa = new ProductionPower(resourceRequired, resourceProduced, 1);
 
-        LeaderCard leaderCard = new LeaderCard(1, 5, bannerCost, sa);
-        LeaderCard leaderCard2 = new LeaderCard(1, 5, bannerCost, sa);
+        LeaderCard leaderCard = new LeaderCard(1, 5, bannerCost, resourceCost, sa);
+        LeaderCard leaderCard2 = new LeaderCard(1, 5, bannerCost, resourceCost, sa);
 
         Assert.assertEquals(leaderCard, leaderCard2);
     }
@@ -93,12 +105,12 @@ public class LeaderCardTest{
 
         SpecialAbility sa = new ProductionPower(resourceRequired, resourceProduced, 1);
 
-        LeaderCard leaderCard = new LeaderCard(1, 5, bannerCost, sa);
+        LeaderCard leaderCard = new LeaderCard(1, 5, bannerCost, new HashMap<>(), sa);
 
         Map<Banner, Integer> bannerCost2 = new HashMap<>();
         bannerCost2.put(new Banner(BannerEnum.YELLOW, 1), 3);
 
-        LeaderCard leaderCard2 = new LeaderCard(2, 3, bannerCost2, sa);
+        LeaderCard leaderCard2 = new LeaderCard(2, 3, bannerCost2, new HashMap<>(), sa);
 
         Assert.assertNotEquals(leaderCard, leaderCard2);
     }
@@ -110,6 +122,10 @@ public class LeaderCardTest{
         bannerCost.put(new Banner(BannerEnum.GREEN, 1), 2);
         bannerCost.put(new Banner(BannerEnum.BLUE, 2), 1);
 
+        Map<Resource, Integer> resourceCost = new HashMap<>();
+
+        resourceCost.put(Resource.GOLD, 3);
+
         Map<Resource, Integer> resourceRequired = new HashMap<>();
         resourceRequired.put(Resource.ANY, 1);
 
@@ -118,7 +134,7 @@ public class LeaderCardTest{
 
         SpecialAbility sa = new ProductionPower(resourceRequired, resourceProduced, 1);
 
-        LeaderCard leaderCard = new LeaderCard(1, 5, bannerCost, sa);
+        LeaderCard leaderCard = new LeaderCard(1, 5, bannerCost, resourceCost, sa);
 
         Map<Banner, Integer> playerBanners = new HashMap<>();
 
@@ -127,7 +143,12 @@ public class LeaderCardTest{
         playerBanners.put(new Banner(BannerEnum.BLUE, 2), 1);
         playerBanners.put(new Banner(BannerEnum.PURPLE, 2), 1);
 
-        Assert.assertTrue(leaderCard.isPlayable(playerBanners));
+        Map<Resource, Integer> playerResources = new HashMap<>();
+
+        playerResources.put(Resource.GOLD, 5);
+        playerResources.put(Resource.SHIELD, 3);
+
+        Assert.assertTrue(leaderCard.isPlayable(playerBanners, playerResources));
     }
 
     @Test
@@ -137,6 +158,10 @@ public class LeaderCardTest{
         bannerCost.put(new Banner(BannerEnum.GREEN, 1), 2);
         bannerCost.put(new Banner(BannerEnum.BLUE, 2), 1);
 
+        Map<Resource, Integer> resourceCost = new HashMap<>();
+
+        resourceCost.put(Resource.GOLD, 3);
+
         Map<Resource, Integer> resourceRequired = new HashMap<>();
         resourceRequired.put(Resource.ANY, 1);
 
@@ -145,7 +170,7 @@ public class LeaderCardTest{
 
         SpecialAbility sa = new ProductionPower(resourceRequired, resourceProduced, 1);
 
-        LeaderCard leaderCard = new LeaderCard(1, 5, bannerCost, sa);
+        LeaderCard leaderCard = new LeaderCard(1, 5, bannerCost, resourceCost, sa);
 
         Map<Banner, Integer> playerBanners = new HashMap<>();
 
@@ -155,7 +180,12 @@ public class LeaderCardTest{
         playerBanners.put(new Banner(BannerEnum.BLUE, 3), 1);
         playerBanners.put(new Banner(BannerEnum.PURPLE, 2), 1);
 
-        Assert.assertFalse(leaderCard.isPlayable(playerBanners));
+        Map<Resource, Integer> playerResources = new HashMap<>();
+
+        playerResources.put(Resource.GOLD, 5);
+        playerResources.put(Resource.SHIELD, 3);
+
+        Assert.assertFalse(leaderCard.isPlayable(playerBanners, playerResources));
     }
 
     @Test
@@ -165,6 +195,10 @@ public class LeaderCardTest{
         bannerCost.put(new Banner(BannerEnum.GREEN, 1), 2);
         bannerCost.put(new Banner(BannerEnum.BLUE, 2), 1);
 
+        Map<Resource, Integer> resourceCost = new HashMap<>();
+
+        resourceCost.put(Resource.GOLD, 3);
+
         Map<Resource, Integer> resourceRequired = new HashMap<>();
         resourceRequired.put(Resource.ANY, 1);
 
@@ -173,14 +207,55 @@ public class LeaderCardTest{
 
         SpecialAbility sa = new ProductionPower(resourceRequired, resourceProduced, 1);
 
-        LeaderCard leaderCard = new LeaderCard(1, 5, bannerCost, sa);
+        LeaderCard leaderCard = new LeaderCard(1, 5, bannerCost, resourceCost, sa);
 
         Map<Banner, Integer> playerBanners = new HashMap<>();
 
         playerBanners.put(new Banner(BannerEnum.YELLOW, 1), 1);
         playerBanners.put(new Banner(BannerEnum.PURPLE, 1), 1);
 
-        Assert.assertFalse(leaderCard.isPlayable(playerBanners));
+        Map<Resource, Integer> playerResources = new HashMap<>();
+
+        playerResources.put(Resource.GOLD, 5);
+        playerResources.put(Resource.SHIELD, 3);
+
+        Assert.assertFalse(leaderCard.isPlayable(playerBanners, playerResources));
+    }
+
+    @Test
+    public void falseIsPlayableTest3() {
+        Map<Banner, Integer> bannerCost = new HashMap<>();
+
+        bannerCost.put(new Banner(BannerEnum.GREEN, 1), 2);
+        bannerCost.put(new Banner(BannerEnum.BLUE, 2), 1);
+
+        Map<Resource, Integer> resourceCost = new HashMap<>();
+
+        resourceCost.put(Resource.GOLD, 3);
+
+        Map<Resource, Integer> resourceRequired = new HashMap<>();
+        resourceRequired.put(Resource.ANY, 1);
+
+        Map<Resource, Integer> resourceProduced = new HashMap<>();
+        resourceProduced.put(Resource.ANY, 1);
+
+        SpecialAbility sa = new ProductionPower(resourceRequired, resourceProduced, 1);
+
+        LeaderCard leaderCard = new LeaderCard(1, 5, bannerCost, resourceCost, sa);
+
+        Map<Banner, Integer> playerBanners = new HashMap<>();
+
+        playerBanners.put(new Banner(BannerEnum.GREEN, 1), 3);
+        playerBanners.put(new Banner(BannerEnum.YELLOW, 3), 1);
+        playerBanners.put(new Banner(BannerEnum.BLUE, 2), 1);
+        playerBanners.put(new Banner(BannerEnum.PURPLE, 2), 1);
+
+        Map<Resource, Integer> playerResources = new HashMap<>();
+
+        playerResources.put(Resource.GOLD, 2);
+        playerResources.put(Resource.SHIELD, 3);
+
+        Assert.assertFalse(leaderCard.isPlayable(playerBanners, playerResources));
     }
 
     @Test
@@ -198,7 +273,7 @@ public class LeaderCardTest{
 
         ProductionPower sa = new ProductionPower(resourceRequired, resourceProduced, 1);
 
-        LeaderCard leaderCard = new LeaderCard(1, 5, bannerCost, sa);
+        LeaderCard leaderCard = new LeaderCard(1, 5, bannerCost, new HashMap<>(), sa);
 
         GameSettings gameSettings = buildGameSettings();
         Player player = new Player(gameSettings);
@@ -241,7 +316,7 @@ public class LeaderCardTest{
 
         SpecialAbility sa = new DevelopmentCardDiscount(Resource.GOLD, 1);
 
-        LeaderCard leaderCard = new LeaderCard(1, 5, bannerCost, sa);
+        LeaderCard leaderCard = new LeaderCard(1, 5, bannerCost, new HashMap<>(), sa);
 
         GameSettings gameSettings = buildGameSettings();
         Player player = new Player(gameSettings);
@@ -263,7 +338,7 @@ public class LeaderCardTest{
         WarehouseExtraSpace warehouseExtraSpace = new WarehouseExtraSpace(Resource.GOLD);
         warehouseExtraSpace.setLeaderCardPos(0);
 
-        LeaderCard leaderCard = new LeaderCard(1, 5, bannerCost, warehouseExtraSpace);
+        LeaderCard leaderCard = new LeaderCard(1, 5, bannerCost, new HashMap<>(), warehouseExtraSpace);
 
         GameSettings gameSettings = buildGameSettings();
         Player player = new Player(gameSettings);
@@ -299,7 +374,7 @@ public class LeaderCardTest{
 
         WhiteMarbleResource whiteMarbleResource = new WhiteMarbleResource(Resource.GOLD);
 
-        LeaderCard leaderCard = new LeaderCard(1, 5, bannerCost, whiteMarbleResource);
+        LeaderCard leaderCard = new LeaderCard(1, 5, bannerCost, new HashMap<>(), whiteMarbleResource);
 
         GameSettings gameSettings = buildGameSettings();
         Player player = new Player(gameSettings);
@@ -359,14 +434,31 @@ public class LeaderCardTest{
 
     private LeaderCard[] leaderCardDeckBuilder(int leaderCardNum) {
 
+        Map<Resource, Integer> resourceCost = new HashMap<>();
+
+        resourceCost.put(Resource.SHIELD, 1);
+
         Map<Banner, Integer> bannerCost = new HashMap<>();
 
         bannerCost.put(new Banner(BannerEnum.GREEN, 1), 2);
         bannerCost.put(new Banner(BannerEnum.BLUE, 2), 1);
 
+        Map<Resource, Integer> resourceRequired = new HashMap<>();
+        resourceRequired.put(Resource.GOLD, 1);
+        resourceRequired.put(Resource.ANY, 1);
+
+        Map<Resource, Integer> resourceProduced = new HashMap<>();
+        resourceProduced.put(Resource.SHIELD, 1);
+
+        SpecialAbility[] SAs = new SpecialAbility[4];
+        SAs[0] = new ProductionPower(resourceRequired, resourceProduced, 1);
+        SAs[1] = new DevelopmentCardDiscount(Resource.GOLD, 3);
+        SAs[2] = new WarehouseExtraSpace(Resource.SERVANT);
+        SAs[3] = new WhiteMarbleResource(Resource.SHIELD);
+
         return  IntStream.range(0, leaderCardNum)
                 .boxed()
-                .map(i -> new LeaderCard(i, 2, bannerCost, specialAbilityBuilder(i)))
+                .map(i -> new LeaderCard(i, 2, bannerCost, resourceCost, SAs[i%4]))
                 .toArray(LeaderCard[]::new);
 
     }
@@ -394,26 +486,6 @@ public class LeaderCardTest{
         return vaticanReportsList;
 
 
-    }
-
-    private SpecialAbility specialAbilityBuilder(int i) {
-
-        Map<Resource, Integer> resourceRequired = new HashMap<>();
-        resourceRequired.put(Resource.GOLD, 1);
-
-        Map<Resource, Integer> resourceProduced = new HashMap<>();
-        resourceProduced.put(Resource.ANY, 1);
-
-        return switch (i % 4) {
-            case 1 ->
-                    new DevelopmentCardDiscount(Resource.GOLD, 1);
-            case 2 ->
-                    new WarehouseExtraSpace(Resource.SHIELD);
-            case 3 ->
-                    new WhiteMarbleResource(Resource.STONE);
-            default ->
-                    new ProductionPower(resourceRequired, resourceProduced, 1);
-        };
     }
 
     private Banner chooseBanner(int val) {

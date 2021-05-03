@@ -233,4 +233,15 @@ public class Player {
 	public int getVictoryPoints() {
 		return victoryPoints;
 	}
+
+	/**
+	 * Checks if the player has reached end game phase
+	 *
+	 * @return  <code>true</code> check if player has reached endGame phase.
+	 * 			<code>false</code> otherwise.
+	 */
+	public boolean checkGameEnd() {
+		return this.dashboard.checkGameEnd();
+	}
+
 }
