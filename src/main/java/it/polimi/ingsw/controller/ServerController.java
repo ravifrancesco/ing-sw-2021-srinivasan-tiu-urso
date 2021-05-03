@@ -3,12 +3,22 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.common.Pair;
 import it.polimi.ingsw.controller.exceptions.*;
 import it.polimi.ingsw.model.*;
-import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.specialAbilities.*;
 
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.Optional;
+
+/**
+ * Class that represents the Server Controller of a game. The object memorizes the state of a Server Controller.
+ * The state includes:
+ * - The game.
+ * - Number of players of the game.
+ * - The current player.
+ * - The first player.
+ * - The number of first turns done.
+ * - The game settings.
+ * - Other controllers.
+ */
 
 public class ServerController {
 
@@ -26,13 +36,19 @@ public class ServerController {
 
     GameSettings gameSettings;
 
-    //controllers
+    // controllers
 
     private ProductionController productionController;
     private WarehouseController warehouseController;
     private MarketController marketController;
     private LeaderCardController leaderCardController;
     private DevelopmentCardController developmentCardController;
+
+    /**
+     * Constructor for a Server Controller object. It creates the game and initializes all attributes.
+     * @param gameId the unique id of the game.
+     * @param numberOfPlayers the number of players of the game.
+     */
 
     public ServerController(String gameId, int numberOfPlayers) {
         this.game = new Game(gameId);
@@ -44,9 +60,21 @@ public class ServerController {
         this.developmentCardController = new DevelopmentCardController(this.game);
     }
 
+    /**
+     * Method to load the game settings.
+     * @param gameSettings the game settings to load.
+     */
+
     public void loadGameSettings(GameSettings gameSettings) {
         game.loadGameSettings(gameSettings);
     }
+
+    /**
+     * Method to allow a player to join the game.
+     * @param nickname the nickname of the player who wants to join.
+     * @throws GameFullException if the game is already full.
+     * @throws NicknameException if the game contains an other player with the same nickname.
+     */
 
     public void JoinGame(String nickname) throws GameFullException, NicknameException {
         if (game.getPlayers().size() >= numberOfPlayers) {
@@ -58,6 +86,10 @@ public class ServerController {
         }
     }
 
+    /**
+     * Reset method for the class. It resets the game, the current and the first player and initializes first turns.
+     */
+
     public void reset() {
         game.reset();
         currentPlayer = game.getNextPlayer();
@@ -65,16 +97,38 @@ public class ServerController {
         firstTurns = 0;
     }
 
+    /**
+     * Starts the game.
+     */
+
     public void startGame() {
-        // TODO
-        GameBoard gameBoard = game.getGameBoard();
-        game.startUniquePhase(TurnPhase.FIRST_TURN);
+      game.startUniquePhase(TurnPhase.FIRST_TURN); 
     }
+
+    /**
+     * It allows to discard the first three leader cards.
+     * @param nickname the nickname of the player who made the move.
+     * @param cardToDiscard the index of the card to be discarded.
+     * @throws WrongTurnException if the player is not in turn.
+     * @throws WrongMoveException if the player has already discarded the excess leader card.
+     * @throws CardNotPlayableException if the index of the card is not valid.
+     */
 
     public void discardExcessLeaderCards(String nickname, int cardToDiscard) throws WrongTurnException, WrongMoveException, CardNotPlayableException {
         leaderCardController.setCurrentPlayer(this.currentPlayer);
         leaderCardController.discardExcessLeaderCards(nickname, cardToDiscard);
     }
+
+    /**
+     * It allows to get the initial resources of the game.
+     * @param nickname the nickname of the player who made the move.
+     * @param resource the resource chosen by the player.
+     * @param position the position where to store the resource.
+     * @throws WrongTurnException if the player is not in turn.
+     * @throws WrongMoveException if the player has already acquired all due resources.
+     * @throws DepositCellNotEmpty if the position given is already full.
+     * @throws IllegalDepositStateException if the state of the deposit is invalid.
+     */
 
     public void getInitialResources(String nickname, Resource resource, int position) throws WrongTurnException, WrongMoveException, DepositCellNotEmpty, IllegalDepositStateException {
         if (!currentPlayer.equals(nickname)) {
@@ -99,6 +153,12 @@ public class ServerController {
         }
     }
 
+    /**
+     * Checks if the initial phase of the game is completed or not for the player.
+     * @param d the dashboard of the player.
+     * @return true if the initial phase is completed, false otherwise.
+     */
+
     public boolean checkInitialPhaseCompletion(Dashboard d) {
         int storedResources = d.getDepositResourceQty();
         return switch(firstTurns) {
@@ -109,10 +169,31 @@ public class ServerController {
         };
     }
 
+    /**
+     * It allows to play a leader card.
+     * @param nickname the nickname of the player who made the move.
+     * @param cardToPlay the index of the card to be played.
+     * @param position the index of the dashboard where to place the card.
+     * @throws WrongTurnException if the player is not in turn.
+     * @throws CardNotPlayableException if the card is not playable due to position full or not enough resources/banners.
+     */
+
     public void playLeaderCard(String nickname, int cardToPlay, int position) throws WrongTurnException, CardNotPlayableException {
         leaderCardController.setCurrentPlayer(this.currentPlayer);
         leaderCardController.playLeaderCard(nickname, cardToPlay, position);
     }
+
+    /**
+     * It allows to activate the production of a leader card.
+     * @param nickname the nickname of the player who made the move.
+     * @param cardToActivate the index of the card whose production power is to be activated.
+     * @param resourcesToPayCost the resources to pay for the resources required by the production power.
+     * @param resourceRequiredOptional the resources required that replace the selectable resources (if present).
+     * @param resourceProducedOptional the resources produced that replace the selectable resources (if present).
+     * @throws WrongTurnException if the player is not in turn.
+     * @throws PowerNotActivatableException if the production power is not activatable.
+     * @throws WrongMoveException if the resources do not match the cost.
+     */
 
     public void activateLeaderCardProduction(String nickname, int cardToActivate, ResourceContainer resourcesToPayCost,
                                              Map<Resource, Integer> resourceRequiredOptional, Map<Resource, Integer> resourceProducedOptional) throws WrongTurnException, PowerNotActivatableException, WrongMoveException {
@@ -121,11 +202,29 @@ public class ServerController {
         productionController.activateLeaderCardProduction(nickname, cardToActivate, resourcesToPayCost, resourceRequiredOptional, resourceProducedOptional);
     }
 
+    /**
+     * It allows to discard a leader card.
+     * @param nickname the nickname of the player who made the move.
+     * @param cardToDiscard the index of the card to be discarded.
+     * @throws WrongTurnException if the player is not in turn.
+     * @throws CardNotPlayableException if the index of the card is not valid.
+     */
 
     public void discardLeaderCard(String nickname, int cardToDiscard) throws WrongTurnException, CardNotPlayableException {
         leaderCardController.setCurrentPlayer(this.currentPlayer);
         leaderCardController.discardLeaderCard(nickname, cardToDiscard);
     }
+
+    /**
+     * It allows to activate the production power of the dashboard.
+     * @param nickname the nickname of the player who made the move.
+     * @param resourcesToPayCost the resources to pay for the resources required by the production power.
+     * @param resourceRequiredOptional the resources required that replace the selectable resources (if present).
+     * @param resourceProducedOptional the resources produced that replace the selectable resources (if present).
+     * @throws WrongTurnException if the player is not in turn.
+     * @throws PowerNotActivatableException if the production power is not activatable.
+     * @throws WrongMoveException if the resources do not match the cost.
+     */
 
     public void activateDashboardProduction(String nickname, ResourceContainer resourcesToPayCost,
                                             Map<Resource, Integer> resourceRequiredOptional, Map<Resource, Integer> resourceProducedOptional) throws WrongTurnException, PowerNotActivatableException, WrongMoveException {
@@ -134,10 +233,32 @@ public class ServerController {
         productionController.activateDashboardProduction(nickname, resourcesToPayCost, resourceRequiredOptional, resourceProducedOptional);
     }
 
+    /**
+     * It allows to get resources from the market.
+     * @param nickname the nickname of the player who made the move.
+     * @param move the number that represents the selected row or column in the market.
+     * @param wmrs the collection of activated power related to the white marble resources.
+     * @throws WrongTurnException if the player is not in turn.
+     * @throws WrongMoveException if the player does not have the same white marble resources of the parameter or if the move is not valid.
+     */
+
     public void getFromMarket(String nickname, int move, ArrayList<WhiteMarbleResource> wmrs) throws WrongTurnException, WrongMoveException {
         marketController.setCurrentPlayer(this.currentPlayer);
         marketController.getFromMarket(nickname, move, wmrs);
     }
+
+    /**
+     * It allows to buy a development card from the development card grid.
+     * @param nickname the nickname of the player who made the move.
+     * @param row the row of the grid selected.
+     * @param column the column of the grid selected.
+     * @param resourcesToPayCost the resources to pay for the cost of the development card.
+     * @param position the index that represent where to place the card.
+     * @throws WrongTurnException if the player is not in turn.
+     * @throws CardNotBuyableException if the card does not exists or if the player does not have enough resources to buy the card.
+     * @throws CardNotPlayableException if the position given onto the dashboard is not valid.
+     * @throws WrongMoveException if the resources to pay does not match the cost.
+     */
 
     public void buyDevelopmentCard(String nickname, int row, int column, ResourceContainer resourcesToPayCost, int position)
             throws WrongTurnException, CardNotBuyableException, CardNotPlayableException, WrongMoveException {
@@ -146,6 +267,18 @@ public class ServerController {
         developmentCardController.buyDevelopmentCard(nickname, row, column, resourcesToPayCost, position);
     }
 
+    /**
+     * It allows to activate the production power of a development card.
+     * @param nickname the nickname of the player who made the move.
+     * @param cardToActivate the index of the card whose production power is to be activated
+     * @param resourcesToPayCost the resources to pay for the resources required by the production power.
+     * @param resourceRequiredOptional the resources required that replace the selectable resources (if present).
+     * @param resourceProducedOptional the resources produced that replace the selectable resources (if present).
+     * @throws WrongTurnException if the player is not in turn.
+     * @throws PowerNotActivatableException if the production power is not activatable.
+     * @throws WrongMoveException if the resources do not match the cost.
+     */
+
     public void activateDevelopmentCardProductionPower(String nickname, int cardToActivate, ResourceContainer resourcesToPayCost,
                                                        Map<Resource, Integer> resourceRequiredOptional, Map<Resource, Integer> resourceProducedOptional) throws WrongTurnException, PowerNotActivatableException, WrongMoveException {
 
@@ -153,21 +286,66 @@ public class ServerController {
         productionController.activateDevelopmentCardProductionPower(nickname, cardToActivate, resourcesToPayCost, resourceRequiredOptional, resourceProducedOptional);
     }
 
-    public void moveResources(String nickname, ArrayList<Pair<Integer, Integer>> moves) throws WrongTurnException, WrongMoveException, IllegalDepositStateException {
+    public void moveResourcesDepositDeposit(String nickname, Pair<Integer, Integer> move) throws WrongTurnException, WrongMoveException, IllegalDepositStateException {
         warehouseController.setCurrentPlayer(this.currentPlayer);
-        warehouseController.moveResources(nickname, moves);
+        warehouseController.moveResourcesDepositDeposit(nickname, move);
     }
+
+    /**
+     * Swaps two resources from a deposit to an extraDeposit (or viceversa).
+     * @param nickname player nickname
+     * @param move a Pair instance containing the two indexes to swap
+     * @param lcPos an integer indicating which one of the Pair indexes is the extra deposit one
+     * @param extraDepositIndex the integer representing the leader card which has the extra deposit
+     * @throws WrongTurnException if it is not the player's turn
+     * @throws IllegalDepositStateException if the move would create an illegal deposit
+     * @throws WrongMoveException if one or more indexes are illegal
+     */
+    public void moveResourceDepositExtraDeposit(String nickname, Pair<Integer, Integer> move, int lcPos, int extraDepositIndex) throws WrongTurnException, WrongMoveException, IllegalDepositStateException {
+        warehouseController.setCurrentPlayer(this.currentPlayer);
+        warehouseController.moveResourcesDepositExtraDeposit(nickname, move, lcPos, extraDepositIndex);
+
+    }
+
+    /**
+     * It allows to move the resources from the supply to the warehouse.
+     * @param nickname the nickname of the player who made the move.
+     * @param from the index of the supply where the resources are stored.
+     * @param to the index of the warehouse where to store the resources.
+     * @throws WrongTurnException if the player is not in turn.
+     * @throws WrongMoveException if the index of the warehouse is not valid.
+     * @throws IllegalDepositStateException if the warehouse is in an invalid state.
+     */
 
     public void storeFromSupply(String nickname, int from, int to) throws WrongTurnException, WrongMoveException, IllegalDepositStateException {
         warehouseController.setCurrentPlayer(this.currentPlayer);
         warehouseController.storeFromSupply(nickname, from, to);
     }
 
+    /**
+     * It allows to move the resources from the supply to the extra deposit.
+     * @param nickname the nickname of the player who made the move.
+     * @param leaderCardPos the position of the leader card which has extra deposit special ability.
+     * @param from the index of the supply where the resources are stored.
+     * @param to the index of the extra deposit where to store the resources.
+     * @throws WrongTurnException if the player is not in turn.
+     * @throws WrongMoveException if the indexes are not valid.
+     * @throws IllegalDepositStateException if the extra deposit is in an invalid state.
+     */
+
     public void storeFromSupplyInExtraDeposit(String nickname, int leaderCardPos, int from, int to) throws WrongTurnException, WrongMoveException, IllegalDepositStateException {
         warehouseController.setCurrentPlayer(this.currentPlayer);
         warehouseController.storeFromSupplyInExtraDeposit(nickname, leaderCardPos, from, to);
     }
 
+    /**
+     * It allows to end a turn.
+     * @param nickname the nickname of the player in turn.
+     * @return true if the game is ended, false otherwise.
+     * @throws WrongTurnException if the player is not in turn.
+     * @throws LeaderCardInExcessException if the player has not discarded enough cards.
+     * @throws WrongMoveException if the player has not acquired all due resources.
+     */
 
     public boolean endTurn(String nickname) throws WrongTurnException, LeaderCardInExcessException, WrongMoveException {
         if (!currentPlayer.equals(nickname)) {
@@ -210,6 +388,11 @@ public class ServerController {
 
         return game.getTurnPhase() == TurnPhase.ENDGAME && currentPlayer.equals(firstPlayer);
     }
+
+    /**
+     * Getter for the game status.
+     * @return the game status.
+     */
 
     public Game getGameStatus() {
         return game.getGameStatus();

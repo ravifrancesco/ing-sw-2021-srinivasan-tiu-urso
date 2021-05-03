@@ -18,13 +18,27 @@ public class ProductionController {
 
     private String currentPlayer;
 
+    /**
+     * Constructor for a Production Controller object.
+     * @param game represents the game which the controller belongs to.
+     */
+
     public ProductionController(Game game) {
         this.game = game;
     }
 
+    /**
+     * Setter for the current player.
+     * @param currentPlayer the current player of the game.
+     */
+
     public void setCurrentPlayer(String currentPlayer) {
         this.currentPlayer = currentPlayer;
     }
+
+    /**
+     * @see ServerController#activateLeaderCardProduction(String, int, ResourceContainer, Map, Map)
+     */
 
     public void activateLeaderCardProduction(String nickname, int cardToActivate, ResourceContainer resourcesToPayCost,
                                              Map<Resource, Integer> resourceRequiredOptional, Map<Resource, Integer> resourceProducedOptional) throws WrongTurnException, PowerNotActivatableException, WrongMoveException {
@@ -80,6 +94,10 @@ public class ProductionController {
         }
     }
 
+    /**
+     * @see ServerController#activateDashboardProduction(String, ResourceContainer, Map, Map)
+     */
+
     public void activateDashboardProduction(String nickname, ResourceContainer resourcesToPayCost,
                                             Map<Resource, Integer> resourceRequiredOptional, Map<Resource, Integer> resourceProducedOptional) throws WrongTurnException, PowerNotActivatableException, WrongMoveException {
 
@@ -128,6 +146,10 @@ public class ProductionController {
         }
 
     }
+
+    /**
+     * @see ServerController#activateDevelopmentCardProductionPower(String, int, ResourceContainer, Map, Map)
+     */
 
     public void activateDevelopmentCardProductionPower(String nickname, int cardToActivate, ResourceContainer resourcesToPayCost,
                                                        Map<Resource, Integer> resourceRequiredOptional, Map<Resource, Integer> resourceProducedOptional) throws WrongTurnException, PowerNotActivatableException, WrongMoveException {
