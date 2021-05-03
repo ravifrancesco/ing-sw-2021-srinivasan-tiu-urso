@@ -15,9 +15,19 @@ public class WarehouseController {
 
     private String currentPlayer;
 
+    /**
+     * Constructor for a Warehouse Controller object.
+     * @param game represents the game which the controller belongs to.
+     */
+
     public WarehouseController(Game game) {
         this.game = game;
     }
+
+    /**
+     * Setter for the current player.
+     * @param currentPlayer the current player of the game.
+     */
 
     public void setCurrentPlayer(String currentPlayer) {
         this.currentPlayer = currentPlayer;
@@ -40,6 +50,10 @@ public class WarehouseController {
         }
     }
 
+    /**
+     * @see ServerController#storeFromSupply(String, int, int)
+     */
+
     public void storeFromSupply(String nickname, int from, int to) throws WrongTurnException, WrongMoveException, IllegalDepositStateException {
         if (!currentPlayer.equals(nickname)) {
             throw new WrongTurnException("Not " + nickname + " turn");
@@ -56,6 +70,10 @@ public class WarehouseController {
             throw new IllegalDepositStateException("Invalid deposit state");
         }
     }
+
+    /**
+     * @see ServerController#storeFromSupplyInExtraDeposit(String, int, int, int)
+     */
 
     public void storeFromSupplyInExtraDeposit(String nickname, int leaderCardPos, int from, int to) throws WrongTurnException, WrongMoveException, IllegalDepositStateException {
         if (!currentPlayer.equals(nickname)) {
