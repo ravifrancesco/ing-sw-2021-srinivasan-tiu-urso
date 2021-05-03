@@ -81,11 +81,17 @@ public class Deck {
 		return new Deck(this.deck);
 	}
 
-	//TODO is it okay?
+	/**
+	 * Resets the production power of the development cards into the deck.
+	 */
 
 	public void resetProductionPowerDevelopmentCards() {
 		deck.stream().map(card -> (DevelopmentCard) card).forEach(DevelopmentCard::resetProductionPower);
 	}
+
+	/**
+	 * Resets the production power of the leader cards into the deck.
+	 */
 
 	public void resetProductionPowerLeaderCards() {
 		deck.stream().map(card -> (LeaderCard) card).filter(card -> card.getSpecialAbility().getType()== SpecialAbilityType.PRODUCTION_POWER)

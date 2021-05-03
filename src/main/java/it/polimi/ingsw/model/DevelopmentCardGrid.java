@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.controller.exceptions.CardNotBuyableException;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.specialAbilities.DevelopmentCardDiscount;
 
@@ -13,14 +12,22 @@ import java.util.stream.IntStream;
  */
 
 public class DevelopmentCardGrid {
-	static final int GRID_ROW_LENGTH = 3;
-	static final int GRID_COL_LENGTH = 4;
-	static final int DEVELOPMENT_CARD_NUM = 48;
+	public static final int GRID_ROW_LENGTH = 3;
+	public static final int GRID_COL_LENGTH = 4;
+	public static final int DEVELOPMENT_CARD_NUM = 48;
 
 	private List<Stack<DevelopmentCard>> grid;
 
 	/**
-	 * Init method for the class.
+	 * Constructor for a DevelopmentCardGrid object.
+	 */
+
+	public DevelopmentCardGrid() {
+		reset();
+	}
+
+	/**
+	 * Reset method for the class.
 	 * It fills the grid with empty stacks of cards.
 	 */
 
@@ -74,11 +81,12 @@ public class DevelopmentCardGrid {
 	 * Allows to buy a card.
 	 * @param row index of the row where the card is placed (starting from 1).
 	 * @param column index of the column where the card is placed (starting from 1).
+	 * @return the bought card.
 	 */
 
-	public void buy(int row, int column) {
+	public DevelopmentCard buy(int row, int column) {
 		int position = getPosition(row, column);
-		grid.get(position).pop();
+		return grid.get(position).pop();
 	}
 
 	/**
@@ -108,14 +116,14 @@ public class DevelopmentCardGrid {
 		DevelopmentCard developmentCard;
 
 		if (row < 1 || row > 3 || column < 1 || column > 4) {
-			throw new IllegalArgumentException("Invalid position");
+			throw new IllegalArgumentException();
 		}
 
 		try {
 			developmentCard = grid.get(position).peek();
 		}
 		catch (EmptyStackException e) {
-			throw new IllegalArgumentException("Invalid position");
+			throw new IllegalArgumentException();
 		}
 
 		Map<Resource, Integer> resourceCost = developmentCard.getResourceCost();

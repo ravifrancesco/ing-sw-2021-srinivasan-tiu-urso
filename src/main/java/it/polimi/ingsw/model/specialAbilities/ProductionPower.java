@@ -1,10 +1,8 @@
 package it.polimi.ingsw.model.specialAbilities;
 
-import it.polimi.ingsw.model.Banner;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Resource;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -88,7 +86,7 @@ public class ProductionPower implements SpecialAbility {
 
 	/**
 	 * Getter for resource required modified.
-	 * @return the resource cost of the production power.
+	 * @return the resource cost of the production power (without selectable resources).
 	 */
 
 	public Map<Resource, Integer> getResourceRequiredModified() {
@@ -97,7 +95,7 @@ public class ProductionPower implements SpecialAbility {
 
 	/**
 	 * Getter for resource produced modified.
-	 * @return the resources produced by the production power.
+	 * @return the resources produced by the production power (without selectable resources).
 	 */
 
 	public Map<Resource, Integer> getResourceProducedModified() {
@@ -142,6 +140,7 @@ public class ProductionPower implements SpecialAbility {
 	 * To string method of the class.
 	 * @return a string representation of the object.
 	 */
+
 	public String toString() {
 		String result="";
 
@@ -151,7 +150,7 @@ public class ProductionPower implements SpecialAbility {
 				.map(key -> key + ":" + resourceRequired.get(key))
 				.collect(Collectors.joining(",", "RR=", ";"));
 
-		if(resourceProduced!=null) { //it could be null in case it is the production power of a leader card
+		if(resourceProduced!=null && !resourceProduced.isEmpty()) { //it could be null in case it is the production power of a leader card
 			result += resourceProduced.keySet().stream()
 					.map(key -> key + ":" + resourceProduced.get(key))
 					.collect(Collectors.joining(",", "RP=", ";"));
@@ -166,19 +165,27 @@ public class ProductionPower implements SpecialAbility {
 	 * Method to get the type of this special ability.
 	 * @return the type of this special ability.
 	 */
+
 	@Override
 	public SpecialAbilityType getType() {
 		return SpecialAbilityType.PRODUCTION_POWER;
 	}
 
-	public void setSelectableResource(Optional<Map<Resource, Integer>> resourceRequiredOptional,
-									  Optional<Map<Resource, Integer>> resourceProducedOptional)
+	/**
+	 * Allows to change resource required and produced in order to remove the selectable resources.
+	 * @param resourceRequiredOptional the resource required which replace the selectable resources.
+	 * @param resourceProducedOptional the resource produced which replace the selectable resources.
+	 * @throws IllegalArgumentException if the number of resources chosen doesn't match.
+	 * @throws IllegalStateException if the resource required or produced still contain selectable resources.
+	 */
+
+	public void setSelectableResource(Map<Resource, Integer> resourceRequiredOptional, Map<Resource, Integer> resourceProducedOptional)
 			throws IllegalArgumentException, IllegalStateException {
 
-		int numOfResourceRequiredOptional = resourceRequiredOptional.isPresent() ? resourceRequiredOptional.get().values().stream().reduce(0, Integer::sum) : 0;
+		int numOfResourceRequiredOptional = resourceRequiredOptional.values().stream().reduce(0, Integer::sum);
 		int numOfResourceRequiredAvailable = resourceRequired.get(Resource.ANY) != null ? resourceRequired.get(Resource.ANY) : 0;
 
-		int numOfResourceProducedOptional = resourceProducedOptional.isPresent() ? resourceProducedOptional.get().values().stream().reduce(0, Integer::sum) : 0;
+		int numOfResourceProducedOptional = resourceProducedOptional.values().stream().reduce(0, Integer::sum);
 		int numOfResourceProducedAvailable = resourceProduced.get(Resource.ANY) != null ? resourceProduced.get(Resource.ANY) : 0;
 
 		if (numOfResourceProducedAvailable != numOfResourceProducedOptional || numOfResourceRequiredAvailable != numOfResourceRequiredOptional) {
@@ -187,15 +194,13 @@ public class ProductionPower implements SpecialAbility {
 
 		resourceRequiredModified = resourceRequired.entrySet().stream()
 				.filter(e -> e.getKey() != Resource.ANY).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-		resourceRequiredOptional.ifPresent(rro -> rro.
-				forEach((k, v) -> resourceRequiredModified.merge(k, v, Integer::sum)));
+		resourceRequiredOptional.forEach((k, v) -> resourceRequiredModified.merge(k, v, Integer::sum));
 
 		resourceProducedModified = resourceProduced.entrySet().stream()
 				.filter(e -> e.getKey() != Resource.ANY).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-		resourceProducedOptional.ifPresent(rpo -> rpo.
-				forEach((k, v) -> resourceProducedModified.merge(k, v, Integer::sum)));
+		resourceProducedOptional.forEach((k, v) -> resourceProducedModified.merge(k, v, Integer::sum));
 
-		if (resourceRequiredModified.containsKey(Resource.ANY) || resourceProduced.containsKey(Resource.ANY)) {
+		if (resourceRequiredModified.containsKey(Resource.ANY) || resourceProducedModified.containsKey(Resource.ANY)) {
 			throw new IllegalStateException();
 		}
 

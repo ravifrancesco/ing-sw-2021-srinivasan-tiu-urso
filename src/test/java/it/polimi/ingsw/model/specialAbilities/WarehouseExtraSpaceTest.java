@@ -79,16 +79,12 @@ public class WarehouseExtraSpaceTest  {
     }
 
     public LeaderCard createLeaderCard(WarehouseExtraSpace wes) {
-        Map<Resource, Integer> resourceCost = new HashMap<>();
-
-        resourceCost.put(Resource.SHIELD, 1);
-
         Map<Banner, Integer> bannerCost = new HashMap<>();
 
         bannerCost.put(new Banner(BannerEnum.GREEN, 1), 2);
         bannerCost.put(new Banner(BannerEnum.BLUE, 2), 1);
 
-        return new LeaderCard(1, 5, resourceCost, bannerCost, wes);
+        return new LeaderCard(1, 5, bannerCost, wes);
     }
 
     @Test

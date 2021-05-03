@@ -56,15 +56,16 @@ public class DevelopmentCardDiscount implements SpecialAbility {
 	 * Method to get the type of this special ability.
 	 * @return the type of this special ability.
 	 */
+
 	public SpecialAbilityType getType() {
 		return SpecialAbilityType.DEVELOPMENT_CARD_DISCOUNT;
 	}
 
 	/**
 	 * To string method of the class.
-	 * TODO test
 	 * @return a string representation of the object.
 	 */
+
 	public String toString() {
 
 		String result = "";
@@ -73,7 +74,7 @@ public class DevelopmentCardDiscount implements SpecialAbility {
 
 		result += "R=" + resource.toString() + ";";
 
-		result += "Q=" + String.valueOf(quantity) + ";";
+		result += "Q=" + quantity + ";";
 
 		return result;
 
