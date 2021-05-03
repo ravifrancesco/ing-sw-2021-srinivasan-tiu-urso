@@ -13,14 +13,27 @@ public class DevelopmentCardController {
 
     private String currentPlayer;
 
+    /**
+     * Constructor for a DevelopmentCard Controller object.
+     * @param game represents the game which the controller belongs to.
+     */
+
     public DevelopmentCardController(Game game) {
         this.game = game;
     }
+
+    /**
+     * Setter for the current player.
+     * @param currentPlayer the current player of the game.
+     */
 
     public void setCurrentPlayer(String currentPlayer) {
         this.currentPlayer = currentPlayer;
     }
 
+    /**
+     * @see ServerController#buyDevelopmentCard(String, int, int, ResourceContainer, int) 
+     */
     public void buyDevelopmentCard(String nickname, int row, int column, ResourceContainer resourcesToPayCost, int position)
             throws WrongTurnException, CardNotBuyableException, CardNotPlayableException, WrongMoveException {
 
@@ -57,8 +70,6 @@ public class DevelopmentCardController {
             throw new CardNotPlayableException("Not a valid index");
         }
 
-        developmentCardGrid.buy(row, column);
-
         Map<Resource, Integer> cost = developmentCard.getResourceCost();
         activeDiscounts.forEach(discount -> cost.entrySet().stream().filter(e -> e.getKey() == discount.getResource())
                 .forEach(e -> cost.put(e.getKey(), Math.max(e.getValue() - discount.getQuantity(), 0))));
@@ -70,5 +81,7 @@ public class DevelopmentCardController {
         } catch (IllegalArgumentException e) {
             throw new WrongMoveException("Resources do not match the cost");
         }
+
+        developmentCardGrid.buy(row, column);
     }
 }
