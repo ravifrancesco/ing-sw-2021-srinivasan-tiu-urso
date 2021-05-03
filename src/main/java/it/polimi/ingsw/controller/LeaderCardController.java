@@ -13,13 +13,27 @@ public class LeaderCardController {
 
     private String currentPlayer;
 
+    /**
+     * Constructor for a LeaderCard Controller object.
+     * @param game represents the game which the controller belongs to.
+     */
+
     public LeaderCardController(Game game) {
         this.game = game;
     }
 
+    /**
+     * Setter for the current player.
+     * @param currentPlayer the current player of the game.
+     */
+
     public void setCurrentPlayer(String currentPlayer) {
         this.currentPlayer = currentPlayer;
     }
+
+    /**
+     * @see ServerController#discardExcessLeaderCards(String, int)
+     */
 
     public void discardExcessLeaderCards(String nickname, int cardToDiscard) throws WrongTurnException, WrongMoveException, CardNotPlayableException {
         if (!currentPlayer.equals(nickname)) {
@@ -40,6 +54,10 @@ public class LeaderCardController {
         GameBoard gameboard = game.getGameBoard();
         // player.discardLeaderCardInExcess(cardToDiscard, gameboard);
     }
+
+    /**
+     * @see ServerController#playLeaderCard(String, int, int)
+     */
 
     public void playLeaderCard(String nickname, int cardToPlay, int position) throws WrongTurnException, CardNotPlayableException {
 
@@ -67,6 +85,10 @@ public class LeaderCardController {
         catch (IllegalArgumentException e) { throw new CardNotPlayableException("Position given is already full"); }
 
     }
+
+    /**
+     * @see ServerController#discardLeaderCard(String, int)
+     */
 
     public void discardLeaderCard(String nickname, int cardToDiscard) throws WrongTurnException, CardNotPlayableException {
         if (!currentPlayer.equals(nickname)) {

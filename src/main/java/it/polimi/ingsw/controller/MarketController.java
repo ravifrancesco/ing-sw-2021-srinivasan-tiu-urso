@@ -13,14 +13,28 @@ public class MarketController {
 
     private String currentPlayer;
 
+    /**
+     * Constructor for a Market Controller object.
+     * @param game represents the game which the controller belongs to.
+     */
+
     public MarketController(Game game) {
         this.game = game;
     }
+
+    /**
+     * Setter for the current player.
+     * @param currentPlayer the current player of the game.
+     */
 
     public void setCurrentPlayer(String currentPlayer) {
         this.currentPlayer = currentPlayer;
     }
 
+    /**
+     * @see ServerController#getFromMarket(String, int, ArrayList)
+     */
+    
     public void getFromMarket(String nickname, int move, ArrayList<WhiteMarbleResource> wmrs) throws WrongTurnException, WrongMoveException {
         if (!currentPlayer.equals(nickname)) {
             throw new WrongTurnException("Not " + nickname + " turn");
