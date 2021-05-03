@@ -36,7 +36,7 @@ public class HandTest {
 
         SpecialAbility sa = new ProductionPower(resourceRequired, null, 1);
 
-        LeaderCard leaderCard = new LeaderCard(1, 5, bannerCost, sa);
+        LeaderCard leaderCard = new LeaderCard(1, 5, bannerCost, new HashMap<>(), sa);
 
         Hand hand = new Hand();
 
@@ -64,7 +64,7 @@ public class HandTest {
 
         SpecialAbility sa = new ProductionPower(resourceRequired, null, 1);
 
-        LeaderCard leaderCard = new LeaderCard(1, 5, bannerCost, sa);
+        LeaderCard leaderCard = new LeaderCard(1, 5, bannerCost, new HashMap<>(), sa);
 
         Hand hand = new Hand();
 
@@ -92,7 +92,7 @@ public class HandTest {
 
         SpecialAbility sa = new ProductionPower(resourceRequired, null, 1);
 
-        LeaderCard leaderCard = new LeaderCard(1, 5, bannerCost, sa);
+        LeaderCard leaderCard = new LeaderCard(1, 5, bannerCost, new HashMap<>(), sa);
 
         Hand hand = new Hand();
 

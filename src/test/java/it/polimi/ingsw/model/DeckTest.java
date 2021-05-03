@@ -239,14 +239,24 @@ public class DeckTest {
 
     private LeaderCard[] leaderCardDeckBuilder(int leaderCardNum) {
 
+        Map<Resource, Integer> resourceCost = new HashMap<>();
+
+        resourceCost.put(Resource.SHIELD, 1);
+
         Map<Banner, Integer> bannerCost = new HashMap<>();
 
         bannerCost.put(new Banner(BannerEnum.GREEN, 1), 2);
         bannerCost.put(new Banner(BannerEnum.BLUE, 2), 1);
 
+        Map<Resource, Integer> resourceRequired = new HashMap<>();
+        resourceRequired.put(Resource.GOLD, 1);
+
+        Map<Resource, Integer> resourceProduced = new HashMap<>();
+        resourceProduced.put(Resource.ANY, 1);
+
         return  IntStream.range(0, leaderCardNum)
                 .boxed()
-                .map(i -> new LeaderCard(i, 2, bannerCost, specialAbilityBuilder(i)))
+                .map(i -> new LeaderCard(i, 2, bannerCost, resourceCost, new ProductionPower(resourceRequired, resourceProduced, 1)))
                 .toArray(LeaderCard[]::new);
 
     }

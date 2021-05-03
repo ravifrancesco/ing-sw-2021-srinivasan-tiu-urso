@@ -125,10 +125,11 @@ public class ServerController {
         Player player = game.getPlayers().get(nickname);
         Dashboard dashboard = player.getDashboard();
         Map<Banner, Integer> playerBanners = dashboard.getBanners();
+        Map<Resource, Integer> playerResources = dashboard.getAllPlayerResources();
 
         if (cardToPlay >= player.getHand().getHandSize() || cardToPlay < 0) {
             throw new CardNotPlayableException("Invalid index");
-        } else if (!player.getFromHand(cardToPlay).isPlayable(playerBanners)) {
+        } else if (!player.getFromHand(cardToPlay).isPlayable(playerBanners, playerResources)) {
             throw new CardNotPlayableException("Not enough resources or banners");
         }
 

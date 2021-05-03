@@ -195,7 +195,7 @@ public class GameSettings {
 
         SpecialAbility specialAbility = parseSpecialAbility(propertyMap);
 
-        return new LeaderCard(id, victoryPoints, bannerCost, specialAbility);
+        return new LeaderCard(id, victoryPoints, bannerCost, resourceCost, specialAbility);
 
     }
 

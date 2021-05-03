@@ -249,14 +249,31 @@ public class DevelopmentCardTest {
 
     private LeaderCard[] leaderCardDeckBuilder(int leaderCardNum) {
 
+        Map<Resource, Integer> resourceCost = new HashMap<>();
+
+        resourceCost.put(Resource.SHIELD, 1);
+
         Map<Banner, Integer> bannerCost = new HashMap<>();
 
         bannerCost.put(new Banner(BannerEnum.GREEN, 1), 2);
         bannerCost.put(new Banner(BannerEnum.BLUE, 2), 1);
 
+        Map<Resource, Integer> resourceRequired = new HashMap<>();
+        resourceRequired.put(Resource.GOLD, 1);
+        resourceRequired.put(Resource.ANY, 1);
+
+        Map<Resource, Integer> resourceProduced = new HashMap<>();
+        resourceProduced.put(Resource.SHIELD, 1);
+
+        SpecialAbility[] SAs = new SpecialAbility[4];
+        SAs[0] = new ProductionPower(resourceRequired, resourceProduced, 1);
+        SAs[1] = new DevelopmentCardDiscount(Resource.GOLD, 3);
+        SAs[2] = new WarehouseExtraSpace(Resource.SERVANT);
+        SAs[3] = new WhiteMarbleResource(Resource.SHIELD);
+
         return  IntStream.range(0, leaderCardNum)
                 .boxed()
-                .map(i -> new LeaderCard(i, 2, bannerCost, specialAbilityBuilder(i)))
+                .map(i -> new LeaderCard(i, 2, bannerCost, resourceCost, SAs[i%4]))
                 .toArray(LeaderCard[]::new);
 
     }
@@ -284,26 +301,6 @@ public class DevelopmentCardTest {
         return vaticanReportsList;
 
 
-    }
-
-    private SpecialAbility specialAbilityBuilder(int i) {
-
-        Map<Resource, Integer> resourceRequired = new HashMap<>();
-        resourceRequired.put(Resource.GOLD, 1);
-
-        Map<Resource, Integer> resourceProduced = new HashMap<>();
-        resourceProduced.put(Resource.ANY, 1);
-
-        return switch (i % 4) {
-            case 1 ->
-                    new DevelopmentCardDiscount(Resource.GOLD, 1);
-            case 2 ->
-                    new WarehouseExtraSpace(Resource.SHIELD);
-            case 3 ->
-                    new WhiteMarbleResource(Resource.STONE);
-            default ->
-                    new ProductionPower(resourceRequired, resourceProduced, 1);
-        };
     }
 
     private Banner chooseBanner(int val) {
