@@ -2,11 +2,11 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
-import it.polimi.ingsw.model.specialAbilities.ProductionPower;
-import it.polimi.ingsw.model.specialAbilities.SpecialAbility;
+import it.polimi.ingsw.model.specialAbilities.*;
 import org.junit.Assert;
 import org.junit.Test;
 
+import javax.management.MBeanServerDelegateMBean;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,7 +15,6 @@ import java.util.Map;
 import java.util.stream.IntStream;
 
 public class GameSettingsTest {
-    /*
 
     private String path = "testSave.properties";
 
@@ -82,8 +81,9 @@ public class GameSettingsTest {
 
         Map<Resource, Integer> resourceProduced = new HashMap<>();
         resourceProduced.put(Resource.SHIELD, 1);
+        resourceProduced.put(Resource.ANY, 2);
 
-        ProductionPower p = new ProductionPower(resourceRequired, resourceProduced,2, false);
+        ProductionPower p = new ProductionPower(resourceRequired, resourceProduced,2);
 
         Map<Resource, Integer> resourceCostDC = new HashMap<>();
         resourceCostDC.put(Resource.SERVANT, 3);
@@ -108,15 +108,20 @@ public class GameSettingsTest {
 
         Map<Resource, Integer> resourceRequired = new HashMap<>();
         resourceRequired.put(Resource.GOLD, 1);
+        resourceRequired.put(Resource.ANY, 1);
 
         Map<Resource, Integer> resourceProduced = new HashMap<>();
         resourceProduced.put(Resource.SHIELD, 1);
-        SpecialAbility sa = new ProductionPower(resourceRequired, resourceProduced, 1, true);
-        // TODO change special abilities
+
+        SpecialAbility[] SAs = new SpecialAbility[4];
+        SAs[0] = new ProductionPower(resourceRequired, resourceProduced, 1);
+        SAs[1] = new DevelopmentCardDiscount(Resource.GOLD, 3);
+        SAs[2] = new WarehouseExtraSpace(Resource.SERVANT);
+        SAs[3] = new WhiteMarbleResource(Resource.SHIELD);
 
         return  IntStream.range(0, leaderCardNum)
                 .boxed()
-                .map(i -> new LeaderCard(i, 2, resourceCost, bannerCost, sa))
+                .map(i -> new LeaderCard(i, 2, bannerCost, resourceCost, SAs[i%4]))
                 .toArray(LeaderCard[]::new);
 
     }
@@ -129,8 +134,9 @@ public class GameSettingsTest {
 
         Map<Resource, Integer> resourceProduced = new HashMap<>();
         resourceProduced.put(Resource.SHIELD, 1);
+        resourceProduced.put(Resource.ANY, 1);
 
-        return new ProductionPower(resourceRequired, resourceProduced,2, false);
+        return new ProductionPower(resourceRequired, resourceProduced,2);
 
     }
 
@@ -146,6 +152,5 @@ public class GameSettingsTest {
 
     }
 
-     */
 
 }

@@ -84,7 +84,7 @@ public class WarehouseExtraSpaceTest  {
         bannerCost.put(new Banner(BannerEnum.GREEN, 1), 2);
         bannerCost.put(new Banner(BannerEnum.BLUE, 2), 1);
 
-        return new LeaderCard(1, 5, bannerCost, wes);
+        return new LeaderCard(1, 5, bannerCost, new HashMap<>(), wes);
     }
 
     @Test
