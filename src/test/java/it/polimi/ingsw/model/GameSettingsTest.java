@@ -113,7 +113,7 @@ public class GameSettingsTest {
         Map<Resource, Integer> resourceProduced = new HashMap<>();
         resourceProduced.put(Resource.SHIELD, 1);
 
-        SpecialAbility SAs[] = new SpecialAbility[4];
+        SpecialAbility[] SAs = new SpecialAbility[4];
         SAs[0] = new ProductionPower(resourceRequired, resourceProduced, 1);
         SAs[1] = new DevelopmentCardDiscount(Resource.GOLD, 3);
         SAs[2] = new WarehouseExtraSpace(Resource.SERVANT);
@@ -121,7 +121,7 @@ public class GameSettingsTest {
 
         return  IntStream.range(0, leaderCardNum)
                 .boxed()
-                .map(i -> new LeaderCard(i, 2, resourceCost, bannerCost, SAs[i%4]))
+                .map(i -> new LeaderCard(i, 2, bannerCost, resourceCost, SAs[i%4]))
                 .toArray(LeaderCard[]::new);
 
     }
