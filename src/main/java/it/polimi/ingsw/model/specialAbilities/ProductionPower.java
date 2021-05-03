@@ -41,7 +41,7 @@ public class ProductionPower implements SpecialAbility {
 	 */
 
 	@Override
-	public void activate(Player p) {
+	public void activate(Player p) throws UnsupportedOperationException {
 		if(!this.isActivatable()) {
 			throw new UnsupportedOperationException();
 		} else if (!this.isActivatable(p.getDashboard().getAllPlayerResources())) {

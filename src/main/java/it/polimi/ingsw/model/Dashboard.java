@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.specialAbilities.*;
 
+import javax.swing.plaf.basic.BasicScrollPaneUI;
 import java.sql.Array;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -101,10 +102,16 @@ public class Dashboard {
 				.reduce(0, Integer::sum);
 
 		int developmentCardsVP = playedDevelopmentCards.stream()
-				.map(s -> s.peek().getVictoryPoints())
+				.map(s -> s.stream()
+						.map(DevelopmentCard::getVictoryPoints)
+						.reduce(0, Integer::sum))
 				.reduce(0, Integer::sum);
 
-		return faithTrackVP + leaderCardsVP + developmentCardsVP;
+		int resourcePoints = getAllPlayerResources()
+				.values().stream()
+				.reduce(0, Integer::sum) / 5;
+
+		return faithTrackVP + leaderCardsVP + developmentCardsVP + resourcePoints;
 
 	}
 
@@ -129,22 +136,27 @@ public class Dashboard {
 	 *
 	 * @param c 						the Development Card to place.
 	 * @param position					position to place the development card.
-	 * @throws IllegalStateException 	in case the are no slots available
-	 * 									for the development card.
+	 * @throws IllegalStateException 	in case the state of the stacs does not
+	 * 									follow game rules.
+	 * @throws IllegalStateException	in case the index is out of bounds TODO check if call is catched later
+	 *
 	 */
-	public void placeDevelopmentCard(DevelopmentCard c, int position) throws IllegalStateException {
+	public void placeDevelopmentCard(DevelopmentCard c, int position) throws IllegalStateException, IllegalArgumentException {
 
 		Banner banner = c.getBanner();
 
 		if (position < 0 || position > 2) {
-			throw new IllegalStateException("Not a valid index");
+			throw new IllegalArgumentException("Not a valid index");
 		}
 
-		if (playedDevelopmentCards.get(position).peek().getBanner().isOneLess(banner)) {
+		if (!playedDevelopmentCards.get(position).isEmpty() &&
+				!playedDevelopmentCards.get(position).peek().getBanner().isOneLess(banner)) {
+			throw new IllegalStateException();
+		} else if (playedDevelopmentCards.get(position).isEmpty() &&
+				c.getBanner().getLevel() > 1) {
+			throw new IllegalStateException();
+		} else {
 			playedDevelopmentCards.get(position).push(c);
-		}
-		else {
-			throw new IllegalStateException("Not a valid index");
 		}
 	}
 
@@ -175,6 +187,8 @@ public class Dashboard {
 			warehouse.storeInDeposit(r, position);
 		} catch (IllegalStateException e) {
 			throw new IllegalStateException();
+		} catch (IllegalArgumentException e) {
+			throw new IllegalArgumentException();
 		}
 	}
 
@@ -182,16 +196,29 @@ public class Dashboard {
 	 * Gets the player's banners on the dashboard.
 	 *
 	 * @return a map with keys being the banners and values being the quantities.
+	 * TODO fix this implementation
 	 */
 	public Map<Banner, Integer> getBanners() {
+
 		HashMap<Banner, Integer> playerBanners = new HashMap<>();
-		IntStream.range(0, NUM_DEVELOPMENT_CARD_STACKS)
-				.forEach(i -> IntStream.range(0, playedDevelopmentCards.get(i).size())
-				.forEach(j -> playerBanners.put(playedDevelopmentCards.get(i).elementAt(j).getBanner(),
-						playerBanners.containsKey(playedDevelopmentCards.get(i).elementAt(j).getBanner()) ?
-								playerBanners.get(playedDevelopmentCards.get(i).elementAt(j).getBanner()) + 1 : 1)));
+
+		List<Banner> bannersList = playedDevelopmentCards.stream()
+				.flatMap(List::stream)
+				.map(DevelopmentCard::getBanner)
+				.collect(Collectors.toList());
+
+		for (Banner banner : bannersList) {
+			if (playerBanners.entrySet().stream().anyMatch(e -> e.getKey().toString().equals(banner.toString()))) {
+				playerBanners.entrySet().stream().filter(e -> e.getKey().toString().equals(banner.toString()))
+						.forEach(e -> e.setValue(e.getValue()+1));
+			}
+			else {
+				playerBanners.put(banner, 1);
+			}
+		}
 
 		return playerBanners;
+
 	}
 
 
@@ -204,12 +231,10 @@ public class Dashboard {
 	 * @throws IllegalArgumentException if the index is out of bounds.
 	 * @throws NullPointerException 	if the selected slot is empty.
 	 */
-	public LeaderCard getLeaderCard(int c) throws IllegalArgumentException, NullPointerException {
-		if (c < 0 || c > 1) {
+	public LeaderCard getLeaderCard(int c) throws IllegalArgumentException {
+		if (c < 0 || c >= playedLeaderCards.size()) {
+			System.out.println(playedLeaderCards.size());
 			throw new IllegalArgumentException("Invalid index");
-		}
-		if(playedLeaderCards.get(c) == null) {
-			throw new NullPointerException("Card is null");
 		}
 		return playedLeaderCards.get(c);
 	}
@@ -230,7 +255,7 @@ public class Dashboard {
 	 * @return	Development Card on top of top of the stack and index i.
 	 */
 	public DevelopmentCard getDevelopmentCard(int i) {
-		return playedDevelopmentCards.get(1).peek();
+		return playedDevelopmentCards.get(i).isEmpty() ? null : playedDevelopmentCards.get(i).peek();
 	}
 
 	/**
@@ -266,6 +291,7 @@ public class Dashboard {
 				.forEach(lc -> ((ProductionPower) lc.getSpecialAbility()).reset());
 
 		playedDevelopmentCards.stream()
+				.filter(s -> !s.isEmpty())
 				.map(Stack::peek)
 				.forEach(dc -> dc.getProductionPower().reset());
 
@@ -396,7 +422,7 @@ public class Dashboard {
 	/**
 	 * Returns all of the player's resources.
 	 *
-	 * @return 							a map with a count of each total qty of each resource in the warehouse.
+	 * @return	a map with a count of each total qty of each resource in the warehouse.
 	 */
 	public Map<Resource, Integer> getAllPlayerResources() {
 		return warehouse.getAllResources();
@@ -419,15 +445,5 @@ public class Dashboard {
 				resToPayWith.getContainedExtraDepositResources().get(i).forEach(pos ->
 						warehouse.removeFromExtraDeposit(i, pos)));
 	}
-
-
-
-
-	//
-
-
-
-
-
 
 }
