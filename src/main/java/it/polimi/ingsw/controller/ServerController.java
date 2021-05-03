@@ -3,12 +3,10 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.common.Pair;
 import it.polimi.ingsw.controller.exceptions.*;
 import it.polimi.ingsw.model.*;
-import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.specialAbilities.*;
 
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * Class that represents the Server Controller of a game. The object memorizes the state of a Server Controller.
@@ -38,7 +36,7 @@ public class ServerController {
 
     GameSettings gameSettings;
 
-    //controllers
+    // controllers
 
     private ProductionController productionController;
     private WarehouseController warehouseController;
@@ -104,8 +102,7 @@ public class ServerController {
      */
 
     public void startGame() {
-        //TODO
-        game.startUniquePhase(TurnPhase.FIRST_TURN);
+      game.startUniquePhase(TurnPhase.FIRST_TURN); 
     }
 
     /**
@@ -289,9 +286,25 @@ public class ServerController {
         productionController.activateDevelopmentCardProductionPower(nickname, cardToActivate, resourcesToPayCost, resourceRequiredOptional, resourceProducedOptional);
     }
 
-    public void moveResources(String nickname, ArrayList<Pair<Integer, Integer>> moves) throws WrongTurnException, WrongMoveException, IllegalDepositStateException {
+    public void moveResourcesDepositDeposit(String nickname, Pair<Integer, Integer> move) throws WrongTurnException, WrongMoveException, IllegalDepositStateException {
         warehouseController.setCurrentPlayer(this.currentPlayer);
-        warehouseController.moveResources(nickname, moves);
+        warehouseController.moveResourcesDepositDeposit(nickname, move);
+    }
+
+    /**
+     * Swaps two resources from a deposit to an extraDeposit (or viceversa).
+     * @param nickname player nickname
+     * @param move a Pair instance containing the two indexes to swap
+     * @param lcPos an integer indicating which one of the Pair indexes is the extra deposit one
+     * @param extraDepositIndex the integer representing the leader card which has the extra deposit
+     * @throws WrongTurnException if it is not the player's turn
+     * @throws IllegalDepositStateException if the move would create an illegal deposit
+     * @throws WrongMoveException if one or more indexes are illegal
+     */
+    public void moveResourceDepositExtraDeposit(String nickname, Pair<Integer, Integer> move, int lcPos, int extraDepositIndex) throws WrongTurnException, WrongMoveException, IllegalDepositStateException {
+        warehouseController.setCurrentPlayer(this.currentPlayer);
+        warehouseController.moveResourcesDepositExtraDeposit(nickname, move, lcPos, extraDepositIndex);
+
     }
 
     /**

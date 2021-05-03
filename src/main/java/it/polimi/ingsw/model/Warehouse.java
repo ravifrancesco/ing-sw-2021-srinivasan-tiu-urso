@@ -169,6 +169,25 @@ public class Warehouse {
 	}
 
 	/**
+	 * Swaps resources from/to deposit to/from a extraDeposit
+	 * @param move a pair instance of the two indexes to swap
+	 * @param lcPos is 0 if move.first is the extraDeposit index, 1 if move.second is the extraDeposit index
+	 * @param lcIndex the leader card index
+	 */
+	public void doExtraDepositMove(Pair<Integer, Integer> move, int lcPos, int lcIndex) {
+		Resource temp;
+		if(lcPos == 0) { // move.first is the extra deposit index
+			temp = extraDeposits[lcIndex][move.first];
+			extraDeposits[lcIndex][move.first] = deposit[move.second];
+			deposit[move.second] = temp;
+		} else {
+			temp = extraDeposits[lcIndex][move.second];
+			extraDeposits[lcIndex][move.second] = deposit[move.first];
+			deposit[move.first] = temp;
+		}
+	}
+
+	/**
 	 * Checks the 'shelves rules' for the deposit
 	 * <ul>
 	 * <li> The maximum amount of stored resources is 6.
