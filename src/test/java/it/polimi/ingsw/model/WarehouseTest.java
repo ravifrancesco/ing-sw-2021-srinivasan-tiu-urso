@@ -4,7 +4,9 @@ import it.polimi.ingsw.common.Pair;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.Arrays;
 import java.util.Map;
+import java.util.stream.IntStream;
 
 
 public class WarehouseTest {
@@ -264,6 +266,39 @@ public class WarehouseTest {
         Assert.assertEquals(wh.getExtraDeposits()[0][1], Resource.STONE);
         Assert.assertEquals(wh.getExtraDeposits()[0][0], null);
         Assert.assertNull(wh.getExtraDeposits()[1]);
+    }
+
+    @Test
+    public void doExtraDepositMoveTest() {
+        Warehouse wh = new Warehouse();
+
+
+        wh.activateExtraDeposit(0);
+        wh.storeInExtraDeposit(0, Resource.STONE, 0);
+
+        // Happy flow
+        Pair<Integer, Integer> move = new Pair<>(0, 1);
+        IntStream.range(0, Warehouse.MAX_DEPOSIT_SLOTS).forEach(i -> Assert.assertNull(wh.getDeposit()[i]));
+        Assert.assertNull(wh.getExtraDeposits()[0][1]);
+        Assert.assertEquals(wh.getExtraDeposits()[0][0], Resource.STONE);
+        wh.doExtraDepositMove(move, 0, 0);
+        IntStream.range(0, Warehouse.MAX_DEPOSIT_SLOTS).filter(i -> i != 1).forEach(i -> Assert.assertNull(wh.getDeposit()[i]));
+        Assert.assertEquals(wh.getDeposit()[1], Resource.STONE);
+        Assert.assertNull(wh.getExtraDeposits()[0][1]);
+        Assert.assertNull(wh.getExtraDeposits()[0][1]);
+
+        wh.reset();
+        wh.activateExtraDeposit(1);
+        wh.storeInExtraDeposit(1, Resource.GOLD, 1);
+        Pair<Integer, Integer> move2 = new Pair<>(2, 1);
+        IntStream.range(0, Warehouse.MAX_DEPOSIT_SLOTS).forEach(i -> Assert.assertNull(wh.getDeposit()[i]));
+        Assert.assertNull(wh.getExtraDeposits()[1][0]);
+        Assert.assertEquals(wh.getExtraDeposits()[1][1], Resource.GOLD);
+        wh.doExtraDepositMove(move2, 1, 1);
+        IntStream.range(0, Warehouse.MAX_DEPOSIT_SLOTS).filter(i -> i != 2).forEach(i -> Assert.assertNull(wh.getDeposit()[i]));
+        Assert.assertEquals(wh.getDeposit()[2], Resource.GOLD);
+        Assert.assertNull(wh.getExtraDeposits()[1][0]);
+        Assert.assertNull(wh.getExtraDeposits()[1][1]);
     }
 
     @Test
