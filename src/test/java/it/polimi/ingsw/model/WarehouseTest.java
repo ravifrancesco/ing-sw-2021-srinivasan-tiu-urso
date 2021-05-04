@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.common.Pair;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -149,7 +148,7 @@ public class WarehouseTest {
         wh.storeInDeposit(Resource.GOLD, 1);
         Assert.assertEquals(wh.getDeposit()[0], Resource.STONE);
         Assert.assertEquals(wh.getDeposit()[1], Resource.GOLD);
-        wh.doDepositMove(new Pair<>(1, 0));
+        wh.doDepositMove(1, 0);
         Assert.assertEquals(wh.getDeposit()[1], Resource.STONE);
         Assert.assertEquals(wh.getDeposit()[0], Resource.GOLD);
         wh.reset();
@@ -157,7 +156,7 @@ public class WarehouseTest {
         wh.storeInDeposit(Resource.SHIELD, 0);
         Assert.assertEquals(wh.getDeposit()[0], Resource.SHIELD);
         Assert.assertEquals(wh.getDeposit()[1], null);
-        wh.doDepositMove(new Pair<>(1, 0));
+        wh.doDepositMove(1, 0);
         Assert.assertEquals(wh.getDeposit()[1], Resource.SHIELD);
         Assert.assertEquals(wh.getDeposit()[0], null);
         wh.reset();
@@ -277,11 +276,10 @@ public class WarehouseTest {
         wh.storeInExtraDeposit(0, Resource.STONE, 0);
 
         // Happy flow
-        Pair<Integer, Integer> move = new Pair<>(0, 1);
         IntStream.range(0, Warehouse.MAX_DEPOSIT_SLOTS).forEach(i -> Assert.assertNull(wh.getDeposit()[i]));
         Assert.assertNull(wh.getExtraDeposits()[0][1]);
         Assert.assertEquals(wh.getExtraDeposits()[0][0], Resource.STONE);
-        wh.doExtraDepositMove(move, 0, 0);
+        wh.doExtraDepositMove(0, 1, 0, 0);
         IntStream.range(0, Warehouse.MAX_DEPOSIT_SLOTS).filter(i -> i != 1).forEach(i -> Assert.assertNull(wh.getDeposit()[i]));
         Assert.assertEquals(wh.getDeposit()[1], Resource.STONE);
         Assert.assertNull(wh.getExtraDeposits()[0][1]);
@@ -290,11 +288,10 @@ public class WarehouseTest {
         wh.reset();
         wh.activateExtraDeposit(1);
         wh.storeInExtraDeposit(1, Resource.GOLD, 1);
-        Pair<Integer, Integer> move2 = new Pair<>(2, 1);
         IntStream.range(0, Warehouse.MAX_DEPOSIT_SLOTS).forEach(i -> Assert.assertNull(wh.getDeposit()[i]));
         Assert.assertNull(wh.getExtraDeposits()[1][0]);
         Assert.assertEquals(wh.getExtraDeposits()[1][1], Resource.GOLD);
-        wh.doExtraDepositMove(move2, 1, 1);
+        wh.doExtraDepositMove(2, 1, 1, 1);
         IntStream.range(0, Warehouse.MAX_DEPOSIT_SLOTS).filter(i -> i != 2).forEach(i -> Assert.assertNull(wh.getDeposit()[i]));
         Assert.assertEquals(wh.getDeposit()[2], Resource.GOLD);
         Assert.assertNull(wh.getExtraDeposits()[1][0]);

@@ -51,7 +51,7 @@ public class Banner {
 	 * @return true if the two banners have the same color, false otherwise.
 	 */
 	public boolean equalsColor(Banner b){
-		return this.getColor()==b.getColor();
+		return this.color.name().equals(b.getColor().name());
 	}
 
 	/**
@@ -60,7 +60,7 @@ public class Banner {
 	 * @return true if the two banners have the same level, false otherwise.
 	 */
 	public boolean equalsLevel(Banner b){
-		return this.getLevel()==b.getLevel();
+		return this.level==b.getLevel();
 	}
 
 	/**

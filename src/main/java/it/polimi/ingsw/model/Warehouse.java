@@ -1,5 +1,4 @@
 package it.polimi.ingsw.model;
-import it.polimi.ingsw.common.Pair;
 
 import java.util.*;
 import java.util.stream.IntStream;
@@ -85,12 +84,13 @@ public class Warehouse {
 
 	/**
 	 * Moves two deposit positions.
-	 * @param move 									a Pair datastructure, containing the two indexes to move.
+	 * @param from 	move from.
+	 * @param to	move to.
 	 */
-	public void doDepositMove(Pair<Integer, Integer> move) {
-		Resource temp = deposit[move.first];
-		deposit[move.first] = deposit[move.second];
-		deposit[move.second] = temp;
+	public void doDepositMove(int from, int to) {
+		Resource temp = deposit[from];
+		deposit[from] = deposit[to];
+		deposit[to] = temp;
 	}
 
 	/**
@@ -170,20 +170,21 @@ public class Warehouse {
 
 	/**
 	 * Swaps resources from/to deposit to/from a extraDeposit
-	 * @param move a pair instance of the two indexes to swap
+	 * @param from 	move from.
+	 * @param to	move to.
 	 * @param lcPos is 0 if move.first is the extraDeposit index, 1 if move.second is the extraDeposit index
 	 * @param lcIndex the leader card index
 	 */
-	public void doExtraDepositMove(Pair<Integer, Integer> move, int lcPos, int lcIndex) {
+	public void doExtraDepositMove(int from, int to, int lcPos, int lcIndex) {
 		Resource temp;
 		if(lcPos == 0) { // move.first is the extra deposit index
-			temp = extraDeposits[lcIndex][move.first];
-			extraDeposits[lcIndex][move.first] = deposit[move.second];
-			deposit[move.second] = temp;
+			temp = extraDeposits[lcIndex][from];
+			extraDeposits[lcIndex][from] = deposit[to];
+			deposit[to] = temp;
 		} else {
-			temp = extraDeposits[lcIndex][move.second];
-			extraDeposits[lcIndex][move.second] = deposit[move.first];
-			deposit[move.first] = temp;
+			temp = extraDeposits[lcIndex][to];
+			extraDeposits[lcIndex][to] = deposit[from];
+			deposit[from] = temp;
 		}
 	}
 

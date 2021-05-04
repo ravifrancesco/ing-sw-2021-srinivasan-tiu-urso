@@ -57,11 +57,11 @@ public class FaithTrack {
 
 	public void moveFaithMarker(int pos) {
 		for (int i = 1; i <= pos; i++) {
-			position++;
-			victoryPoints += faithTrackVictoryPoints[position];
 			if (position == GameSettings.FAITH_TRACK_LENGTH - 1) {
 				return;
 			}
+			position++;
+			victoryPoints += faithTrackVictoryPoints[position];
 		}
 	}
 
