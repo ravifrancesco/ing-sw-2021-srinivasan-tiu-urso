@@ -268,10 +268,10 @@ public class ServerController {
 
     /**
      * It allows to activate the production power of a development card.
-     * @param nickname the nickname of the player who made the move.
-     * @param cardToActivate the index of the card whose production power is to be activated
-     * @param resourcesToPayCost the resources to pay for the resources required by the production power.
-     * @param resourceRequiredOptional the resources required that replace the selectable resources (if present).
+     * @param nickname                      the nickname of the player who made the move.
+     * @param cardToActivate                the index of the card whose production power is to be activated
+     * @param resourcesToPayCost            the resources to pay for the resources required by the production power.
+     * @param resourceRequiredOptional      the resources required that replace the selectable resources (if present).
      * @param resourceProducedOptional the resources produced that replace the selectable resources (if present).
      * @throws WrongTurnException if the player is not in turn.
      * @throws PowerNotActivatableException if the production power is not activatable.
