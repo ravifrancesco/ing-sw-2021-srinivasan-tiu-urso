@@ -172,14 +172,13 @@ public class ServerController {
      * It allows to play a leader card.
      * @param nickname the nickname of the player who made the move.
      * @param cardToPlay the index of the card to be played.
-     * @param position the index of the dashboard where to place the card.
      * @throws WrongTurnException if the player is not in turn.
      * @throws CardNotPlayableException if the card is not playable due to position full or not enough resources/banners.
      */
 
-    public void playLeaderCard(String nickname, int cardToPlay, int position) throws WrongTurnException, CardNotPlayableException {
+    public void playLeaderCard(String nickname, int cardToPlay) throws WrongTurnException, CardNotPlayableException {
         leaderCardController.setCurrentPlayer(this.currentPlayer);
-        leaderCardController.playLeaderCard(nickname, cardToPlay, position);
+        leaderCardController.playLeaderCard(nickname, cardToPlay);
     }
 
     /**
