@@ -1,7 +1,5 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.common.Pair;
-import it.polimi.ingsw.controller.exceptions.PowerNotActivatableException;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.specialAbilities.*;
@@ -310,36 +308,39 @@ public class Dashboard {
 	/**
 	 * Allows to move resources in the Deposit.
 	 *
-	 * @param moves						list of moves.
+	 * @param from						move from.
+	 * @param to						move to.
 	 * @throws IllegalArgumentException	if the moves indexes are out of bound.
 	 * @throws IllegalStateException	if the moves do not compile to the game rules.
 	 */
-	public void moveDepositResources(Pair<Integer, Integer> move) throws IllegalArgumentException, IllegalStateException {
-		if (move.first < 0 || move.first > 5 || move.second < 0 || move.second > 5) {
+	public void moveDepositResources(int from, int to) throws IllegalArgumentException, IllegalStateException {
+		if (from < 0 || from > 5 || to < 0 || to > 5) {
 			throw new IllegalArgumentException();
 		}
 		// copying current deposit
 		Resource[] newDeposit = new Resource[Warehouse.MAX_DEPOSIT_SLOTS];
 		IntStream.range(0, Warehouse.MAX_DEPOSIT_SLOTS).forEach(i -> newDeposit[i] = warehouse.getDeposit()[i]);
-		// making all the moves
-		swapDepositResources(newDeposit, move.first, move.second);
+		// making the move
+		swapDepositResources(newDeposit, from, to);
 		if(!warehouse.checkShelvesRule(newDeposit)) {
 			throw new IllegalStateException("Moves create an illegal deposit");
 		}
-		warehouse.doDepositMove(move);
+		warehouse.doDepositMove(from, to);
 	}
 
-	// TODO test this class
 	/**
 	 * Swaps resources from/to deposit to/from a extraDeposit
-	 * @param move a pair instance of the two indexes to swap
+	 * @param from						move from.
+	 * @param to						move to.
 	 * @param lcPos is 0 if move.first is the extraDeposit index, 1 if move.second is the extraDeposit index
 	 * @param lcIndex the leader card index
 	 * @throws IllegalArgumentException if the indexes passed are illegal
 	 * @throws IllegalStateException if the move would create an illegal deposit.
 	 */
-	public void moveDepositExtraDepositResources(Pair<Integer, Integer> move, int lcPos, int lcIndex) throws IllegalArgumentException, IllegalStateException {
+	public void moveDepositExtraDepositResources(int from, int to, int lcPos, int lcIndex) throws IllegalArgumentException, IllegalStateException {
 		if(lcIndex > 1 || lcIndex < 0 || lcPos < 0 || lcPos > 1) {
+			throw new IllegalArgumentException();
+		} else if (!playedLeaderCards.get(lcIndex).getSpecialAbility().getType().equals(SpecialAbilityType.WAREHOUSE_EXTRA_SPACE)) {
 			throw new IllegalArgumentException();
 		}
 
@@ -349,11 +350,11 @@ public class Dashboard {
 		// copying selected extra deposit
 		Resource[] newExtraDeposit = new Resource[Warehouse.MAX_EXTRA_DEPOSIT_SLOTS];
 		IntStream.range(0, Warehouse.MAX_DEPOSIT_SLOTS).forEach(i -> newExtraDeposit[i] = warehouse.getExtraDeposits()[lcPos][i]);
-		swapExtraDepositResources(newDeposit, newExtraDeposit, move.first, move.second, lcPos, lcIndex);
+		swapExtraDepositResources(newDeposit, newExtraDeposit, from, to, lcPos, lcIndex);
 		if(!warehouse.checkShelvesRule(newDeposit)) {
 			throw new IllegalStateException("Move creates an illegal deposit");
 		}
-		warehouse.doExtraDepositMove(move, lcPos, lcIndex);
+		warehouse.doExtraDepositMove(from, to, lcPos, lcIndex);
 	}
 
 	/**
@@ -391,17 +392,22 @@ public class Dashboard {
 	 * @throws IllegalStateException	if the move does not compile to the game rules.
 	 */
 	public void storeFromSupply(int from, int to) throws IllegalArgumentException, IllegalStateException {
+
 		if (from < 0 || from > 3 || to < 0 || to > 5) {
 			// invalid indexes
 			throw new IllegalArgumentException();
 		}
+
 		try {
 			warehouse.storeInDeposit(supply.get(from), to);
 		} catch(IllegalStateException e) {
-			throw new IllegalStateException("Illegal deposit");
-		} catch(IllegalArgumentException e) {
+			throw new IllegalStateException();
+		} catch(Exception e) {
 			throw new IllegalArgumentException();
 		}
+
+		supply.remove(from);
+
 	}
 
 	/**
@@ -422,10 +428,18 @@ public class Dashboard {
 		if (!specialAbility.getType().equals(SpecialAbilityType.WAREHOUSE_EXTRA_SPACE)) {
 			throw new IllegalArgumentException();
 		}
+
 		WarehouseExtraSpace wes = (WarehouseExtraSpace) specialAbility;
-		Resource addedResource = supply.get(from);
+		Resource addedResource;
+
+		try {
+			addedResource = supply.get(from);
+		} catch (Exception e) {
+			throw new IllegalArgumentException();
+		}
+
 		if(addedResource != wes.getStoredResource()) {
-			throw new IllegalStateException("Added resource does not match extra deposit resource");
+			throw new IllegalStateException();
 		}
 
 		try {
@@ -433,6 +447,9 @@ public class Dashboard {
 		} catch (IllegalArgumentException e) {
 			throw new IllegalArgumentException();
 		}
+
+		supply.remove(from);
+
 	}
 
 	/**

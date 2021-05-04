@@ -1,6 +1,5 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.common.Pair;
 import it.polimi.ingsw.controller.exceptions.*;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.specialAbilities.*;
@@ -269,10 +268,10 @@ public class ServerController {
 
     /**
      * It allows to activate the production power of a development card.
-     * @param nickname the nickname of the player who made the move.
-     * @param cardToActivate the index of the card whose production power is to be activated
-     * @param resourcesToPayCost the resources to pay for the resources required by the production power.
-     * @param resourceRequiredOptional the resources required that replace the selectable resources (if present).
+     * @param nickname                      the nickname of the player who made the move.
+     * @param cardToActivate                the index of the card whose production power is to be activated
+     * @param resourcesToPayCost            the resources to pay for the resources required by the production power.
+     * @param resourceRequiredOptional      the resources required that replace the selectable resources (if present).
      * @param resourceProducedOptional the resources produced that replace the selectable resources (if present).
      * @throws WrongTurnException if the player is not in turn.
      * @throws PowerNotActivatableException if the production power is not activatable.
@@ -286,24 +285,25 @@ public class ServerController {
         productionController.activateDevelopmentCardProductionPower(nickname, cardToActivate, resourcesToPayCost, resourceRequiredOptional, resourceProducedOptional);
     }
 
-    public void moveResourcesDepositDeposit(String nickname, Pair<Integer, Integer> move) throws WrongTurnException, WrongMoveException, IllegalDepositStateException {
+    public void moveResourcesDepositDeposit(String nickname, int from, int to) throws WrongTurnException, WrongMoveException, IllegalDepositStateException {
         warehouseController.setCurrentPlayer(this.currentPlayer);
-        warehouseController.moveResourcesDepositDeposit(nickname, move);
+        warehouseController.moveResourcesDepositDeposit(nickname, from, to);
     }
 
     /**
      * Swaps two resources from a deposit to an extraDeposit (or viceversa).
      * @param nickname player nickname
-     * @param move a Pair instance containing the two indexes to swap
+     * @param from move from.
+     * @param to move to.
      * @param lcPos an integer indicating which one of the Pair indexes is the extra deposit one
      * @param extraDepositIndex the integer representing the leader card which has the extra deposit
      * @throws WrongTurnException if it is not the player's turn
      * @throws IllegalDepositStateException if the move would create an illegal deposit
      * @throws WrongMoveException if one or more indexes are illegal
      */
-    public void moveResourceDepositExtraDeposit(String nickname, Pair<Integer, Integer> move, int lcPos, int extraDepositIndex) throws WrongTurnException, WrongMoveException, IllegalDepositStateException {
+    public void moveResourceDepositExtraDeposit(String nickname, int from, int to, int lcPos, int extraDepositIndex) throws WrongTurnException, WrongMoveException, IllegalDepositStateException {
         warehouseController.setCurrentPlayer(this.currentPlayer);
-        warehouseController.moveResourcesDepositExtraDeposit(nickname, move, lcPos, extraDepositIndex);
+        warehouseController.moveResourcesDepositExtraDeposit(nickname, from, to, lcPos, extraDepositIndex);
 
     }
 
