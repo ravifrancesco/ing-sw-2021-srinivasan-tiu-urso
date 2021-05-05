@@ -52,14 +52,14 @@ public class LeaderCardController {
         }
 
         GameBoard gameboard = game.getGameBoard();
-        // player.discardLeaderCardInExcess(cardToDiscard, gameboard);
+        player.discardLeaderCard(cardToDiscard, gameboard);
     }
 
     /**
-     * @see ServerController#playLeaderCard(String, int, int)
+     * @see ServerController#playLeaderCard(String, int)
      */
 
-    public void playLeaderCard(String nickname, int cardToPlay, int position) throws WrongTurnException, CardNotPlayableException {
+    public void playLeaderCard(String nickname, int cardToPlay) throws WrongTurnException, CardNotPlayableException {
 
         if (!currentPlayer.equals(nickname)) {
             throw new WrongTurnException("Not " + nickname + " turn");
@@ -74,12 +74,12 @@ public class LeaderCardController {
 
         if (cardToPlay >= player.getHand().getHandSize() || cardToPlay < 0) {
             throw new CardNotPlayableException("Invalid index");
-        } else if (!player.getFromHand(cardToPlay).isPlayable(playerBanners, playerResources)) {
+        } else if (!player.getHand().getCard(cardToPlay).isPlayable(playerBanners, playerResources)) {
             throw new CardNotPlayableException("Not enough resources or banners");
         }
 
         try {
-            player.playLeaderCard(cardToPlay, position);
+            player.playLeaderCard(cardToPlay);
         }
         catch (IllegalStateException e) { throw new CardNotPlayableException("Leader Card places are full"); }
         catch (IllegalArgumentException e) { throw new CardNotPlayableException("Position given is already full"); }
