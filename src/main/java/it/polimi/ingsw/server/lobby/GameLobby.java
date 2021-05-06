@@ -44,6 +44,25 @@ public class GameLobby implements Lobby {
         c.changeLobby(this);
     }
 
+    public void loadGameSettings(GameSettings gameSettings) {
+        serverController.loadGameSettings(gameSettings);
+    }
+
+    public void discardExcessLeaderCards(String nickname, int cardIndex) throws WrongTurnException, WrongMoveException, CardNotPlayableException {
+        try {
+            serverController.discardExcessLeaderCards(nickname, cardIndex);
+        } catch (WrongTurnException e) {
+            throw new WrongTurnException("Not your turn");
+        } catch (WrongMoveException e) {
+            throw new WrongMoveException("Invalid move");
+        } catch (CardNotPlayableException e) {
+            throw new CardNotPlayableException("Card is not playable");
+        }
+    }
+    public void getInitialResources(String nickname, Resource resource, int position) throws WrongTurnException, WrongMoveException, DepositCellNotEmpty, IllegalDepositStateException {
+        serverController.getInitialResources(nickname, resource, position);
+    }
+
     public String getId() {
         return id;
     }
