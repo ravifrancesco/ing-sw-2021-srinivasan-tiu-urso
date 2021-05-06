@@ -3,15 +3,18 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.specialAbilities.ProductionPower;
+import it.polimi.ingsw.model.specialAbilities.SpecialAbility;
 import it.polimi.ingsw.model.specialAbilities.WarehouseExtraSpace;
 import it.polimi.ingsw.model.specialAbilities.WhiteMarbleResource;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import static org.junit.Assert.fail;
 
@@ -510,7 +513,127 @@ public class DashboardTest {
     // TODO wait for explanation
     @Test
     public void payPriceTest() {
-        Assert.assertTrue(true);
+        // TODO change when we have the view
+        dashboard.reset();
+
+        dashboard.storeResourceInLocker(Resource.GOLD, 3);
+        dashboard.storeResourceInDeposit(Resource.STONE, 1);
+        dashboard.storeResourceInDeposit(Resource.STONE, 2);
+
+        ResourceContainer rc = new ResourceContainer();
+        rc.addDepositSelectedResource(1, new Warehouse());
+        rc.addDepositSelectedResource(2, new Warehouse());
+        rc.addLockerSelectedResource(Resource.GOLD, 3, new Warehouse());
+
+        HashMap<Resource, Integer> cost = new HashMap<>();
+        cost.put(Resource.GOLD, 3);
+        cost.put(Resource.STONE, 2);
+
+        Map<Resource, Integer> allResources = dashboard.getAllPlayerResources();
+        Assert.assertEquals(java.util.Optional.ofNullable(allResources.get(Resource.GOLD)), Optional.of(3));
+        Assert.assertEquals(java.util.Optional.ofNullable(allResources.get(Resource.STONE)), Optional.of(2));
+        Assert.assertEquals(java.util.Optional.ofNullable(allResources.get(Resource.SHIELD)), Optional.of(0));
+        Assert.assertEquals(java.util.Optional.ofNullable(allResources.get(Resource.SERVANT)), Optional.of(0));
+
+        // HAPPY FLOW
+        dashboard.payPrice(rc, cost);
+
+        allResources = dashboard.getAllPlayerResources();
+
+        Assert.assertEquals(java.util.Optional.ofNullable(allResources.get(Resource.GOLD)), Optional.of(0));
+        Assert.assertEquals(java.util.Optional.ofNullable(allResources.get(Resource.STONE)), Optional.of(0));
+        Assert.assertEquals(java.util.Optional.ofNullable(allResources.get(Resource.SHIELD)), Optional.of(0));
+        Assert.assertEquals(java.util.Optional.ofNullable(allResources.get(Resource.SERVANT)), Optional.of(0));
+
+        int thrownExceptions = 0;
+
+
+        ResourceContainer rc2 = new ResourceContainer();
+        rc2.addDepositSelectedResource(1, new Warehouse());
+        rc2.addDepositSelectedResource(2, new Warehouse());
+        rc2.addLockerSelectedResource(Resource.GOLD, 3, new Warehouse());
+
+
+        cost = new HashMap<>();
+        cost.put(Resource.GOLD, 3);
+        cost.put(Resource.STONE, 3);
+        cost.put(Resource.SHIELD, 0);
+        cost.put(Resource.SERVANT, 0);
+
+
+        try {
+            dashboard.payPrice(rc2, cost);
+        } catch (IllegalArgumentException e) {
+            thrownExceptions += 1;
+        }
+
+        Assert.assertEquals(thrownExceptions, 1);
+
+
+        dashboard.reset();
+
+        dashboard.storeResourceInDeposit(Resource.SERVANT, 3);
+        dashboard.storeResourceInDeposit(Resource.SERVANT, 4);
+        dashboard.storeResourceInDeposit(Resource.SERVANT, 5);
+
+        ArrayList<Resource> res = new ArrayList<>();
+        res.add(Resource.GOLD);
+        res.add(Resource.GOLD);
+        dashboard.addResourcesToSupply(res);
+
+        SpecialAbility sa = new WarehouseExtraSpace(Resource.GOLD);
+        LeaderCard lc = new LeaderCard(0, 10, new HashMap<>(), new HashMap<>(), sa);
+        dashboard.activateExtraDeposit(0);
+
+
+        dashboard.placeLeaderCard(lc);
+
+        dashboard.storeFromSupplyInExtraDeposit(0, 0, 0);
+        dashboard.storeFromSupplyInExtraDeposit(0, 0, 1);
+
+
+        System.out.println(dashboard.getAllPlayerResources());
+
+
+        Map<Resource, Integer> cost2 = new HashMap<>();
+
+        cost2.put(Resource.GOLD, 2);
+        cost2.put(Resource.SERVANT, 3);
+
+        ResourceContainer rcc = new ResourceContainer();
+        rcc.addDepositSelectedResource(3, new Warehouse());
+        rcc.addDepositSelectedResource(4, new Warehouse());
+        rcc.addDepositSelectedResource(5, new Warehouse());
+        rcc.addExtraDepositSelectedResource(0, 0, new Warehouse());
+        rcc.addExtraDepositSelectedResource(0, 1, new Warehouse());
+
+        dashboard.payPrice(rcc, cost2);
+
+        allResources = dashboard.getAllPlayerResources();
+
+        Assert.assertEquals(java.util.Optional.ofNullable(allResources.get(Resource.GOLD)), Optional.of(0));
+        Assert.assertEquals(java.util.Optional.ofNullable(allResources.get(Resource.STONE)), Optional.of(0));
+        Assert.assertEquals(java.util.Optional.ofNullable(allResources.get(Resource.SHIELD)), Optional.of(0));
+        Assert.assertEquals(java.util.Optional.ofNullable(allResources.get(Resource.SERVANT)), Optional.of(0));
+
+
+
+
+
+
+
+
+
+    }
+
+    @Test
+    public void getDepositResourceQtyTest() {
+        dashboard.reset();
+        dashboard.storeResourceInDeposit(Resource.STONE, 0);
+        dashboard.storeResourceInDeposit(Resource.GOLD, 1);
+        dashboard.storeResourceInDeposit(Resource.GOLD, 2);
+
+        Assert.assertEquals(dashboard.getDepositResourceQty(), 3);
     }
 
 }

@@ -60,6 +60,7 @@ public class Dashboard {
 		this.supply = new ArrayList<>();
 	}
 
+
 	/**
 	 * Resets the dashboard to the initial state.
 	 */
