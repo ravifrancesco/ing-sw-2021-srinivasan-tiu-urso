@@ -59,7 +59,7 @@ public class ResourceContainer {
     public Map<Resource, Integer> getAllResources(Warehouse wh) {
         HashMap<Resource, Integer> res = new HashMap<>(containedLockerResources);
 
-        containedDepositResources.forEach(i ->
+        containedDepositResources.stream().filter(i -> wh.getDeposit()[i] != null).forEach(i ->
                 res.put(wh.getDeposit()[i], res.get(wh.getDeposit()[i]) + 1));
 
         IntStream.range(0, Warehouse.MAX_EXTRA_DEPOSIT_SLOTS)
