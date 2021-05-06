@@ -3,11 +3,14 @@ package it.polimi.ingsw.server.lobby.messageHandlers;
 import it.polimi.ingsw.controller.exceptions.*;
 import it.polimi.ingsw.model.GameSettings;
 import it.polimi.ingsw.model.Resource;
+import it.polimi.ingsw.model.ResourceContainer;
 import it.polimi.ingsw.server.Connection;
 import it.polimi.ingsw.server.ServerMessages;
 import it.polimi.ingsw.server.lobby.GameLobby;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class GameLobbyMessageHandler {
 
@@ -20,9 +23,9 @@ public class GameLobbyMessageHandler {
     public synchronized void handleMessage(String msg, Connection c) {
 
         switch (GameMessages.valueOf(msg.toUpperCase())) {
-            case LOAD_GAME_SETTINGS:
+            case LOAD_GAME_SETTINGS ->
                 loadGameSettings(c);
-            default:
+            default ->
                 c.asyncSend((ServerMessages.ERROR));
         }
 
@@ -83,6 +86,92 @@ public class GameLobbyMessageHandler {
         }
     }
 
+    // TODO
+    public void playLeaderCard(Connection c) {
+        try {
+            int cardToPlay = (Integer) c.receive();
+            gameLobby.playLeaderCard(c.getNickname(), cardToPlay);
+            c.asyncSend(ServerMessages.OK);
+        } catch (IOException | ClassNotFoundException e) {
+            System.err.println(e.getMessage());
+            c.asyncSend(ServerMessages.ERROR);
+        } catch (WrongTurnException e) {
+            System.err.println(e.getMessage());
+            c.asyncSend(GameErrorMessages.WRONG_TURN);
+        } catch (CardNotPlayableException e) {
+            System.err.println(e.getMessage());
+            c.asyncSend(GameErrorMessages.CARD_NOT_PLAYABLE);
+        }
+    }
 
+    // TODO
+    public void activateLeaderCardProductionPower(Connection c) {
+        try {
+            int cardToActivate = (Integer) c.receive();
+            ResourceContainer resourceContainer = (ResourceContainer) c.receive();
+            HashMap<Resource, Integer> resourceRequiredOptional = (HashMap<Resource, Integer>) c.receive();
+            HashMap<Resource, Integer> resourceProducedOptional = (HashMap<Resource, Integer>) c.receive();
+            gameLobby.activateLeaderCardProductionPower(c.getNickname(), cardToActivate, resourceContainer, resourceRequiredOptional, resourceProducedOptional);
+            c.asyncSend(ServerMessages.OK);
+        } catch (IOException | ClassNotFoundException e) {
+            System.err.println(e.getMessage());
+            c.asyncSend(ServerMessages.ERROR);
+        } catch (WrongTurnException e) {
+            System.err.println(e.getMessage());
+            c.asyncSend(GameErrorMessages.WRONG_TURN);
+        } catch (WrongMoveException e) {
+            System.err.println(e.getMessage());
+            c.asyncSend(GameErrorMessages.WRONG_MOVE);
+        } catch (PowerNotActivatableException e) {
+            System.err.println(e.getMessage());
+            c.asyncSend(GameErrorMessages.POWER_NOT_ACTIVATABLE);
+        }
+    }
 
+    // TODO
+    public void activateDashboardProductionPower(Connection c) {
+        try {
+            ResourceContainer resourceContainer = (ResourceContainer) c.receive();
+            HashMap<Resource, Integer> resourceRequiredOptional = (HashMap<Resource, Integer>) c.receive();
+            HashMap<Resource, Integer> resourceProducedOptional = (HashMap<Resource, Integer>) c.receive();
+            gameLobby.activateDashboardProductionPower(c.getNickname(), resourceContainer, resourceRequiredOptional, resourceProducedOptional);
+            c.asyncSend(ServerMessages.OK);
+        } catch (IOException | ClassNotFoundException e) {
+            System.err.println(e.getMessage());
+            c.asyncSend(ServerMessages.ERROR);
+        } catch (WrongTurnException e) {
+            System.err.println(e.getMessage());
+            c.asyncSend(GameErrorMessages.WRONG_TURN);
+        } catch (WrongMoveException e) {
+            System.err.println(e.getMessage());
+            c.asyncSend(GameErrorMessages.WRONG_MOVE);
+        } catch (PowerNotActivatableException e) {
+            System.err.println(e.getMessage());
+            c.asyncSend(GameErrorMessages.POWER_NOT_ACTIVATABLE);
+        }
+    }
+
+    // TODO
+    public void activateDevelopmentCardProductionPower(Connection c) {
+        try {
+            int cardToActivate = (Integer) c.receive();
+            ResourceContainer resourceContainer = (ResourceContainer) c.receive();
+            HashMap<Resource, Integer> resourceRequiredOptional = (HashMap<Resource, Integer>) c.receive();
+            HashMap<Resource, Integer> resourceProducedOptional = (HashMap<Resource, Integer>) c.receive();
+            gameLobby.activateDevelopmentCardProductionPower(c.getNickname(), cardToActivate, resourceContainer, resourceRequiredOptional, resourceProducedOptional);
+            c.asyncSend(ServerMessages.OK);
+        } catch (IOException | ClassNotFoundException e) {
+            System.err.println(e.getMessage());
+            c.asyncSend(ServerMessages.ERROR);
+        } catch (WrongTurnException e) {
+            System.err.println(e.getMessage());
+            c.asyncSend(GameErrorMessages.WRONG_TURN);
+        } catch (WrongMoveException e) {
+            System.err.println(e.getMessage());
+            c.asyncSend(GameErrorMessages.WRONG_MOVE);
+        } catch (PowerNotActivatableException e) {
+            System.err.println(e.getMessage());
+            c.asyncSend(GameErrorMessages.POWER_NOT_ACTIVATABLE);
+        }
+    }
 }

@@ -178,7 +178,6 @@ public class ServerController {
      * @throws WrongTurnException if the player is not in turn.
      * @throws CardNotPlayableException if the card is not playable due to position full or not enough resources/banners.
      */
-    /* GIUSEPPE */
     public void playLeaderCard(String nickname, int cardToPlay) throws WrongTurnException, CardNotPlayableException {
         leaderCardController.setCurrentPlayer(this.currentPlayer);
         leaderCardController.playLeaderCard(nickname, cardToPlay);
@@ -195,8 +194,7 @@ public class ServerController {
      * @throws PowerNotActivatableException if the production power is not activatable.
      * @throws WrongMoveException if the resources do not match the cost.
      */
-    /* GIUSEPPE */
-    public void activateLeaderCardProduction(String nickname, int cardToActivate, ResourceContainer resourcesToPayCost,
+    public void activateLeaderCardProductionPower(String nickname, int cardToActivate, ResourceContainer resourcesToPayCost,
                                              Map<Resource, Integer> resourceRequiredOptional, Map<Resource, Integer> resourceProducedOptional) throws WrongTurnException, PowerNotActivatableException, WrongMoveException {
 
         productionController.setCurrentPlayer(this.currentPlayer);
@@ -226,8 +224,7 @@ public class ServerController {
      * @throws PowerNotActivatableException if the production power is not activatable.
      * @throws WrongMoveException if the resources do not match the cost.
      */
-    /* GIUSEPPE */
-    public void activateDashboardProduction(String nickname, ResourceContainer resourcesToPayCost,
+    public void activateDashboardProductionPower(String nickname, ResourceContainer resourcesToPayCost,
                                             Map<Resource, Integer> resourceRequiredOptional, Map<Resource, Integer> resourceProducedOptional) throws WrongTurnException, PowerNotActivatableException, WrongMoveException {
 
         productionController.setCurrentPlayer(this.currentPlayer);
@@ -279,7 +276,6 @@ public class ServerController {
      * @throws PowerNotActivatableException if the production power is not activatable.
      * @throws WrongMoveException if the resources do not match the cost.
      */
-    /* GIUSEPPE */
     public void activateDevelopmentCardProductionPower(String nickname, int cardToActivate, ResourceContainer resourcesToPayCost,
                                                        Map<Resource, Integer> resourceRequiredOptional, Map<Resource, Integer> resourceProducedOptional) throws WrongTurnException, PowerNotActivatableException, WrongMoveException {
 

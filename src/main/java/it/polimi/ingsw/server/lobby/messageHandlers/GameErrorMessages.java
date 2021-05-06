@@ -10,4 +10,6 @@ public enum GameErrorMessages {
 
     WRONG_MOVE,
 
+    POWER_NOT_ACTIVATABLE
+
 }
