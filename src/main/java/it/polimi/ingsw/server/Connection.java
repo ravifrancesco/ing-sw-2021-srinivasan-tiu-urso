@@ -1,16 +1,16 @@
-/*
 package it.polimi.ingsw.server;
 
-import com.sun.tools.javac.Main;
+
+import it.polimi.ingsw.server.lobby.Lobby;
+import it.polimi.ingsw.server.lobby.LobbyMessages;
 
 import javax.naming.InvalidNameException;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.Observable;
-import java.util.Scanner;
 
-public class Connection extends Observable implements Runnable {
+public class Connection implements Runnable {
 
     private Socket socket;
     private Scanner in;
@@ -64,11 +64,10 @@ public class Connection extends Observable implements Runnable {
     @Override
     public void run() {
         try{
-            in = new Scanner(socket.getInputStream());
-            out = new PrintWriter(socket.getOutputStream());
-            send("Welcome! What's your name?");
-            name = in.nextLine();
-            server.lobby(this, name);
+            in = new ObjectInputStream(socket.getInputStream());
+            out = new ObjectOutputStream(socket.getOutputStream());
+            send(ServerMessages.WELCOME_MESSAGE);
+            registerName();
             while(isActive()){
                 String read = in.nextLine();
                 notify(read);
@@ -80,15 +79,17 @@ public class Connection extends Observable implements Runnable {
         }
     }
 
-    public void registerName(Scanner in, Scanner out, MainLobby mainLobby) throws InvalidNameException {
-        name = in.nextLine();
-        try {
-            mainLobby.enterLobby(name);
-        } catch (InvalidNameException e) {
-            // TODO
-            throw new InvalidNameException();
+    public void registerName() {
+        while(true) {
+            try {
+                nickname = (String) receive();
+                lobby.enterLobby(this);
+                return;
+            } catch (InvalidNameException | IOException | ClassNotFoundException e) {
+                send(LobbyMessages.INVALID_NAME);
+            }
         }
     }
 }
 
- */
+

@@ -4,6 +4,7 @@ import it.polimi.ingsw.controller.exceptions.*;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.specialAbilities.*;
 
+import javax.naming.InvalidNameException;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -72,14 +73,14 @@ public class ServerController {
      * Method to allow a player to join the game.
      * @param nickname the nickname of the player who wants to join.
      * @throws GameFullException if the game is already full.
-     * @throws NicknameException if the game contains an other player with the same nickname.
+     * @throws InvalidNameException if the game contains an other player with the same nickname.
      */
 
-    public void JoinGame(String nickname) throws GameFullException, NicknameException {
+    public void joinGame(String nickname) throws GameFullException, InvalidNameException {
         if (game.getPlayers().size() >= numberOfPlayers) {
             throw new GameFullException("Game " + this.game.getGameId() + " is full.");
         } else if (game.getPlayers().containsKey(nickname)) {
-            throw new NicknameException("Nickname " + nickname + " is already in use");
+            throw new InvalidNameException("Nickname " + nickname + " is already in use");
         } else {
             game.addPlayer(nickname, new Player(gameSettings));
         }

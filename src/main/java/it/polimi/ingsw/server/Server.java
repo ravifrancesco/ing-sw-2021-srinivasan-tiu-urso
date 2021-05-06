@@ -1,34 +1,23 @@
 package it.polimi.ingsw.server;
-/*
-import com.sun.tools.javac.Main;
-import it.polimi.ingsw.model.Player;
+
+import it.polimi.ingsw.server.lobby.MainLobby;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class Server {
-    static int PORT = 53510;
-    static int THREAD_NUMBER = 256;
+    static final int PORT = 53510;
 
-    private ServerSocket serverSocket;
+    public static final int THREAD_NUMBER = 256;
 
-    private ExecutorService executor = Executors.newFixedThreadPool(THREAD_NUMBER);
+    private final ServerSocket serverSocket;
 
-    private MainLobby lobby;
-
-    private List<Connection> connections = new ArrayList<>();
-    private Map<String, Connection> waitingConnection = new HashMap<>();
-    private Map<Connection, Connection> playingConnection = new HashMap<>();
+    private final MainLobby mainLobby;
 
     public Server() throws IOException {
         this.serverSocket = new ServerSocket(PORT);
+        this.mainLobby = new MainLobby();
     }
 
     public void run() {
@@ -36,27 +25,20 @@ public class Server {
         while(true){
             try {
                 Socket socket = serverSocket.accept();
-                Connection connection = new Connection(socket, this, lobby);
+                Connection connection = new Connection(socket, this, mainLobby);
                 registerConnection(connection);
-                executor.submit(connection);
             } catch (IOException e){
                 System.err.println("Connection error!");
             }
         }
     }
 
-    private synchronized void registerConnection(Connection c){
-        connections.add(c);
+    private synchronized void registerConnection(Connection c) {
+        mainLobby.registerConnection(c);
     }
 
     public synchronized void deregisterConnection(Connection c) {
-        connections.remove(c);
-        Connection opponent = playingConnection.get(c);
-        if(opponent != null){
-            opponent.closeConnection();
-            playingConnection.remove(c);
-            playingConnection.remove(opponent);
-        }
+        mainLobby.deregisterConnection(c);
     }
 
 
@@ -65,5 +47,5 @@ public class Server {
 
 }
 
- */
+
 
