@@ -104,6 +104,7 @@ public class LeaderCardController {
         }
 
         GameBoard gameBoard = game.getGameBoard();
+        player.getDashboard().moveFaithMarker(1);
         player.discardLeaderCard(cardToDiscard, gameBoard);
 
     }

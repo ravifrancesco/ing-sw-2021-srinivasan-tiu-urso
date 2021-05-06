@@ -1,4 +1,4 @@
-package it.polimi.ingsw.server.lobby;
+package it.polimi.ingsw.server.lobby.messageHandlers;
 
 public enum LobbyMessages {
 

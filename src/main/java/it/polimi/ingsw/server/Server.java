@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+//  TODO Logger
 public class Server {
     static final int PORT = 53510;
 

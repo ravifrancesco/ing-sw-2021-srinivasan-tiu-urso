@@ -2,7 +2,7 @@ package it.polimi.ingsw.server;
 
 
 import it.polimi.ingsw.server.lobby.Lobby;
-import it.polimi.ingsw.server.lobby.LobbyMessages;
+import it.polimi.ingsw.server.lobby.messageHandlers.LobbyMessages;
 
 import javax.naming.InvalidNameException;
 import java.io.IOException;
@@ -34,7 +34,7 @@ public class Connection implements Runnable {
         return active;
     }
 
-    public void send(Object message){
+    private void send(Object message){
         try {
             out.writeObject(message);
             out.flush();
@@ -52,7 +52,7 @@ public class Connection implements Runnable {
     }
 
     public synchronized void closeConnection(){
-        send("Connection closed from the server side");
+        asyncSend(ServerMessages.CONNECTION_CLOSED);
         try{
             socket.close();
         }catch (IOException e){
@@ -75,6 +75,7 @@ public class Connection implements Runnable {
             out = new ObjectOutputStream(socket.getOutputStream());
             send(ServerMessages.WELCOME_MESSAGE);
             registerName();
+            asyncSend(ServerMessages.OK);
             while(isActive()){
                 String read = (String) receive();
                 lobby.handleMessage(read, this);

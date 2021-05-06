@@ -65,7 +65,7 @@ public class ServerController {
      * Method to load the game settings.
      * @param gameSettings the game settings to load.
      */
-
+    /* RAVI */
     public void loadGameSettings(GameSettings gameSettings) {
         game.loadGameSettings(gameSettings);
     }
@@ -115,6 +115,7 @@ public class ServerController {
      * @throws CardNotPlayableException if the index of the card is not valid.
      */
 
+    /* ROBERT */
     public void discardExcessLeaderCards(String nickname, int cardToDiscard) throws WrongTurnException, WrongMoveException, CardNotPlayableException {
         leaderCardController.setCurrentPlayer(this.currentPlayer);
         leaderCardController.discardExcessLeaderCards(nickname, cardToDiscard);
@@ -130,7 +131,7 @@ public class ServerController {
      * @throws DepositCellNotEmpty if the position given is already full.
      * @throws IllegalDepositStateException if the state of the deposit is invalid.
      */
-
+    /* RAVI */
     public void getInitialResources(String nickname, Resource resource, int position) throws WrongTurnException, WrongMoveException, DepositCellNotEmpty, IllegalDepositStateException {
         if (!currentPlayer.equals(nickname)) {
             throw new WrongTurnException("Not " + nickname + " turn");
@@ -160,7 +161,7 @@ public class ServerController {
      * @return true if the initial phase is completed, false otherwise.
      */
 
-    public boolean checkInitialPhaseCompletion(Dashboard d) {
+    private boolean checkInitialPhaseCompletion(Dashboard d) {
         int storedResources = d.getDepositResourceQty();
         return switch(firstTurns) {
             case 0 -> storedResources >= 0;
@@ -177,7 +178,7 @@ public class ServerController {
      * @throws WrongTurnException if the player is not in turn.
      * @throws CardNotPlayableException if the card is not playable due to position full or not enough resources/banners.
      */
-
+    /* GIUSEPPE */
     public void playLeaderCard(String nickname, int cardToPlay) throws WrongTurnException, CardNotPlayableException {
         leaderCardController.setCurrentPlayer(this.currentPlayer);
         leaderCardController.playLeaderCard(nickname, cardToPlay);
@@ -194,7 +195,7 @@ public class ServerController {
      * @throws PowerNotActivatableException if the production power is not activatable.
      * @throws WrongMoveException if the resources do not match the cost.
      */
-
+    /* GIUSEPPE */
     public void activateLeaderCardProduction(String nickname, int cardToActivate, ResourceContainer resourcesToPayCost,
                                              Map<Resource, Integer> resourceRequiredOptional, Map<Resource, Integer> resourceProducedOptional) throws WrongTurnException, PowerNotActivatableException, WrongMoveException {
 
@@ -225,7 +226,7 @@ public class ServerController {
      * @throws PowerNotActivatableException if the production power is not activatable.
      * @throws WrongMoveException if the resources do not match the cost.
      */
-
+    /* GIUSEPPE */
     public void activateDashboardProduction(String nickname, ResourceContainer resourcesToPayCost,
                                             Map<Resource, Integer> resourceRequiredOptional, Map<Resource, Integer> resourceProducedOptional) throws WrongTurnException, PowerNotActivatableException, WrongMoveException {
 
@@ -241,7 +242,7 @@ public class ServerController {
      * @throws WrongTurnException if the player is not in turn.
      * @throws WrongMoveException if the player does not have the same white marble resources of the parameter or if the move is not valid.
      */
-
+    /* ROBERT */
     public void getFromMarket(String nickname, int move, ArrayList<WhiteMarbleResource> wmrs) throws WrongTurnException, WrongMoveException {
         marketController.setCurrentPlayer(this.currentPlayer);
         marketController.getFromMarket(nickname, move, wmrs);
@@ -259,7 +260,7 @@ public class ServerController {
      * @throws CardNotPlayableException if the position given onto the dashboard is not valid.
      * @throws WrongMoveException if the resources to pay does not match the cost.
      */
-
+    /* RAVI */
     public void buyDevelopmentCard(String nickname, int row, int column, ResourceContainer resourcesToPayCost, int position)
             throws WrongTurnException, CardNotBuyableException, CardNotPlayableException, WrongMoveException {
 
@@ -278,7 +279,7 @@ public class ServerController {
      * @throws PowerNotActivatableException if the production power is not activatable.
      * @throws WrongMoveException if the resources do not match the cost.
      */
-
+    /* GIUSEPPE */
     public void activateDevelopmentCardProductionPower(String nickname, int cardToActivate, ResourceContainer resourcesToPayCost,
                                                        Map<Resource, Integer> resourceRequiredOptional, Map<Resource, Integer> resourceProducedOptional) throws WrongTurnException, PowerNotActivatableException, WrongMoveException {
 
@@ -286,6 +287,7 @@ public class ServerController {
         productionController.activateDevelopmentCardProductionPower(nickname, cardToActivate, resourcesToPayCost, resourceRequiredOptional, resourceProducedOptional);
     }
 
+    /* ROBERT TODO solve problem */
     public void moveResourcesDepositDeposit(String nickname, int from, int to) throws WrongTurnException, WrongMoveException, IllegalDepositStateException {
         warehouseController.setCurrentPlayer(this.currentPlayer);
         warehouseController.moveResourcesDepositDeposit(nickname, from, to);
@@ -302,6 +304,7 @@ public class ServerController {
      * @throws IllegalDepositStateException if the move would create an illegal deposit
      * @throws WrongMoveException if one or more indexes are illegal
      */
+    /* ROBERT */
     public void moveResourceDepositExtraDeposit(String nickname, int from, int to, int lcPos, int extraDepositIndex) throws WrongTurnException, WrongMoveException, IllegalDepositStateException {
         warehouseController.setCurrentPlayer(this.currentPlayer);
         warehouseController.moveResourcesDepositExtraDeposit(nickname, from, to, lcPos, extraDepositIndex);
@@ -317,7 +320,7 @@ public class ServerController {
      * @throws WrongMoveException if the index of the warehouse is not valid.
      * @throws IllegalDepositStateException if the warehouse is in an invalid state.
      */
-
+    /* ROBERT */
     public void storeFromSupply(String nickname, int from, int to) throws WrongTurnException, WrongMoveException, IllegalDepositStateException {
         warehouseController.setCurrentPlayer(this.currentPlayer);
         warehouseController.storeFromSupply(nickname, from, to);
@@ -333,7 +336,7 @@ public class ServerController {
      * @throws WrongMoveException if the indexes are not valid.
      * @throws IllegalDepositStateException if the extra deposit is in an invalid state.
      */
-
+    /* ROBERT */
     public void storeFromSupplyInExtraDeposit(String nickname, int leaderCardPos, int from, int to) throws WrongTurnException, WrongMoveException, IllegalDepositStateException {
         warehouseController.setCurrentPlayer(this.currentPlayer);
         warehouseController.storeFromSupplyInExtraDeposit(nickname, leaderCardPos, from, to);
@@ -394,8 +397,9 @@ public class ServerController {
      * Getter for the game status.
      * @return the game status.
      */
-
+    /* RAVI */
     public Game getGameStatus() {
         return game.getGameStatus();
     }
+
 }

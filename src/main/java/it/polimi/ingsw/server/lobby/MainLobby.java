@@ -2,6 +2,7 @@ package it.polimi.ingsw.server.lobby;
 
 import it.polimi.ingsw.server.Connection;
 import it.polimi.ingsw.server.Server;
+import it.polimi.ingsw.server.lobby.messageHandlers.MainLobbyMessageHandler;
 
 import javax.naming.InvalidNameException;
 import java.util.*;
@@ -31,7 +32,10 @@ public class MainLobby implements Lobby {
     public void enterLobby(Connection c) throws InvalidNameException {
         String nickname = c.getNickname();
         if (waitingConnection.containsKey(nickname)) throw new InvalidNameException();
-        else waitingConnection.put(nickname, c);
+        else {
+            waitingConnection.put(nickname, c);
+            c.changeLobby(this);
+        }
     }
 
     public void registerConnection(Connection c) {

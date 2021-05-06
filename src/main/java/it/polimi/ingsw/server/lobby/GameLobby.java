@@ -1,8 +1,13 @@
 package it.polimi.ingsw.server.lobby;
 
 import it.polimi.ingsw.controller.ServerController;
-import it.polimi.ingsw.controller.exceptions.GameFullException;
+import it.polimi.ingsw.controller.exceptions.*;
+import it.polimi.ingsw.model.GameSettings;
+import it.polimi.ingsw.model.Resource;
+import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.server.Connection;
+import it.polimi.ingsw.server.lobby.Lobby;
+import it.polimi.ingsw.server.lobby.messageHandlers.GameMessages;
 import it.polimi.ingsw.utils.Pair;
 
 import javax.naming.InvalidNameException;
@@ -36,6 +41,7 @@ public class GameLobby implements Lobby {
             throw new IllegalStateException();
         }
         connectedPlayers.put(c.getNickname(), c);
+        c.changeLobby(this);
     }
 
     public String getId() {

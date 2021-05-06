@@ -1,7 +1,9 @@
-package it.polimi.ingsw.server.lobby;
+package it.polimi.ingsw.server.lobby.messageHandlers;
 
 import it.polimi.ingsw.server.Connection;
 import it.polimi.ingsw.server.ServerMessages;
+import it.polimi.ingsw.server.lobby.GameLobby;
+import it.polimi.ingsw.server.lobby.MainLobby;
 
 import javax.naming.InvalidNameException;
 import java.io.IOException;
@@ -30,12 +32,13 @@ public class MainLobbyMessageHandler {
             case JOIN_GAME:
                 joinGame(c);
             default:
-                c.send(ServerMessages.ERROR);
+                c.asyncSend(ServerMessages.ERROR);
         }
 
     }
 
     public void getServerStatus(Connection c) {
+        c.asyncSend(ServerMessages.OK);
         c.asyncSend(this.gameLobbies.stream()
                 .collect(Collectors.toMap(GameLobby::getId, GameLobby::getLobbyStatus)));
     }
@@ -45,12 +48,14 @@ public class MainLobbyMessageHandler {
         try {
             int numberOfPlayers = (int) c.receive();
             mainLobby.createGame(c, numberOfPlayers);
+            c.asyncSend(ServerMessages.OK);
         } catch (IOException | ClassNotFoundException e) {
-            c.send(ServerMessages.ERROR);
+            System.err.println(e.getMessage());
+            c.asyncSend(ServerMessages.ERROR);
         } catch (InvalidNameException e) {
-            c.send(LobbyMessages.INVALID_NAME);
+            c.asyncSend(LobbyMessages.INVALID_NAME);
         } catch (IllegalStateException e) {
-            c.send(ServerMessages.SERVER_FULL);
+            c.asyncSend(ServerMessages.SERVER_FULL);
         }
 
     }
@@ -60,12 +65,13 @@ public class MainLobbyMessageHandler {
         try {
             String gameID = (String) c.receive();
             mainLobby.joinGame(c, gameID);
+            c.asyncSend(ServerMessages.OK);
         } catch (IOException | ClassNotFoundException | IllegalArgumentException e) {
-            c.send(ServerMessages.ERROR);
+            c.asyncSend(ServerMessages.ERROR);
         } catch (InvalidNameException e) {
-            c.send(LobbyMessages.INVALID_NAME);
+            c.asyncSend(LobbyMessages.INVALID_NAME);
         } catch (IllegalStateException e) {
-            c.send(LobbyMessages.GAME_FULL);
+            c.asyncSend(LobbyMessages.GAME_FULL);
         }
 
     }
