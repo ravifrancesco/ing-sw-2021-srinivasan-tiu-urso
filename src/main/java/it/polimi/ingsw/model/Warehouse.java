@@ -1,5 +1,4 @@
 package it.polimi.ingsw.model;
-import it.polimi.ingsw.common.Pair;
 
 import java.util.*;
 import java.util.stream.IntStream;
@@ -85,18 +84,19 @@ public class Warehouse {
 
 	/**
 	 * Moves two deposit positions.
-	 * @param move 									a Pair datastructure, containing the two indexes to move.
+	 * @param from 	move from.
+	 * @param to	move to.
 	 */
-	public void doDepositMove(Pair<Integer, Integer> move) {
-		Resource temp = deposit[move.first];
-		deposit[move.first] = deposit[move.second];
-		deposit[move.second] = temp;
+	public void doDepositMove(int from, int to) {
+		Resource temp = deposit[from];
+		deposit[from] = deposit[to];
+		deposit[to] = temp;
 	}
 
 	/**
 	 * Returns the amount of stored resources inside the deposit.
 	 *
-	 * @return										the amount of resources inside the deposit
+	 * @return								the amount of resources inside the deposit
 	 */
 	public int getDepositResourceQty() {
 		return (int) Arrays.stream(deposit).filter(Objects::nonNull).count();
@@ -124,7 +124,7 @@ public class Warehouse {
 	/**
 	 * Activates an extra deposit, allowing to store MAX_EXTRA_DEPOSIT_SLOTS extra units of a single resource type.
 	 *
-	 * @param extraDepositLeaderCardPos				position of the extra deposit (leader card)
+	 * @param extraDepositLeaderCardPos		position of the extra deposit (leader card)
 	 */
 	public void activateExtraDeposit(int extraDepositLeaderCardPos) {
 		extraDeposits[extraDepositLeaderCardPos] = new Resource[MAX_EXTRA_DEPOSIT_SLOTS];
@@ -135,9 +135,9 @@ public class Warehouse {
 	/**
 	 * Stores a resource inside an extra deposit.
 	 *
-	 * @param extraDepositLeaderCardPos				position of the extra deposit (leader card)
-	 * @param r										resource to be stored
-	 * @param pos									position where to store the resource
+	 * @param extraDepositLeaderCardPos		position of the extra deposit (leader card)
+	 * @param r								resource to be stored
+	 * @param pos							position where to store the resource
 	 */
 	public void storeInExtraDeposit(int extraDepositLeaderCardPos, Resource r, int pos) throws IllegalArgumentException {
 		if(extraDeposits[extraDepositLeaderCardPos][pos] != null) {
@@ -149,9 +149,9 @@ public class Warehouse {
 	/**
 	 * Swaps two positions of an extra deposit.
 	 *
-	 * @param extraDepositLeaderCardPos				position of the extra deposit (leader card)
-	 * @param from									first position to swap
-	 * @param to									second position to swap
+	 * @param extraDepositLeaderCardPos		position of the extra deposit (leader card)
+	 * @param from							first position to swap
+	 * @param to							second position to swap
 	 */
 	public void swapExtraDeposit(int extraDepositLeaderCardPos, int from, int to) {
 		Resource fromResource = extraDeposits[extraDepositLeaderCardPos][from];
@@ -161,8 +161,8 @@ public class Warehouse {
 
 	/**
 	 * Removes the resource from an extra deposit slot.
-	 * @param extraDepositLeaderCardPos				position of the extra deposit (leader card)
-	 * @param pos									position of the resource to remove
+	 * @param extraDepositLeaderCardPos		position of the extra deposit (leader card)
+	 * @param pos							position of the resource to remove
 	 */
 	public void removeFromExtraDeposit(int extraDepositLeaderCardPos, int pos) {
 		extraDeposits[extraDepositLeaderCardPos][pos] = null;
@@ -170,20 +170,22 @@ public class Warehouse {
 
 	/**
 	 * Swaps resources from/to deposit to/from a extraDeposit
-	 * @param move a pair instance of the two indexes to swap
-	 * @param lcPos is 0 if move.first is the extraDeposit index, 1 if move.second is the extraDeposit index
-	 * @param lcIndex the leader card index
+	 * @param from 							move from.
+	 * @param to							move to.
+	 * @param lcPos 						is 0 if move.first is the extraDeposit index,
+	 *                                         1 if move.second is the extraDeposit index
+	 * @param lcIndex 						the leader card index
 	 */
-	public void doExtraDepositMove(Pair<Integer, Integer> move, int lcPos, int lcIndex) {
+	public void doExtraDepositMove(int from, int to, int lcPos, int lcIndex) {
 		Resource temp;
 		if(lcPos == 0) { // move.first is the extra deposit index
-			temp = extraDeposits[lcIndex][move.first];
-			extraDeposits[lcIndex][move.first] = deposit[move.second];
-			deposit[move.second] = temp;
+			temp = extraDeposits[lcIndex][from];
+			extraDeposits[lcIndex][from] = deposit[to];
+			deposit[to] = temp;
 		} else {
-			temp = extraDeposits[lcIndex][move.second];
-			extraDeposits[lcIndex][move.second] = deposit[move.first];
-			deposit[move.first] = temp;
+			temp = extraDeposits[lcIndex][to];
+			extraDeposits[lcIndex][to] = deposit[from];
+			deposit[from] = temp;
 		}
 	}
 
@@ -193,8 +195,8 @@ public class Warehouse {
 	 * <li> The maximum amount of stored resources is 6.
 	 * <li> Only 3 different types of resources can be stored.
 	 * <li> The maximum amount of each different kind of resource must be, in order, 3 2 and 1. (see game rules)
-	 * @param newDeposit the hypothetical deposit after storage
-	 * @return true if game rules are respected, false otherwise.
+	 * @param newDeposit 						the hypothetical deposit after storage
+	 * @return 									true if game rules are respected, false otherwise.
 	 */
 	public boolean checkShelvesRule(Resource[] newDeposit) {
 		ArrayList<Resource> allResources = new ArrayList<>();
@@ -216,10 +218,10 @@ public class Warehouse {
 
 	/**
 	 * Checks to see that a certain part of a Resource array doesn't have more than one type of resource.
-	 * @param arr the array to check
-	 * @param startIndex the first position to check
-	 * @param endIndex the last position to check
-	 * @return true if there is only one type, false if not.
+	 * @param arr 								the array to check
+	 * @param startIndex 						the first position to check
+	 * @param endIndex							the last position to check
+	 * @return 									true if there is only one type, false if not.
 	 */
 	private boolean checkNoDistinctResource(Resource[] arr, int startIndex, int endIndex) {
 		return Arrays.stream(arr, startIndex, endIndex).filter(Objects::nonNull).distinct().count() <= 1;
@@ -230,12 +232,12 @@ public class Warehouse {
 	 * Counts occurences of a certain resource in two different parts of the deposit and checks to see if their
 	 * product is 0. If it is, then only one shelve contained the resource and true is returned. If not, false.
 	 * @param arr the array of resources to check
-	 * @param firstPartStartIndex first index of first shelve to check
-	 * @param firstPartEndIndex   second index of first shelve to check
-	 * @param secondPartStartIndex first index of second shelve to check
-	 * @param secondPartEndIndex end index of second shelve to check
-	 * @param toCount resource to count
-	 * @return true if resource appears only on one shelve
+	 * @param firstPartStartIndex 				first index of first shelve to check
+	 * @param firstPartEndIndex   				second index of first shelve to check
+	 * @param secondPartStartIndex 				first index of second shelve to check
+	 * @param secondPartEndIndex 				end index of second shelve to check
+	 * @param toCount 							resource to count
+	 * @return 									true if resource appears only on one shelve
 	 */
 	private boolean checkNoSameResourceTwoShelves(Resource[] arr, int firstPartStartIndex, int firstPartEndIndex,
 												int secondPartStartIndex, int secondPartEndIndex, Resource toCount) {
@@ -245,7 +247,7 @@ public class Warehouse {
 
 	/**
 	 * Returns all the resources contained inside the warehouse. (deposit + locker + extraDeposits if present)
-	 * @return										a Resource Integer map containing all of the warehouse's resources.
+	 * @return									a Resource Integer map containing all of the warehouse's resources.
 	 */
 	public HashMap<Resource, Integer> getAllResources() {
 		HashMap<Resource, Integer> resourceCounter = new HashMap<>(locker);

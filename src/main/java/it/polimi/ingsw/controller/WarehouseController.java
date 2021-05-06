@@ -1,6 +1,5 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.common.Pair;
 import it.polimi.ingsw.controller.exceptions.IllegalDepositStateException;
 import it.polimi.ingsw.controller.exceptions.WrongMoveException;
 import it.polimi.ingsw.controller.exceptions.WrongTurnException;
@@ -34,7 +33,7 @@ public class WarehouseController {
         this.currentPlayer = currentPlayer;
     }
 
-    public void moveResourcesDepositDeposit(String nickname, Pair<Integer, Integer> move) throws WrongTurnException, WrongMoveException, IllegalDepositStateException {
+    public void moveResourcesDepositDeposit(String nickname, int from, int to) throws WrongTurnException, WrongMoveException, IllegalDepositStateException {
         if (!currentPlayer.equals(nickname)) {
             throw new WrongTurnException("Not " + nickname + " turn");
         }
@@ -43,7 +42,7 @@ public class WarehouseController {
         Dashboard dashboard = player.getDashboard();
 
         try {
-            dashboard.moveDepositResources(move);
+            dashboard.moveDepositResources(from, to);
         } catch (IllegalArgumentException e) {
             throw new WrongMoveException("Invalid index");
         } catch (IllegalStateException e) {
@@ -54,7 +53,7 @@ public class WarehouseController {
     /**
      * @see ServerController#moveResourceDepositExtraDeposit
      */
-    public void moveResourcesDepositExtraDeposit(String nickname, Pair<Integer, Integer> move, int lcPos, int lcCardIndex) throws WrongTurnException, IllegalDepositStateException, WrongMoveException {
+    public void moveResourcesDepositExtraDeposit(String nickname, int from, int to, int lcPos, int lcCardIndex) throws WrongTurnException, IllegalDepositStateException, WrongMoveException {
         if (!currentPlayer.equals(nickname)) {
             throw new WrongTurnException("Not " + nickname + " turn");
         }
@@ -63,7 +62,7 @@ public class WarehouseController {
         Dashboard dashboard = player.getDashboard();
 
         try {
-            dashboard.moveDepositExtraDepositResources(move, lcPos, lcCardIndex);
+            dashboard.moveDepositExtraDepositResources(from, to, lcPos, lcCardIndex);
         } catch (IllegalStateException e) {
             throw new IllegalDepositStateException("Invalid deposit state");
 

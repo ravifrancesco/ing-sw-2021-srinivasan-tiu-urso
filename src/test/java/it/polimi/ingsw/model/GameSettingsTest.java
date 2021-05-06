@@ -46,7 +46,7 @@ public class GameSettingsTest {
     }
 
     // Handles creation of game settings
-    private GameSettings buildGameSettings() {
+    public GameSettings buildGameSettings() {
 
 
         DevelopmentCard[] developmentCards = developmentCardDeckBuilder();
@@ -148,7 +148,6 @@ public class GameSettingsTest {
         vaticanReportsList.add(new VaticanReport(19, 24, 4));
 
         return vaticanReportsList;
-
 
     }
 

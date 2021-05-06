@@ -1,11 +1,10 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.common.Pair;
-import it.polimi.ingsw.controller.exceptions.PowerNotActivatableException;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.specialAbilities.*;
 
+import javax.swing.plaf.basic.BasicScrollPaneUI;
 import java.sql.Array;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -61,6 +60,7 @@ public class Dashboard {
 		this.supply = new ArrayList<>();
 	}
 
+
 	/**
 	 * Resets the dashboard to the initial state.
 	 */
@@ -101,10 +101,16 @@ public class Dashboard {
 				.reduce(0, Integer::sum);
 
 		int developmentCardsVP = playedDevelopmentCards.stream()
-				.map(s -> s.peek().getVictoryPoints())
+				.map(s -> s.stream()
+						.map(DevelopmentCard::getVictoryPoints)
+						.reduce(0, Integer::sum))
 				.reduce(0, Integer::sum);
 
-		return faithTrackVP + leaderCardsVP + developmentCardsVP;
+		int resourcePoints = getAllPlayerResources()
+				.values().stream()
+				.reduce(0, Integer::sum) / 5;
+
+		return faithTrackVP + leaderCardsVP + developmentCardsVP + resourcePoints;
 
 	}
 
@@ -113,15 +119,18 @@ public class Dashboard {
 	 * Allows to place a Leader Card onto the Dashboard.
 	 *
 	 * @param c 						the Leader Card to place.
+	 * @return 							the position of the leader card on the dashboard.
 	 * @throws NullPointerException  	if the Leader Card to place is null.
 	 * @throws IllegalArgumentException if no more Leader Card slots are available.
 	 */
-	public void placeLeaderCard(LeaderCard c) throws IllegalStateException {
+	public int placeLeaderCard(LeaderCard c) throws IllegalStateException {
 		if (playedLeaderCards.size() == NUM_LEADER_CARDS) {
 			throw new IllegalStateException("Leader Card grid is full");
 		} else {
 			playedLeaderCards.add(c);
 		}
+
+		return playedLeaderCards.indexOf(c);
 	}
 
 	/**
@@ -129,22 +138,27 @@ public class Dashboard {
 	 *
 	 * @param c 						the Development Card to place.
 	 * @param position					position to place the development card.
-	 * @throws IllegalStateException 	in case the are no slots available
-	 * 									for the development card.
+	 * @throws IllegalStateException 	in case the state of the stacs does not
+	 * 									follow game rules.
+	 * @throws IllegalStateException	in case the index is out of bounds TODO check if call is catched later
+	 *
 	 */
-	public void placeDevelopmentCard(DevelopmentCard c, int position) throws IllegalStateException {
+	public void placeDevelopmentCard(DevelopmentCard c, int position) throws IllegalStateException, IllegalArgumentException {
 
 		Banner banner = c.getBanner();
 
 		if (position < 0 || position > 2) {
-			throw new IllegalStateException("Not a valid index");
+			throw new IllegalArgumentException("Not a valid index");
 		}
 
-		if (playedDevelopmentCards.get(position).peek().getBanner().isOneLess(banner)) {
+		if (!playedDevelopmentCards.get(position).isEmpty() &&
+				!playedDevelopmentCards.get(position).peek().getBanner().isOneLess(banner)) {
+			throw new IllegalStateException();
+		} else if (playedDevelopmentCards.get(position).isEmpty() &&
+				c.getBanner().getLevel() > 1) {
+			throw new IllegalStateException();
+		} else {
 			playedDevelopmentCards.get(position).push(c);
-		}
-		else {
-			throw new IllegalStateException("Not a valid index");
 		}
 	}
 
@@ -175,6 +189,8 @@ public class Dashboard {
 			warehouse.storeInDeposit(r, position);
 		} catch (IllegalStateException e) {
 			throw new IllegalStateException();
+		} catch (IllegalArgumentException e) {
+			throw new IllegalArgumentException();
 		}
 	}
 
@@ -182,16 +198,29 @@ public class Dashboard {
 	 * Gets the player's banners on the dashboard.
 	 *
 	 * @return a map with keys being the banners and values being the quantities.
+	 * TODO fix this implementation
 	 */
 	public Map<Banner, Integer> getBanners() {
+
 		HashMap<Banner, Integer> playerBanners = new HashMap<>();
-		IntStream.range(0, NUM_DEVELOPMENT_CARD_STACKS)
-				.forEach(i -> IntStream.range(0, playedDevelopmentCards.get(i).size())
-				.forEach(j -> playerBanners.put(playedDevelopmentCards.get(i).elementAt(j).getBanner(),
-						playerBanners.containsKey(playedDevelopmentCards.get(i).elementAt(j).getBanner()) ?
-								playerBanners.get(playedDevelopmentCards.get(i).elementAt(j).getBanner()) + 1 : 1)));
+
+		List<Banner> bannersList = playedDevelopmentCards.stream()
+				.flatMap(List::stream)
+				.map(DevelopmentCard::getBanner)
+				.collect(Collectors.toList());
+
+		for (Banner banner : bannersList) {
+			if (playerBanners.entrySet().stream().anyMatch(e -> e.getKey().toString().equals(banner.toString()))) {
+				playerBanners.entrySet().stream().filter(e -> e.getKey().toString().equals(banner.toString()))
+						.forEach(e -> e.setValue(e.getValue()+1));
+			}
+			else {
+				playerBanners.put(banner, 1);
+			}
+		}
 
 		return playerBanners;
+
 	}
 
 
@@ -204,12 +233,10 @@ public class Dashboard {
 	 * @throws IllegalArgumentException if the index is out of bounds.
 	 * @throws NullPointerException 	if the selected slot is empty.
 	 */
-	public LeaderCard getLeaderCard(int c) throws IllegalArgumentException, NullPointerException {
-		if (c < 0 || c > 1) {
+	public LeaderCard getLeaderCard(int c) throws IllegalArgumentException {
+		if (c < 0 || c >= playedLeaderCards.size()) {
+			System.out.println(playedLeaderCards.size());
 			throw new IllegalArgumentException("Invalid index");
-		}
-		if(playedLeaderCards.get(c) == null) {
-			throw new NullPointerException("Card is null");
 		}
 		return playedLeaderCards.get(c);
 	}
@@ -230,7 +257,7 @@ public class Dashboard {
 	 * @return	Development Card on top of top of the stack and index i.
 	 */
 	public DevelopmentCard getDevelopmentCard(int i) {
-		return playedDevelopmentCards.get(1).peek();
+		return playedDevelopmentCards.get(i).isEmpty() ? null : playedDevelopmentCards.get(i).peek();
 	}
 
 	/**
@@ -266,6 +293,7 @@ public class Dashboard {
 				.forEach(lc -> ((ProductionPower) lc.getSpecialAbility()).reset());
 
 		playedDevelopmentCards.stream()
+				.filter(s -> !s.isEmpty())
 				.map(Stack::peek)
 				.forEach(dc -> dc.getProductionPower().reset());
 
@@ -284,36 +312,39 @@ public class Dashboard {
 	/**
 	 * Allows to move resources in the Deposit.
 	 *
-	 * @param moves						list of moves.
+	 * @param from						move from.
+	 * @param to						move to.
 	 * @throws IllegalArgumentException	if the moves indexes are out of bound.
 	 * @throws IllegalStateException	if the moves do not compile to the game rules.
 	 */
-	public void moveDepositResources(Pair<Integer, Integer> move) throws IllegalArgumentException, IllegalStateException {
-		if (move.first < 0 || move.first > 5 || move.second < 0 || move.second > 5) {
+	public void moveDepositResources(int from, int to) throws IllegalArgumentException, IllegalStateException {
+		if (from < 0 || from > 5 || to < 0 || to > 5) {
 			throw new IllegalArgumentException();
 		}
 		// copying current deposit
 		Resource[] newDeposit = new Resource[Warehouse.MAX_DEPOSIT_SLOTS];
 		IntStream.range(0, Warehouse.MAX_DEPOSIT_SLOTS).forEach(i -> newDeposit[i] = warehouse.getDeposit()[i]);
-		// making all the moves
-		swapDepositResources(newDeposit, move.first, move.second);
+		// making the move
+		swapDepositResources(newDeposit, from, to);
 		if(!warehouse.checkShelvesRule(newDeposit)) {
 			throw new IllegalStateException("Moves create an illegal deposit");
 		}
-		warehouse.doDepositMove(move);
+		warehouse.doDepositMove(from, to);
 	}
 
-	// TODO test this class
 	/**
 	 * Swaps resources from/to deposit to/from a extraDeposit
-	 * @param move a pair instance of the two indexes to swap
+	 * @param from						move from.
+	 * @param to						move to.
 	 * @param lcPos is 0 if move.first is the extraDeposit index, 1 if move.second is the extraDeposit index
 	 * @param lcIndex the leader card index
 	 * @throws IllegalArgumentException if the indexes passed are illegal
 	 * @throws IllegalStateException if the move would create an illegal deposit.
 	 */
-	public void moveDepositExtraDepositResources(Pair<Integer, Integer> move, int lcPos, int lcIndex) throws IllegalArgumentException, IllegalStateException {
+	public void moveDepositExtraDepositResources(int from, int to, int lcPos, int lcIndex) throws IllegalArgumentException, IllegalStateException {
 		if(lcIndex > 1 || lcIndex < 0 || lcPos < 0 || lcPos > 1) {
+			throw new IllegalArgumentException();
+		} else if (!playedLeaderCards.get(lcIndex).getSpecialAbility().getType().equals(SpecialAbilityType.WAREHOUSE_EXTRA_SPACE)) {
 			throw new IllegalArgumentException();
 		}
 
@@ -323,11 +354,11 @@ public class Dashboard {
 		// copying selected extra deposit
 		Resource[] newExtraDeposit = new Resource[Warehouse.MAX_EXTRA_DEPOSIT_SLOTS];
 		IntStream.range(0, Warehouse.MAX_DEPOSIT_SLOTS).forEach(i -> newExtraDeposit[i] = warehouse.getExtraDeposits()[lcPos][i]);
-		swapExtraDepositResources(newDeposit, newExtraDeposit, move.first, move.second, lcPos, lcIndex);
+		swapExtraDepositResources(newDeposit, newExtraDeposit, from, to, lcPos, lcIndex);
 		if(!warehouse.checkShelvesRule(newDeposit)) {
 			throw new IllegalStateException("Move creates an illegal deposit");
 		}
-		warehouse.doExtraDepositMove(move, lcPos, lcIndex);
+		warehouse.doExtraDepositMove(from, to, lcPos, lcIndex);
 	}
 
 	/**
@@ -365,17 +396,22 @@ public class Dashboard {
 	 * @throws IllegalStateException	if the move does not compile to the game rules.
 	 */
 	public void storeFromSupply(int from, int to) throws IllegalArgumentException, IllegalStateException {
+
 		if (from < 0 || from > 3 || to < 0 || to > 5) {
 			// invalid indexes
 			throw new IllegalArgumentException();
 		}
+
 		try {
 			warehouse.storeInDeposit(supply.get(from), to);
 		} catch(IllegalStateException e) {
-			throw new IllegalStateException("Illegal deposit");
-		} catch(IllegalArgumentException e) {
+			throw new IllegalStateException();
+		} catch(Exception e) {
 			throw new IllegalArgumentException();
 		}
+
+		supply.remove(from);
+
 	}
 
 	/**
@@ -396,10 +432,18 @@ public class Dashboard {
 		if (!specialAbility.getType().equals(SpecialAbilityType.WAREHOUSE_EXTRA_SPACE)) {
 			throw new IllegalArgumentException();
 		}
+
 		WarehouseExtraSpace wes = (WarehouseExtraSpace) specialAbility;
-		Resource addedResource = supply.get(from);
+		Resource addedResource;
+
+		try {
+			addedResource = supply.get(from);
+		} catch (Exception e) {
+			throw new IllegalArgumentException();
+		}
+
 		if(addedResource != wes.getStoredResource()) {
-			throw new IllegalStateException("Added resource does not match extra deposit resource");
+			throw new IllegalStateException();
 		}
 
 		try {
@@ -407,6 +451,9 @@ public class Dashboard {
 		} catch (IllegalArgumentException e) {
 			throw new IllegalArgumentException();
 		}
+
+		supply.remove(from);
+
 	}
 
 	/**
@@ -436,7 +483,7 @@ public class Dashboard {
 	/**
 	 * Returns all of the player's resources.
 	 *
-	 * @return 							a map with a count of each total qty of each resource in the warehouse.
+	 * @return	a map with a count of each total qty of each resource in the warehouse.
 	 */
 	public Map<Resource, Integer> getAllPlayerResources() {
 		return warehouse.getAllResources();
@@ -459,15 +506,5 @@ public class Dashboard {
 				resToPayWith.getContainedExtraDepositResources().get(i).forEach(pos ->
 						warehouse.removeFromExtraDeposit(i, pos)));
 	}
-
-
-
-
-	//
-
-
-
-
-
 
 }
