@@ -24,24 +24,15 @@ public class GameLobbyMessageHandler {
     public synchronized void handleMessage(String msg, Connection c) {
 
         switch (GameMessages.valueOf(msg.toUpperCase())) {
-            case GET_INITIAL_RESOURCES:
-                getInitialResources(c);
-            case GET_FROM_MARKET:
-                getFromMarket(c);
-            case DISCARD_LEADER_CARD:
-                discardLeaderCard(c);
-            case STORE_FROM_SUPPLY_TO_EXTRA_DEPOSIT:
-                storeFromSupplyInExtraDeposit(c);
-            case STORE_FROM_SUPPLY:
-                storeFromSupply(c);
-            case DISCARD_EXCESS_LEADER_CARD:
-                discardExcessLeaderCards(c);
-            case LOAD_GAME_SETTINGS:
-                loadGameSettings(c);
-            case END_TURN:
-                endTurn(c);
-            default:
-                c.asyncSend((ServerMessages.ERROR));
+            case GET_INITIAL_RESOURCES -> getInitialResources(c);
+            case GET_FROM_MARKET -> getFromMarket(c);
+            case DISCARD_LEADER_CARD -> discardLeaderCard(c);
+            case STORE_FROM_SUPPLY_TO_EXTRA_DEPOSIT -> storeFromSupplyInExtraDeposit(c);
+            case STORE_FROM_SUPPLY -> storeFromSupply(c);
+            case DISCARD_EXCESS_LEADER_CARD -> discardExcessLeaderCards(c);
+            case LOAD_GAME_SETTINGS -> loadGameSettings(c);
+            case END_TURN -> endTurn(c);
+            default -> c.asyncSend((ServerMessages.ERROR));
         }
 
     }
