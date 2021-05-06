@@ -76,20 +76,20 @@ public class Player {
 	 * Method to place a leader card on the dashboard.
 	 *
 	 * @param card						position of the hand to play the card.
-	 * @param position					position on the dashboard to place the card.
 	 * @throws IllegalArgumentException	if the card index is out of bounds.
 	 * @throws IllegalStateException	if the card cannot be placed.
 	 */
-	public void playLeaderCard(int card, int position) throws IllegalArgumentException, IllegalStateException {
+	public void playLeaderCard(int card) throws IllegalArgumentException, IllegalStateException {
 
 		if (card < 0 || card >= hand.getHandSize()) {
 			throw new IllegalArgumentException();
 		}
 
 		LeaderCard leaderCard = hand.getCard(card);
+		int position;
 
 		try {
-			dashboard.placeLeaderCard(leaderCard);
+			position = dashboard.placeLeaderCard(leaderCard);
 		} catch (IllegalStateException e) {
 			throw new IllegalStateException();
 		}
@@ -108,8 +108,6 @@ public class Player {
 
 	/**
 	 * Allows the player to discard a leader card.
-	 * TODO check the controller for exception
-	 * TODO handle faith marker points
 	 * @param card		index of the hand to discard the card.
 	 * @param gameBoard gameBoard that will "receive" the discarded card.
 	 * @throws IllegalArgumentException if if the card argument is out of index
@@ -139,7 +137,7 @@ public class Player {
 	 * @throws IllegalStateException	if the dashboard cannot accomodate any more discoounts.
 	 */
 	public void addActiveDiscount(DevelopmentCardDiscount discount) throws IllegalStateException {
-		if (activeDiscounts.size() + activatedWMR.size() > NUM_PLAYABLE_LEADER_CARDS) {
+		if (activeDiscounts.size() + activatedWMR.size() >= NUM_PLAYABLE_LEADER_CARDS) {
 			throw new IllegalStateException();
 		}
 		activeDiscounts.add(discount);
@@ -167,7 +165,7 @@ public class Player {
 	 * @param wmr the WhiteMarbleResource being added
 	 */
 	public void addWMR(WhiteMarbleResource wmr) {
-		if (activeDiscounts.size() + activatedWMR.size() > NUM_PLAYABLE_LEADER_CARDS) {
+		if (activeDiscounts.size() + activatedWMR.size() >= NUM_PLAYABLE_LEADER_CARDS) {
 			throw new IllegalStateException();
 		}
 		activatedWMR.add(wmr.getRes());
@@ -189,20 +187,6 @@ public class Player {
 	 */
 	public int getNumActiveWMR() {
 		return activatedWMR.size();
-	}
-
-	/**
-	 * Getter for a card from the player's hand.
-	 *
-	 * @param c							index of card to get.
-	 * @return							the indexed card.
-	 * @throws IllegalArgumentException	if the index is out of bounds.
-	 */
-	public LeaderCard getFromHand(int c) throws IllegalArgumentException {
-		if (c < 0 || c >= hand.getHandSize()) {
-			throw new IllegalArgumentException();
-		}
-		return hand.getCard(c);
 	}
 
 	/**
