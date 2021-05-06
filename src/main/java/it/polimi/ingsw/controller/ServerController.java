@@ -50,7 +50,8 @@ public class ServerController {
      * @param numberOfPlayers the number of players of the game.
      */
 
-    public ServerController(String gameId, int numberOfPlayers) {
+    public ServerController(String gameId, int numberOfPlayers) throws IllegalArgumentException {
+        if (numberOfPlayers < 2 || numberOfPlayers > 4) throw new IllegalArgumentException();
         this.game = new Game(gameId);
         this.numberOfPlayers = numberOfPlayers;
         this.productionController = new ProductionController(this.game);

@@ -12,36 +12,43 @@ import java.net.Socket;
 
 public class Connection implements Runnable {
 
-    private Socket socket;
-    private Scanner in;
-    private PrintWriter out;
-    private Server server;
-    private String name;
-    private MainLobby mainLobby;
+    private final Socket socket;
+    private ObjectInputStream in;
+    private ObjectOutputStream out;
+    private final Server server;
+    private String nickname;
+    private Lobby lobby;
     private boolean active = true;
 
-    public Connection(Socket socket, Server server, MainLobby mainLobby){
+    public Connection(Socket socket, Server server, Lobby lobby){
         this.socket = socket;
         this.server = server;
-        this.mainLobby = mainLobby;
+        this.lobby = lobby;
+    }
+
+    public synchronized void changeLobby(Lobby lobby) {
+        this.lobby = lobby;
     }
 
     private synchronized boolean isActive(){
         return active;
     }
 
-    public void send(String message){
-        out.println(message);
-        out.flush();
+    public void send(Object message){
+        try {
+            out.writeObject(message);
+            out.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void asyncSend(final String message){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                send(message);
-            }
-        }).start();
+    public void asyncSend(Object message){
+        new Thread(() -> send(message)).start();
+    }
+
+    public Object receive() throws IOException, ClassNotFoundException {
+        return in.readObject();
     }
 
     public synchronized void closeConnection(){
@@ -69,10 +76,10 @@ public class Connection implements Runnable {
             send(ServerMessages.WELCOME_MESSAGE);
             registerName();
             while(isActive()){
-                String read = in.nextLine();
-                notify(read);
+                String read = (String) receive();
+                lobby.handleMessage(read, this);
             }
-        } catch(IOException e){
+        } catch(IOException | ClassNotFoundException e) {
             System.err.println(e.getMessage());
         } finally {
             close();
@@ -90,6 +97,11 @@ public class Connection implements Runnable {
             }
         }
     }
+
+    public String getNickname() {
+        return nickname;
+    }
+
 }
 
 
