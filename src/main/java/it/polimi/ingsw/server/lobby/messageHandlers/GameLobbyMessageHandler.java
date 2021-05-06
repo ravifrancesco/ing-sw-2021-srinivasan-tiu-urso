@@ -25,6 +25,14 @@ public class GameLobbyMessageHandler {
         switch (GameMessages.valueOf(msg.toUpperCase())) {
             case LOAD_GAME_SETTINGS ->
                 loadGameSettings(c);
+            case PLAY_LEADER_CARD ->
+                playLeaderCard(c);
+            case ACTIVATE_LEADER_CARD_PRODUCTION_POWER ->
+                activateLeaderCardProductionPower(c);
+            case ACTIVATE_DASHBOARD_PRODUCTION_POWER ->
+                activateDashboardProductionPower(c);
+            case ACTIVATE_DEVELOPMENT_CARD_PRODUCTION_POWER ->
+                activateDevelopmentCardProductionPower(c);
             default ->
                 c.asyncSend((ServerMessages.ERROR));
         }
