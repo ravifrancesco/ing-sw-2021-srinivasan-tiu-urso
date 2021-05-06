@@ -119,15 +119,18 @@ public class Dashboard {
 	 * Allows to place a Leader Card onto the Dashboard.
 	 *
 	 * @param c 						the Leader Card to place.
+	 * @return 							the position of the leader card on the dashboard.
 	 * @throws NullPointerException  	if the Leader Card to place is null.
 	 * @throws IllegalArgumentException if no more Leader Card slots are available.
 	 */
-	public void placeLeaderCard(LeaderCard c) throws IllegalStateException {
+	public int placeLeaderCard(LeaderCard c) throws IllegalStateException {
 		if (playedLeaderCards.size() == NUM_LEADER_CARDS) {
 			throw new IllegalStateException("Leader Card grid is full");
 		} else {
 			playedLeaderCards.add(c);
 		}
+
+		return playedLeaderCards.indexOf(c);
 	}
 
 	/**
