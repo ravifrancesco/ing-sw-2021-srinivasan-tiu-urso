@@ -4,10 +4,12 @@ public enum GameErrorMessages {
 
     WRONG_TURN,
 
-    INVALID_CARD_INDEX,
-
     CARD_NOT_PLAYABLE,
 
     WRONG_MOVE,
+
+    ILLEGAL_DEPOSIT_STATE,
+
+    EXCESS_LEADER_CARD
 
 }
