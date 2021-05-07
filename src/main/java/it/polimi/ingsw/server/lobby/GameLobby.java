@@ -81,6 +81,7 @@ public class GameLobby implements Lobby {
 
     public void endTurn(String nickname) throws WrongMoveException, WrongTurnException, LeaderCardInExcessException {
         serverController.endTurn(nickname);
+    }
 
     public void buyDevelopmentCard(String nickname, int row, int column, ResourceContainer resourcesToPayCost, int position)
             throws WrongTurnException, CardNotBuyableException, CardNotPlayableException, WrongMoveException {
