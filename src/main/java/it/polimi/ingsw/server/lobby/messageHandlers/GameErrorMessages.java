@@ -10,7 +10,7 @@ public enum GameErrorMessages {
 
     ILLEGAL_DEPOSIT_STATE,
 
-    EXCESS_LEADER_CARD
+    EXCESS_LEADER_CARD,
 
     DEPOSIT_CELL_NOT_EMPTY,
 
