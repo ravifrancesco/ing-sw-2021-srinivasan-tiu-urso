@@ -100,7 +100,7 @@ public class GameLobbyMessageHandler {
             gameLobby.getFromMarket(c.getNickname(), moveIndex, wmrs);
             c.asyncSend(ServerMessages.OK);
         } catch (IOException | ClassNotFoundException e) {
-            System.err.println("Error whilst receiving move parameters");
+            System.err.println("Error while receiving move parameters");
             c.asyncSend(ServerMessages.ERROR);
         } catch (WrongMoveException e) {
             System.err.println("Wrong move index");
