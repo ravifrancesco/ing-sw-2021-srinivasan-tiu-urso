@@ -8,7 +8,7 @@ public enum GameErrorMessages {
 
     WRONG_MOVE,
 
-    POWER_NOT_ACTIVATABLE
+    POWER_NOT_ACTIVATABLE,
 
     ILLEGAL_DEPOSIT_STATE,
 
