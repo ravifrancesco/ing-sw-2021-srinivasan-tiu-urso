@@ -33,8 +33,6 @@ public class GameLobbyMessageHandler {
             case DISCARD_EXCESS_LEADER_CARD -> discardExcessLeaderCards(c);
             case LOAD_GAME_SETTINGS -> loadGameSettings(c);
             case END_TURN -> endTurn(c);
-            case LOAD_GAME_SETTINGS -> loadGameSettings(c);
-            case GET_INITIAL_RESOURCES -> getInitialResources(c);
             case BUY_DEVELOPMENT_CARD -> buyDevelopmentCard(c);
             default -> c.asyncSend((ServerMessages.ERROR));
         }
