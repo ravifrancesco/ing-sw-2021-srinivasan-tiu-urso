@@ -4,9 +4,11 @@ import it.polimi.ingsw.controller.ServerController;
 import it.polimi.ingsw.controller.exceptions.*;
 import it.polimi.ingsw.model.GameSettings;
 import it.polimi.ingsw.model.Resource;
+import it.polimi.ingsw.model.ResourceContainer;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.server.Connection;
 import it.polimi.ingsw.server.lobby.Lobby;
+import it.polimi.ingsw.server.lobby.messageHandlers.GameLobbyMessageHandler;
 import it.polimi.ingsw.server.lobby.messageHandlers.GameMessages;
 import it.polimi.ingsw.utils.Pair;
 
@@ -21,12 +23,15 @@ public class GameLobby implements Lobby {
     private final int maxPlayers;
     private final Map<String, Connection> connectedPlayers;
 
+    private GameLobbyMessageHandler gameLobbyMessageHandler;
+
     private final ServerController serverController;
 
     public GameLobby(String id, int maxPlayers) throws IllegalArgumentException {
         this.id = id;
         this.maxPlayers = maxPlayers;
         this.connectedPlayers = new HashMap<>();
+        this.gameLobbyMessageHandler = new GameLobbyMessageHandler(this);
         this.serverController = new ServerController(id, maxPlayers);
     }
 
@@ -61,6 +66,11 @@ public class GameLobby implements Lobby {
     }
     public void getInitialResources(String nickname, Resource resource, int position) throws WrongTurnException, WrongMoveException, DepositCellNotEmpty, IllegalDepositStateException {
         serverController.getInitialResources(nickname, resource, position);
+    }
+
+    public void buyDevelopmentCard(String nickname, int row, int column, ResourceContainer resourcesToPayCost, int position)
+            throws WrongTurnException, CardNotBuyableException, CardNotPlayableException, WrongMoveException {
+        serverController.buyDevelopmentCard(nickname, row, column, resourcesToPayCost, position);
     }
 
     public String getId() {
