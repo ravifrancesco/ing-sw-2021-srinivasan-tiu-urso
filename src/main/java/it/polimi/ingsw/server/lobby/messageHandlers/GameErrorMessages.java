@@ -14,8 +14,6 @@ public enum GameErrorMessages {
 
     DEPOSIT_CELL_NOT_EMPTY,
 
-    ILLEGAL_DEPOSIT_STATE,
-
     CARD_NOT_BUYABLE_EXCEPTION
 
 }
