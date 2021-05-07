@@ -63,6 +63,25 @@ public class GameLobby implements Lobby {
         serverController.getInitialResources(nickname, resource, position);
     }
 
+    public void playLeaderCard(String nickname, int cardToPlay) throws WrongTurnException, CardNotPlayableException {
+        serverController.playLeaderCard(nickname, cardToPlay);
+    }
+
+    public void activateLeaderCardProductionPower(String nickname, int cardToActivate, ResourceContainer resourcesToPayCost,
+                                             Map<Resource, Integer> resourceRequiredOptional, Map<Resource, Integer> resourceProducedOptional) throws WrongTurnException, WrongMoveException, PowerNotActivatableException {
+        serverController.activateLeaderCardProductionPower(nickname, cardToActivate, resourcesToPayCost, resourceRequiredOptional, resourceProducedOptional);
+    }
+
+    public void activateDashboardProductionPower(String nickname, ResourceContainer resourcesToPayCost,
+                                            Map<Resource, Integer> resourceRequiredOptional, Map<Resource, Integer> resourceProducedOptional) throws WrongTurnException, WrongMoveException, PowerNotActivatableException {
+        serverController.activateDashboardProductionPower(nickname, resourcesToPayCost, resourceRequiredOptional, resourceProducedOptional);
+    }
+
+    public void activateDevelopmentCardProductionPower(String nickname, int cardToActivate, ResourceContainer resourcesToPayCost,
+                                                       Map<Resource, Integer> resourceRequiredOptional, Map<Resource, Integer> resourceProducedOptional) throws WrongTurnException, WrongMoveException, PowerNotActivatableException {
+        serverController.activateDevelopmentCardProductionPower(nickname, cardToActivate, resourcesToPayCost, resourceRequiredOptional, resourceProducedOptional);
+    }
+
     public void getFromMarket(String nickname, int move, ArrayList<WhiteMarbleResource> wmrs) throws WrongMoveException, WrongTurnException {
         serverController.getFromMarket(nickname, move, wmrs);
     }

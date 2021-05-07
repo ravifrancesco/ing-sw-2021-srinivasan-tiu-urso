@@ -25,13 +25,13 @@ public class MainLobbyMessageHandler {
     public synchronized void handleMessage(String msg, Connection c) {
 
         switch (LobbyMessages.valueOf(msg.toUpperCase())) {
-            case GET_SERVER_STATUS:
+            case GET_SERVER_STATUS ->
                 getServerStatus(c);
-            case CREATE_GAME:
+            case CREATE_GAME ->
                 createGame(c);
-            case JOIN_GAME:
+            case JOIN_GAME ->
                 joinGame(c);
-            default:
+            default ->
                 c.asyncSend(ServerMessages.ERROR);
         }
 

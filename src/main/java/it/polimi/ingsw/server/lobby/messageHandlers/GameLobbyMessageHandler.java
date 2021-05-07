@@ -4,6 +4,7 @@ import it.polimi.ingsw.controller.exceptions.*;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.GameSettings;
 import it.polimi.ingsw.model.Resource;
+
 import it.polimi.ingsw.model.specialAbilities.WhiteMarbleResource;
 import it.polimi.ingsw.model.ResourceContainer;
 import it.polimi.ingsw.server.Connection;
@@ -12,6 +13,8 @@ import it.polimi.ingsw.server.ServerMessages;
 import it.polimi.ingsw.server.lobby.GameLobby;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ArrayList;
 
 public class GameLobbyMessageHandler {
@@ -22,9 +25,14 @@ public class GameLobbyMessageHandler {
         this.gameLobby = gameLobby;
     }
 
+    // TODO reorder
     public synchronized void handleMessage(String msg, Connection c) {
 
         switch (GameMessages.valueOf(msg.toUpperCase())) {
+            case PLAY_LEADER_CARD -> playLeaderCard(c);
+            case ACTIVATE_LEADER_CARD_PRODUCTION_POWER -> activateLeaderCardProductionPower(c);
+            case ACTIVATE_DASHBOARD_PRODUCTION_POWER -> activateDashboardProductionPower(c);
+            case ACTIVATE_DEVELOPMENT_CARD_PRODUCTION_POWER -> activateDevelopmentCardProductionPower(c);
             case GET_INITIAL_RESOURCES -> getInitialResources(c);
             case GET_FROM_MARKET -> getFromMarket(c);
             case DISCARD_LEADER_CARD -> discardLeaderCard(c);
@@ -118,7 +126,72 @@ public class GameLobbyMessageHandler {
             c.asyncSend(GameErrorMessages.CARD_NOT_PLAYABLE);
         }
     }
+  
+    // TODO
+    public void playLeaderCard(Connection c) {
+        try {
+            int cardToPlay = (Integer) c.receive();
+            gameLobby.playLeaderCard(c.getNickname(), cardToPlay);
+            c.asyncSend(ServerMessages.OK);
+        } catch (IOException | ClassNotFoundException e) {
+            System.err.println(e.getMessage());
+            c.asyncSend(ServerMessages.ERROR);
+        } catch (WrongTurnException e) {
+            System.err.println(e.getMessage());
+            c.asyncSend(GameErrorMessages.WRONG_TURN);
+        } catch (CardNotPlayableException e) {
+            System.err.println(e.getMessage());
+            c.asyncSend(GameErrorMessages.CARD_NOT_PLAYABLE);
+        }
+    }
 
+    // TODO
+    public void activateLeaderCardProductionPower(Connection c) {
+        try {
+            int cardToActivate = (Integer) c.receive();
+            ResourceContainer resourceContainer = (ResourceContainer) c.receive();
+            HashMap<Resource, Integer> resourceRequiredOptional = (HashMap<Resource, Integer>) c.receive();
+            HashMap<Resource, Integer> resourceProducedOptional = (HashMap<Resource, Integer>) c.receive();
+            gameLobby.activateLeaderCardProductionPower(c.getNickname(), cardToActivate, resourceContainer, resourceRequiredOptional, resourceProducedOptional);
+            c.asyncSend(ServerMessages.OK);
+        } catch (IOException | ClassNotFoundException e) {
+            System.err.println(e.getMessage());
+            c.asyncSend(ServerMessages.ERROR);
+        } catch (WrongTurnException e) {
+            System.err.println(e.getMessage());
+            c.asyncSend(GameErrorMessages.WRONG_TURN);
+        } catch (WrongMoveException e) {
+            System.err.println(e.getMessage());
+            c.asyncSend(GameErrorMessages.WRONG_MOVE);
+        } catch (PowerNotActivatableException e) {
+            System.err.println(e.getMessage());
+            c.asyncSend(GameErrorMessages.POWER_NOT_ACTIVATABLE);
+        }
+    }
+
+    // TODO
+    public void activateDashboardProductionPower(Connection c) {
+        try {
+            ResourceContainer resourceContainer = (ResourceContainer) c.receive();
+            HashMap<Resource, Integer> resourceRequiredOptional = (HashMap<Resource, Integer>) c.receive();
+            HashMap<Resource, Integer> resourceProducedOptional = (HashMap<Resource, Integer>) c.receive();
+            gameLobby.activateDashboardProductionPower(c.getNickname(), resourceContainer, resourceRequiredOptional, resourceProducedOptional);
+            c.asyncSend(ServerMessages.OK);
+        } catch (IOException | ClassNotFoundException e) {
+            System.err.println(e.getMessage());
+            c.asyncSend(ServerMessages.ERROR);
+        } catch (WrongTurnException e) {
+            System.err.println(e.getMessage());
+            c.asyncSend(GameErrorMessages.WRONG_TURN);
+        } catch (WrongMoveException e) {
+            System.err.println(e.getMessage());
+            c.asyncSend(GameErrorMessages.WRONG_MOVE);
+        } catch (PowerNotActivatableException e) {
+            System.err.println(e.getMessage());
+            c.asyncSend(GameErrorMessages.POWER_NOT_ACTIVATABLE);
+        }
+    }
+  
     // TODO adjust after professor meeting
     public void getFromMarket(Connection c) {
         try {
@@ -217,4 +290,27 @@ public class GameLobbyMessageHandler {
         }
     }
 
+    // TODO
+    public void activateDevelopmentCardProductionPower(Connection c) {
+        try {
+            int cardToActivate = (Integer) c.receive();
+            ResourceContainer resourceContainer = (ResourceContainer) c.receive();
+            HashMap<Resource, Integer> resourceRequiredOptional = (HashMap<Resource, Integer>) c.receive();
+            HashMap<Resource, Integer> resourceProducedOptional = (HashMap<Resource, Integer>) c.receive();
+            gameLobby.activateDevelopmentCardProductionPower(c.getNickname(), cardToActivate, resourceContainer, resourceRequiredOptional, resourceProducedOptional);
+            c.asyncSend(ServerMessages.OK);
+        } catch (IOException | ClassNotFoundException e) {
+            System.err.println(e.getMessage());
+            c.asyncSend(ServerMessages.ERROR);
+        } catch (WrongTurnException e) {
+            System.err.println(e.getMessage());
+            c.asyncSend(GameErrorMessages.WRONG_TURN);
+        } catch (WrongMoveException e) {
+            System.err.println(e.getMessage());
+            c.asyncSend(GameErrorMessages.WRONG_MOVE);
+        } catch (PowerNotActivatableException e) {
+            System.err.println(e.getMessage());
+            c.asyncSend(GameErrorMessages.POWER_NOT_ACTIVATABLE);
+        }
+    }
 }
