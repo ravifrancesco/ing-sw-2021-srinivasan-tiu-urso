@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.GameSettings;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.specialAbilities.WhiteMarbleResource;
+import it.polimi.ingsw.model.ResourceContainer;
 import it.polimi.ingsw.server.Connection;
 import it.polimi.ingsw.server.Server;
 import it.polimi.ingsw.server.ServerMessages;
@@ -32,6 +33,9 @@ public class GameLobbyMessageHandler {
             case DISCARD_EXCESS_LEADER_CARD -> discardExcessLeaderCards(c);
             case LOAD_GAME_SETTINGS -> loadGameSettings(c);
             case END_TURN -> endTurn(c);
+            case LOAD_GAME_SETTINGS -> loadGameSettings(c);
+            case GET_INITIAL_RESOURCES -> getInitialResources(c);
+            case BUY_DEVELOPMENT_CARD -> buyDevelopmentCard(c);
             default -> c.asyncSend((ServerMessages.ERROR));
         }
 
@@ -50,23 +54,48 @@ public class GameLobbyMessageHandler {
 
     public void getInitialResources(Connection c) {
 
-        String nickName = c.getNickname();
+        String nickname = c.getNickname();
 
         try {
             Resource resource = (Resource) c.receive();
             int position = (int) c.receive();
-            gameLobby.getInitialResources(nickName, resource, position);
+            gameLobby.getInitialResources(nickname, resource, position);
             c.asyncSend(ServerMessages.OK);
         } catch (IOException | ClassNotFoundException | IllegalArgumentException e) {
             c.asyncSend(ServerMessages.ERROR);
         } catch (WrongTurnException e) {
             c.asyncSend(GameErrorMessages.WRONG_TURN);
         } catch (WrongMoveException e) {
-            e.printStackTrace();
-        } catch (DepositCellNotEmpty depositCellNotEmpty) {
-            depositCellNotEmpty.printStackTrace();
+            c.asyncSend(GameErrorMessages.WRONG_MOVE);
+        } catch (DepositCellNotEmpty e) {
+            c.asyncSend(GameErrorMessages.DEPOSIT_CELL_NOT_EMPTY);
         } catch (IllegalDepositStateException e) {
-            e.printStackTrace();
+            c.asyncSend(GameErrorMessages.ILLEGAL_DEPOSIT_STATE);
+        }
+
+    }
+
+    public void buyDevelopmentCard(Connection c) {
+
+        String nickname = c.getNickname();
+
+        try {
+            int row = (int) c.receive();
+            int col = (int) c.receive();
+            ResourceContainer resourcesToPayCost = (ResourceContainer) c.receive();
+            int position = (int) c.receive();
+            gameLobby.buyDevelopmentCard(nickname,row,col,resourcesToPayCost, position);
+            c.asyncSend(ServerMessages.OK);
+        } catch (IOException | ClassNotFoundException e) {
+            c.asyncSend(ServerMessages.ERROR);
+        } catch (CardNotPlayableException e) {
+            c.asyncSend(GameErrorMessages.CARD_NOT_PLAYABLE);
+        } catch (WrongMoveException e) {
+            c.asyncSend(GameErrorMessages.WRONG_MOVE);
+        } catch (CardNotBuyableException e) {
+            c.asyncSend(GameErrorMessages.CARD_NOT_BUYABLE_EXCEPTION);
+        } catch (WrongTurnException e) {
+            c.asyncSend(GameErrorMessages.WRONG_TURN);
         }
 
     }

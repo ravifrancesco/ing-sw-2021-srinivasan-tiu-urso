@@ -12,4 +12,10 @@ public enum GameErrorMessages {
 
     EXCESS_LEADER_CARD
 
+    DEPOSIT_CELL_NOT_EMPTY,
+
+    ILLEGAL_DEPOSIT_STATE,
+
+    CARD_NOT_BUYABLE_EXCEPTION
+
 }

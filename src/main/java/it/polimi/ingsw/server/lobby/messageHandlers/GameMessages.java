@@ -19,5 +19,9 @@ public enum GameMessages {
     DISCARD_EXCESS_LEADER_CARD,
 
     END_TURN
+      
+    GET_INITIAL_RESOURCES,
+
+    BUY_DEVELOPMENT_CARD,
 
     }

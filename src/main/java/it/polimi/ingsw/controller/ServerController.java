@@ -65,7 +65,6 @@ public class ServerController {
      * Method to load the game settings.
      * @param gameSettings the game settings to load.
      */
-    /* RAVI */
     public void loadGameSettings(GameSettings gameSettings) {
         game.loadGameSettings(gameSettings);
     }
@@ -131,7 +130,6 @@ public class ServerController {
      * @throws DepositCellNotEmpty if the position given is already full.
      * @throws IllegalDepositStateException if the state of the deposit is invalid.
      */
-    /* RAVI */
     public void getInitialResources(String nickname, Resource resource, int position) throws WrongTurnException, WrongMoveException, DepositCellNotEmpty, IllegalDepositStateException {
         if (!currentPlayer.equals(nickname)) {
             throw new WrongTurnException("Not " + nickname + " turn");
@@ -261,7 +259,6 @@ public class ServerController {
      * @throws CardNotPlayableException if the position given onto the dashboard is not valid.
      * @throws WrongMoveException if the resources to pay does not match the cost.
      */
-    /* RAVI */
     public void buyDevelopmentCard(String nickname, int row, int column, ResourceContainer resourcesToPayCost, int position)
             throws WrongTurnException, CardNotBuyableException, CardNotPlayableException, WrongMoveException {
 
@@ -400,7 +397,7 @@ public class ServerController {
      * Getter for the game status.
      * @return the game status.
      */
-    /* RAVI */
+    /* RAVI */  //TODO talk con cugola
     public Game getGameStatus() {
         return game.getGameStatus();
     }
