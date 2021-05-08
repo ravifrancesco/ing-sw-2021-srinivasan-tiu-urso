@@ -29,6 +29,7 @@ import java.util.stream.IntStream;
  * The class is observable and notifies the observers on a change of the state.
  *
  * TODO testing
+ * TODO changing the way production powers are activated, and use it to notify()
  */
 public class Dashboard extends DashboardObservable {
 
