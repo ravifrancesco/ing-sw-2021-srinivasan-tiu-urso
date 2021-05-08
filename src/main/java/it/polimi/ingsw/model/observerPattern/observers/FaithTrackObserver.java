@@ -3,7 +3,7 @@ package it.polimi.ingsw.model.observerPattern.observers;
 import it.polimi.ingsw.model.FaithTrack;
 
 /**
- * Interface class for observers of faith trakc.
+ * Interface class for observers of FaithTrack.
  */
 public interface FaithTrackObserver {
 
