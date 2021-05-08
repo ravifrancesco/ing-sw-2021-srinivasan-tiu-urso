@@ -5,6 +5,11 @@ import it.polimi.ingsw.model.observerPattern.observables.WarehouseObservable;
 import java.util.*;
 import java.util.stream.IntStream;
 
+// TODO documentation
+
+/**
+ * The class is observable and notifies the observers on a change of the state.
+ */
 public class Warehouse extends WarehouseObservable {
 
 	static final int FIRST_SHELF_THRESHOLD = 1;

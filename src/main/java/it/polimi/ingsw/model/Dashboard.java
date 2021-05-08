@@ -2,6 +2,7 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
+import it.polimi.ingsw.model.observerPattern.observables.DashboardObservable;
 import it.polimi.ingsw.model.specialAbilities.*;
 
 import javax.swing.plaf.basic.BasicScrollPaneUI;
@@ -26,9 +27,12 @@ import java.util.stream.IntStream;
  *
  * The class also acts as a proxy for the warehouse and  the faith track, that are
  * not directly visible from the outside.
+ *
+ * The class is observable and notifies the observers on a change of the state.
+ *
  * TODO testing
  */
-public class Dashboard {
+public class Dashboard extends DashboardObservable {
 
 	static final int NUM_DEVELOPMENT_CARD_STACKS = 3;
 	static final int NUM_LEADER_CARDS = 2;
