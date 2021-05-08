@@ -7,7 +7,6 @@ import it.polimi.ingsw.model.specialAbilities.WarehouseExtraSpace;
 import it.polimi.ingsw.model.specialAbilities.WhiteMarbleResource;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.stream.Collectors;
 
 /**
@@ -206,7 +205,7 @@ public class Player {
 	 * Allows to update the player's victory points.
 	 */
 	public void updateVictoryPoints() {
-		this.victoryPoints = dashboard.computePlayerPoints();
+		this.victoryPoints = dashboard.getPlayerPoints();
 	}
 
 	/**

@@ -5,8 +5,6 @@ import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.observerPattern.observables.DashboardObservable;
 import it.polimi.ingsw.model.specialAbilities.*;
 
-import javax.swing.plaf.basic.BasicScrollPaneUI;
-import java.sql.Array;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -45,6 +43,8 @@ public class Dashboard extends DashboardObservable {
 	private ArrayList<Resource> supply;
 	private final List<Stack<DevelopmentCard>> playedDevelopmentCards;
 
+	private int playerPoints;
+
 	/**
 	 * The constructor for a Dashboard object.
 	 *
@@ -75,6 +75,8 @@ public class Dashboard extends DashboardObservable {
 		dashBoardProductionPower.reset();
 		supply.clear();
 		playedDevelopmentCards.forEach(Vector::clear);
+		playerPoints = 0;
+		notify(this);
 	}
 
 	/**
@@ -83,6 +85,8 @@ public class Dashboard extends DashboardObservable {
 	 */
 	public void moveFaithMarker(int pos) {
 		faithTrack.moveFaithMarker(pos);
+		updatePlayerPoints();
+		notify(this);
 	}
 
 	/**
@@ -93,11 +97,21 @@ public class Dashboard extends DashboardObservable {
 	public int getFaithMarkerPosition() { return faithTrack.getPosition(); }
 
 	/**
-	 * Computes the number of victory points of the player.
+	 * Getter for the number of victory points of the player.
 	 *
 	 * @return the current number of victory points of the player.
 	 */
-	public int computePlayerPoints() {
+	public int getPlayerPoints() {
+
+		return playerPoints;
+
+	}
+
+	/**
+	 * Updates the player points.
+	 */
+	private void updatePlayerPoints() {
+
 		int faithTrackVP = faithTrack.getVictoryPoints();
 
 		int leaderCardsVP = playedLeaderCards.stream()
@@ -114,10 +128,9 @@ public class Dashboard extends DashboardObservable {
 				.values().stream()
 				.reduce(0, Integer::sum) / 5;
 
-		return faithTrackVP + leaderCardsVP + developmentCardsVP + resourcePoints;
+		this.playerPoints = faithTrackVP + leaderCardsVP + developmentCardsVP + resourcePoints;
 
 	}
-
 
 	/**
 	 * Allows to place a Leader Card onto the Dashboard.
@@ -129,11 +142,13 @@ public class Dashboard extends DashboardObservable {
 	 */
 	public int placeLeaderCard(LeaderCard c) throws IllegalStateException {
 		if (playedLeaderCards.size() == NUM_LEADER_CARDS) {
+			notify(this);
 			throw new IllegalStateException("Leader Card grid is full");
 		} else {
 			playedLeaderCards.add(c);
 		}
-
+		updatePlayerPoints();
+		notify(this);
 		return playedLeaderCards.indexOf(c);
 	}
 
@@ -152,16 +167,21 @@ public class Dashboard extends DashboardObservable {
 		Banner banner = c.getBanner();
 
 		if (position < 0 || position > 2) {
+			notify(this);
 			throw new IllegalArgumentException("Not a valid index");
 		}
 
 		if (!playedDevelopmentCards.get(position).isEmpty() &&
 				!playedDevelopmentCards.get(position).peek().getBanner().isOneLess(banner)) {
+			notify(this);
 			throw new IllegalStateException();
 		} else if (playedDevelopmentCards.get(position).isEmpty() &&
 				c.getBanner().getLevel() > 1) {
+			notify(this);
 			throw new IllegalStateException();
 		} else {
+			updatePlayerPoints();
+			notify(this);
 			playedDevelopmentCards.get(position).push(c);
 		}
 	}
@@ -174,6 +194,8 @@ public class Dashboard extends DashboardObservable {
 	 */
 	public void storeResourceInLocker(Resource r, int quantity) {
 		warehouse.storeInLocker(r, quantity);
+		updatePlayerPoints();
+		notify(this);
 	}
 
 	/**
@@ -186,16 +208,21 @@ public class Dashboard extends DashboardObservable {
 	 */
 	public void storeResourceInDeposit(Resource r, int position) throws IllegalArgumentException, IllegalStateException {
 		if (position < 0 || position > 5) {
+			notify(this);
 			throw new IllegalArgumentException();
 		}
 
 		try {
 			warehouse.storeInDeposit(r, position);
+			updatePlayerPoints();
 		} catch (IllegalStateException e) {
 			throw new IllegalStateException();
 		} catch (IllegalArgumentException e) {
 			throw new IllegalArgumentException();
+		} finally {
+			notify(this);
 		}
+
 	}
 
 	/**
@@ -239,7 +266,6 @@ public class Dashboard extends DashboardObservable {
 	 */
 	public LeaderCard getLeaderCard(int c) throws IllegalArgumentException {
 		if (c < 0 || c >= playedLeaderCards.size()) {
-			System.out.println(playedLeaderCards.size());
 			throw new IllegalArgumentException("Invalid index");
 		}
 		return playedLeaderCards.get(c);
@@ -271,6 +297,7 @@ public class Dashboard extends DashboardObservable {
 	 */
 	public void addResourcesToSupply(ArrayList<Resource> res) {
 		supply.addAll(res);
+		notify(this);
 	}
 
 
@@ -282,6 +309,7 @@ public class Dashboard extends DashboardObservable {
 	public int discardResources() {
 		int faithPoints = supply.size();
 		supply.clear();
+		notify(this);
 		return faithPoints;
 	}
 
@@ -303,6 +331,8 @@ public class Dashboard extends DashboardObservable {
 
 		dashBoardProductionPower.reset();
 
+		notify(this);
+
 	}
 
 	/**
@@ -323,6 +353,7 @@ public class Dashboard extends DashboardObservable {
 	 */
 	public void moveDepositResources(int from, int to) throws IllegalArgumentException, IllegalStateException {
 		if (from < 0 || from > 5 || to < 0 || to > 5) {
+			notify(this);
 			throw new IllegalArgumentException();
 		}
 		// copying current deposit
@@ -331,6 +362,7 @@ public class Dashboard extends DashboardObservable {
 		// making the move
 		swapDepositResources(newDeposit, from, to);
 		if(!warehouse.checkShelvesRule(newDeposit)) {
+			notify(this);
 			throw new IllegalStateException("Moves create an illegal deposit");
 		}
 		warehouse.doDepositMove(from, to);
@@ -347,8 +379,10 @@ public class Dashboard extends DashboardObservable {
 	 */
 	public void moveDepositExtraDepositResources(int from, int to, int lcPos, int lcIndex) throws IllegalArgumentException, IllegalStateException {
 		if(lcIndex > 1 || lcIndex < 0 || lcPos < 0 || lcPos > 1) {
+			notify(this);
 			throw new IllegalArgumentException();
 		} else if (!playedLeaderCards.get(lcIndex).getSpecialAbility().getType().equals(SpecialAbilityType.WAREHOUSE_EXTRA_SPACE)) {
+			notify(this);
 			throw new IllegalArgumentException();
 		}
 
@@ -360,6 +394,7 @@ public class Dashboard extends DashboardObservable {
 		IntStream.range(0, Warehouse.MAX_DEPOSIT_SLOTS).forEach(i -> newExtraDeposit[i] = warehouse.getExtraDeposits()[lcPos][i]);
 		swapExtraDepositResources(newDeposit, newExtraDeposit, from, to, lcPos, lcIndex);
 		if(!warehouse.checkShelvesRule(newDeposit)) {
+			notify(this);
 			throw new IllegalStateException("Move creates an illegal deposit");
 		}
 		warehouse.doExtraDepositMove(from, to, lcPos, lcIndex);
@@ -376,6 +411,7 @@ public class Dashboard extends DashboardObservable {
 		Resource temp = deposit[p1];
 		deposit[p1] = deposit[p2];
 		deposit[p2] = temp;
+		notify(this);
 	}
 
 	private void swapExtraDepositResources(Resource[] deposit, Resource[] extraDeposit, int p1, int p2, int lcPos, int lcIndex) {
@@ -389,6 +425,7 @@ public class Dashboard extends DashboardObservable {
 			warehouse.getExtraDeposits()[lcPos][p2] = deposit[p1];
 			deposit[p1] = temp;
 		}
+		notify(this);
 	}
 
 	/**
@@ -403,18 +440,22 @@ public class Dashboard extends DashboardObservable {
 
 		if (from < 0 || from > 3 || to < 0 || to > 5) {
 			// invalid indexes
+			notify(this);
 			throw new IllegalArgumentException();
 		}
 
 		try {
 			warehouse.storeInDeposit(supply.get(from), to);
 		} catch(IllegalStateException e) {
+			notify(this);
 			throw new IllegalStateException();
 		} catch(Exception e) {
+			notify(this);
 			throw new IllegalArgumentException();
 		}
 
 		supply.remove(from);
+		notify(this);
 
 	}
 
@@ -429,11 +470,13 @@ public class Dashboard extends DashboardObservable {
 	 */
 	public void storeFromSupplyInExtraDeposit(int leaderCardPosition, int from, int to) throws IllegalArgumentException, IllegalStateException {
 		if (leaderCardPosition < 0 || leaderCardPosition > 1 || from < 0 || from > 3 || to < 0 || to > 1) {
+			notify(this);
 			throw new IllegalArgumentException();
 		}
 		SpecialAbility specialAbility = playedLeaderCards.get(leaderCardPosition).getSpecialAbility();
 
 		if (!specialAbility.getType().equals(SpecialAbilityType.WAREHOUSE_EXTRA_SPACE)) {
+			notify(this);
 			throw new IllegalArgumentException();
 		}
 
@@ -443,20 +486,24 @@ public class Dashboard extends DashboardObservable {
 		try {
 			addedResource = supply.get(from);
 		} catch (Exception e) {
+			notify(this);
 			throw new IllegalArgumentException();
 		}
 
 		if(addedResource != wes.getStoredResource()) {
+			notify(this);
 			throw new IllegalStateException();
 		}
 
 		try {
 			warehouse.storeInExtraDeposit(leaderCardPosition, supply.get(from), to);
 		} catch (IllegalArgumentException e) {
+			notify(this);
 			throw new IllegalArgumentException();
 		}
 
 		supply.remove(from);
+		notify(this);
 
 	}
 
@@ -478,8 +525,6 @@ public class Dashboard extends DashboardObservable {
 	 * Activates new extra deposit inside the warehouse
 	 */
 	public void activateExtraDeposit(int leaderCardPos) {
-		// Resource is not needed as a parameter because the check is done each time a new resource is stored,
-		// by the warehouse
 		warehouse.activateExtraDeposit(leaderCardPos);
 	}
 
@@ -502,6 +547,7 @@ public class Dashboard extends DashboardObservable {
 		HashMap<Resource, Integer> rcAllRes = (HashMap<Resource, Integer>) resToPayWith.getAllResources(warehouse);
 		cost.forEach((k, v) -> rcAllRes.merge(k, v, (v1, v2) -> v1-v2));
 		if (rcAllRes.values().stream().anyMatch(v -> v < 0)) {
+			notify(this);
 			throw new IllegalArgumentException("Resources do not match the cost");
 		}
 		resToPayWith.getContainedDepositResources().forEach(warehouse::removeFromDeposit);
