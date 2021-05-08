@@ -3,10 +3,12 @@ package it.polimi.ingsw.server;
 import it.polimi.ingsw.model.FaithTrack;
 import it.polimi.ingsw.model.Warehouse;
 import it.polimi.ingsw.model.observerPattern.observers.FaithTrackObserver;
+import it.polimi.ingsw.model.observerPattern.observers.WarehouseObserver;
 import it.polimi.ingsw.server.lobby.Lobby;
 import it.polimi.ingsw.server.lobby.messageHandlers.LobbyMessages;
 import it.polimi.ingsw.server.messages.ServerMessage;
 import it.polimi.ingsw.server.messages.updates.FaithTrackUpdateMessage;
+import it.polimi.ingsw.server.messages.updates.WarehouseUpdateMessage;
 
 import javax.naming.InvalidNameException;
 import java.io.IOException;
@@ -15,7 +17,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 public class Connection implements Runnable,
-        FaithTrackObserver {
+        FaithTrackObserver, WarehouseObserver {
 
     private final Socket socket;
     private ObjectInputStream in;
@@ -115,7 +117,10 @@ public class Connection implements Runnable,
     }
 
 
-
+    @Override
+    public void update(Warehouse message) {
+        asyncSend(new WarehouseUpdateMessage(message));
+    }
 }
 
 

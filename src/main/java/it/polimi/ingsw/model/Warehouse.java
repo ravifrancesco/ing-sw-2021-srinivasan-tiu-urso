@@ -1,9 +1,11 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.observerPattern.observables.WarehouseObservable;
+
 import java.util.*;
 import java.util.stream.IntStream;
 
-public class Warehouse {
+public class Warehouse extends WarehouseObservable {
 
 	static final int FIRST_SHELF_THRESHOLD = 1;
 	static final int SECOND_SHELF_THRESHOLD = 3;
@@ -32,19 +34,20 @@ public class Warehouse {
 		this.clearDeposit();
 		this.clearLocker();
 		extraDeposits = new Resource[MAX_EXTRA_DEPOSIT_SLOTS][];
+		notify(this);
 	}
 
 	/**
 	 * Initializes the deposit, by setting each resource's stored quantity to 0.
 	 */
-	public void clearDeposit() {
+	private void clearDeposit() {
 		deposit = new Resource[MAX_DEPOSIT_SLOTS];
 	}
 
 	/**
 	 * Initializes the locker, by setting each resource's stored quantity to 0.
 	 */
-	public void clearLocker() {
+	private void clearLocker() {
 		locker.put(Resource.STONE, 0);
 		locker.put(Resource.SHIELD, 0);
 		locker.put(Resource.GOLD, 0);
@@ -64,13 +67,16 @@ public class Warehouse {
 		newDeposit[pos] = resToAdd;
 		// checking deposit legality
 		if (!checkShelvesRule(newDeposit)) {
+			notify(this);
 			throw new IllegalStateException("Deposit positioning is illegal");
 		}
 		if(deposit[pos] != null) {
+			notify(this);
 			throw new IllegalArgumentException();
 		}
 		// deposit is legal => adding resource to real deposit
 		deposit[pos] = resToAdd;
+		notify(this);
 	}
 
 	/**
@@ -80,6 +86,7 @@ public class Warehouse {
 	 */
 	public void removeFromDeposit(int pos) {
 		deposit[pos] = null;
+		notify(this);
 	}
 
 	/**
@@ -91,6 +98,7 @@ public class Warehouse {
 		Resource temp = deposit[from];
 		deposit[from] = deposit[to];
 		deposit[to] = temp;
+		notify(this);
 	}
 
 	/**
@@ -109,6 +117,7 @@ public class Warehouse {
 	 */
 	public void storeInLocker(Resource resToAdd, int qty) {
 		locker.put(resToAdd, locker.get(resToAdd) + qty);
+		notify(this);
 	}
 
 	/**
@@ -117,8 +126,10 @@ public class Warehouse {
 	 * @param resToRemove					resource to remove from
 	 * @param qty							the amount of resource quantity to remove
 	 */
+	// TODO fix
 	public void removeFromLocker(Resource resToRemove, int qty) {
 		locker.put(resToRemove, locker.get(resToRemove) - qty);
+		notify(this);
 	}
 
 	/**
@@ -141,9 +152,11 @@ public class Warehouse {
 	 */
 	public void storeInExtraDeposit(int extraDepositLeaderCardPos, Resource r, int pos) throws IllegalArgumentException {
 		if(extraDeposits[extraDepositLeaderCardPos][pos] != null) {
+			notify(this);
 			throw new IllegalArgumentException();
 		}
 		extraDeposits[extraDepositLeaderCardPos][pos] = r;
+		notify(this);
 	}
 
 	/**
@@ -157,6 +170,7 @@ public class Warehouse {
 		Resource fromResource = extraDeposits[extraDepositLeaderCardPos][from];
 		extraDeposits[extraDepositLeaderCardPos][from] = extraDeposits[extraDepositLeaderCardPos][to];
 		extraDeposits[extraDepositLeaderCardPos][to] = fromResource;
+		notify(this);
 	}
 
 	/**
@@ -166,6 +180,7 @@ public class Warehouse {
 	 */
 	public void removeFromExtraDeposit(int extraDepositLeaderCardPos, int pos) {
 		extraDeposits[extraDepositLeaderCardPos][pos] = null;
+		notify(this);
 	}
 
 	/**
@@ -187,6 +202,7 @@ public class Warehouse {
 			extraDeposits[lcIndex][to] = deposit[from];
 			deposit[from] = temp;
 		}
+		notify(this);
 	}
 
 	/**
