@@ -1,8 +1,12 @@
 package it.polimi.ingsw.server;
 
-
+import it.polimi.ingsw.model.FaithTrack;
+import it.polimi.ingsw.model.Warehouse;
+import it.polimi.ingsw.model.observerPattern.observers.FaithTrackObserver;
 import it.polimi.ingsw.server.lobby.Lobby;
 import it.polimi.ingsw.server.lobby.messageHandlers.LobbyMessages;
+import it.polimi.ingsw.server.messages.ServerMessage;
+import it.polimi.ingsw.server.messages.updates.FaithTrackUpdateMessage;
 
 import javax.naming.InvalidNameException;
 import java.io.IOException;
@@ -10,7 +14,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-public class Connection implements Runnable {
+public class Connection implements Runnable,
+        FaithTrackObserver {
 
     private final Socket socket;
     private ObjectInputStream in;
@@ -34,7 +39,7 @@ public class Connection implements Runnable {
         return active;
     }
 
-    private void send(Object message){
+    private void send(ServerMessage message){
         try {
             out.writeObject(message);
             out.flush();
@@ -43,7 +48,8 @@ public class Connection implements Runnable {
         }
     }
 
-    public void asyncSend(Object message){
+    // TODO solve related problems
+    public void asyncSend(ServerMessage message){
         new Thread(() -> send(message)).start();
     }
 
@@ -102,6 +108,13 @@ public class Connection implements Runnable {
     public String getNickname() {
         return nickname;
     }
+
+    @Override
+    public void update(FaithTrack message) {
+        asyncSend(new FaithTrackUpdateMessage(message));
+    }
+
+
 
 }
 
