@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Faith track observable
+ * FaithTrack observable
  */
 public class FaithTrackObservable {
 
