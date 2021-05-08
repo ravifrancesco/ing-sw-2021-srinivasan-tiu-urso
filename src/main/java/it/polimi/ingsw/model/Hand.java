@@ -1,13 +1,16 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.cards.LeaderCard;
+import it.polimi.ingsw.model.observerPattern.observables.HandObservable;
 
 import java.util.ArrayList;
 
 /**
  * This class represents the player's hand.
+ *
+ * The class is observable and notifies the observers on a change of the state.
  */
-public class Hand {
+public class Hand extends HandObservable {
 
 	private ArrayList<LeaderCard> cards;
 
@@ -23,6 +26,7 @@ public class Hand {
 	 */
 	public void reset() {
 		this.cards.clear();
+		notify(this);
 	}
 
 	/**
@@ -32,6 +36,7 @@ public class Hand {
 	 */
 	public void addCard(LeaderCard c) {
 		cards.add(c);
+		notify(this);
 	}
 
 	/**
@@ -41,7 +46,9 @@ public class Hand {
 	 * @return	the card that was removed.
 	 */
 	public LeaderCard removeCard(int c) {
-		return cards.remove(c);
+		LeaderCard removed = cards.remove(c);
+		notify(this);
+		return removed;
 	}
 
 	/**

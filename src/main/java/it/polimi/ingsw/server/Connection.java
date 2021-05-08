@@ -2,15 +2,18 @@ package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.model.Dashboard;
 import it.polimi.ingsw.model.FaithTrack;
+import it.polimi.ingsw.model.Hand;
 import it.polimi.ingsw.model.Warehouse;
 import it.polimi.ingsw.model.observerPattern.observers.DashboardObserver;
 import it.polimi.ingsw.model.observerPattern.observers.FaithTrackObserver;
+import it.polimi.ingsw.model.observerPattern.observers.HandObserver;
 import it.polimi.ingsw.model.observerPattern.observers.WarehouseObserver;
 import it.polimi.ingsw.server.lobby.Lobby;
 import it.polimi.ingsw.server.lobby.messageHandlers.LobbyMessages;
 import it.polimi.ingsw.server.messages.ServerMessage;
 import it.polimi.ingsw.server.messages.updates.DashboardUpdateMessage;
 import it.polimi.ingsw.server.messages.updates.FaithTrackUpdateMessage;
+import it.polimi.ingsw.server.messages.updates.HandUpdateMessage;
 import it.polimi.ingsw.server.messages.updates.WarehouseUpdateMessage;
 
 import javax.naming.InvalidNameException;
@@ -20,7 +23,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 public class Connection implements Runnable,
-        FaithTrackObserver, WarehouseObserver, DashboardObserver {
+        FaithTrackObserver, WarehouseObserver, DashboardObserver, HandObserver {
 
     private final Socket socket;
     private ObjectInputStream in;
@@ -135,6 +138,10 @@ public class Connection implements Runnable,
         asyncSend(new DashboardUpdateMessage(message));
     }
 
+    @Override
+    public void update(Hand message) {
+        asyncSend(new HandUpdateMessage(message));
+    }
 }
 
 
