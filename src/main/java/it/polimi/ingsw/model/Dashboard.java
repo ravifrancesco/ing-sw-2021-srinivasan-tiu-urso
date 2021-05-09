@@ -34,6 +34,10 @@ public class Dashboard {
 	static final int NUM_LEADER_CARDS = 2;
 	static final int NUM_DEVELOPMENT_CARDS_TO_WIN = 7;
 
+	public Warehouse getWarehouse() {
+		return warehouse;
+	}
+
 	private final Warehouse warehouse;
 	private final FaithTrack faithTrack;
 	private final List<LeaderCard> playedLeaderCards;
@@ -312,53 +316,65 @@ public class Dashboard {
 	/**
 	 * Allows to move resources in the Deposit.
 	 *
-	 * @param from						move from.
-	 * @param to						move to.
-	 * @throws IllegalArgumentException	if the moves indexes are out of bound.
-	 * @throws IllegalStateException	if the moves do not compile to the game rules.
+	 * @param newDeposit					the new deposit with the moved resources
+	 * @throws IllegalArgumentException	if the passed deposit has the wrong capacity
+	 * @throws IllegalStateException	if the moves do not compile to the game rules
 	 */
-	public void moveDepositResources(int from, int to) throws IllegalArgumentException, IllegalStateException {
-		if (from < 0 || from > 5 || to < 0 || to > 5) {
+	public void moveDepositResources(Resource[] newDeposit) throws IllegalArgumentException, IllegalStateException {
+		if (newDeposit.length != 6) {
 			throw new IllegalArgumentException();
 		}
-		// copying current deposit
-		Resource[] newDeposit = new Resource[Warehouse.MAX_DEPOSIT_SLOTS];
-		IntStream.range(0, Warehouse.MAX_DEPOSIT_SLOTS).forEach(i -> newDeposit[i] = warehouse.getDeposit()[i]);
-		// making the move
-		swapDepositResources(newDeposit, from, to);
-		if(!warehouse.checkShelvesRule(newDeposit)) {
+		if (!warehouse.checkShelvesRule(newDeposit) || !checkSameResourcesExtraDeposits(newDeposit, warehouse.getExtraDeposits()[0], 0)) {
 			throw new IllegalStateException("Moves create an illegal deposit");
 		}
-		warehouse.doDepositMove(from, to);
+		warehouse.changeDeposit(newDeposit);
 	}
 
 	/**
-	 * Swaps resources from/to deposit to/from a extraDeposit
-	 * @param from						move from.
-	 * @param to						move to.
-	 * @param lcPos is 0 if move.first is the extraDeposit index, 1 if move.second is the extraDeposit index
-	 * @param lcIndex the leader card index
-	 * @throws IllegalArgumentException if the indexes passed are illegal
-	 * @throws IllegalStateException if the move would create an illegal deposit.
+	 * Allows to move resources between the deposit and extra deposit.
+	 * @param newDeposit 				the new deposit with the moved resources
+	 * @param newExtraDeposit			the new extra deposit with the moved resources
+	 * @param lcIndex					the index of the leader card where the extra deposit is
+	 * @throws IllegalArgumentException	if the indexes are wrong
+	 * @throws IllegalStateException	if the new deposit has illegal placements
 	 */
-	public void moveDepositExtraDepositResources(int from, int to, int lcPos, int lcIndex) throws IllegalArgumentException, IllegalStateException {
-		if(lcIndex > 1 || lcIndex < 0 || lcPos < 0 || lcPos > 1) {
+	public void moveDepositExtraDeposit(Resource[] newDeposit, Resource[] newExtraDeposit, int lcIndex) throws IllegalArgumentException, IllegalStateException {
+		if(newDeposit.length != 6 || newExtraDeposit.length != 2 || lcIndex < 0 || lcIndex > 1) {
 			throw new IllegalArgumentException();
 		} else if (!playedLeaderCards.get(lcIndex).getSpecialAbility().getType().equals(SpecialAbilityType.WAREHOUSE_EXTRA_SPACE)) {
 			throw new IllegalArgumentException();
 		}
 
-		// copying current deposit
-		Resource[] newDeposit = new Resource[Warehouse.MAX_DEPOSIT_SLOTS];
-		IntStream.range(0, Warehouse.MAX_DEPOSIT_SLOTS).forEach(i -> newDeposit[i] = warehouse.getDeposit()[i]);
-		// copying selected extra deposit
-		Resource[] newExtraDeposit = new Resource[Warehouse.MAX_EXTRA_DEPOSIT_SLOTS];
-		IntStream.range(0, Warehouse.MAX_DEPOSIT_SLOTS).forEach(i -> newExtraDeposit[i] = warehouse.getExtraDeposits()[lcPos][i]);
-		swapExtraDepositResources(newDeposit, newExtraDeposit, from, to, lcPos, lcIndex);
-		if(!warehouse.checkShelvesRule(newDeposit)) {
+		if(!warehouse.checkShelvesRule(newDeposit) || !checkSameResourcesExtraDeposits(newDeposit, newExtraDeposit, lcIndex)) {
 			throw new IllegalStateException("Move creates an illegal deposit");
 		}
-		warehouse.doExtraDepositMove(from, to, lcPos, lcIndex);
+
+		warehouse.changeDeposit(newDeposit);
+		warehouse.changeExtraDeposit(newExtraDeposit, lcIndex);
+	}
+
+	/**
+	 * Checks to see that the resources quantity aren't changed a new deposit and extra deposit (only moving allowed)
+	 * @param newDeposit 				the new deposit
+	 * @param newExtraDeposit			the new extraDeposit
+	 * @param lcIndex					the index of the placed leader card with the extra deposit
+	 * @return							true if the resources qty are still the same, false if not
+	 */
+	private boolean checkSameResourcesExtraDeposits(Resource[] newDeposit, Resource[] newExtraDeposit, int lcIndex) {
+		HashMap<Resource, Integer> allResourceBefore = warehouse.getAllResources();
+		HashMap<Resource, Integer> allResourcesAfter;
+		if(lcIndex == 0) {
+			allResourcesAfter = warehouse.sumAllResources(newDeposit, warehouse.getLocker(), newExtraDeposit, warehouse.getExtraDeposits()[1]);
+		} else {
+			allResourcesAfter = warehouse.sumAllResources(newDeposit, warehouse.getLocker(), warehouse.getExtraDeposits()[0], newExtraDeposit);
+		}
+		System.out.println("before:");
+		System.out.println(allResourceBefore);
+		System.out.println("after:");
+		System.out.println(allResourcesAfter);
+		allResourceBefore.forEach((k, v) -> allResourcesAfter.merge(k, v, (v1, v2) -> v1-v2));
+		System.out.println(allResourceBefore);
+		return allResourcesAfter.values().stream().noneMatch(v -> v != 0);
 	}
 
 	/**

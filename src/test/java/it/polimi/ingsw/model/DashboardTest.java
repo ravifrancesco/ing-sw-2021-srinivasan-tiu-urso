@@ -11,11 +11,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.fail;
 
 public class DashboardTest {
@@ -307,59 +305,106 @@ public class DashboardTest {
 
     }
 
-    /*
-    // TODO fix warehouse
     @Test
-    public void moveDepositResourcesTest() {
+    public void moveDepositExtraDepositTest() {
 
         dashboard.reset();
 
-        dashboard.storeResourceInDeposit(Resource.GOLD, 0);
-        dashboard.storeResourceInDeposit(Resource.SHIELD, 1);
-        dashboard.storeResourceInDeposit(Resource.SERVANT, 5);
-
-        try {
-            dashboard.moveDepositResources(0, 7);
-            fail();
-        } catch (IllegalStateException e) {
-            fail();
-        } catch (IllegalArgumentException e) {
-            Assert.assertTrue(true);
-        }
-
-        try {
-            dashboard.moveDepositResources(0, 2);
-            fail();
-        } catch (IllegalArgumentException e) {
-            fail();
-        } catch (IllegalStateException e) {
-            Assert.assertTrue(true);
-        }
-
-        dashboard.moveDepositResources(5, 2);
-
-    }
-
-     */
-
-    // TODO wait for fix
-    /*
-    @Test
-    public void moveDepositExtraDepositResources() {
-
-        dashboard.reset();
-
-        dashboard.storeResourceInDeposit(Resource.GOLD, 0);
-        dashboard.storeResourceInDeposit(Resource.SHIELD, 1);
-        dashboard.storeResourceInDeposit(Resource.SERVANT, 5);
-
-        LeaderCard leaderCard1 = new LeaderCard(1, 2, new HashMap<>(), new HashMap<>(), new WarehouseExtraSpace(Resource.SHIELD));
-        LeaderCard leaderCard2 = new LeaderCard(1, 2, new HashMap<>(), new HashMap<>(), new WhiteMarbleResource(Resource.SHIELD));
+        LeaderCard leaderCard1 = new LeaderCard(1, 2, new HashMap<>(), new HashMap<>(), new WarehouseExtraSpace(Resource.STONE));
         dashboard.placeLeaderCard(leaderCard1);
 
+        dashboard.activateExtraDeposit(0);
+        dashboard.getWarehouse().getExtraDeposits()[0][0] = Resource.STONE;
+        dashboard.storeResourceInDeposit(Resource.STONE, 3);
+        dashboard.storeResourceInDeposit(Resource.STONE, 4);
+
+        Assert.assertEquals(dashboard.getWarehouse().getExtraDeposits()[0][0], Resource.STONE);
+        Assert.assertNull(dashboard.getWarehouse().getExtraDeposits()[0][1]);
+        Assert.assertEquals(dashboard.getWarehouse().getDeposit()[3], Resource.STONE);
+        Assert.assertEquals(dashboard.getWarehouse().getDeposit()[4], Resource.STONE);
+
+        Resource[] newDeposit = new Resource[6];
+        Resource[] newExtraDeposit = new Resource[2];
+        int leaderCardIndex = 0;
+        newDeposit[3] = Resource.STONE;
+        newDeposit[4] = Resource.STONE;
+        newDeposit[5] = Resource.STONE;
+
+        dashboard.moveDepositExtraDeposit(newDeposit, newExtraDeposit, leaderCardIndex);
+
+        Assert.assertNull(dashboard.getWarehouse().getExtraDeposits()[0][0]);
+        Assert.assertNull(dashboard.getWarehouse().getExtraDeposits()[0][1]);
+        Assert.assertEquals(dashboard.getWarehouse().getDeposit()[3], Resource.STONE);
+        Assert.assertEquals(dashboard.getWarehouse().getDeposit()[4], Resource.STONE);
+        Assert.assertEquals(dashboard.getWarehouse().getDeposit()[5], Resource.STONE);
+
+        newExtraDeposit[0] = Resource.STONE;
+
+        int thrownExceptions = 0;
+        try {
+            dashboard.moveDepositExtraDeposit(newDeposit, newExtraDeposit, leaderCardIndex);
+        } catch (Exception e) {
+            thrownExceptions += 1;
+        }
+        Assert.assertEquals(thrownExceptions, 1);
+
+        newExtraDeposit[0] = null;
+        try {
+            dashboard.moveDepositExtraDeposit(newDeposit, newExtraDeposit, 5);
+        } catch (Exception e) {
+            thrownExceptions += 1;
+        }
+        Assert.assertEquals(thrownExceptions, 2);
+
+
+
+
     }
 
-     */
+    @Test
+    public void moveDepositTest() {
+
+        dashboard.reset();
+
+        dashboard.storeResourceInDeposit(Resource.STONE, 1);
+        dashboard.storeResourceInDeposit(Resource.STONE, 2);
+
+        Resource[] newDeposit = new Resource[6];
+        newDeposit[3] = Resource.STONE;
+        newDeposit[4] = Resource.STONE;
+
+        Assert.assertEquals(dashboard.getWarehouse().getDeposit()[1], Resource.STONE);
+        Assert.assertEquals(dashboard.getWarehouse().getDeposit()[2], Resource.STONE);
+
+        System.out.println(Arrays.toString(dashboard.getWarehouse().getDeposit()));
+        dashboard.moveDepositResources(newDeposit);
+        System.out.println(Arrays.toString(dashboard.getWarehouse().getDeposit()));
+
+        Assert.assertEquals(dashboard.getWarehouse().getDeposit()[3], Resource.STONE);
+        Assert.assertEquals(dashboard.getWarehouse().getDeposit()[3], Resource.STONE);
+        Assert.assertEquals(dashboard.getWarehouse().getDeposit()[3], Resource.STONE);
+        Assert.assertEquals(dashboard.getWarehouse().getDeposit()[4], Resource.STONE);
+
+        newDeposit[5] = Resource.STONE;
+
+        int thrownExceptions = 0;
+        Assert.assertEquals(thrownExceptions, 0);
+
+        try {
+            dashboard.moveDepositResources(newDeposit);
+        } catch (Exception e) {
+            thrownExceptions += 1;
+        }
+        Assert.assertEquals(thrownExceptions, 1);
+
+        Resource[] newDeposit2 = new Resource[7];
+        try {
+            dashboard.moveDepositResources(newDeposit2);
+        } catch (Exception e) {
+            thrownExceptions += 1;
+        }
+        Assert.assertEquals(thrownExceptions, 2);
+    }
 
     @Test
     public void storeFromSupply() {
@@ -510,7 +555,6 @@ public class DashboardTest {
 
     }
 
-    // TODO wait for explanation
     @Test
     public void payPriceTest() {
         // TODO change when we have the view
