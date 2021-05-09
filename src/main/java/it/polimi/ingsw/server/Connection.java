@@ -13,6 +13,11 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+/**
+ * TODO fix all errors after changing implementation
+ * TODO proably separate the lobbies
+ * TODO add observers to gameLobby
+ */
 public class Connection implements Runnable,
         FaithTrackObserver, WarehouseObserver, DashboardObserver,
         PlayerObserver, GameObserver, GameBoardObserver,
@@ -68,7 +73,7 @@ public class Connection implements Runnable,
         active = false;
     }
 
-    private void close(){
+    private void close() {
         closeConnection();
         System.out.println("Deregistering client...");
         server.deregisterConnection(this);

@@ -1,10 +1,14 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.observerPattern.observables.GameObservable;
+import it.polimi.ingsw.model.observerPattern.observers.GameObserver;
+import it.polimi.ingsw.server.Connection;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 
-public class Game {
+public class Game extends GameObservable {
 
 	private String gameId;
 
@@ -90,4 +94,5 @@ public class Game {
 		players.values().forEach(Player::updateVictoryPoints);
 		return this;
 	}
+
 }

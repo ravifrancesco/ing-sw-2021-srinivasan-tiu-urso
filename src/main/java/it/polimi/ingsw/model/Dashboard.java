@@ -558,4 +558,11 @@ public class Dashboard extends DashboardObservable {
 						warehouse.removeFromExtraDeposit(i, pos)));
 	}
 
+	public Warehouse getWarehouse() {
+		return warehouse;
+	}
+
+	public FaithTrack getFaithTrack() {
+		return faithTrack;
+	}
 }

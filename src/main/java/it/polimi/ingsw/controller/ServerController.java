@@ -3,9 +3,11 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.controller.exceptions.*;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.specialAbilities.*;
+import it.polimi.ingsw.server.Connection;
 
 import javax.naming.InvalidNameException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -75,7 +77,6 @@ public class ServerController {
      * @throws GameFullException if the game is already full.
      * @throws InvalidNameException if the game contains an other player with the same nickname.
      */
-
     public void joinGame(String nickname) throws GameFullException, InvalidNameException {
         if (game.getPlayers().size() >= numberOfPlayers) {
             throw new GameFullException("Game " + this.game.getGameId() + " is full.");
@@ -87,9 +88,52 @@ public class ServerController {
     }
 
     /**
+     * Adds the connection as the observer of all observable classes
+     *
+     * @param c observer
+     */
+    public void addObservers(Connection c) {
+
+        game.addObserver(c);
+
+        GameBoard gameBoard = game.getGameBoard();
+        gameBoard.addObserver(c);
+        gameBoard.getMarket().addObserver(c);
+        gameBoard.getDevelopmentCardGrid().addObserver(c);
+
+        List<Player> players = new ArrayList<>(game.getPlayers().values());
+        players.forEach(p -> p.addObserver(c));
+        players.forEach(p -> p.getDashboard().addObserver(c));
+        players.forEach(p -> p.getDashboard().getFaithTrack().addObserver(c));
+        players.forEach(p -> p.getDashboard().getWarehouse().addObserver(c));
+
+    }
+
+    /**
+     * Removes the connection from the observers of all observable classes
+     *
+     * @param c observer
+     */
+    public void removeObservers(Connection c) {
+
+        game.removeObserver(c);
+
+        GameBoard gameBoard = game.getGameBoard();
+        gameBoard.removeObserver(c);
+        gameBoard.getMarket().removeObserver(c);
+        gameBoard.getDevelopmentCardGrid().removeObserver(c);
+
+        List<Player> players = new ArrayList<>(game.getPlayers().values());
+        players.forEach(p -> p.removeObserver(c));
+        players.forEach(p -> p.getDashboard().removeObserver(c));
+        players.forEach(p -> p.getDashboard().getFaithTrack().removeObserver(c));
+        players.forEach(p -> p.getDashboard().getWarehouse().removeObserver(c));
+
+    }
+
+    /**
      * Reset method for the class. It resets the game, the current and the first player and initializes first turns.
      */
-
     public void reset() {
         game.reset();
         currentPlayer = game.getNextPlayer();
@@ -100,7 +144,6 @@ public class ServerController {
     /**
      * Starts the game.
      */
-
     public void startGame() {
       game.startUniquePhase(TurnPhase.FIRST_TURN); 
     }
@@ -113,7 +156,6 @@ public class ServerController {
      * @throws WrongMoveException if the player has already discarded the excess leader card.
      * @throws CardNotPlayableException if the index of the card is not valid.
      */
-
     /* ROBERT -- DONE */
     public void discardExcessLeaderCards(String nickname, int cardToDiscard) throws WrongTurnException, WrongMoveException, CardNotPlayableException {
         leaderCardController.setCurrentPlayer(this.currentPlayer);
