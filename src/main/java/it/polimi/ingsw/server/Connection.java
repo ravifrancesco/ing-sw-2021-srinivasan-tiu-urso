@@ -15,7 +15,7 @@ import java.net.Socket;
 
 public class Connection implements Runnable,
         FaithTrackObserver, WarehouseObserver, DashboardObserver,
-        PlayerObserver, GameObserver, GameBoardObserver {
+        PlayerObserver, GameObserver, GameBoardObserver, DevelopmentCardGridObserver{
 
     private final Socket socket;
     private ObjectInputStream in;
@@ -146,6 +146,10 @@ public class Connection implements Runnable,
         asyncSend(new GameBoardUpdateMessage(message));
     }
 
+    @Override
+    public void update(DevelopmentCardGrid message) {
+        asyncSend(new DevelopmentCardGridUpdateMessage(message));
+    }
 }
 
 
