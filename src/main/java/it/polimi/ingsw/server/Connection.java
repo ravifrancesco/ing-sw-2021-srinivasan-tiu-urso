@@ -15,7 +15,7 @@ import java.net.Socket;
 
 public class Connection implements Runnable,
         FaithTrackObserver, WarehouseObserver, DashboardObserver,
-        PlayerObserver, GameObserver {
+        PlayerObserver, GameObserver, GameBoardObserver {
 
     private final Socket socket;
     private ObjectInputStream in;
@@ -139,6 +139,11 @@ public class Connection implements Runnable,
     @Override
     public void update(Game message) {
         asyncSend(new GameUpdateMessage(message));
+    }
+
+    @Override
+    public void update(GameBoard message) {
+        asyncSend(new GameBoardUpdateMessage(message));
     }
 
 }
