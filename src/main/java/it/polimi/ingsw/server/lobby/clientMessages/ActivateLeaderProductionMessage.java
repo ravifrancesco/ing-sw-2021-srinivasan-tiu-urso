@@ -1,8 +1,10 @@
-package it.polimi.ingsw.server;
+package it.polimi.ingsw.server.lobby.clientMessages;
 
 import it.polimi.ingsw.controller.ServerController;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.ResourceContainer;
+import it.polimi.ingsw.server.Connection;
+import it.polimi.ingsw.server.lobby.clientMessages.ClientMessage;
 
 import java.util.Map;
 
