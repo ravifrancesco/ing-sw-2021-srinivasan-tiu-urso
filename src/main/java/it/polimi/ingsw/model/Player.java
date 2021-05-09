@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.cards.LeaderCard;
+import it.polimi.ingsw.model.observerPattern.observables.PlayerObservable;
 import it.polimi.ingsw.model.specialAbilities.DevelopmentCardDiscount;
 import it.polimi.ingsw.model.specialAbilities.SpecialAbilityType;
 import it.polimi.ingsw.model.specialAbilities.WarehouseExtraSpace;
@@ -20,8 +21,10 @@ import java.util.stream.Collectors;
  * </ul>
  * <p>
  * TODO testing
+ *
+ * The class is observable and notifies the observers on a change of the state.
  */
-public class Player {
+public class Player extends PlayerObservable {
 
 	static final int NUM_PLAYABLE_LEADER_CARDS = 2;
 
@@ -69,6 +72,7 @@ public class Player {
 		this.activeDiscounts.clear();
 		this.activatedWMR.clear();
 		this.victoryPoints = 0;
+		notify(this);
 	}
 
 	/**
@@ -81,6 +85,7 @@ public class Player {
 	public void playLeaderCard(int card) throws IllegalArgumentException, IllegalStateException {
 
 		if (card < 0 || card >= hand.getHandSize()) {
+			notify(this);
 			throw new IllegalArgumentException();
 		}
 
@@ -90,6 +95,7 @@ public class Player {
 		try {
 			position = dashboard.placeLeaderCard(leaderCard);
 		} catch (IllegalStateException e) {
+			notify(this);
 			throw new IllegalStateException();
 		}
 
