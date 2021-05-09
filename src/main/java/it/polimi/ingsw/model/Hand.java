@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.cards.LeaderCard;
-import it.polimi.ingsw.model.observerPattern.observables.HandObservable;
 
 import java.util.ArrayList;
 
