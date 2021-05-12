@@ -34,7 +34,7 @@ public class MainLobby implements Lobby {
         if (waitingConnection.containsKey(nickname)) throw new InvalidNameException();
         else {
             waitingConnection.put(nickname, c);
-            c.changeLobby(this);
+            c.enterLobby(this);
         }
     }
 
