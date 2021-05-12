@@ -368,12 +368,7 @@ public class Dashboard {
 		} else {
 			allResourcesAfter = warehouse.sumAllResources(newDeposit, warehouse.getLocker(), warehouse.getExtraDeposits()[0], newExtraDeposit);
 		}
-		System.out.println("before:");
-		System.out.println(allResourceBefore);
-		System.out.println("after:");
-		System.out.println(allResourcesAfter);
 		allResourceBefore.forEach((k, v) -> allResourcesAfter.merge(k, v, (v1, v2) -> v1-v2));
-		System.out.println(allResourceBefore);
 		return allResourcesAfter.values().stream().noneMatch(v -> v != 0);
 	}
 
