@@ -65,7 +65,6 @@ public class ServerController {
      * Method to load the game settings.
      * @param gameSettings the game settings to load.
      */
-    /* RAVI */
     public void loadGameSettings(GameSettings gameSettings) {
         game.loadGameSettings(gameSettings);
     }
@@ -131,7 +130,6 @@ public class ServerController {
      * @throws DepositCellNotEmpty if the position given is already full.
      * @throws IllegalDepositStateException if the state of the deposit is invalid.
      */
-    /* RAVI */
     public void getInitialResources(String nickname, Resource resource, int position) throws WrongTurnException, WrongMoveException, DepositCellNotEmpty, IllegalDepositStateException {
         if (!currentPlayer.equals(nickname)) {
             throw new WrongTurnException("Not " + nickname + " turn");
@@ -178,7 +176,6 @@ public class ServerController {
      * @throws WrongTurnException if the player is not in turn.
      * @throws CardNotPlayableException if the card is not playable due to position full or not enough resources/banners.
      */
-    /* GIUSEPPE */
     public void playLeaderCard(String nickname, int cardToPlay) throws WrongTurnException, CardNotPlayableException {
         leaderCardController.setCurrentPlayer(this.currentPlayer);
         leaderCardController.playLeaderCard(nickname, cardToPlay);
@@ -195,8 +192,7 @@ public class ServerController {
      * @throws PowerNotActivatableException if the production power is not activatable.
      * @throws WrongMoveException if the resources do not match the cost.
      */
-    /* GIUSEPPE */
-    public void activateLeaderCardProduction(String nickname, int cardToActivate, ResourceContainer resourcesToPayCost,
+    public void activateLeaderCardProductionPower(String nickname, int cardToActivate, ResourceContainer resourcesToPayCost,
                                              Map<Resource, Integer> resourceRequiredOptional, Map<Resource, Integer> resourceProducedOptional) throws WrongTurnException, PowerNotActivatableException, WrongMoveException {
 
         productionController.setCurrentPlayer(this.currentPlayer);
@@ -227,8 +223,7 @@ public class ServerController {
      * @throws PowerNotActivatableException if the production power is not activatable.
      * @throws WrongMoveException if the resources do not match the cost.
      */
-    /* GIUSEPPE */
-    public void activateDashboardProduction(String nickname, ResourceContainer resourcesToPayCost,
+    public void activateDashboardProductionPower(String nickname, ResourceContainer resourcesToPayCost,
                                             Map<Resource, Integer> resourceRequiredOptional, Map<Resource, Integer> resourceProducedOptional) throws WrongTurnException, PowerNotActivatableException, WrongMoveException {
 
         productionController.setCurrentPlayer(this.currentPlayer);
@@ -261,7 +256,6 @@ public class ServerController {
      * @throws CardNotPlayableException if the position given onto the dashboard is not valid.
      * @throws WrongMoveException if the resources to pay does not match the cost.
      */
-    /* RAVI */
     public void buyDevelopmentCard(String nickname, int row, int column, ResourceContainer resourcesToPayCost, int position)
             throws WrongTurnException, CardNotBuyableException, CardNotPlayableException, WrongMoveException {
 
@@ -280,7 +274,6 @@ public class ServerController {
      * @throws PowerNotActivatableException if the production power is not activatable.
      * @throws WrongMoveException           if the resources do not match the cost.
      */
-
     /* GIUSEPPE */
     public void activateDevelopmentCardProductionPower(String nickname, int cardToActivate, ResourceContainer resourcesToPayCost,
                                                        Map<Resource, Integer> resourceRequiredOptional, Map<Resource, Integer> resourceProducedOptional) throws WrongTurnException, PowerNotActivatableException, WrongMoveException {
@@ -288,6 +281,7 @@ public class ServerController {
         productionController.setCurrentPlayer(this.currentPlayer);
         productionController.activateDevelopmentCardProductionPower(nickname, cardToActivate, resourcesToPayCost, resourceRequiredOptional, resourceProducedOptional);
     }
+
 
     /**
      * Moves resources between the deposit
