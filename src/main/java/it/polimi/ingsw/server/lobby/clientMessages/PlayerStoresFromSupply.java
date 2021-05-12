@@ -7,8 +7,9 @@ public class PlayerStoresFromSupply implements ClientMessage {
     private int from;
     private int to;
 
-    public PlayerStoresFromSupply(int from) {
+    public PlayerStoresFromSupply(int from, int to) {
         this.from = from;
+        this.to = to;
     }
 
     @Override

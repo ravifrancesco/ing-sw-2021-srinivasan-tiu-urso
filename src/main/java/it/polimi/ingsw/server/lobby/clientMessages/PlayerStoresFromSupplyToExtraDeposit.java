@@ -8,8 +8,10 @@ public class PlayerStoresFromSupplyToExtraDeposit implements ClientMessage {
     private int from;
     private int to;
 
-    public PlayerStoresFromSupplyToExtraDeposit(int leaderCardPos) {
+    public PlayerStoresFromSupplyToExtraDeposit(int leaderCardPos, int from, int to) {
         this.leaderCardPos = leaderCardPos;
+        this.from = from;
+        this.to = from;
     }
 
     @Override
