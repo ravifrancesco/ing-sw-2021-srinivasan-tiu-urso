@@ -49,7 +49,15 @@ public class GameLobby implements Lobby {
             throw new IllegalStateException();
         }
         connectedPlayers.put(c.getNickname(), c);
-        c.changeLobby(this);
+        c.enterLobby(this);
+        serverController.addObservers(c);
+    }
+
+    public void leaveLobby(Connection c) {
+        if (connectedPlayers.containsValue(c)) {
+            connectedPlayers.remove(c.getNickname());
+            serverController.removeObservers(c);
+        }
     }
 
     public void loadGameSettings(GameSettings gameSettings) {

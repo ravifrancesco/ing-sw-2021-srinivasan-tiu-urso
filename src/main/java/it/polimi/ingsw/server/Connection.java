@@ -3,8 +3,10 @@ package it.polimi.ingsw.server;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.observerPattern.observers.*;
 import it.polimi.ingsw.server.lobby.Lobby;
-import it.polimi.ingsw.server.lobby.messageHandlers.LobbyMessages;
 import it.polimi.ingsw.server.messages.ServerMessage;
+import it.polimi.ingsw.server.messages.commons.ConnectionClosedMessage;
+import it.polimi.ingsw.server.messages.commons.InvalidNameMessage;
+import it.polimi.ingsw.server.messages.commons.WelcomeMessage;
 import it.polimi.ingsw.server.messages.updates.*;
 
 import javax.naming.InvalidNameException;
@@ -14,7 +16,6 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 /**
- * TODO fix all errors after changing implementation
  * TODO proably separate the lobbies
  * TODO add observers to gameLobby
  */
@@ -37,7 +38,7 @@ public class Connection implements Runnable,
         this.lobby = lobby;
     }
 
-    public synchronized void changeLobby(Lobby lobby) {
+    public synchronized void enterLobby(Lobby lobby) {
         this.lobby = lobby;
     }
 
@@ -64,7 +65,7 @@ public class Connection implements Runnable,
     }
 
     public synchronized void closeConnection(){
-        asyncSend(ServerMessages.CONNECTION_CLOSED);
+        asyncSend(new ConnectionClosedMessage());
         try{
             socket.close();
         }catch (IOException e){
@@ -85,9 +86,8 @@ public class Connection implements Runnable,
         try{
             in = new ObjectInputStream(socket.getInputStream());
             out = new ObjectOutputStream(socket.getOutputStream());
-            send(ServerMessages.WELCOME_MESSAGE);
+            asyncSend(new WelcomeMessage());
             registerName();
-            asyncSend(ServerMessages.OK);
             while(isActive()){
                 String read = (String) receive();
                 lobby.handleMessage(read, this);
@@ -106,7 +106,7 @@ public class Connection implements Runnable,
                 lobby.enterLobby(this);
                 return;
             } catch (InvalidNameException | IOException | ClassNotFoundException e) {
-                send(LobbyMessages.INVALID_NAME);
+                asyncSend(new InvalidNameMessage());
             }
         }
     }
@@ -125,7 +125,6 @@ public class Connection implements Runnable,
     public void update(FaithTrack message) {
         asyncSend(new FaithTrackUpdateMessage(message));
     }
-
 
     @Override
     public void update(Warehouse message) {

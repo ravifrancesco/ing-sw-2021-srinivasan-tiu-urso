@@ -90,7 +90,6 @@ public class FaithTrack extends FaithTrackObservable {
 			currentVaticanReport.achieve();
 			victoryPoints += currentVaticanReport.victoryPoints;
 		}
-		notify(this);
 	}
 
 	/**
