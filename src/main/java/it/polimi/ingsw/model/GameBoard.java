@@ -2,6 +2,7 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.LeaderCard;
+import it.polimi.ingsw.model.observerPattern.observables.GameObservable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,7 +17,7 @@ import java.util.Arrays;
  * The development card grid
  */
 
-public class GameBoard {
+public class GameBoard extends GameObservable {
 
 	private Deck discardDeck;
 	private Deck developmentDeck;

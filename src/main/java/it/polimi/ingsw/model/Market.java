@@ -1,12 +1,13 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.marbles.*;
+import it.polimi.ingsw.model.observerPattern.observables.MarketObservable;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.stream.IntStream;
 
-public class Market {
+public class Market extends MarketObservable {
 	static final int gridRowLength = 3;
 
 	static final int gridColLength = 4;

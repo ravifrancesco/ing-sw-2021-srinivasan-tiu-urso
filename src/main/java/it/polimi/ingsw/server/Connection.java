@@ -1,8 +1,13 @@
 package it.polimi.ingsw.server;
 
-
+import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.model.observerPattern.observers.*;
 import it.polimi.ingsw.server.lobby.Lobby;
-import it.polimi.ingsw.server.lobby.messageHandlers.LobbyMessages;
+import it.polimi.ingsw.server.messages.ServerMessage;
+import it.polimi.ingsw.server.messages.commons.ConnectionClosedMessage;
+import it.polimi.ingsw.server.messages.commons.InvalidNameMessage;
+import it.polimi.ingsw.server.messages.commons.WelcomeMessage;
+import it.polimi.ingsw.server.messages.updates.*;
 
 import javax.naming.InvalidNameException;
 import java.io.IOException;
@@ -10,7 +15,14 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-public class Connection implements Runnable {
+/**
+ * TODO proably separate the lobbies
+ * TODO add observers to gameLobby
+ */
+public class Connection implements Runnable,
+        FaithTrackObserver, WarehouseObserver, DashboardObserver,
+        PlayerObserver, GameObserver, GameBoardObserver,
+        DevelopmentCardGridObserver, MarketObserver {
 
     private final Socket socket;
     private ObjectInputStream in;
@@ -26,7 +38,7 @@ public class Connection implements Runnable {
         this.lobby = lobby;
     }
 
-    public synchronized void changeLobby(Lobby lobby) {
+    public synchronized void enterLobby(Lobby lobby) {
         this.lobby = lobby;
     }
 
@@ -34,7 +46,7 @@ public class Connection implements Runnable {
         return active;
     }
 
-    private void send(Object message){
+    private void send(ServerMessage message){
         try {
             out.writeObject(message);
             out.flush();
@@ -43,7 +55,8 @@ public class Connection implements Runnable {
         }
     }
 
-    public void asyncSend(Object message){
+    // TODO solve related problems
+    public void asyncSend(ServerMessage message){
         new Thread(() -> send(message)).start();
     }
 
@@ -52,7 +65,7 @@ public class Connection implements Runnable {
     }
 
     public synchronized void closeConnection(){
-        asyncSend(ServerMessages.CONNECTION_CLOSED);
+        asyncSend(new ConnectionClosedMessage());
         try{
             socket.close();
         }catch (IOException e){
@@ -61,7 +74,7 @@ public class Connection implements Runnable {
         active = false;
     }
 
-    private void close(){
+    private void close() {
         closeConnection();
         System.out.println("Deregistering client...");
         server.deregisterConnection(this);
@@ -73,9 +86,8 @@ public class Connection implements Runnable {
         try{
             in = new ObjectInputStream(socket.getInputStream());
             out = new ObjectOutputStream(socket.getOutputStream());
-            send(ServerMessages.WELCOME_MESSAGE);
+            asyncSend(new WelcomeMessage());
             registerName();
-            asyncSend(ServerMessages.OK);
             while(isActive()){
                 String read = (String) receive();
                 lobby.handleMessage(read, this);
@@ -94,7 +106,7 @@ public class Connection implements Runnable {
                 lobby.enterLobby(this);
                 return;
             } catch (InvalidNameException | IOException | ClassNotFoundException e) {
-                send(LobbyMessages.INVALID_NAME);
+                asyncSend(new InvalidNameMessage());
             }
         }
     }
@@ -103,6 +115,51 @@ public class Connection implements Runnable {
         return nickname;
     }
 
+    /**
+     *  TODO all of this methods and mesages should handle only the necessary information. To be defined after client.
+     *  TODO, this will be done changing the messages.
+     *  TODO the notifies have to be handled. (Together)
+     */
+
+    @Override
+    public void update(FaithTrack message) {
+        asyncSend(new FaithTrackUpdateMessage(message));
+    }
+
+    @Override
+    public void update(Warehouse message) {
+        asyncSend(new WarehouseUpdateMessage(message));
+    }
+
+    @Override
+    public void update(Dashboard message) {
+        asyncSend(new DashboardUpdateMessage(message));
+    }
+
+    @Override
+    public void update(Player message) {
+        asyncSend(new PlayerUpdateMessage(message));
+    }
+
+    @Override
+    public void update(Game message) {
+        asyncSend(new GameUpdateMessage(message));
+    }
+
+    @Override
+    public void update(GameBoard message) {
+        asyncSend(new GameBoardUpdateMessage(message));
+    }
+
+    @Override
+    public void update(DevelopmentCardGrid message) {
+        asyncSend(new DevelopmentCardGridUpdateMessage(message));
+    }
+
+    @Override
+    public void update(Market message) {
+        asyncSend(new MarketUpdateMessage(message));
+    }
 }
 
 

@@ -3,9 +3,11 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.controller.exceptions.*;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.specialAbilities.*;
+import it.polimi.ingsw.server.Connection;
 
 import javax.naming.InvalidNameException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -65,7 +67,6 @@ public class ServerController {
      * Method to load the game settings.
      * @param gameSettings the game settings to load.
      */
-    /* RAVI */
     public void loadGameSettings(GameSettings gameSettings) {
         game.loadGameSettings(gameSettings);
     }
@@ -76,7 +77,6 @@ public class ServerController {
      * @throws GameFullException if the game is already full.
      * @throws InvalidNameException if the game contains an other player with the same nickname.
      */
-
     public void joinGame(String nickname) throws GameFullException, InvalidNameException {
         if (game.getPlayers().size() >= numberOfPlayers) {
             throw new GameFullException("Game " + this.game.getGameId() + " is full.");
@@ -88,9 +88,52 @@ public class ServerController {
     }
 
     /**
+     * Adds the connection as the observer of all observable classes
+     *
+     * @param c observer
+     */
+    public void addObservers(Connection c) {
+
+        game.addObserver(c);
+
+        GameBoard gameBoard = game.getGameBoard();
+        gameBoard.addObserver(c);
+        gameBoard.getMarket().addObserver(c);
+        gameBoard.getDevelopmentCardGrid().addObserver(c);
+
+        List<Player> players = new ArrayList<>(game.getPlayers().values());
+        players.forEach(p -> p.addObserver(c));
+        players.forEach(p -> p.getDashboard().addObserver(c));
+        players.forEach(p -> p.getDashboard().getFaithTrack().addObserver(c));
+        players.forEach(p -> p.getDashboard().getWarehouse().addObserver(c));
+
+    }
+
+    /**
+     * Removes the connection from the observers of all observable classes
+     *
+     * @param c observer
+     */
+    public void removeObservers(Connection c) {
+
+        game.removeObserver(c);
+
+        GameBoard gameBoard = game.getGameBoard();
+        gameBoard.removeObserver(c);
+        gameBoard.getMarket().removeObserver(c);
+        gameBoard.getDevelopmentCardGrid().removeObserver(c);
+
+        List<Player> players = new ArrayList<>(game.getPlayers().values());
+        players.forEach(p -> p.removeObserver(c));
+        players.forEach(p -> p.getDashboard().removeObserver(c));
+        players.forEach(p -> p.getDashboard().getFaithTrack().removeObserver(c));
+        players.forEach(p -> p.getDashboard().getWarehouse().removeObserver(c));
+
+    }
+
+    /**
      * Reset method for the class. It resets the game, the current and the first player and initializes first turns.
      */
-
     public void reset() {
         game.reset();
         currentPlayer = game.getNextPlayer();
@@ -101,7 +144,6 @@ public class ServerController {
     /**
      * Starts the game.
      */
-
     public void startGame() {
       game.startUniquePhase(TurnPhase.FIRST_TURN); 
     }
@@ -114,7 +156,6 @@ public class ServerController {
      * @throws WrongMoveException if the player has already discarded the excess leader card.
      * @throws CardNotPlayableException if the index of the card is not valid.
      */
-
     /* ROBERT -- DONE */
     public void discardExcessLeaderCards(String nickname, int cardToDiscard) throws WrongTurnException, WrongMoveException, CardNotPlayableException {
         leaderCardController.setCurrentPlayer(this.currentPlayer);
@@ -131,7 +172,6 @@ public class ServerController {
      * @throws DepositCellNotEmpty if the position given is already full.
      * @throws IllegalDepositStateException if the state of the deposit is invalid.
      */
-    /* RAVI */
     public void getInitialResources(String nickname, Resource resource, int position) throws WrongTurnException, WrongMoveException, DepositCellNotEmpty, IllegalDepositStateException {
         if (!currentPlayer.equals(nickname)) {
             throw new WrongTurnException("Not " + nickname + " turn");
@@ -178,7 +218,6 @@ public class ServerController {
      * @throws WrongTurnException if the player is not in turn.
      * @throws CardNotPlayableException if the card is not playable due to position full or not enough resources/banners.
      */
-    /* GIUSEPPE */
     public void playLeaderCard(String nickname, int cardToPlay) throws WrongTurnException, CardNotPlayableException {
         leaderCardController.setCurrentPlayer(this.currentPlayer);
         leaderCardController.playLeaderCard(nickname, cardToPlay);
@@ -195,8 +234,7 @@ public class ServerController {
      * @throws PowerNotActivatableException if the production power is not activatable.
      * @throws WrongMoveException if the resources do not match the cost.
      */
-    /* GIUSEPPE */
-    public void activateLeaderCardProduction(String nickname, int cardToActivate, ResourceContainer resourcesToPayCost,
+    public void activateLeaderCardProductionPower(String nickname, int cardToActivate, ResourceContainer resourcesToPayCost,
                                              Map<Resource, Integer> resourceRequiredOptional, Map<Resource, Integer> resourceProducedOptional) throws WrongTurnException, PowerNotActivatableException, WrongMoveException {
 
         productionController.setCurrentPlayer(this.currentPlayer);
@@ -227,8 +265,7 @@ public class ServerController {
      * @throws PowerNotActivatableException if the production power is not activatable.
      * @throws WrongMoveException if the resources do not match the cost.
      */
-    /* GIUSEPPE */
-    public void activateDashboardProduction(String nickname, ResourceContainer resourcesToPayCost,
+    public void activateDashboardProductionPower(String nickname, ResourceContainer resourcesToPayCost,
                                             Map<Resource, Integer> resourceRequiredOptional, Map<Resource, Integer> resourceProducedOptional) throws WrongTurnException, PowerNotActivatableException, WrongMoveException {
 
         productionController.setCurrentPlayer(this.currentPlayer);
@@ -261,7 +298,6 @@ public class ServerController {
      * @throws CardNotPlayableException if the position given onto the dashboard is not valid.
      * @throws WrongMoveException if the resources to pay does not match the cost.
      */
-    /* RAVI */
     public void buyDevelopmentCard(String nickname, int row, int column, ResourceContainer resourcesToPayCost, int position)
             throws WrongTurnException, CardNotBuyableException, CardNotPlayableException, WrongMoveException {
 
@@ -289,6 +325,8 @@ public class ServerController {
         productionController.activateDevelopmentCardProductionPower(nickname, cardToActivate, resourcesToPayCost, resourceRequiredOptional, resourceProducedOptional);
     }
 
+    /* ROBERT TODO after Slack response */
+    public void moveResourcesDepositDeposit(String nickname, int from, int to) throws WrongTurnException, WrongMoveException, IllegalDepositStateException {
     /**
      * Moves resources between the deposit
      * @param nickname                      the player nickname
@@ -312,9 +350,10 @@ public class ServerController {
      * @throws WrongMoveException           if the move is illegal
      * @throws IllegalDepositStateException if the move creates an illegal deposit
      */
-    public void changeDepositExtraDeposit(String nickname, Resource[] deposit, Resource[] extraDeposit, int lcIndex) throws WrongTurnException, WrongMoveException, IllegalDepositStateException {
+    /* ROBERT TODO after Slack response */
+    public void moveResourceDepositExtraDeposit(String nickname, int from, int to, int lcPos, int extraDepositIndex) throws WrongTurnException, WrongMoveException, IllegalDepositStateException {
         warehouseController.setCurrentPlayer(this.currentPlayer);
-        warehouseController.changeResourcesDepositExtraDeposit(nickname, deposit, extraDeposit, lcIndex);
+        warehouseController.moveResourcesDepositExtraDeposit(nickname, from, to, lcPos, extraDepositIndex);
 
     }
 
@@ -327,6 +366,7 @@ public class ServerController {
      * @throws WrongMoveException if the index of the warehouse is not valid.
      * @throws IllegalDepositStateException if the warehouse is in an invalid state.
      */
+    /* ROBERT DONE */
     public void storeFromSupply(String nickname, int from, int to) throws WrongTurnException, WrongMoveException, IllegalDepositStateException {
         warehouseController.setCurrentPlayer(this.currentPlayer);
         warehouseController.storeFromSupply(nickname, from, to);
@@ -356,11 +396,14 @@ public class ServerController {
      * @throws LeaderCardInExcessException if the player has not discarded enough cards.
      * @throws WrongMoveException if the player has not acquired all due resources.
      */
+
+    /* ROBERT DONE */
     public boolean endTurn(String nickname) throws WrongTurnException, LeaderCardInExcessException, WrongMoveException {
         if (!currentPlayer.equals(nickname)) {
             throw new WrongTurnException("Not " + nickname + " turn");
         }
         // no turn phase check needed: player may stupidly pass the turn whilst having done nothing.
+
         Player player = game.getPlayers().get(nickname);
         Dashboard dashboard = player.getDashboard();
 
@@ -401,6 +444,7 @@ public class ServerController {
      * Getter for the game status.
      * @return the game status.
      */
+    /* RAVI */  //TODO talk con cugola
     public Game getGameStatus() {
         return game.getGameStatus();
     }

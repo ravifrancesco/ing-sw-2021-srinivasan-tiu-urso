@@ -155,7 +155,7 @@ public class DashboardTest {
         dashboard.storeResourceInLocker(Resource.SERVANT, 4);
         dashboard.storeResourceInDeposit(Resource.GOLD, 0);
 
-        Assert.assertEquals(15, dashboard.computePlayerPoints());
+        Assert.assertEquals(15, dashboard.getPlayerPoints());
 
     }
 
@@ -555,6 +555,7 @@ public class DashboardTest {
 
     }
 
+    // TODO wait for explanation
     @Test
     public void payPriceTest() {
         // TODO change when we have the view
