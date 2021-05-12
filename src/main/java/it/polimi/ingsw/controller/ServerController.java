@@ -311,11 +311,13 @@ public class ServerController {
      * @param cardToActivate                the index of the card whose production power is to be activated
      * @param resourcesToPayCost            the resources to pay for the resources required by the production power.
      * @param resourceRequiredOptional      the resources required that replace the selectable resources (if present).
-     * @param resourceProducedOptional the resources produced that replace the selectable resources (if present).
-     * @throws WrongTurnException if the player is not in turn.
+     * @param resourceProducedOptional      the resources produced that replace the selectable resources (if present).
+     * @throws WrongTurnException           if the player is not in turn.
      * @throws PowerNotActivatableException if the production power is not activatable.
-     * @throws WrongMoveException if the resources do not match the cost.
+     * @throws WrongMoveException           if the resources do not match the cost.
      */
+
+    /* GIUSEPPE */
     public void activateDevelopmentCardProductionPower(String nickname, int cardToActivate, ResourceContainer resourcesToPayCost,
                                                        Map<Resource, Integer> resourceRequiredOptional, Map<Resource, Integer> resourceProducedOptional) throws WrongTurnException, PowerNotActivatableException, WrongMoveException {
 
@@ -325,20 +327,28 @@ public class ServerController {
 
     /* ROBERT TODO after Slack response */
     public void moveResourcesDepositDeposit(String nickname, int from, int to) throws WrongTurnException, WrongMoveException, IllegalDepositStateException {
+    /**
+     * Moves resources between the deposit
+     * @param nickname                      the player nickname
+     * @param deposit                       the new deposit
+     * @throws WrongTurnException           if it is not the player's turn
+     * @throws WrongMoveException           if the move is illegal
+     * @throws IllegalDepositStateException if the move creates an illegal deposit
+     */
+    public void changeDeposit(String nickname, Resource[] deposit) throws WrongTurnException, WrongMoveException, IllegalDepositStateException {
         warehouseController.setCurrentPlayer(this.currentPlayer);
-        warehouseController.moveResourcesDepositDeposit(nickname, from, to);
+        warehouseController.changeResourcesDeposit(nickname, deposit);
     }
 
     /**
-     * Swaps two resources from a deposit to an extraDeposit (or viceversa).
-     * @param nickname player nickname
-     * @param from move from.
-     * @param to move to.
-     * @param lcPos an integer indicating which one of the Pair indexes is the extra deposit one
-     * @param extraDepositIndex the integer representing the leader card which has the extra deposit
-     * @throws WrongTurnException if it is not the player's turn
-     * @throws IllegalDepositStateException if the move would create an illegal deposit
-     * @throws WrongMoveException if one or more indexes are illegal
+     * Moves resources between the deposit and an extra deposit
+     * @param nickname                      the player nickname
+     * @param deposit                       the new deposit
+     * @param extraDeposit                  the new extra deposit
+     * @param lcIndex                       the index of the placed leader card where the extra deposit is
+     * @throws WrongTurnException           if it is not the player's turn
+     * @throws WrongMoveException           if the move is illegal
+     * @throws IllegalDepositStateException if the move creates an illegal deposit
      */
     /* ROBERT TODO after Slack response */
     public void moveResourceDepositExtraDeposit(String nickname, int from, int to, int lcPos, int extraDepositIndex) throws WrongTurnException, WrongMoveException, IllegalDepositStateException {

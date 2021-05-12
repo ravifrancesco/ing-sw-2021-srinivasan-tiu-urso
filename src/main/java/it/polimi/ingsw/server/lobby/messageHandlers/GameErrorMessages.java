@@ -8,6 +8,10 @@ public enum GameErrorMessages {
 
     WRONG_MOVE,
 
+    ILLEGAL_DEPOSIT_STATE,
+
+    EXCESS_LEADER_CARD
+
     POWER_NOT_ACTIVATABLE,
 
     ILLEGAL_DEPOSIT_STATE,

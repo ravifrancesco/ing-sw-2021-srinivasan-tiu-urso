@@ -4,6 +4,7 @@ import it.polimi.ingsw.controller.exceptions.*;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.GameSettings;
 import it.polimi.ingsw.model.Resource;
+import it.polimi.ingsw.model.specialAbilities.WhiteMarbleResource;
 
 import it.polimi.ingsw.model.specialAbilities.WhiteMarbleResource;
 import it.polimi.ingsw.model.ResourceContainer;
@@ -13,6 +14,7 @@ import it.polimi.ingsw.server.ServerMessages;
 import it.polimi.ingsw.server.lobby.GameLobby;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ArrayList;
@@ -60,12 +62,12 @@ public class GameLobbyMessageHandler {
 
     public void getInitialResources(Connection c) {
 
-        String nickname = c.getNickname();
+        String nickName = c.getNickname();
 
         try {
             Resource resource = (Resource) c.receive();
             int position = (int) c.receive();
-            gameLobby.getInitialResources(nickname, resource, position);
+            gameLobby.getInitialResources(nickName, resource, position);
             c.asyncSend(ServerMessages.OK);
         } catch (IOException | ClassNotFoundException | IllegalArgumentException e) {
             c.asyncSend(ServerMessages.ERROR);
@@ -126,7 +128,7 @@ public class GameLobbyMessageHandler {
             c.asyncSend(GameErrorMessages.CARD_NOT_PLAYABLE);
         }
     }
-  
+
     // TODO
     public void playLeaderCard(Connection c) {
         try {
@@ -191,7 +193,7 @@ public class GameLobbyMessageHandler {
             c.asyncSend(GameErrorMessages.POWER_NOT_ACTIVATABLE);
         }
     }
-  
+
     // TODO adjust after professor meeting
     public void getFromMarket(Connection c) {
         try {
@@ -274,6 +276,46 @@ public class GameLobbyMessageHandler {
         }
     }
 
+    // TODO adjust after professor meeting
+    public void getFromMarket(Connection c) {
+        try {
+            int moveIndex = (Integer) c.receive();
+            ArrayList<WhiteMarbleResource> wmrs = (ArrayList<WhiteMarbleResource>) c.receive();
+            gameLobby.getFromMarket(c.getNickname(), moveIndex, wmrs);
+            c.asyncSend(ServerMessages.OK);
+        } catch (IOException | ClassNotFoundException e) {
+            System.err.println("Error whilst receiving move parameters");
+            c.asyncSend(ServerMessages.ERROR);
+        } catch (WrongMoveException e) {
+            System.err.println("Wrong move index");
+            c.asyncSend(GameErrorMessages.WRONG_MOVE);
+        } catch (WrongTurnException e) {
+            System.err.println("Wrong turn");
+            c.asyncSend(GameErrorMessages.WRONG_TURN);
+        }
+    }
+
+    // TODO adjust after professor meeting
+    public void storeFromSupply(Connection c) {
+        try {
+            int from = (Integer) c.receive();
+            int to = (Integer) c.receive();
+            gameLobby.storeFromSupply(c.getNickname(), from, to);
+            c.asyncSend(ServerMessages.OK);
+        } catch (IOException | ClassNotFoundException e) {
+            System.err.println("Error whilst receiving move parameters.");
+            c.asyncSend(ServerMessages.ERROR);
+        } catch (WrongMoveException e) {
+            System.err.println("Wrong move indexes");
+            c.asyncSend(GameErrorMessages.WRONG_MOVE);
+        } catch (WrongTurnException e) {
+            System.err.println("Wrong turn");
+            c.asyncSend(GameErrorMessages.WRONG_TURN);
+        } catch (IllegalDepositStateException e) {
+            System.err.println("Move creates an illegal deposit");
+            c.asyncSend(GameErrorMessages.ILLEGAL_DEPOSIT_STATE);
+        }
+    }
     // TODO adjust after professor meeting
     public void endTurn(Connection c) {
         try {
