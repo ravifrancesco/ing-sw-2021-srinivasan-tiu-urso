@@ -1,11 +1,11 @@
-package it.polimi.ingsw.server.lobby.messages.clientMessages.game;
+package it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.game;
 
 import it.polimi.ingsw.controller.ServerController;
 import it.polimi.ingsw.server.Connection;
-import it.polimi.ingsw.server.lobby.messages.clientMessages.ClientMessage;
+import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.ClientGameMessage;
 
 
-public class PlayerDiscardsExcessLeaderCards implements ClientMessage {
+public class PlayerDiscardsExcessLeaderCards extends ClientGameMessage {
     private int cardToDiscard;
 
     public PlayerDiscardsExcessLeaderCards(int cardToDiscard) {

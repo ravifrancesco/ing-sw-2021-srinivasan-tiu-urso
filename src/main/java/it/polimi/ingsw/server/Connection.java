@@ -2,11 +2,16 @@ package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.observerPattern.observers.*;
+import it.polimi.ingsw.server.lobby.GameLobby;
 import it.polimi.ingsw.server.lobby.Lobby;
-import it.polimi.ingsw.server.lobby.messages.clientMessages.ClientMessage;
-import it.polimi.ingsw.server.lobby.messages.clientMessages.lobby.RegisterName;
+import it.polimi.ingsw.server.lobby.LobbyType;
+import it.polimi.ingsw.server.lobby.MainLobby;
+import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.ClientGameMessage;
+import it.polimi.ingsw.server.lobby.messages.clientMessages.lobbyMessage.ClientLobbyMessage;
+import it.polimi.ingsw.server.lobby.messages.clientMessages.lobbyMessage.lobby.RegisterName;
 import it.polimi.ingsw.server.lobby.messages.serverMessages.ServerMessage;
 import it.polimi.ingsw.server.lobby.messages.serverMessages.commons.ConnectionClosedMessage;
+import it.polimi.ingsw.server.lobby.messages.serverMessages.commons.ErrorMessage;
 import it.polimi.ingsw.server.lobby.messages.serverMessages.commons.InvalidNameMessage;
 import it.polimi.ingsw.server.lobby.messages.serverMessages.commons.WelcomeMessage;
 import it.polimi.ingsw.server.lobby.messages.serverMessages.updates.*;
@@ -18,7 +23,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 /**
- * TODO proably separate the lobbies
+ * TODO probably separate the lobbies
  * TODO add observers to gameLobby
  */
 public class Connection implements Runnable,
@@ -62,8 +67,12 @@ public class Connection implements Runnable,
         new Thread(() -> send(message)).start();
     }
 
-    public ClientMessage receive() throws IOException, ClassNotFoundException {
-        return (ClientMessage) in.readObject();
+    public ClientGameMessage receiveGameMessage() throws IOException, ClassNotFoundException {
+        return (ClientGameMessage) in.readObject();
+    }
+
+    public ClientLobbyMessage receiveLobbyMessage() throws IOException, ClassNotFoundException {
+        return (ClientLobbyMessage) in.readObject();
     }
 
     public synchronized void closeConnection(){
@@ -76,10 +85,18 @@ public class Connection implements Runnable,
         active = false;
     }
 
+    public void deregisterConnection() {
+        if (lobby.getType() == LobbyType.MAIN_LOBBY) {
+            ((MainLobby) lobby).deregisterConnection(this);
+        } else {
+            ((GameLobby) lobby).leaveLobby(this);
+            // TODO have reference to MainLobby
+        }
+    }
+
     private void close() {
         closeConnection();
         System.out.println("Deregistering client...");
-        server.deregisterConnection(this);
         System.out.println("Done!");
     }
 
@@ -91,10 +108,9 @@ public class Connection implements Runnable,
             asyncSend(new WelcomeMessage());
             registerName();
             while(isActive()){
-                ClientMessage read = (ClientMessage) receive();
-                lobby.handleMessage(read, this);
+                handleMessage();
             }
-        } catch(IOException | ClassNotFoundException e) {
+        } catch(IOException e) {
             System.err.println(e.getMessage());
         } finally {
             close();
@@ -104,14 +120,35 @@ public class Connection implements Runnable,
     public void registerName() {
         while(true) {
             try {
-                RegisterName rn = (RegisterName) receive();
-                rn.handle(this, null);
+                RegisterName registerName = (RegisterName) receiveLobbyMessage();
+                registerName.handle(this, lobby);
                 lobby.enterLobby(this);
                 return;
             } catch (InvalidNameException | IOException | ClassNotFoundException e) {
                 asyncSend(new InvalidNameMessage());
             }
         }
+    }
+
+    public synchronized void handleMessage() {
+        if (lobby.getType() == LobbyType.MAIN_LOBBY) {
+            ClientLobbyMessage read;
+            try {
+                read = receiveLobbyMessage();
+                lobby.handleMessage(read, this);
+            } catch (IOException | ClassNotFoundException e) {
+                asyncSend(new ErrorMessage());
+            }
+        } else {
+            ClientGameMessage read;
+            try {
+                read = receiveGameMessage();
+                lobby.handleMessage(read, this);
+            } catch (IOException | ClassNotFoundException e) {
+                asyncSend(new ErrorMessage());
+            }
+        }
+
     }
 
     public String getNickname() {

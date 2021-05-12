@@ -1,16 +1,16 @@
-package it.polimi.ingsw.server.lobby.messages.clientMessages.game;
+package it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.game;
 
 import it.polimi.ingsw.controller.ServerController;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.server.Connection;
-import it.polimi.ingsw.server.lobby.messages.clientMessages.ClientMessage;
+import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.ClientGameMessage;
 
-public class GetInitialResourcesMessage implements ClientMessage {
+public class GetInitialResourcesGameMessage extends ClientGameMessage {
 
     Resource resource;
     int position;
 
-    public GetInitialResourcesMessage(Resource resource, int position) {
+    public GetInitialResourcesGameMessage(Resource resource, int position) {
         this.resource = resource;
         this.position = position;
     }

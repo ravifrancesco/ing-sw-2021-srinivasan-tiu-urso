@@ -1,15 +1,15 @@
-package it.polimi.ingsw.server.lobby.messages.clientMessages.game;
+package it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.game;
 
 import it.polimi.ingsw.controller.ServerController;
 import it.polimi.ingsw.model.GameSettings;
 import it.polimi.ingsw.server.Connection;
-import it.polimi.ingsw.server.lobby.messages.clientMessages.ClientMessage;
+import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.ClientGameMessage;
 
-public class LoadGameSettingsMessage implements ClientMessage {
+public class LoadGameSettingsGameMessage extends ClientGameMessage {
 
     private GameSettings gameSettings;
 
-    public LoadGameSettingsMessage(GameSettings gameSettings) {
+    public LoadGameSettingsGameMessage(GameSettings gameSettings) {
         this.gameSettings = gameSettings;
     }
 

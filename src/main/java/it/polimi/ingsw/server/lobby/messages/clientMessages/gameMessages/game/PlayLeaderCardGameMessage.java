@@ -1,14 +1,14 @@
-package it.polimi.ingsw.server.lobby.messages.clientMessages.game;
+package it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.game;
 
 import it.polimi.ingsw.controller.ServerController;
 import it.polimi.ingsw.server.Connection;
-import it.polimi.ingsw.server.lobby.messages.clientMessages.ClientMessage;
+import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.ClientGameMessage;
 
-public class PlayLeaderCardMessage implements ClientMessage {
+public class PlayLeaderCardGameMessage extends ClientGameMessage {
 
     int cardToPlay;
 
-    public PlayLeaderCardMessage(int cardToPlay) {
+    public PlayLeaderCardGameMessage(int cardToPlay) {
         this.cardToPlay = cardToPlay;
     }
 

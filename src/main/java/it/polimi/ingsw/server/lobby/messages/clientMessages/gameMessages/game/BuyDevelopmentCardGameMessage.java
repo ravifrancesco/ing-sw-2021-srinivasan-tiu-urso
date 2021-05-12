@@ -1,18 +1,18 @@
-package it.polimi.ingsw.server.lobby.messages.clientMessages.game;
+package it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.game;
 
 import it.polimi.ingsw.controller.ServerController;
 import it.polimi.ingsw.model.ResourceContainer;
 import it.polimi.ingsw.server.Connection;
-import it.polimi.ingsw.server.lobby.messages.clientMessages.ClientMessage;
+import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.ClientGameMessage;
 
-public class BuyDevelopmentCardMessage implements ClientMessage {
+public class BuyDevelopmentCardGameMessage extends ClientGameMessage {
 
     int row;
     int column;
     ResourceContainer resourceToPayCost;
     int position;
 
-    public BuyDevelopmentCardMessage(int row, int column, ResourceContainer resourceToPayCost, int position) {
+    public BuyDevelopmentCardGameMessage(int row, int column, ResourceContainer resourceToPayCost, int position) {
         this.row = row;
         this.column = column;
         this.resourceToPayCost = resourceToPayCost;

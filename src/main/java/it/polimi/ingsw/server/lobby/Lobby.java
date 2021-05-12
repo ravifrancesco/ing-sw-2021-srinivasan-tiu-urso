@@ -11,4 +11,5 @@ public interface Lobby {
 
     void enterLobby(Connection connection) throws InvalidNameException, IllegalStateException;
 
+    LobbyType getType();
 }

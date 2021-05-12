@@ -5,12 +5,10 @@ import it.polimi.ingsw.controller.exceptions.*;
 import it.polimi.ingsw.model.GameSettings;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.ResourceContainer;
-import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.specialAbilities.WhiteMarbleResource;
 import it.polimi.ingsw.server.Connection;
-import it.polimi.ingsw.server.Server;
-import it.polimi.ingsw.server.lobby.Lobby;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.ClientMessage;
+import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.ClientGameMessage;
 import it.polimi.ingsw.utils.Pair;
 
 import javax.naming.InvalidNameException;
@@ -121,4 +119,7 @@ public class GameLobby implements Lobby {
         return new Pair<>(connectedPlayers.size(), maxPlayers);
     }
 
+    public LobbyType getType() {
+        return LobbyType.GAME_LOBBY;
+    }
 }

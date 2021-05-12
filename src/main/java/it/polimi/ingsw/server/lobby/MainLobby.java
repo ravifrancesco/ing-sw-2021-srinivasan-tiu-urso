@@ -3,6 +3,7 @@ package it.polimi.ingsw.server.lobby;
 import it.polimi.ingsw.server.Connection;
 import it.polimi.ingsw.server.Server;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.ClientMessage;
+import it.polimi.ingsw.server.lobby.messages.clientMessages.lobbyMessage.ClientLobbyMessage;
 
 import javax.naming.InvalidNameException;
 import java.util.*;
@@ -36,12 +37,12 @@ public class MainLobby implements Lobby {
         }
     }
 
-    public void registerConnection(Connection c) {
+    public synchronized void registerConnection(Connection c) {
         connections.add(c);
         executor.submit(c);
     }
 
-    public void deregisterConnection(Connection c) {
+    public synchronized void deregisterConnection(Connection c) {
         connections.remove(c);
     }
 
@@ -77,4 +78,7 @@ public class MainLobby implements Lobby {
 
     }
 
+    public LobbyType getType() {
+        return LobbyType.MAIN_LOBBY;
+    }
 }

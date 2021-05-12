@@ -1,11 +1,11 @@
-package it.polimi.ingsw.server.lobby.messages.clientMessages.game;
+package it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.game;
 
 import it.polimi.ingsw.controller.ServerController;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.server.Connection;
-import it.polimi.ingsw.server.lobby.messages.clientMessages.ClientMessage;
+import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.ClientGameMessage;
 
-public class PlayerChangesDeposit implements ClientMessage {
+public class PlayerChangesDeposit extends ClientGameMessage {
     Resource[] deposit;
 
     public PlayerChangesDeposit(Resource[] deposit) {
