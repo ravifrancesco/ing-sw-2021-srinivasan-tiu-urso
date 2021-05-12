@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.cards.DevelopmentCard;
+import it.polimi.ingsw.model.observerPattern.observables.DevelopmentCardGridObservable;
 import it.polimi.ingsw.model.specialAbilities.DevelopmentCardDiscount;
 
 import java.util.*;
@@ -11,7 +12,7 @@ import java.util.stream.IntStream;
  * The class represents the grid of Development Card onto the GameBoard.
  */
 
-public class DevelopmentCardGrid {
+public class DevelopmentCardGrid extends DevelopmentCardGridObservable {
 	public static final int GRID_ROW_LENGTH = 3;
 	public static final int GRID_COL_LENGTH = 4;
 	public static final int DEVELOPMENT_CARD_NUM = 48;

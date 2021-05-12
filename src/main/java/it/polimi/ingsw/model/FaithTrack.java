@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.observerPattern.observables.FaithTrackObservable;
+
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -13,8 +15,10 @@ import java.util.stream.Collectors;
  * <li> The total victory points accumulated by the faith track.
  * </ul>
  * <p>
+ *
+ * The class is observable and notifies the observers on a change of the state.
  */
-public class FaithTrack {
+public class FaithTrack extends FaithTrackObservable {
 
 	private int position;
 
@@ -46,6 +50,7 @@ public class FaithTrack {
 		this.victoryPoints = 0;
 		this.position = 0;
 		vaticanReports.values().forEach(VaticanReport::reset);
+		notify(this);
 	}
 
 	/**
@@ -58,11 +63,13 @@ public class FaithTrack {
 	public void moveFaithMarker(int pos) {
 		for (int i = 1; i <= pos; i++) {
 			if (position == GameSettings.FAITH_TRACK_LENGTH - 1) {
+				notify(this);
 				return;
 			}
 			position++;
 			victoryPoints += faithTrackVictoryPoints[position];
 		}
+		notify(this);
 	}
 
 	/**
@@ -111,4 +118,7 @@ public class FaithTrack {
 	public Map<Integer, VaticanReport> getVaticanReports() {
 		return vaticanReports;
 	}
+
+
+
 }

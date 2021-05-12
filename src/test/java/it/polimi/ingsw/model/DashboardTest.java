@@ -10,7 +10,6 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -157,7 +156,7 @@ public class DashboardTest {
         dashboard.storeResourceInLocker(Resource.SERVANT, 4);
         dashboard.storeResourceInDeposit(Resource.GOLD, 0);
 
-        Assert.assertEquals(15, dashboard.computePlayerPoints());
+        Assert.assertEquals(15, dashboard.getPlayerPoints());
 
     }
 
