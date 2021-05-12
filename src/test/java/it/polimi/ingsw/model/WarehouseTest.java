@@ -76,12 +76,12 @@ public class WarehouseTest {
 
         Assert.assertEquals(thrownExceptions, 5);
         // SECTION 2: correct positions
-        Assert.assertEquals(wh.getDeposit()[0], null);
-        Assert.assertEquals(wh.getDeposit()[1], null);
-        Assert.assertEquals(wh.getDeposit()[2], null);
-        Assert.assertEquals(wh.getDeposit()[3], null);
-        Assert.assertEquals(wh.getDeposit()[4], null);
-        Assert.assertEquals(wh.getDeposit()[5], null);
+        Assert.assertNull(wh.getDeposit()[0]);
+        Assert.assertNull(wh.getDeposit()[1]);
+        Assert.assertNull(wh.getDeposit()[2]);
+        Assert.assertNull(wh.getDeposit()[3]);
+        Assert.assertNull(wh.getDeposit()[4]);
+        Assert.assertNull(wh.getDeposit()[5]);
 
         wh.storeInDeposit(Resource.SHIELD, 0);
         Assert.assertEquals(wh.getDeposit()[0], Resource.SHIELD);
@@ -116,27 +116,27 @@ public class WarehouseTest {
         // Adding and removing from every position
         wh.storeInDeposit(Resource.STONE, 0);
         wh.removeFromDeposit(0);
-        Assert.assertEquals(wh.getDeposit()[0], null);
+        Assert.assertNull(wh.getDeposit()[0]);
 
         wh.storeInDeposit(Resource.STONE, 1);
         wh.removeFromDeposit(1);
-        Assert.assertEquals(wh.getDeposit()[1], null);
+        Assert.assertNull(wh.getDeposit()[1]);
 
         wh.storeInDeposit(Resource.STONE, 2);
         wh.removeFromDeposit(2);
-        Assert.assertEquals(wh.getDeposit()[2], null);
+        Assert.assertNull(wh.getDeposit()[2]);
 
         wh.storeInDeposit(Resource.STONE, 3);
         wh.removeFromDeposit(3);
-        Assert.assertEquals(wh.getDeposit()[3], null);
+        Assert.assertNull(wh.getDeposit()[3]);
 
         wh.storeInDeposit(Resource.STONE, 4);
         wh.removeFromDeposit(4);
-        Assert.assertEquals(wh.getDeposit()[4], null);
+        Assert.assertNull(wh.getDeposit()[4]);
 
         wh.storeInDeposit(Resource.STONE, 5);
         wh.removeFromDeposit(5);
-        Assert.assertEquals(wh.getDeposit()[5], null);
+        Assert.assertNull(wh.getDeposit()[5]);
 
     }
 
@@ -155,10 +155,10 @@ public class WarehouseTest {
         // Switch a full with an empty position
         wh.storeInDeposit(Resource.SHIELD, 0);
         Assert.assertEquals(wh.getDeposit()[0], Resource.SHIELD);
-        Assert.assertEquals(wh.getDeposit()[1], null);
+        Assert.assertNull(wh.getDeposit()[1]);
         wh.doDepositMove(1, 0);
         Assert.assertEquals(wh.getDeposit()[1], Resource.SHIELD);
-        Assert.assertEquals(wh.getDeposit()[0], null);
+        Assert.assertNull(wh.getDeposit()[0]);
         wh.reset();
     }
 
@@ -229,13 +229,13 @@ public class WarehouseTest {
         wh.storeInExtraDeposit(0, Resource.STONE, 0);
         Assert.assertNull(wh.getExtraDeposits()[1]);
         Assert.assertEquals(wh.getExtraDeposits()[0][0], Resource.STONE);
-        Assert.assertEquals(wh.getExtraDeposits()[0][1], null);
+        Assert.assertNull(wh.getExtraDeposits()[0][1]);
 
         wh.activateExtraDeposit(1);
         wh.storeInExtraDeposit(1, Resource.GOLD, 1);
         Assert.assertEquals(wh.getExtraDeposits()[0][0], Resource.STONE);
-        Assert.assertEquals(wh.getExtraDeposits()[0][1], null);
-        Assert.assertEquals(wh.getExtraDeposits()[1][0], null);
+        Assert.assertNull(wh.getExtraDeposits()[0][1]);
+        Assert.assertNull(wh.getExtraDeposits()[1][0]);
         Assert.assertEquals(wh.getExtraDeposits()[1][1], Resource.GOLD);
 
         // Testing for mistakes
@@ -258,12 +258,12 @@ public class WarehouseTest {
         wh.activateExtraDeposit(0);
         wh.storeInExtraDeposit(0, Resource.STONE, 0);
         Assert.assertEquals(wh.getExtraDeposits()[0][0], Resource.STONE);
-        Assert.assertEquals(wh.getExtraDeposits()[0][1], null);
+        Assert.assertNull(wh.getExtraDeposits()[0][1]);
         Assert.assertNull(wh.getExtraDeposits()[1]);
 
         wh.swapExtraDeposit(0, 0, 1);
         Assert.assertEquals(wh.getExtraDeposits()[0][1], Resource.STONE);
-        Assert.assertEquals(wh.getExtraDeposits()[0][0], null);
+        Assert.assertNull(wh.getExtraDeposits()[0][0]);
         Assert.assertNull(wh.getExtraDeposits()[1]);
     }
 
@@ -305,15 +305,11 @@ public class WarehouseTest {
         wh.activateExtraDeposit(0);
         wh.storeInExtraDeposit(0, Resource.STONE, 0);
         Assert.assertEquals(wh.getExtraDeposits()[0][0], Resource.STONE);
-        Assert.assertEquals(wh.getExtraDeposits()[0][1], null);
+        Assert.assertNull(wh.getExtraDeposits()[0][1]);
 
         wh.removeFromExtraDeposit(0, 0);
-        Assert.assertEquals(wh.getExtraDeposits()[0][0], null);
-        Assert.assertEquals(wh.getExtraDeposits()[0][1], null);
-
-
-
-
+        Assert.assertNull(wh.getExtraDeposits()[0][0]);
+        Assert.assertNull(wh.getExtraDeposits()[0][1]);
     }
 
     @Test
@@ -325,6 +321,7 @@ public class WarehouseTest {
         wh.storeInDeposit(Resource.STONE, 0);
         wh.storeInDeposit(Resource.GOLD, 1);
         wh.storeInLocker(Resource.SHIELD, 3);
+
         Map<Resource, Integer> res = wh.getAllResources();
 
         int fuckYouJava;
@@ -364,6 +361,55 @@ public class WarehouseTest {
         Assert.assertEquals(fuckYouJava, 3);
         fuckYouJava = res.get(Resource.SERVANT);
         Assert.assertEquals(fuckYouJava, 2);
+
+
+    }
+
+    @Test
+    public void changeDeposit() {
+        Warehouse wh = new Warehouse();
+        Resource[] newDeposit = new Resource[6];
+
+        wh.storeInDeposit(Resource.STONE, 1);
+        wh.storeInDeposit(Resource.STONE, 2);
+
+        newDeposit[3] = Resource.STONE;
+        newDeposit[4] = Resource.STONE;
+
+        System.out.println(Arrays.toString(wh.getDeposit()));
+        System.out.println(Arrays.toString(newDeposit));
+
+        Assert.assertEquals(wh.getDeposit()[1], Resource.STONE);
+        Assert.assertEquals(wh.getDeposit()[2], Resource.STONE);
+        wh.changeDeposit(newDeposit);
+        Assert.assertNull(wh.getDeposit()[1]);
+        Assert.assertNull(wh.getDeposit()[2]);
+        Assert.assertEquals(wh.getDeposit()[3], Resource.STONE);
+        Assert.assertEquals(wh.getDeposit()[4], Resource.STONE);
+    }
+
+    @Test
+    public void changeDepositExtraDepositTest() {
+        Warehouse wh = new Warehouse();
+        wh.storeInDeposit(Resource.STONE, 3);
+        wh.storeInDeposit(Resource.STONE, 4);
+        wh.activateExtraDeposit(0);
+        wh.storeInExtraDeposit(0, Resource.STONE, 0);
+
+        Resource[] newExtraDeposit = new Resource[2];
+        int leaderCardIndex = 0;
+
+
+        Assert.assertEquals(wh.getExtraDeposits()[0][0], Resource.STONE);
+        Assert.assertNull(wh.getExtraDeposits()[0][1]);
+        wh.changeExtraDeposit(newExtraDeposit, leaderCardIndex);
+        Assert.assertNull(wh.getExtraDeposits()[0][0]);
+        Assert.assertNull(wh.getExtraDeposits()[0][1]);
+
+
+
+
+
 
 
 

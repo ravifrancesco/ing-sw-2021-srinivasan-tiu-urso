@@ -6,6 +6,7 @@ import it.polimi.ingsw.controller.exceptions.WrongTurnException;
 import it.polimi.ingsw.model.Dashboard;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.marbles.Marble;
 
 import java.util.ArrayList;
@@ -33,7 +34,10 @@ public class WarehouseController {
         this.currentPlayer = currentPlayer;
     }
 
-    public void moveResourcesDepositDeposit(String nickname, int from, int to) throws WrongTurnException, WrongMoveException, IllegalDepositStateException {
+    /**
+     * @see ServerController#changeDeposit(String, Resource[])
+     */
+    public void changeResourcesDeposit(String nickname, Resource[] deposit) throws WrongTurnException, WrongMoveException, IllegalDepositStateException {
         if (!currentPlayer.equals(nickname)) {
             throw new WrongTurnException("Not " + nickname + " turn");
         }
@@ -42,7 +46,7 @@ public class WarehouseController {
         Dashboard dashboard = player.getDashboard();
 
         try {
-            dashboard.moveDepositResources(from, to);
+            dashboard.moveDepositResources(deposit);
         } catch (IllegalArgumentException e) {
             throw new WrongMoveException("Invalid index");
         } catch (IllegalStateException e) {
@@ -51,9 +55,9 @@ public class WarehouseController {
     }
 
     /**
-     * @see ServerController#moveResourceDepositExtraDeposit
+     * @see ServerController#changeDepositExtraDeposit(String, Resource[], Resource[], int)
      */
-    public void moveResourcesDepositExtraDeposit(String nickname, int from, int to, int lcPos, int lcCardIndex) throws WrongTurnException, IllegalDepositStateException, WrongMoveException {
+    public void changeResourcesDepositExtraDeposit(String nickname, Resource[] deposit, Resource[] extraDeposit, int lcIndex) throws WrongTurnException, IllegalDepositStateException, WrongMoveException {
         if (!currentPlayer.equals(nickname)) {
             throw new WrongTurnException("Not " + nickname + " turn");
         }
@@ -62,7 +66,7 @@ public class WarehouseController {
         Dashboard dashboard = player.getDashboard();
 
         try {
-            dashboard.moveDepositExtraDepositResources(from, to, lcPos, lcCardIndex);
+            dashboard.moveDepositExtraDeposit(deposit, extraDeposit, lcIndex);
         } catch (IllegalStateException e) {
             throw new IllegalDepositStateException("Invalid deposit state");
 
