@@ -10,8 +10,7 @@ import it.polimi.ingsw.model.specialAbilities.WhiteMarbleResource;
 import it.polimi.ingsw.server.Connection;
 import it.polimi.ingsw.server.Server;
 import it.polimi.ingsw.server.lobby.Lobby;
-import it.polimi.ingsw.server.lobby.messageHandlers.GameLobbyMessageHandler;
-import it.polimi.ingsw.server.lobby.messageHandlers.GameMessages;
+import it.polimi.ingsw.server.lobby.messages.clientMessages.ClientMessage;
 import it.polimi.ingsw.utils.Pair;
 
 import javax.naming.InvalidNameException;
@@ -26,7 +25,6 @@ public class GameLobby implements Lobby {
     private final int maxPlayers;
     private final Map<String, Connection> connectedPlayers;
 
-    private GameLobbyMessageHandler gameLobbyMessageHandler;
 
     private final ServerController serverController;
 
@@ -34,11 +32,11 @@ public class GameLobby implements Lobby {
         this.id = id;
         this.maxPlayers = maxPlayers;
         this.connectedPlayers = new HashMap<>();
-        this.gameLobbyMessageHandler = new GameLobbyMessageHandler(this);
         this.serverController = new ServerController(id, maxPlayers);
     }
 
-    public void handleMessage(String msg, Connection c) {
+    @Override
+    public void handleMessage(ClientMessage clientMessage, Connection c) {
         // TODO
     }
 

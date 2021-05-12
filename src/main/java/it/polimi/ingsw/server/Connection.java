@@ -3,11 +3,13 @@ package it.polimi.ingsw.server;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.observerPattern.observers.*;
 import it.polimi.ingsw.server.lobby.Lobby;
-import it.polimi.ingsw.server.messages.ServerMessage;
-import it.polimi.ingsw.server.messages.commons.ConnectionClosedMessage;
-import it.polimi.ingsw.server.messages.commons.InvalidNameMessage;
-import it.polimi.ingsw.server.messages.commons.WelcomeMessage;
-import it.polimi.ingsw.server.messages.updates.*;
+import it.polimi.ingsw.server.lobby.messages.clientMessages.ClientMessage;
+import it.polimi.ingsw.server.lobby.messages.clientMessages.lobby.RegisterName;
+import it.polimi.ingsw.server.lobby.messages.serverMessages.ServerMessage;
+import it.polimi.ingsw.server.lobby.messages.serverMessages.commons.ConnectionClosedMessage;
+import it.polimi.ingsw.server.lobby.messages.serverMessages.commons.InvalidNameMessage;
+import it.polimi.ingsw.server.lobby.messages.serverMessages.commons.WelcomeMessage;
+import it.polimi.ingsw.server.lobby.messages.serverMessages.updates.*;
 
 import javax.naming.InvalidNameException;
 import java.io.IOException;
@@ -60,8 +62,8 @@ public class Connection implements Runnable,
         new Thread(() -> send(message)).start();
     }
 
-    public Object receive() throws IOException, ClassNotFoundException {
-        return in.readObject();
+    public ClientMessage receive() throws IOException, ClassNotFoundException {
+        return (ClientMessage) in.readObject();
     }
 
     public synchronized void closeConnection(){
@@ -89,7 +91,7 @@ public class Connection implements Runnable,
             asyncSend(new WelcomeMessage());
             registerName();
             while(isActive()){
-                String read = (String) receive();
+                ClientMessage read = (ClientMessage) receive();
                 lobby.handleMessage(read, this);
             }
         } catch(IOException | ClassNotFoundException e) {
@@ -102,7 +104,8 @@ public class Connection implements Runnable,
     public void registerName() {
         while(true) {
             try {
-                nickname = (String) receive();
+                RegisterName rn = (RegisterName) receive();
+                rn.handle(this, null);
                 lobby.enterLobby(this);
                 return;
             } catch (InvalidNameException | IOException | ClassNotFoundException e) {
@@ -113,6 +116,10 @@ public class Connection implements Runnable,
 
     public String getNickname() {
         return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     /**

@@ -2,7 +2,7 @@ package it.polimi.ingsw.server.lobby;
 
 import it.polimi.ingsw.server.Connection;
 import it.polimi.ingsw.server.Server;
-import it.polimi.ingsw.server.lobby.messageHandlers.MainLobbyMessageHandler;
+import it.polimi.ingsw.server.lobby.messages.clientMessages.ClientMessage;
 
 import javax.naming.InvalidNameException;
 import java.util.*;
@@ -15,7 +15,6 @@ public class MainLobby implements Lobby {
     private final Map<String, Connection> waitingConnection;
     private final Map<String, Connection> playingConnection;
 
-    private final MainLobbyMessageHandler mainLobbyMessageHandler;
 
     private final List<GameLobby> activeGameLobbies;
 
@@ -25,7 +24,6 @@ public class MainLobby implements Lobby {
         this.connections = new ArrayList<>();
         this.waitingConnection = new HashMap<>();
         this.playingConnection = new HashMap<>();
-        this.mainLobbyMessageHandler = new MainLobbyMessageHandler(this);
         this.activeGameLobbies = new ArrayList<>();
     }
 
@@ -47,8 +45,9 @@ public class MainLobby implements Lobby {
         connections.remove(c);
     }
 
-    public void handleMessage(String msg, Connection c) {
-        mainLobbyMessageHandler.handleMessage(msg, c);
+    @Override
+    public void handleMessage(ClientMessage clientMessage, Connection c) {
+        // TODO
     }
 
     public void createGame(Connection c, int numberOfPlayers) throws IllegalStateException, InvalidNameException, IllegalArgumentException {
