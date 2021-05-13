@@ -10,7 +10,6 @@ import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.ClientG
 import it.polimi.ingsw.server.lobby.messages.clientMessages.lobbyMessage.ClientLobbyMessage;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.lobbyMessage.lobby.RegisterName;
 import it.polimi.ingsw.server.lobby.messages.serverMessages.ServerMessage;
-import it.polimi.ingsw.server.lobby.messages.serverMessages.commons.ConnectionClosedMessage;
 import it.polimi.ingsw.server.lobby.messages.serverMessages.commons.ErrorMessage;
 import it.polimi.ingsw.server.lobby.messages.serverMessages.commons.InvalidNameMessage;
 import it.polimi.ingsw.server.lobby.messages.serverMessages.commons.WelcomeMessage;
@@ -23,8 +22,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 /**
- * TODO probably separate the lobbies
- * TODO add observers to gameLobby
+ * TODO doc
  */
 public class Connection implements Runnable,
         FaithTrackObserver, WarehouseObserver, DashboardObserver,
@@ -34,19 +32,24 @@ public class Connection implements Runnable,
     private final Socket socket;
     private ObjectInputStream in;
     private ObjectOutputStream out;
+
     private final Server server;
     private String nickname;
-    private Lobby lobby;
+
+    private final MainLobby mainLobby;
+    private Lobby currentLobby;
+
     private boolean active = true;
 
-    public Connection(Socket socket, Server server, Lobby lobby){
+    public Connection(Socket socket, Server server, MainLobby mainLobby){
         this.socket = socket;
         this.server = server;
-        this.lobby = lobby;
+        this.mainLobby = mainLobby;
+        this.currentLobby = mainLobby;
     }
 
     public synchronized void enterLobby(Lobby lobby) {
-        this.lobby = lobby;
+        this.currentLobby = lobby;
     }
 
     private synchronized boolean isActive(){
@@ -54,15 +57,16 @@ public class Connection implements Runnable,
     }
 
     private void send(ServerMessage message){
+
         try {
             out.writeObject(message);
             out.flush();
         } catch (IOException e) {
-            e.printStackTrace();
+            close();
         }
+
     }
 
-    // TODO solve related problems
     public void asyncSend(ServerMessage message){
         new Thread(() -> send(message)).start();
     }
@@ -75,8 +79,7 @@ public class Connection implements Runnable,
         return (ClientLobbyMessage) in.readObject();
     }
 
-    public synchronized void closeConnection(){
-        asyncSend(new ConnectionClosedMessage());
+    private synchronized void closeConnection() {
         try{
             socket.close();
         }catch (IOException e){
@@ -85,18 +88,19 @@ public class Connection implements Runnable,
         active = false;
     }
 
-    public void deregisterConnection() {
-        if (lobby.getType() == LobbyType.MAIN_LOBBY) {
-            ((MainLobby) lobby).deregisterConnection(this);
-        } else {
-            ((GameLobby) lobby).leaveLobby(this);
-            // TODO have reference to MainLobby
+    private void deregisterConnection() {
+
+        if (currentLobby.getType() == LobbyType.GAME_LOBBY) {
+            ((GameLobby) currentLobby).leaveLobby(this);
         }
+        mainLobby.deregisterConnection(this);
+
     }
 
-    private void close() {
+    public void close() {
         closeConnection();
         System.out.println("Deregistering client...");
+        deregisterConnection();
         System.out.println("Done!");
     }
 
@@ -121,8 +125,8 @@ public class Connection implements Runnable,
         while(true) {
             try {
                 RegisterName registerName = (RegisterName) receiveLobbyMessage();
-                registerName.handle(this, lobby);
-                lobby.enterLobby(this);
+                registerName.handle(this, currentLobby);
+                currentLobby.enterLobby(this);
                 return;
             } catch (InvalidNameException | IOException | ClassNotFoundException e) {
                 asyncSend(new InvalidNameMessage());
@@ -131,11 +135,11 @@ public class Connection implements Runnable,
     }
 
     public synchronized void handleMessage() {
-        if (lobby.getType() == LobbyType.MAIN_LOBBY) {
+        if (currentLobby.getType() == LobbyType.MAIN_LOBBY) {
             ClientLobbyMessage read;
             try {
                 read = receiveLobbyMessage();
-                lobby.handleMessage(read, this);
+                currentLobby.handleMessage(read, this);
             } catch (IOException | ClassNotFoundException e) {
                 asyncSend(new ErrorMessage());
             }
@@ -143,7 +147,7 @@ public class Connection implements Runnable,
             ClientGameMessage read;
             try {
                 read = receiveGameMessage();
-                lobby.handleMessage(read, this);
+                currentLobby.handleMessage(read, this);
             } catch (IOException | ClassNotFoundException e) {
                 asyncSend(new ErrorMessage());
             }
