@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.specialAbilities;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Resource;
 
+import java.io.Serializable;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -12,7 +13,7 @@ import java.util.stream.Collectors;
  * The object memorizes the state of a Production Power of a Development Card or of a Leader Card.
  */
 
-public class ProductionPower implements SpecialAbility {
+public class ProductionPower implements SpecialAbility, Serializable {
 
 	private final Map<Resource, Integer> resourceRequired;
 	private Map<Resource, Integer> resourceRequiredModified;

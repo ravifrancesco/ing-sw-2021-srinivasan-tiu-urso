@@ -25,9 +25,11 @@ public class GameLobby implements Lobby {
 
 
     private final ServerController serverController;
+    private GameSettings gameSettings;
 
-    public GameLobby(String id, int maxPlayers) throws IllegalArgumentException {
+    public GameLobby(String id, GameSettings gameSettings, int maxPlayers) throws IllegalArgumentException {
         this.id = id;
+        this.gameSettings = gameSettings;
         this.maxPlayers = maxPlayers;
         this.connectedPlayers = new HashMap<>();
         this.serverController = new ServerController(id, maxPlayers);
@@ -40,6 +42,7 @@ public class GameLobby implements Lobby {
 
     public void enterLobby(Connection c) throws InvalidNameException, IllegalStateException {
         try {
+            serverController.loadGameSettings(gameSettings);
             serverController.joinGame(c.getNickname());
         } catch (GameFullException e) {
             throw new IllegalStateException();

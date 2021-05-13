@@ -8,6 +8,5 @@ public class Client {
         GameClient gameClient = new GameClient("127.0.0.1", 53510);
 
         gameClient.startClient();
-        System.err.println("prova");
     }
 }

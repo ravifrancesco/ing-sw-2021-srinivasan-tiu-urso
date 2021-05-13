@@ -12,6 +12,7 @@ import it.polimi.ingsw.server.lobby.messages.clientMessages.lobbyMessage.lobby.R
 import it.polimi.ingsw.server.lobby.messages.serverMessages.ServerMessage;
 import it.polimi.ingsw.server.lobby.messages.serverMessages.commons.ErrorMessage;
 import it.polimi.ingsw.server.lobby.messages.serverMessages.commons.InvalidNameMessage;
+import it.polimi.ingsw.server.lobby.messages.serverMessages.commons.SuccessfulConnectionMessage;
 import it.polimi.ingsw.server.lobby.messages.serverMessages.commons.WelcomeMessage;
 import it.polimi.ingsw.server.lobby.messages.serverMessages.updates.*;
 
@@ -142,8 +143,12 @@ public class Connection implements Runnable,
             try {
                 read = receiveLobbyMessage();
                 currentLobby.handleMessage(read, this);
+                System.out.println("uno");
+                asyncSend(new SuccessfulConnectionMessage(((GameLobby)currentLobby).getId()));
+                System.out.println("due");
             } catch (IOException | ClassNotFoundException e) {
                 asyncSend(new ErrorMessage());
+                System.out.println("catch");
             }
         } else {
             ClientGameMessage read;

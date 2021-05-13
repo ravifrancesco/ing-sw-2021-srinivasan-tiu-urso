@@ -22,7 +22,7 @@ import java.util.stream.IntStream;
  * </ul>
  * <p>
  */
-public class GameSettings {
+public class GameSettings implements Serializable {
 
     public static final int DEVELOPMENT_CARD_NUM = 48;
     public static final int FAITH_TRACK_LENGTH = 25;

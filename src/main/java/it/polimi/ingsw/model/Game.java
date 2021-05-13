@@ -52,6 +52,7 @@ public class Game extends GameObservable {
 	}
 
 	public void addPlayer(String nickname, Player p) {
+		System.out.println("ciao");
 		players.put(nickname, p);
 	}
 
