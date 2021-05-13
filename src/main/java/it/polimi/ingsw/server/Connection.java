@@ -107,8 +107,8 @@ public class Connection implements Runnable,
     @Override
     public void run() {
         try{
-            in = new ObjectInputStream(socket.getInputStream());
             out = new ObjectOutputStream(socket.getOutputStream());
+            in = new ObjectInputStream(socket.getInputStream());
             asyncSend(new WelcomeMessage());
             registerName();
             while(isActive()){
@@ -127,6 +127,8 @@ public class Connection implements Runnable,
                 RegisterName registerName = (RegisterName) receiveLobbyMessage();
                 registerName.handle(this, currentLobby);
                 currentLobby.enterLobby(this);
+                System.out.println("I have registered the player");
+                System.out.println(nickname);
                 return;
             } catch (InvalidNameException | IOException | ClassNotFoundException e) {
                 asyncSend(new InvalidNameMessage());

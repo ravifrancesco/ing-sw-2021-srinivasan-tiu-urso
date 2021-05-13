@@ -6,15 +6,10 @@ import it.polimi.ingsw.server.lobby.messages.clientMessages.lobbyMessage.ClientL
 
 import java.io.Serializable;
 
-public class RegisterName extends ClientLobbyMessage implements Serializable {
-    String nickname;
-
-    public RegisterName(String nickname) {
-        this.nickname = nickname;
-    }
+public class CreateGameLobby extends ClientLobbyMessage implements Serializable {
 
     @Override
     public void handle(Connection connection, Lobby lobby) {
-        connection.setNickname(nickname);
+        System.out.println("Creating lobby");
     }
 }

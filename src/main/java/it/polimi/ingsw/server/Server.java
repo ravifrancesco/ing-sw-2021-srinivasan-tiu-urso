@@ -26,8 +26,12 @@ public class Server {
         while(true){
             try {
                 Socket socket = serverSocket.accept();
+
                 Connection connection = new Connection(socket, this, mainLobby);
+
                 mainLobby.registerConnection(connection);
+
+                System.out.println("Connection registered!");
             } catch (IOException e){
                 System.err.println("Connection error!");
             }

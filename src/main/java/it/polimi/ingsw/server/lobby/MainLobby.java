@@ -39,6 +39,7 @@ public class MainLobby implements Lobby {
 
     public synchronized void registerConnection(Connection c) {
         connections.add(c);
+
         executor.submit(c);
     }
 
@@ -48,7 +49,7 @@ public class MainLobby implements Lobby {
 
     @Override
     public void handleMessage(ClientMessage clientMessage, Connection c) {
-        // TODO
+        ((ClientLobbyMessage) clientMessage).handle(c, this);
     }
 
     public void createGame(Connection c, int numberOfPlayers) throws IllegalStateException, InvalidNameException, IllegalArgumentException {
