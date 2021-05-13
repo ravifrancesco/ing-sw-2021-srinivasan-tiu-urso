@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
 
+import java.io.Serializable;
+
 /**
  * This class represents a Vatican Report Zone that is contained in the
  * Faith Track. It contains variables describing the vatican report zone.
@@ -10,7 +12,7 @@ package it.polimi.ingsw.model;
  * </ul>
  * <p>
  */
-public class VaticanReport {
+public class VaticanReport implements Serializable {
 
     protected final int start;
     protected final int end;

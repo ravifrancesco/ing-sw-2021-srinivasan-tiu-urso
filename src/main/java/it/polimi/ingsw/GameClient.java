@@ -38,18 +38,19 @@ public class GameClient {
         int numberOfPlayers;
         RegisterName rn;
 
-
+        while(true) {
             //toSend = stdin.nextLine();
             rn = new RegisterName("robert");
+            stdin.nextLine();
             oos.writeObject(rn);
             oos.flush();
             //numberOfPlayers = stdin.nextInt();
-            CreateGameLobby cgl = new CreateGameLobby(buildGameSettings(),4);
+            CreateGameLobby cgl = new CreateGameLobby(buildGameSettings(), 4);
             oos.writeObject(cgl);
             oos.flush();
             SuccessfulConnectionMessage successfulConnectionMessage = (SuccessfulConnectionMessage) ois.readObject();
             System.out.println(successfulConnectionMessage.toString());
-
+        }
 
     }
 

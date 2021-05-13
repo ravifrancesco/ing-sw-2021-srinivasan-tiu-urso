@@ -49,13 +49,14 @@ public class GameLobby implements Lobby {
         }
         connectedPlayers.put(c.getNickname(), c);
         c.enterLobby(this);
-        serverController.addObservers(c);
+        System.out.println(connectedPlayers);
+        //TODO serverController.addObservers(c);
     }
 
     public void leaveLobby(Connection c) {
         if (connectedPlayers.containsValue(c)) {
             connectedPlayers.remove(c.getNickname());
-            serverController.removeObservers(c);
+            //TODO serverController.removeObservers(c);
         }
     }
 
