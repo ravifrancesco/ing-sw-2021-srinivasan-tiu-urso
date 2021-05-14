@@ -32,11 +32,9 @@ public class PlayerTest {
 
         player.reset();
 
-        Hand hand = player.getHand();
-
-        hand.addCard(new LeaderCard(0, 2, new HashMap<>(), new HashMap<>(), new DevelopmentCardDiscount(Resource.GOLD, 3)));
-        hand.addCard(new LeaderCard(0, 2, new HashMap<>(), new HashMap<>(), new WarehouseExtraSpace(Resource.GOLD)));
-        hand.addCard(new LeaderCard(0, 2, new HashMap<>(), new HashMap<>(), new WhiteMarbleResource(Resource.GOLD)));
+        player.addCard(new LeaderCard(0, 2, new HashMap<>(), new HashMap<>(), new DevelopmentCardDiscount(Resource.GOLD, 3)));
+        player.addCard(new LeaderCard(0, 2, new HashMap<>(), new HashMap<>(), new WarehouseExtraSpace(Resource.GOLD)));
+        player.addCard(new LeaderCard(0, 2, new HashMap<>(), new HashMap<>(), new WhiteMarbleResource(Resource.GOLD)));
 
         try {
             player.playLeaderCard(4);
@@ -68,11 +66,10 @@ public class PlayerTest {
 
         GameBoard gameBoard = new GameBoard();
 
-        Hand hand = player.getHand();
 
-        hand.addCard(new LeaderCard(0, 2, new HashMap<>(), new HashMap<>(), new DevelopmentCardDiscount(Resource.GOLD, 3)));
-        hand.addCard(new LeaderCard(0, 2, new HashMap<>(), new HashMap<>(), new WarehouseExtraSpace(Resource.GOLD)));
-        hand.addCard(new LeaderCard(0, 2, new HashMap<>(), new HashMap<>(), new WhiteMarbleResource(Resource.GOLD)));
+        player.addCard(new LeaderCard(0, 2, new HashMap<>(), new HashMap<>(), new DevelopmentCardDiscount(Resource.GOLD, 3)));
+        player.addCard(new LeaderCard(0, 2, new HashMap<>(), new HashMap<>(), new WarehouseExtraSpace(Resource.GOLD)));
+        player.addCard(new LeaderCard(0, 2, new HashMap<>(), new HashMap<>(), new WhiteMarbleResource(Resource.GOLD)));
 
         try {
             player.discardLeaderCard(4, gameBoard);
@@ -81,19 +78,19 @@ public class PlayerTest {
             Assert.assertTrue(true);
         }
 
-        Assert.assertEquals(3, hand.getHandSize());
+        Assert.assertEquals(3, player.getHandSize());
 
         player.discardLeaderCard(0, gameBoard);
 
-        Assert.assertEquals(2, hand.getHandSize());
+        Assert.assertEquals(2, player.getHandSize());
 
         player.discardLeaderCard(0, gameBoard);
 
-        Assert.assertEquals(1, hand.getHandSize());
+        Assert.assertEquals(1, player.getHandSize());
 
         player.discardLeaderCard(0, gameBoard);
 
-        Assert.assertEquals(0, hand.getHandSize());
+        Assert.assertEquals(0, player.getHandSize());
 
         try {
             player.discardLeaderCard(0, gameBoard);
@@ -102,7 +99,7 @@ public class PlayerTest {
             Assert.assertTrue(true);
         }
 
-        Assert.assertEquals(0, hand.getHandSize());
+        Assert.assertEquals(0, player.getHandSize());
 
     }
 

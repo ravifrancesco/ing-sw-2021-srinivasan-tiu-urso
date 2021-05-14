@@ -25,8 +25,6 @@ import java.util.Map;
 public class ServerController {
 
     // TODO: check that illegal actions don't change the state
-    // TODO: check if we need to add movements between deposit and extradeposit(s)
-
     private final Game game;
 
     private final int numberOfPlayers;
@@ -325,8 +323,6 @@ public class ServerController {
         productionController.activateDevelopmentCardProductionPower(nickname, cardToActivate, resourcesToPayCost, resourceRequiredOptional, resourceProducedOptional);
     }
 
-    /* ROBERT TODO after Slack response */
-    public void moveResourcesDepositDeposit(String nickname, int from, int to) throws WrongTurnException, WrongMoveException, IllegalDepositStateException {
     /**
      * Moves resources between the deposit
      * @param nickname                      the player nickname
@@ -340,21 +336,10 @@ public class ServerController {
         warehouseController.changeResourcesDeposit(nickname, deposit);
     }
 
-    /**
-     * Moves resources between the deposit and an extra deposit
-     * @param nickname                      the player nickname
-     * @param deposit                       the new deposit
-     * @param extraDeposit                  the new extra deposit
-     * @param lcIndex                       the index of the placed leader card where the extra deposit is
-     * @throws WrongTurnException           if it is not the player's turn
-     * @throws WrongMoveException           if the move is illegal
-     * @throws IllegalDepositStateException if the move creates an illegal deposit
-     */
-    /* ROBERT TODO after Slack response */
-    public void moveResourceDepositExtraDeposit(String nickname, int from, int to, int lcPos, int extraDepositIndex) throws WrongTurnException, WrongMoveException, IllegalDepositStateException {
+    // TODO doc (paste from history)
+    public void changeDepositExtraDeposit(String nickname, Resource[] deposit, Resource[] extraDeposit, int lcIndex) throws WrongTurnException, WrongMoveException, IllegalDepositStateException {
         warehouseController.setCurrentPlayer(this.currentPlayer);
-        warehouseController.moveResourcesDepositExtraDeposit(nickname, from, to, lcPos, extraDepositIndex);
-
+        warehouseController.changeResourcesDepositExtraDeposit(nickname, deposit, extraDeposit, lcIndex);
     }
 
     /**
@@ -366,7 +351,6 @@ public class ServerController {
      * @throws WrongMoveException if the index of the warehouse is not valid.
      * @throws IllegalDepositStateException if the warehouse is in an invalid state.
      */
-    /* ROBERT DONE */
     public void storeFromSupply(String nickname, int from, int to) throws WrongTurnException, WrongMoveException, IllegalDepositStateException {
         warehouseController.setCurrentPlayer(this.currentPlayer);
         warehouseController.storeFromSupply(nickname, from, to);
@@ -407,7 +391,7 @@ public class ServerController {
         Player player = game.getPlayers().get(nickname);
         Dashboard dashboard = player.getDashboard();
 
-        if (player.getHand().getHandSize() > 2) {
+        if (player.getHandSize() > 2) {
             throw new LeaderCardInExcessException(currentPlayer + " hasn't discarded enough cards");
         }
 
@@ -444,7 +428,6 @@ public class ServerController {
      * Getter for the game status.
      * @return the game status.
      */
-    /* RAVI */  //TODO talk con cugola
     public Game getGameStatus() {
         return game.getGameStatus();
     }
