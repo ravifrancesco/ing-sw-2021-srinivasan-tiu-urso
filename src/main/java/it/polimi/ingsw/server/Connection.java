@@ -137,14 +137,14 @@ public class Connection implements Runnable,
         }
     }
 
-    public synchronized void handleMessage() {
+    public synchronized void handleMessage() throws IOException {
         if (currentLobby.getType() == LobbyType.MAIN_LOBBY) {
             ClientLobbyMessage read;
             try {
                 read = receiveLobbyMessage();
                 currentLobby.handleMessage(read, this);
                 asyncSend(new SuccessfulConnectionMessage(((GameLobby)currentLobby).getId()));
-            } catch (IOException | ClassNotFoundException e) {
+            } catch (ClassNotFoundException e) {
                 asyncSend(new ErrorMessage());
             }
         } else {
@@ -152,7 +152,7 @@ public class Connection implements Runnable,
             try {
                 read = receiveGameMessage();
                 currentLobby.handleMessage(read, this);
-            } catch (IOException | ClassNotFoundException e) {
+            } catch (ClassNotFoundException e) {
                 asyncSend(new ErrorMessage());
             }
         }
