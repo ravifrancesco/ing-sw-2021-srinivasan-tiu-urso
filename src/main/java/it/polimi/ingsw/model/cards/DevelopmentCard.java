@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.specialAbilities.ProductionPower;
 
+import java.io.Serializable;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -19,7 +20,7 @@ import java.util.stream.Collectors;
  * The banner of the card.
  */
 
-public class DevelopmentCard implements Card {
+public class DevelopmentCard implements Card, Serializable {
 
 	private final int id;
 	private final int victoryPoints;

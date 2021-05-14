@@ -9,7 +9,7 @@ import java.util.ArrayList;
  *
  * The class is observable and notifies the observers on a change of the state.
  */
-public class Hand extends HandObservable {
+public class Hand {
 
 	private ArrayList<LeaderCard> cards;
 
@@ -25,7 +25,6 @@ public class Hand extends HandObservable {
 	 */
 	public void reset() {
 		this.cards.clear();
-		notify(this);
 	}
 
 	/**
@@ -35,7 +34,6 @@ public class Hand extends HandObservable {
 	 */
 	public void addCard(LeaderCard c) {
 		cards.add(c);
-		notify(this);
 	}
 
 	/**
@@ -46,7 +44,6 @@ public class Hand extends HandObservable {
 	 */
 	public LeaderCard removeCard(int c) {
 		LeaderCard removed = cards.remove(c);
-		notify(this);
 		return removed;
 	}
 

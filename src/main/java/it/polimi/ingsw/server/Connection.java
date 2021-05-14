@@ -2,12 +2,16 @@ package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.observerPattern.observers.*;
+import it.polimi.ingsw.server.lobby.GameLobby;
 import it.polimi.ingsw.server.lobby.Lobby;
-import it.polimi.ingsw.server.messages.ServerMessage;
-import it.polimi.ingsw.server.messages.commons.ConnectionClosedMessage;
-import it.polimi.ingsw.server.messages.commons.InvalidNameMessage;
-import it.polimi.ingsw.server.messages.commons.WelcomeMessage;
-import it.polimi.ingsw.server.messages.updates.*;
+import it.polimi.ingsw.server.lobby.LobbyType;
+import it.polimi.ingsw.server.lobby.MainLobby;
+import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.ClientGameMessage;
+import it.polimi.ingsw.server.lobby.messages.clientMessages.lobbyMessage.ClientLobbyMessage;
+import it.polimi.ingsw.server.lobby.messages.clientMessages.lobbyMessage.lobby.RegisterName;
+import it.polimi.ingsw.server.lobby.messages.serverMessages.ServerMessage;
+import it.polimi.ingsw.server.lobby.messages.serverMessages.commons.*;
+import it.polimi.ingsw.server.lobby.messages.serverMessages.updates.*;
 
 import javax.naming.InvalidNameException;
 import java.io.IOException;
@@ -16,8 +20,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 /**
- * TODO proably separate the lobbies
- * TODO add observers to gameLobby
+ * TODO doc
  */
 public class Connection implements Runnable,
         FaithTrackObserver, WarehouseObserver, DashboardObserver,
@@ -27,19 +30,24 @@ public class Connection implements Runnable,
     private final Socket socket;
     private ObjectInputStream in;
     private ObjectOutputStream out;
+
     private final Server server;
     private String nickname;
-    private Lobby lobby;
+
+    private final MainLobby mainLobby;
+    private Lobby currentLobby;
+
     private boolean active = true;
 
-    public Connection(Socket socket, Server server, Lobby lobby){
+    public Connection(Socket socket, Server server, MainLobby mainLobby){
         this.socket = socket;
         this.server = server;
-        this.lobby = lobby;
+        this.mainLobby = mainLobby;
+        this.currentLobby = mainLobby;
     }
 
     public synchronized void enterLobby(Lobby lobby) {
-        this.lobby = lobby;
+        this.currentLobby = lobby;
     }
 
     private synchronized boolean isActive(){
@@ -47,25 +55,30 @@ public class Connection implements Runnable,
     }
 
     private void send(ServerMessage message){
+
         try {
             out.writeObject(message);
             out.flush();
+            out.reset();
         } catch (IOException e) {
-            e.printStackTrace();
+            close();
         }
+
     }
 
-    // TODO solve related problems
     public void asyncSend(ServerMessage message){
         new Thread(() -> send(message)).start();
     }
 
-    public Object receive() throws IOException, ClassNotFoundException {
-        return in.readObject();
+    public ClientGameMessage receiveGameMessage() throws IOException, ClassNotFoundException {
+        return (ClientGameMessage) in.readObject();
     }
 
-    public synchronized void closeConnection(){
-        asyncSend(new ConnectionClosedMessage());
+    public ClientLobbyMessage receiveLobbyMessage() throws IOException, ClassNotFoundException {
+        return (ClientLobbyMessage) in.readObject();
+    }
+
+    private synchronized void closeConnection() {
         try{
             socket.close();
         }catch (IOException e){
@@ -74,45 +87,82 @@ public class Connection implements Runnable,
         active = false;
     }
 
-    private void close() {
+    private void deregisterConnection() {
+
+        if (currentLobby.getType() == LobbyType.GAME_LOBBY) {
+            ((GameLobby) currentLobby).leaveLobby(this);
+        }
+        mainLobby.deregisterConnection(this);
+
+    }
+
+    public void close() {
         closeConnection();
         System.out.println("Deregistering client...");
-        server.deregisterConnection(this);
+        deregisterConnection();
         System.out.println("Done!");
     }
 
     @Override
     public void run() {
         try{
-            in = new ObjectInputStream(socket.getInputStream());
             out = new ObjectOutputStream(socket.getOutputStream());
+            in = new ObjectInputStream(socket.getInputStream());
             asyncSend(new WelcomeMessage());
             registerName();
             while(isActive()){
-                String read = (String) receive();
-                lobby.handleMessage(read, this);
+                handleMessage();
             }
-        } catch(IOException | ClassNotFoundException e) {
+        } catch(IOException e) {
             System.err.println(e.getMessage());
         } finally {
             close();
         }
     }
 
-    public void registerName() {
+    public void registerName() throws IOException {
         while(true) {
             try {
-                nickname = (String) receive();
-                lobby.enterLobby(this);
+                RegisterName registerName = (RegisterName) receiveLobbyMessage();
+                registerName.handle(this, currentLobby);
+                currentLobby.enterLobby(this);
+                System.out.println("I have registered the player: " + nickname);
+                asyncSend(new RegisteredNameMessage());
                 return;
-            } catch (InvalidNameException | IOException | ClassNotFoundException e) {
+            } catch (InvalidNameException | ClassNotFoundException e) {
                 asyncSend(new InvalidNameMessage());
             }
         }
     }
 
+    public synchronized void handleMessage() throws IOException {
+        if (currentLobby.getType() == LobbyType.MAIN_LOBBY) {
+            ClientLobbyMessage read;
+            try {
+                read = receiveLobbyMessage();
+                currentLobby.handleMessage(read, this);
+                asyncSend(new SuccessfulConnectionMessage(((GameLobby)currentLobby).getId()));
+            } catch (ClassNotFoundException | IllegalArgumentException | InvalidNameException | IllegalStateException e) {
+                asyncSend(new ErrorMessage());
+            }
+        } else {
+            ClientGameMessage read;
+            try {
+                read = receiveGameMessage();
+                currentLobby.handleMessage(read, this);
+            } catch (ClassNotFoundException | InvalidNameException e) {
+                asyncSend(new ErrorMessage());
+            }
+        }
+
+    }
+
     public String getNickname() {
         return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     /**

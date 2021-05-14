@@ -1,10 +1,13 @@
 package it.polimi.ingsw.server.lobby;
 
+import it.polimi.ingsw.model.GameSettings;
 import it.polimi.ingsw.server.Connection;
 import it.polimi.ingsw.server.Server;
-import it.polimi.ingsw.server.lobby.messageHandlers.MainLobbyMessageHandler;
+import it.polimi.ingsw.server.lobby.messages.clientMessages.ClientMessage;
+import it.polimi.ingsw.server.lobby.messages.clientMessages.lobbyMessage.ClientLobbyMessage;
 
 import javax.naming.InvalidNameException;
+import java.sql.SQLOutput;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -15,7 +18,6 @@ public class MainLobby implements Lobby {
     private final Map<String, Connection> waitingConnection;
     private final Map<String, Connection> playingConnection;
 
-    private final MainLobbyMessageHandler mainLobbyMessageHandler;
 
     private final List<GameLobby> activeGameLobbies;
 
@@ -25,45 +27,45 @@ public class MainLobby implements Lobby {
         this.connections = new ArrayList<>();
         this.waitingConnection = new HashMap<>();
         this.playingConnection = new HashMap<>();
-        this.mainLobbyMessageHandler = new MainLobbyMessageHandler(this);
         this.activeGameLobbies = new ArrayList<>();
     }
 
     public void enterLobby(Connection c) throws InvalidNameException {
         String nickname = c.getNickname();
-        if (waitingConnection.containsKey(nickname)) throw new InvalidNameException();
+        if (waitingConnection.containsKey(nickname) || playingConnection.containsKey(nickname)) throw new InvalidNameException();
         else {
             waitingConnection.put(nickname, c);
             c.enterLobby(this);
         }
     }
 
-    public void registerConnection(Connection c) {
+    public synchronized void registerConnection(Connection c) {
         connections.add(c);
+
         executor.submit(c);
     }
 
-    public void deregisterConnection(Connection c) {
+    public synchronized void deregisterConnection(Connection c) {
         connections.remove(c);
+        waitingConnection.remove(c.getNickname());
     }
 
-    public void handleMessage(String msg, Connection c) {
-        mainLobbyMessageHandler.handleMessage(msg, c);
+    @Override
+    public void handleMessage(ClientMessage clientMessage, Connection c) throws InvalidNameException {
+        ((ClientLobbyMessage) clientMessage).handle(c, this);
     }
 
-    public void createGame(Connection c, int numberOfPlayers) throws IllegalStateException, InvalidNameException, IllegalArgumentException {
-
+    public void createGame(Connection c, GameSettings gameSettings, int numberOfPlayers) throws IllegalStateException, InvalidNameException, IllegalArgumentException {
         if (Server.THREAD_NUMBER - playingConnection.size() < 4) {
             throw new IllegalStateException();
         }
 
         String uniqueID = UUID.randomUUID().toString();
-        GameLobby gameLobby = new GameLobby(uniqueID, numberOfPlayers);
+        GameLobby gameLobby = new GameLobby(uniqueID, gameSettings, numberOfPlayers);
         gameLobby.enterLobby(c);
 
         activeGameLobbies.add(gameLobby);
         playingConnection.put(c.getNickname(), waitingConnection.remove(c.getNickname()));
-
     }
 
     public void joinGame(Connection c, String id) throws IllegalArgumentException, InvalidNameException, IllegalStateException {
@@ -78,4 +80,7 @@ public class MainLobby implements Lobby {
 
     }
 
+    public LobbyType getType() {
+        return LobbyType.MAIN_LOBBY;
+    }
 }

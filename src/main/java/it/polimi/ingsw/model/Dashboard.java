@@ -37,10 +37,6 @@ public class Dashboard extends DashboardObservable {
 	static final int NUM_LEADER_CARDS = 2;
 	static final int NUM_DEVELOPMENT_CARDS_TO_WIN = 7;
 
-	public Warehouse getWarehouse() {
-		return warehouse;
-	}
-
 	private final Warehouse warehouse;
 	private final FaithTrack faithTrack;
 	private final List<LeaderCard> playedLeaderCards;
@@ -56,7 +52,9 @@ public class Dashboard extends DashboardObservable {
 	 * @param gameSettings the settings for the current game.
 	 */
 	public Dashboard(GameSettings gameSettings) {
+
 		this.warehouse = new Warehouse();
+
 		this.faithTrack = new FaithTrack(gameSettings);
 
 		this.playedLeaderCards = new ArrayList<>();

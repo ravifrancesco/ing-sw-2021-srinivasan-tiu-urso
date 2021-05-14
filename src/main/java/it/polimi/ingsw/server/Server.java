@@ -26,21 +26,18 @@ public class Server {
         while(true){
             try {
                 Socket socket = serverSocket.accept();
+
                 Connection connection = new Connection(socket, this, mainLobby);
-                registerConnection(connection);
+                mainLobby.registerConnection(connection);
+
+                System.out.println("Connection registered!");
             } catch (IOException e){
                 System.err.println("Connection error!");
             }
         }
     }
 
-    private synchronized void registerConnection(Connection c) {
-        mainLobby.registerConnection(c);
-    }
 
-    public synchronized void deregisterConnection(Connection c) {
-        mainLobby.deregisterConnection(c);
-    }
 
 
 
