@@ -10,9 +10,7 @@ import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.ClientG
 import it.polimi.ingsw.server.lobby.messages.clientMessages.lobbyMessage.ClientLobbyMessage;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.lobbyMessage.lobby.RegisterName;
 import it.polimi.ingsw.server.lobby.messages.serverMessages.ServerMessage;
-import it.polimi.ingsw.server.lobby.messages.serverMessages.commons.ErrorMessage;
-import it.polimi.ingsw.server.lobby.messages.serverMessages.commons.InvalidNameMessage;
-import it.polimi.ingsw.server.lobby.messages.serverMessages.commons.WelcomeMessage;
+import it.polimi.ingsw.server.lobby.messages.serverMessages.commons.*;
 import it.polimi.ingsw.server.lobby.messages.serverMessages.updates.*;
 
 import javax.naming.InvalidNameException;
@@ -61,6 +59,7 @@ public class Connection implements Runnable,
         try {
             out.writeObject(message);
             out.flush();
+            out.reset();
         } catch (IOException e) {
             close();
         }
@@ -107,8 +106,8 @@ public class Connection implements Runnable,
     @Override
     public void run() {
         try{
-            in = new ObjectInputStream(socket.getInputStream());
             out = new ObjectOutputStream(socket.getOutputStream());
+            in = new ObjectInputStream(socket.getInputStream());
             asyncSend(new WelcomeMessage());
             registerName();
             while(isActive()){
@@ -121,26 +120,29 @@ public class Connection implements Runnable,
         }
     }
 
-    public void registerName() {
+    public void registerName() throws IOException {
         while(true) {
             try {
                 RegisterName registerName = (RegisterName) receiveLobbyMessage();
                 registerName.handle(this, currentLobby);
                 currentLobby.enterLobby(this);
+                System.out.println("I have registered the player: " + nickname);
+                asyncSend(new RegisteredNameMessage());
                 return;
-            } catch (InvalidNameException | IOException | ClassNotFoundException e) {
+            } catch (InvalidNameException | ClassNotFoundException e) {
                 asyncSend(new InvalidNameMessage());
             }
         }
     }
 
-    public synchronized void handleMessage() {
+    public synchronized void handleMessage() throws IOException {
         if (currentLobby.getType() == LobbyType.MAIN_LOBBY) {
             ClientLobbyMessage read;
             try {
                 read = receiveLobbyMessage();
                 currentLobby.handleMessage(read, this);
-            } catch (IOException | ClassNotFoundException e) {
+                asyncSend(new SuccessfulConnectionMessage(((GameLobby)currentLobby).getId()));
+            } catch (ClassNotFoundException | IllegalArgumentException | InvalidNameException | IllegalStateException e) {
                 asyncSend(new ErrorMessage());
             }
         } else {
@@ -148,7 +150,7 @@ public class Connection implements Runnable,
             try {
                 read = receiveGameMessage();
                 currentLobby.handleMessage(read, this);
-            } catch (IOException | ClassNotFoundException e) {
+            } catch (ClassNotFoundException | InvalidNameException e) {
                 asyncSend(new ErrorMessage());
             }
         }

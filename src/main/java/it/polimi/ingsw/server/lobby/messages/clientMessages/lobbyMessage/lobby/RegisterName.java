@@ -4,7 +4,9 @@ import it.polimi.ingsw.server.Connection;
 import it.polimi.ingsw.server.lobby.Lobby;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.lobbyMessage.ClientLobbyMessage;
 
-public class RegisterName extends ClientLobbyMessage {
+import java.io.Serializable;
+
+public class RegisterName extends ClientLobbyMessage implements Serializable {
     String nickname;
 
     public RegisterName(String nickname) {

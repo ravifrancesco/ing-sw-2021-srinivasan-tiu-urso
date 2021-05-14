@@ -26,6 +26,7 @@ public class Game extends GameObservable {
 	public Game(String gameId) {
 		this.gameId = gameId;
 		this.players = new LinkedHashMap<>();
+		this.gameBoard = new GameBoard();
 	}
 
 	public void loadGameSettings(GameSettings gameSettings) {
@@ -34,7 +35,7 @@ public class Game extends GameObservable {
 
 	public void reset() {
 		gameBoard.reset(gameSettings);
-		players.values().forEach(p -> p.reset());
+		players.values().forEach(Player::reset);
 		this.playerOrder = players.keySet().iterator();
 		this.gameEnded = false;
 	}
@@ -52,6 +53,7 @@ public class Game extends GameObservable {
 	}
 
 	public void addPlayer(String nickname, Player p) {
+		System.out.println("ciao");
 		players.put(nickname, p);
 	}
 

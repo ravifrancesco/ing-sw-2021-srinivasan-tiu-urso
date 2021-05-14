@@ -52,7 +52,9 @@ public class Dashboard extends DashboardObservable {
 	 * @param gameSettings the settings for the current game.
 	 */
 	public Dashboard(GameSettings gameSettings) {
+
 		this.warehouse = new Warehouse();
+
 		this.faithTrack = new FaithTrack(gameSettings);
 
 		this.playedLeaderCards = new ArrayList<>();

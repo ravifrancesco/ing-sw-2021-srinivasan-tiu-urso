@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.specialAbilities.SpecialAbility;
 
+import java.io.Serializable;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -19,7 +20,7 @@ import java.util.stream.Collectors;
  * The special ability of the card.
  */
 
-public class LeaderCard implements Card {
+public class LeaderCard implements Card, Serializable {
 
 	private final int id;
 	private final int victoryPoints;

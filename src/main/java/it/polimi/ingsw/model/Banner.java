@@ -1,12 +1,14 @@
 package it.polimi.ingsw.model;
 
+import java.io.Serializable;
+
 /**
  * The class represents a Banner of the game.
  * Each banner has a color (GREEN, YELLOW, BLUE or PURPLE)
  * and a level (1, 2 or 3).
  */
 
-public class Banner {
+public class Banner implements Serializable {
 
 	private BannerEnum color;
 	private int level;

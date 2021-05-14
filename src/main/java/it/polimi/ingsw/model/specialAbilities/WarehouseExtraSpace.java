@@ -3,7 +3,9 @@ package it.polimi.ingsw.model.specialAbilities;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Resource;
 
-public class WarehouseExtraSpace implements SpecialAbility {
+import java.io.Serializable;
+
+public class WarehouseExtraSpace implements SpecialAbility, Serializable {
 
 	private final Resource storedResource;
 

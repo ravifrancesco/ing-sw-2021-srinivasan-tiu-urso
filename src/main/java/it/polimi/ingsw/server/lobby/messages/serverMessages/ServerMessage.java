@@ -9,3 +9,4 @@ public interface ServerMessage {
     void updateClient(Object client, String nickname);
 
 }
+
