@@ -54,14 +54,6 @@ public class Player extends PlayerObservable {
 		this.activatedWMR = new ArrayList<>();
 	}
 
-	/**
-	 * Getter for the player's hand.
-	 *
-	 * @return the player's hand.
-	 */
-	public Hand getHand() {
-		return hand;
-	}
 
 	/**
 	 * Resets the class to the starting/initial state.
@@ -232,5 +224,21 @@ public class Player extends PlayerObservable {
 	public boolean checkGameEnd() {
 		return this.dashboard.checkGameEnd();
 	}
+
+	// TODO doc
+	public int getHandSize() {
+		return this.hand.getHandSize();
+	}
+
+	// TODO doc
+	public LeaderCard getCard(int c) {
+		return this.hand.getCard(c);
+	}
+
+	// TODO doc
+	public void addCard(LeaderCard lc) {
+		this.hand.addCard(lc);
+	}
+
 
 }

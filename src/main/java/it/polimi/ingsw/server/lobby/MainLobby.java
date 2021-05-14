@@ -2,7 +2,8 @@ package it.polimi.ingsw.server.lobby;
 
 import it.polimi.ingsw.server.Connection;
 import it.polimi.ingsw.server.Server;
-import it.polimi.ingsw.server.lobby.messageHandlers.MainLobbyMessageHandler;
+import it.polimi.ingsw.server.lobby.messages.clientMessages.ClientMessage;
+import it.polimi.ingsw.server.lobby.messages.clientMessages.lobbyMessage.ClientLobbyMessage;
 
 import javax.naming.InvalidNameException;
 import java.util.*;
@@ -15,7 +16,6 @@ public class MainLobby implements Lobby {
     private final Map<String, Connection> waitingConnection;
     private final Map<String, Connection> playingConnection;
 
-    private final MainLobbyMessageHandler mainLobbyMessageHandler;
 
     private final List<GameLobby> activeGameLobbies;
 
@@ -25,7 +25,6 @@ public class MainLobby implements Lobby {
         this.connections = new ArrayList<>();
         this.waitingConnection = new HashMap<>();
         this.playingConnection = new HashMap<>();
-        this.mainLobbyMessageHandler = new MainLobbyMessageHandler(this);
         this.activeGameLobbies = new ArrayList<>();
     }
 
@@ -38,17 +37,18 @@ public class MainLobby implements Lobby {
         }
     }
 
-    public void registerConnection(Connection c) {
+    public synchronized void registerConnection(Connection c) {
         connections.add(c);
         executor.submit(c);
     }
 
-    public void deregisterConnection(Connection c) {
+    public synchronized void deregisterConnection(Connection c) {
         connections.remove(c);
     }
 
-    public void handleMessage(String msg, Connection c) {
-        mainLobbyMessageHandler.handleMessage(msg, c);
+    @Override
+    public void handleMessage(ClientMessage clientMessage, Connection c) {
+        // TODO
     }
 
     public void createGame(Connection c, int numberOfPlayers) throws IllegalStateException, InvalidNameException, IllegalArgumentException {
@@ -78,4 +78,7 @@ public class MainLobby implements Lobby {
 
     }
 
+    public LobbyType getType() {
+        return LobbyType.MAIN_LOBBY;
+    }
 }

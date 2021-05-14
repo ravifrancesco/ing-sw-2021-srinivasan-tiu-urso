@@ -43,7 +43,7 @@ public class LeaderCardController {
         }
 
         Player player = game.getPlayers().get(currentPlayer);
-        int handSize = player.getHand().getHandSize();
+        int handSize = player.getHandSize();
 
         if (handSize <= 2) {
             throw new WrongMoveException("Already discarded initial leader cards.");
@@ -72,9 +72,9 @@ public class LeaderCardController {
         Map<Banner, Integer> playerBanners = dashboard.getBanners();
         Map<Resource, Integer> playerResources = dashboard.getAllPlayerResources();
 
-        if (cardToPlay >= player.getHand().getHandSize() || cardToPlay < 0) {
+        if (cardToPlay >= player.getHandSize() || cardToPlay < 0) {
             throw new CardNotPlayableException("Invalid index");
-        } else if (!player.getHand().getCard(cardToPlay).isPlayable(playerBanners, playerResources)) {
+        } else if (!player.getCard(cardToPlay).isPlayable(playerBanners, playerResources)) {
             throw new CardNotPlayableException("Not enough resources or banners");
         }
 
@@ -99,7 +99,7 @@ public class LeaderCardController {
 
         Player player = game.getPlayers().get(currentPlayer);
 
-        if (cardToDiscard >= player.getHand().getHandSize() || cardToDiscard < 0) {
+        if (cardToDiscard >= player.getHandSize() || cardToDiscard < 0) {
             throw new CardNotPlayableException("Invalid index");
         }
 
