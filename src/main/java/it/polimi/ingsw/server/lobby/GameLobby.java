@@ -36,11 +36,11 @@ public class GameLobby implements Lobby {
     }
 
     @Override
-    public void handleMessage(ClientMessage clientMessage, Connection c) {
+    public synchronized void handleMessage(ClientMessage clientMessage, Connection c) {
         // TODO
     }
 
-    public void enterLobby(Connection c) throws InvalidNameException, IllegalStateException {
+    public synchronized void enterLobby(Connection c) throws InvalidNameException, IllegalStateException {
         try {
             serverController.loadGameSettings(gameSettings);
             serverController.joinGame(c.getNickname());
@@ -53,7 +53,7 @@ public class GameLobby implements Lobby {
         serverController.addObservers(c);
     }
 
-    public void leaveLobby(Connection c) {
+    public synchronized void leaveLobby(Connection c) {
         if (connectedPlayers.containsValue(c)) {
             connectedPlayers.remove(c.getNickname());
             serverController.removeObservers(c);

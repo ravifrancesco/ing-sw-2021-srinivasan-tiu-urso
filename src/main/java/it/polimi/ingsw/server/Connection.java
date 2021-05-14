@@ -54,7 +54,7 @@ public class Connection implements Runnable,
         return active;
     }
 
-    private void send(ServerMessage message){
+    private synchronized void send(ServerMessage message){
 
         try {
             out.writeObject(message);
@@ -64,10 +64,6 @@ public class Connection implements Runnable,
             close();
         }
 
-    }
-
-    public void asyncSend(ServerMessage message){
-        new Thread(() -> send(message)).start();
     }
 
     public ClientGameMessage receiveGameMessage() throws IOException, ClassNotFoundException {
@@ -108,7 +104,7 @@ public class Connection implements Runnable,
         try{
             out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(socket.getInputStream());
-            asyncSend(new WelcomeMessage());
+            send(new WelcomeMessage());
             registerName();
             while(isActive()){
                 handleMessage();
@@ -127,23 +123,23 @@ public class Connection implements Runnable,
                 registerName.handle(this, currentLobby);
                 currentLobby.enterLobby(this);
                 System.out.println("I have registered the player: " + nickname);
-                asyncSend(new RegisteredNameMessage());
+                send(new RegisteredNameMessage());
                 return;
             } catch (InvalidNameException | ClassNotFoundException e) {
-                asyncSend(new InvalidNameMessage());
+                send(new InvalidNameMessage());
             }
         }
     }
 
-    public synchronized void handleMessage() throws IOException {
+    public void handleMessage() throws IOException {
         if (currentLobby.getType() == LobbyType.MAIN_LOBBY) {
             ClientLobbyMessage read;
             try {
                 read = receiveLobbyMessage();
                 currentLobby.handleMessage(read, this);
-                asyncSend(new SuccessfulConnectionMessage(((GameLobby)currentLobby).getId()));
+                send(new SuccessfulConnectionMessage(((GameLobby)currentLobby).getId()));
             } catch (ClassNotFoundException | IllegalArgumentException | InvalidNameException | IllegalStateException e) {
-                asyncSend(new ErrorMessage());
+                send(new ErrorMessage());
             }
         } else {
             ClientGameMessage read;
@@ -151,7 +147,7 @@ public class Connection implements Runnable,
                 read = receiveGameMessage();
                 currentLobby.handleMessage(read, this);
             } catch (ClassNotFoundException | InvalidNameException e) {
-                asyncSend(new ErrorMessage());
+                send(new ErrorMessage());
             }
         }
 
@@ -173,42 +169,42 @@ public class Connection implements Runnable,
 
     @Override
     public void update(FaithTrack message) {
-        asyncSend(new FaithTrackUpdateMessage(message));
+        send(new FaithTrackUpdateMessage(message));
     }
 
     @Override
     public void update(Warehouse message) {
-        asyncSend(new WarehouseUpdateMessage(message));
+        send(new WarehouseUpdateMessage(message));
     }
 
     @Override
     public void update(Dashboard message) {
-        asyncSend(new DashboardUpdateMessage(message));
+        send(new DashboardUpdateMessage(message));
     }
 
     @Override
     public void update(Player message) {
-        asyncSend(new PlayerUpdateMessage(message));
+        send(new PlayerUpdateMessage(message));
     }
 
     @Override
     public void update(Game message) {
-        asyncSend(new GameUpdateMessage(message));
+        send(new GameUpdateMessage(message));
     }
 
     @Override
     public void update(GameBoard message) {
-        asyncSend(new GameBoardUpdateMessage(message));
+        send(new GameBoardUpdateMessage(message));
     }
 
     @Override
     public void update(DevelopmentCardGrid message) {
-        asyncSend(new DevelopmentCardGridUpdateMessage(message));
+        send(new DevelopmentCardGridUpdateMessage(message));
     }
 
     @Override
     public void update(Market message) {
-        asyncSend(new MarketUpdateMessage(message));
+        send(new MarketUpdateMessage(message));
     }
 }
 
