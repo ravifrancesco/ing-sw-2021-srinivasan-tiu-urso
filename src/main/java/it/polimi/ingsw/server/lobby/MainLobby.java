@@ -30,7 +30,7 @@ public class MainLobby implements Lobby {
         this.activeGameLobbies = new ArrayList<>();
     }
 
-    public void enterLobby(Connection c) throws InvalidNameException {
+    public synchronized void enterLobby(Connection c) throws InvalidNameException {
         String nickname = c.getNickname();
         if (waitingConnection.containsKey(nickname) || playingConnection.containsKey(nickname)) throw new InvalidNameException();
         else {
@@ -51,7 +51,7 @@ public class MainLobby implements Lobby {
     }
 
     @Override
-    public void handleMessage(ClientMessage clientMessage, Connection c) throws InvalidNameException {
+    public synchronized void handleMessage(ClientMessage clientMessage, Connection c) throws InvalidNameException {
         ((ClientLobbyMessage) clientMessage).handle(c, this);
     }
 
