@@ -32,7 +32,7 @@ public class MainLobby implements Lobby {
 
     public void enterLobby(Connection c) throws InvalidNameException {
         String nickname = c.getNickname();
-        if (waitingConnection.containsKey(nickname)) throw new InvalidNameException();
+        if (waitingConnection.containsKey(nickname) || playingConnection.containsKey(nickname)) throw new InvalidNameException();
         else {
             waitingConnection.put(nickname, c);
             c.enterLobby(this);

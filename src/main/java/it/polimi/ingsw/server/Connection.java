@@ -10,10 +10,7 @@ import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.ClientG
 import it.polimi.ingsw.server.lobby.messages.clientMessages.lobbyMessage.ClientLobbyMessage;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.lobbyMessage.lobby.RegisterName;
 import it.polimi.ingsw.server.lobby.messages.serverMessages.ServerMessage;
-import it.polimi.ingsw.server.lobby.messages.serverMessages.commons.ErrorMessage;
-import it.polimi.ingsw.server.lobby.messages.serverMessages.commons.InvalidNameMessage;
-import it.polimi.ingsw.server.lobby.messages.serverMessages.commons.SuccessfulConnectionMessage;
-import it.polimi.ingsw.server.lobby.messages.serverMessages.commons.WelcomeMessage;
+import it.polimi.ingsw.server.lobby.messages.serverMessages.commons.*;
 import it.polimi.ingsw.server.lobby.messages.serverMessages.updates.*;
 
 import javax.naming.InvalidNameException;
@@ -123,16 +120,16 @@ public class Connection implements Runnable,
         }
     }
 
-    public void registerName() {
+    public void registerName() throws IOException {
         while(true) {
             try {
                 RegisterName registerName = (RegisterName) receiveLobbyMessage();
                 registerName.handle(this, currentLobby);
                 currentLobby.enterLobby(this);
-                System.out.println("I have registered the player");
-                System.out.println(nickname);
+                System.out.println("I have registered the player: " + nickname);
+                asyncSend(new RegisteredNameMessage());
                 return;
-            } catch (InvalidNameException | IOException | ClassNotFoundException e) {
+            } catch (InvalidNameException | ClassNotFoundException e) {
                 asyncSend(new InvalidNameMessage());
             }
         }

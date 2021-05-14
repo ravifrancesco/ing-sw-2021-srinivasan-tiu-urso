@@ -7,9 +7,7 @@ import it.polimi.ingsw.model.specialAbilities.*;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.lobbyMessage.lobby.CreateGameLobby;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.lobbyMessage.lobby.JoinGameLobby;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.lobbyMessage.lobby.RegisterName;
-import it.polimi.ingsw.server.lobby.messages.serverMessages.commons.ErrorMessage;
-import it.polimi.ingsw.server.lobby.messages.serverMessages.commons.SuccessfulConnectionMessage;
-import it.polimi.ingsw.server.lobby.messages.serverMessages.commons.WelcomeMessage;
+import it.polimi.ingsw.server.lobby.messages.serverMessages.commons.*;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -39,12 +37,27 @@ public class Client {
         String toSend;
         int numberOfPlayers;
         RegisterName rn;
-        Object obj = new Object();
+        Object obj;
+        boolean flag = true;
 
-        toSend = stdin.nextLine();
-        rn = new RegisterName(toSend);
-        oos.writeObject(rn);
-        oos.flush();
+        do {
+            System.out.println("Insert a nickname");
+
+            toSend = stdin.nextLine();
+            rn = new RegisterName(toSend);
+            oos.writeObject(rn);
+            oos.flush();
+
+            obj = ois.readObject();
+            try {
+                RegisteredNameMessage rnm = (RegisteredNameMessage) obj;
+                System.out.println(rnm.toString());
+                flag = false;
+            } catch (ClassCastException e) {
+                InvalidNameMessage inm = (InvalidNameMessage) obj;
+                System.out.println(inm.toString());
+            }
+        } while(flag);
 
         System.out.println("Choose 1 to create a game, 2 to join a game");
 
