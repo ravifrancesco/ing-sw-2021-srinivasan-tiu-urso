@@ -62,6 +62,7 @@ public class Connection implements Runnable,
         try {
             out.writeObject(message);
             out.flush();
+            out.reset();
         } catch (IOException e) {
             close();
         }
@@ -144,7 +145,7 @@ public class Connection implements Runnable,
                 read = receiveLobbyMessage();
                 currentLobby.handleMessage(read, this);
                 asyncSend(new SuccessfulConnectionMessage(((GameLobby)currentLobby).getId()));
-            } catch (ClassNotFoundException e) {
+            } catch (ClassNotFoundException | IllegalArgumentException | InvalidNameException | IllegalStateException e) {
                 asyncSend(new ErrorMessage());
             }
         } else {
@@ -152,7 +153,7 @@ public class Connection implements Runnable,
             try {
                 read = receiveGameMessage();
                 currentLobby.handleMessage(read, this);
-            } catch (ClassNotFoundException e) {
+            } catch (ClassNotFoundException | InvalidNameException e) {
                 asyncSend(new ErrorMessage());
             }
         }

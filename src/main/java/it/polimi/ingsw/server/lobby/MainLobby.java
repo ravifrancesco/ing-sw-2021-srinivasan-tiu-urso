@@ -47,10 +47,11 @@ public class MainLobby implements Lobby {
 
     public synchronized void deregisterConnection(Connection c) {
         connections.remove(c);
+        waitingConnection.remove(c.getNickname());
     }
 
     @Override
-    public void handleMessage(ClientMessage clientMessage, Connection c) {
+    public void handleMessage(ClientMessage clientMessage, Connection c) throws InvalidNameException {
         ((ClientLobbyMessage) clientMessage).handle(c, this);
     }
 
