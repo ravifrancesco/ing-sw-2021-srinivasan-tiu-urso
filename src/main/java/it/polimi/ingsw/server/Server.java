@@ -28,7 +28,6 @@ public class Server {
                 Socket socket = serverSocket.accept();
 
                 Connection connection = new Connection(socket, this, mainLobby);
-
                 mainLobby.registerConnection(connection);
 
                 System.out.println("Connection registered!");
