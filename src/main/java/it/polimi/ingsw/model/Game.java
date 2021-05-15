@@ -4,9 +4,7 @@ import it.polimi.ingsw.model.observerPattern.observables.GameObservable;
 import it.polimi.ingsw.model.observerPattern.observers.GameObserver;
 import it.polimi.ingsw.server.Connection;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
+import java.util.*;
 
 public class Game extends GameObservable {
 
@@ -26,6 +24,9 @@ public class Game extends GameObservable {
 	public Game(String gameId) {
 		this.gameId = gameId;
 		this.players = new LinkedHashMap<>();
+		this.gameBoard = new GameBoard();
+		this.playerOrder = players.keySet().iterator();
+
 	}
 
 	public void loadGameSettings(GameSettings gameSettings) {
@@ -34,21 +35,18 @@ public class Game extends GameObservable {
 
 	public void reset() {
 		gameBoard.reset(gameSettings);
-		players.values().forEach(p -> p.reset());
-		this.playerOrder = players.keySet().iterator();
+		players.values().forEach(Player::reset);
 		this.gameEnded = false;
 	}
 
 	public boolean checkEnd() {
-		return false;
+		return gameEnded;
 	}
 
 	public Player checkWinner() {
-		return null;
-	}
+		int winnerPoints  = players.values().stream().map(Player::getVictoryPoints).min(Comparator.reverseOrder()).get();
 
-	public boolean checkDiscardedResources() {
-		return false;
+		return players.values().stream().filter(player -> player.getVictoryPoints() == winnerPoints).findFirst().get();
 	}
 
 	public void addPlayer(String nickname, Player p) {
@@ -87,7 +85,8 @@ public class Game extends GameObservable {
 	}
 
 	public void endGame() {
-
+		gameEnded = true;
+		// TODO
 	}
 
 	public Game getGameStatus() {
