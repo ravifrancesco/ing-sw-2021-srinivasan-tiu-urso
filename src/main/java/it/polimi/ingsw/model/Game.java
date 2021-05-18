@@ -47,8 +47,6 @@ public class Game extends GameObservable {
 		players.values().forEach(Player::reset);
 		this.playerOrder = players.keySet().iterator();
 		this.gameEnded = false;
-		this.currentPlayer = getNextPlayer();
-		this.firstPlayer = this.currentPlayer;
 	}
 
 	public boolean checkEnd() {
@@ -64,7 +62,6 @@ public class Game extends GameObservable {
 	}
 
 	public void addPlayer(String nickname, Player p) {
-		System.out.println("ciao");
 		players.put(nickname, p);
 	}
 
@@ -124,6 +121,10 @@ public class Game extends GameObservable {
 		return firstPlayer;
 	}
 
+	public void setFirstPlayer(String firstPlayer) {
+		this.firstPlayer = firstPlayer;
+	}
+
 	public void changePlayer() {
 		this.currentPlayer = getNextPlayer();
 	}
@@ -131,4 +132,6 @@ public class Game extends GameObservable {
 	public void setError(Exception error, String nickname) {
 		gameError.setError(error, nickname);
 	}
+
+
 }

@@ -37,7 +37,7 @@ public class ProductionController {
     }
 
     /**
-     * @see ServerController#activateLeaderCardProduction(String, int, ResourceContainer, Map, Map)
+     * @see ServerController#activateLeaderCardProductionPower(String, int, ResourceContainer, Map, Map)
      */
 
     public void activateLeaderCardProduction(String nickname, int cardToActivate, ResourceContainer resourcesToPayCost,
@@ -95,7 +95,7 @@ public class ProductionController {
     }
 
     /**
-     * @see ServerController#activateDashboardProduction(String, ResourceContainer, Map, Map)
+     * @see ServerController#activateDashboardProductionPower(String, ResourceContainer, Map, Map)
      */
 
     public void activateDashboardProduction(String nickname, ResourceContainer resourcesToPayCost,
