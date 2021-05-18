@@ -12,6 +12,11 @@ public class Game extends GameObservable {
 
 	private String gameId;
 
+	private final int numberOfPlayers;
+
+	private String currentPlayer;
+	private String firstPlayer;
+
 	private LinkedHashMap<String, Player> players;
 	private Iterator<String> playerOrder;
 
@@ -23,10 +28,14 @@ public class Game extends GameObservable {
 
 	private boolean gameEnded;
 
-	public Game(String gameId) {
+	private GameError gameError;
+
+	public Game(String gameId, int numberOfPlayers) {
 		this.gameId = gameId;
+		this.numberOfPlayers = numberOfPlayers;
 		this.players = new LinkedHashMap<>();
 		this.gameBoard = new GameBoard();
+		this.gameError = new GameError();
 	}
 
 	public void loadGameSettings(GameSettings gameSettings) {
@@ -38,6 +47,8 @@ public class Game extends GameObservable {
 		players.values().forEach(Player::reset);
 		this.playerOrder = players.keySet().iterator();
 		this.gameEnded = false;
+		this.currentPlayer = getNextPlayer();
+		this.firstPlayer = this.currentPlayer;
 	}
 
 	public boolean checkEnd() {
@@ -97,4 +108,27 @@ public class Game extends GameObservable {
 		return this;
 	}
 
+	public GameError getGameError() {
+		return gameError;
+	}
+
+	public int getNumberOfPlayers() {
+		return numberOfPlayers;
+	}
+
+	public String getCurrentPlayer() {
+		return currentPlayer;
+	}
+
+	public String getFirstPlayer() {
+		return firstPlayer;
+	}
+
+	public void changePlayer() {
+		this.currentPlayer = getNextPlayer();
+	}
+
+	public void setError(Exception error, String nickname) {
+		gameError.setError(error, nickname);
+	}
 }
