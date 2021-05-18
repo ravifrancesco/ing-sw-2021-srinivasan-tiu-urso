@@ -554,10 +554,10 @@ public class Dashboard extends DashboardObservable {
 			notify(this);
 			throw new IllegalArgumentException("Resources do not match the cost");
 		}
-		resToPayWith.getContainedDepositResources().forEach(warehouse::removeFromDeposit);
-		resToPayWith.getContainedLockerResources().forEach(warehouse::removeFromLocker);
+		resToPayWith.getSelectedDepositIndexes().forEach(warehouse::removeFromDeposit);
+		resToPayWith.getSelectedLockerResources().forEach(warehouse::removeFromLocker);
 		IntStream.range(0, 1).forEach(i ->
-				resToPayWith.getContainedExtraDepositResources().get(i).forEach(pos ->
+				resToPayWith.getSelectedExtraDepositIndexes().get(i).forEach(pos ->
 						warehouse.removeFromExtraDeposit(i, pos)));
 	}
 

@@ -432,4 +432,8 @@ public class ServerController {
         return game.getGameStatus();
     }
 
+    public String getCurrentPlayer() {
+        return currentPlayer;
+    }
+
 }

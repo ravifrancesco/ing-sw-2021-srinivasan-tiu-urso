@@ -39,7 +39,7 @@ public class WarehouseController {
      */
     public void changeResourcesDeposit(String nickname, Resource[] deposit) throws WrongTurnException, WrongMoveException, IllegalDepositStateException {
         if (!currentPlayer.equals(nickname)) {
-            throw new WrongTurnException("Not " + nickname + " turn");
+            throw new WrongTurnException("Not " + nickname + "'s turn");
         }
 
         Player player = game.getPlayers().get(currentPlayer);
@@ -48,7 +48,7 @@ public class WarehouseController {
         try {
             dashboard.moveDepositResources(deposit);
         } catch (IllegalArgumentException e) {
-            throw new WrongMoveException("Invalid index");
+            throw new WrongMoveException("Invalid deposit length");
         } catch (IllegalStateException e) {
             throw new IllegalDepositStateException("Invalid deposit state");
         }
@@ -116,5 +116,8 @@ public class WarehouseController {
         } catch (IllegalStateException e) {
             throw new IllegalDepositStateException("Invalid deposit state");
         }
+    }
+    public String getCurrentPlayer() {
+        return currentPlayer;
     }
 }

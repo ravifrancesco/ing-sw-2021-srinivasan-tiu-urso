@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.utils.GameSettingsBuilder;
 import org.junit.Assert;
 import org.junit.Test;
 
