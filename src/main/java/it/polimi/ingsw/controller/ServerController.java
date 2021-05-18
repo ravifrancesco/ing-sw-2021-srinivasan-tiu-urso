@@ -136,7 +136,9 @@ public class ServerController {
      * Starts the game.
      */
     public void startGame() {
-      game.startUniquePhase(TurnPhase.FIRST_TURN); 
+      game.startUniquePhase(TurnPhase.FIRST_TURN);
+      game.changePlayer();
+      game.setFirstPlayer(game.getCurrentPlayer());
     }
 
     /**
