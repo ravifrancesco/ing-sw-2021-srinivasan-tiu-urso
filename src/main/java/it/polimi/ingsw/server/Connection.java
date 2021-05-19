@@ -25,7 +25,7 @@ import java.net.Socket;
 public class Connection implements Runnable,
         FaithTrackObserver, WarehouseObserver, DashboardObserver,
         PlayerObserver, GameObserver, GameBoardObserver,
-        DevelopmentCardGridObserver, MarketObserver {
+        DevelopmentCardGridObserver, MarketObserver, GameErrorObserver {
 
     private final Socket socket;
     private ObjectInputStream in;
@@ -193,8 +193,7 @@ public class Connection implements Runnable,
     }
 
     @Override
-    public void update(GameBoard message) {
-        send(new GameBoardUpdateMessage(message));
+    public void update(GameBoard message) { send(new GameBoardUpdateMessage(message));
     }
 
     @Override
@@ -205,6 +204,10 @@ public class Connection implements Runnable,
     @Override
     public void update(Market message) {
         send(new MarketUpdateMessage(message));
+    }
+
+    @Override
+    public void update(GameError message) { send(new GameErrorUpdateMessage(message));
     }
 }
 

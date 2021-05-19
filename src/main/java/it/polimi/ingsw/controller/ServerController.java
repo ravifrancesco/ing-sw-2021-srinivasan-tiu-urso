@@ -88,6 +88,7 @@ public class ServerController {
     public void addObservers(Connection c) {
 
         game.addObserver(c);
+        game.getGameError().addObserver(c);
 
         GameBoard gameBoard = game.getGameBoard();
         gameBoard.addObserver(c);
