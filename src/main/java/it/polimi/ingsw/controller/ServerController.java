@@ -66,6 +66,7 @@ public class ServerController {
      * @param gameSettings the game settings to load.
      */
     public void loadGameSettings(GameSettings gameSettings) {
+        this.gameSettings = gameSettings;
         game.loadGameSettings(gameSettings);
     }
 

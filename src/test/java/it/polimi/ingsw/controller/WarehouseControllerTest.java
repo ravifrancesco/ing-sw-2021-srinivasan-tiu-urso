@@ -6,9 +6,7 @@ import it.polimi.ingsw.controller.exceptions.WrongMoveException;
 import it.polimi.ingsw.controller.exceptions.WrongTurnException;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.GameSettings;
-import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Resource;
-import it.polimi.ingsw.server.Server;
 import it.polimi.ingsw.utils.GameSettingsBuilder;
 import org.junit.Assert;
 import org.junit.Test;
@@ -25,6 +23,7 @@ public class WarehouseControllerTest {
         this.serverController = new ServerController("01", 3);
         GameSettingsBuilder gameSettingsBuilder = new GameSettingsBuilder();
         GameSettings gameSettings = gameSettingsBuilder.build();
+        System.out.println(gameSettings == null);
         serverController.loadGameSettings(gameSettings);
         try {
             serverController.joinGame("rbta-svg");
@@ -106,8 +105,7 @@ public class WarehouseControllerTest {
         // TODO test with an actual filled deposit?
         System.out.println(Arrays.toString(game.getGameBoard().getMarket().getMarblesGrid()));
 
-
-
+        System.out.println(Arrays.toString(serverController.gameSettings.getLeaderCards()));
     }
 }
 
