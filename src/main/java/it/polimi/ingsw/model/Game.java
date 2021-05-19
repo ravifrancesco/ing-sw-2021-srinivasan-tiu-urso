@@ -3,6 +3,7 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.observerPattern.observables.GameObservable;
 import it.polimi.ingsw.model.observerPattern.observers.GameObserver;
 import it.polimi.ingsw.server.Connection;
+import it.polimi.ingsw.utils.Pair;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -129,7 +130,9 @@ public class Game extends GameObservable {
 		this.currentPlayer = getNextPlayer();
 	}
 
-	public void setError(Exception error, String nickname) {
-		gameError.setError(error, nickname);
+	public void setError(Exception exception, String nickname) {
+		Pair<String, Exception> error = new Pair<>(nickname, exception);
+
+		gameError.setError(error);
 	}
 }
