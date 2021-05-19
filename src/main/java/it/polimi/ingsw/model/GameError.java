@@ -11,7 +11,7 @@ public class GameError extends GameErrorObservable {
 
     public void setError(Pair<String, Exception> error) {
         this.error = error;
-        notify()
+        notify();
     }
 
 
