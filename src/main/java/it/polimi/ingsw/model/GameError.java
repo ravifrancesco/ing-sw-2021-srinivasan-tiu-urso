@@ -14,5 +14,13 @@ public class GameError extends GameErrorObservable {
         notify();
     }
 
+    /**
+     * Used to retrieve the last error.
+     *
+     * @return the last error and the nickname of the player who caused the error.
+     */
+    public Pair<String, Exception> getError() {
+        return error;
+    }
 
 }
