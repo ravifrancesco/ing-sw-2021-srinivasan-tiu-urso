@@ -14,8 +14,6 @@ import java.util.ArrayList;
 public class WarehouseController {
     private final Game game;
 
-    private String currentPlayer;
-
     /**
      * Constructor for a Warehouse Controller object.
      * @param game represents the game which the controller belongs to.
@@ -26,23 +24,14 @@ public class WarehouseController {
     }
 
     /**
-     * Setter for the current player.
-     * @param currentPlayer the current player of the game.
-     */
-
-    public void setCurrentPlayer(String currentPlayer) {
-        this.currentPlayer = currentPlayer;
-    }
-
-    /**
      * @see ServerController#changeDeposit(String, Resource[])
      */
     public void changeResourcesDeposit(String nickname, Resource[] deposit) throws WrongTurnException, WrongMoveException, IllegalDepositStateException {
-        if (!currentPlayer.equals(nickname)) {
+        if (!game.getCurrentPlayer().equals(nickname)) {
             throw new WrongTurnException("Not " + nickname + " turn");
         }
 
-        Player player = game.getPlayers().get(currentPlayer);
+        Player player = game.getPlayers().get(game.getCurrentPlayer());
         Dashboard dashboard = player.getDashboard();
 
         try {
@@ -58,11 +47,11 @@ public class WarehouseController {
      * @see ServerController#changeDepositExtraDeposit(String, Resource[], Resource[], int)
      */
     public void changeResourcesDepositExtraDeposit(String nickname, Resource[] deposit, Resource[] extraDeposit, int lcIndex) throws WrongTurnException, IllegalDepositStateException, WrongMoveException {
-        if (!currentPlayer.equals(nickname)) {
+        if (!game.getCurrentPlayer().equals(nickname)) {
             throw new WrongTurnException("Not " + nickname + " turn");
         }
 
-        Player player = game.getPlayers().get(currentPlayer);
+        Player player = game.getPlayers().get(game.getCurrentPlayer());
         Dashboard dashboard = player.getDashboard();
 
         try {
@@ -81,11 +70,11 @@ public class WarehouseController {
     *  @see ServerController#storeFromSupply(String, int, int)
   */
     public void storeFromSupply(String nickname, int from, int to) throws WrongTurnException, WrongMoveException, IllegalDepositStateException {
-        if (!currentPlayer.equals(nickname)) {
+        if (!game.getCurrentPlayer().equals(nickname)) {
             throw new WrongTurnException("Not " + nickname + " turn");
         }
 
-        Player player = game.getPlayers().get(currentPlayer);
+        Player player = game.getPlayers().get(game.getCurrentPlayer());
         Dashboard dashboard = player.getDashboard();
 
         try {
@@ -102,11 +91,11 @@ public class WarehouseController {
      */
 
     public void storeFromSupplyInExtraDeposit(String nickname, int leaderCardPos, int from, int to) throws WrongTurnException, WrongMoveException, IllegalDepositStateException {
-        if (!currentPlayer.equals(nickname)) {
+        if (!game.getCurrentPlayer().equals(nickname)) {
             throw new WrongTurnException("Not " + nickname + " turn");
         }
 
-        Player player = game.getPlayers().get(currentPlayer);
+        Player player = game.getPlayers().get(game.getCurrentPlayer());
         Dashboard dashboard = player.getDashboard();
 
         try {
