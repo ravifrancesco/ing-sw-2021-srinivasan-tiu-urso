@@ -11,8 +11,6 @@ import java.util.ArrayList;
 public class MarketController {
     private final Game game;
 
-    private String currentPlayer;
-
     /**
      * Constructor for a Market Controller object.
      * @param game represents the game which the controller belongs to.
@@ -23,20 +21,11 @@ public class MarketController {
     }
 
     /**
-     * Setter for the current player.
-     * @param currentPlayer the current player of the game.
-     */
-
-    public void setCurrentPlayer(String currentPlayer) {
-        this.currentPlayer = currentPlayer;
-    }
-
-    /**
      * @see ServerController#getFromMarket(String, int, ArrayList)
      */
     
     public void getFromMarket(String nickname, int move, ArrayList<WhiteMarbleResource> wmrs) throws WrongTurnException, WrongMoveException {
-        if (!currentPlayer.equals(nickname)) {
+        if (!game.getCurrentPlayer().equals(nickname)) {
             throw new WrongTurnException("Not " + nickname + " turn");
         } else if (!game.getTurnPhase().equals(TurnPhase.COMMON)) {
             throw new WrongTurnPhaseException("Turn phase is " + game.getTurnPhase().name());
@@ -46,7 +35,7 @@ public class MarketController {
 
         if (!player.checkWMR(wmrs)) {
             // check that each marble in WMRS is actually an activated special ability
-            throw new WrongMoveException(currentPlayer + " doesn't have these white marble resources");
+            throw new WrongMoveException(game.getCurrentPlayer() + " doesn't have these white marble resources");
         }
 
         GameBoard gameboard = game.getGameBoard();
@@ -67,7 +56,7 @@ public class MarketController {
 
         // check to see that the WMRS size corresponds to the amount of white marbles (against hacked clients)
         if (marketRes.stream().filter(r -> r == Resource.ANY).count() != wmrs.size()) {
-            throw new IllegalArgumentException(currentPlayer + " asked for too many white marble transformed resources.");
+            throw new IllegalArgumentException(game.getCurrentPlayer() + " asked for too many white marble transformed resources.");
         }
 
         // removes all ANYs
