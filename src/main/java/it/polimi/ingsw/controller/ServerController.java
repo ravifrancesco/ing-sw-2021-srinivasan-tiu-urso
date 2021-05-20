@@ -135,6 +135,7 @@ public class ServerController {
 
     /**
      * Starts the game.
+     * TODO
      */
     public void startGame() {
       game.startUniquePhase(TurnPhase.FIRST_TURN);
@@ -149,7 +150,6 @@ public class ServerController {
      */
     public void discardExcessLeaderCards(String nickname, int cardToDiscard) {
         try {
-            leaderCardController.setCurrentPlayer(game.getCurrentPlayer());
             leaderCardController.discardExcessLeaderCards(nickname, cardToDiscard);
         } catch (WrongTurnException | WrongMoveException | CardNotPlayableException e) {
             game.setError(e, nickname);
@@ -209,7 +209,6 @@ public class ServerController {
      */
     public void playLeaderCard(String nickname, int cardToPlay) {
         try {
-            leaderCardController.setCurrentPlayer(game.getCurrentPlayer());
             leaderCardController.playLeaderCard(nickname, cardToPlay);
         } catch (WrongTurnException | CardNotPlayableException e) {
             game.setError(e, nickname);
@@ -242,7 +241,6 @@ public class ServerController {
      */
     public void discardLeaderCard(String nickname, int cardToDiscard) {
         try {
-            leaderCardController.setCurrentPlayer(game.getCurrentPlayer());
             leaderCardController.discardLeaderCard(nickname, cardToDiscard);
         } catch (WrongTurnException | CardNotPlayableException e) {
             game.setError(e, nickname);
