@@ -3,6 +3,7 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.observerPattern.observables.GameObservable;
 import it.polimi.ingsw.model.observerPattern.observers.GameObserver;
 import it.polimi.ingsw.server.Connection;
+import it.polimi.ingsw.utils.Pair;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -11,6 +12,11 @@ import java.util.LinkedHashMap;
 public class Game extends GameObservable {
 
 	private String gameId;
+
+	private final int numberOfPlayers;
+
+	private String currentPlayer;
+	private String firstPlayer;
 
 	private LinkedHashMap<String, Player> players;
 	private Iterator<String> playerOrder;
@@ -23,10 +29,14 @@ public class Game extends GameObservable {
 
 	private boolean gameEnded;
 
-	public Game(String gameId) {
+	private GameError gameError;
+
+	public Game(String gameId, int numberOfPlayers) {
 		this.gameId = gameId;
+		this.numberOfPlayers = numberOfPlayers;
 		this.players = new LinkedHashMap<>();
 		this.gameBoard = new GameBoard();
+		this.gameError = new GameError();
 	}
 
 	public void loadGameSettings(GameSettings gameSettings) {
@@ -53,7 +63,6 @@ public class Game extends GameObservable {
 	}
 
 	public void addPlayer(String nickname, Player p) {
-		System.out.println("ciao");
 		players.put(nickname, p);
 	}
 
@@ -97,4 +106,33 @@ public class Game extends GameObservable {
 		return this;
 	}
 
+	public GameError getGameError() {
+		return gameError;
+	}
+
+	public int getNumberOfPlayers() {
+		return numberOfPlayers;
+	}
+
+	public String getCurrentPlayer() {
+		return currentPlayer;
+	}
+
+	public String getFirstPlayer() {
+		return firstPlayer;
+	}
+
+	public void setFirstPlayer(String firstPlayer) {
+		this.firstPlayer = firstPlayer;
+	}
+
+	public void changePlayer() {
+		this.currentPlayer = getNextPlayer();
+	}
+
+	public void setError(Exception exception, String nickname) {
+		Pair<String, Exception> error = new Pair<>(nickname, exception);
+
+		gameError.setError(error);
+	}
 }
