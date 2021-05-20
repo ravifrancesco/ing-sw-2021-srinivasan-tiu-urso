@@ -101,6 +101,7 @@ public class Player extends PlayerObservable {
 			WarehouseExtraSpace wes = (WarehouseExtraSpace) leaderCard.getSpecialAbility();
 			wes.setLeaderCardPos(position);
 		}
+		notify(this);
 	}
 
 	/**
@@ -116,6 +117,7 @@ public class Player extends PlayerObservable {
 		}
 
 		gameBoard.discardCard(hand.removeCard(card));
+		notify(this);
 	}
 
 	/**
