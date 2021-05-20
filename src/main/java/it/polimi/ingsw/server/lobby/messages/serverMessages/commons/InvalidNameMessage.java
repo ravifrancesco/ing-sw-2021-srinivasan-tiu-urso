@@ -2,7 +2,9 @@ package it.polimi.ingsw.server.lobby.messages.serverMessages.commons;
 
 import it.polimi.ingsw.server.lobby.messages.serverMessages.ServerMessage;
 
-public class InvalidNameMessage implements ServerMessage {
+import java.io.Serializable;
+
+public class InvalidNameMessage implements ServerMessage, Serializable {
 
     @Override
     public void updateClient(Object client, String nickname) {

@@ -3,12 +3,14 @@ package it.polimi.ingsw.model.specialAbilities;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Resource;
 
+import java.io.Serializable;
+
 /**
  * The class represents the special ability of a leader card which allows to buy a development card
  * from the grid with a discount.
  */
 
-public class DevelopmentCardDiscount implements SpecialAbility {
+public class DevelopmentCardDiscount implements SpecialAbility, Serializable {
 
 	private Resource resource;
 	private int quantity;

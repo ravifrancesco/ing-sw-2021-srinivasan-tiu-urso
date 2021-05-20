@@ -4,11 +4,11 @@ import it.polimi.ingsw.server.lobby.messages.serverMessages.ServerMessage;
 
 import java.io.Serializable;
 
-public class WelcomeMessage implements ServerMessage, Serializable {
+public class RegisteredNameMessage implements ServerMessage, Serializable {
+
 
     @Override
     public void updateClient(Object client, String nickname) {
-        // TODO
+        //TODO
     }
-
 }
