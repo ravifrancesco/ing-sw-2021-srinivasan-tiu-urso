@@ -1,4 +1,4 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.controller.client;
 
 
 import java.io.IOException;
