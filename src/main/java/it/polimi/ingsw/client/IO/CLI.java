@@ -1,4 +1,8 @@
-package it.polimi.ingsw.client;
+package it.polimi.ingsw.client.IO;
+
+import it.polimi.ingsw.client.ReducedModel;
+import it.polimi.ingsw.client.ServerMessageHandler;
+import it.polimi.ingsw.client.UI;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -27,6 +31,11 @@ public class CLI implements UI {
         int port = input.nextInt();
         input.nextLine();
         return port;
+    }
+
+    public String readCommand() {
+        System.out.println("Enter command");
+        return input.nextLine();
     }
 
     public void printErrorMessage(String error) {

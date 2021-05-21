@@ -55,13 +55,13 @@ public class MainLobby implements Lobby {
         ((ClientLobbyMessage) clientMessage).handle(c, this);
     }
 
-    public void createGame(Connection c, GameSettings gameSettings, int numberOfPlayers) throws IllegalStateException, InvalidNameException, IllegalArgumentException {
+    public void createGame(Connection c, int numberOfPlayers) throws IllegalStateException, InvalidNameException, IllegalArgumentException {
         if (Server.THREAD_NUMBER - playingConnection.size() < 4) {
             throw new IllegalStateException();
         }
 
         String uniqueID = UUID.randomUUID().toString();
-        GameLobby gameLobby = new GameLobby(uniqueID, gameSettings, numberOfPlayers);
+        GameLobby gameLobby = new GameLobby(uniqueID, numberOfPlayers);
         gameLobby.enterLobby(c);
 
         activeGameLobbies.add(gameLobby);

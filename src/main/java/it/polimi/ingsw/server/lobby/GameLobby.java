@@ -2,6 +2,7 @@ package it.polimi.ingsw.server.lobby;
 
 import it.polimi.ingsw.controller.ServerController;
 import it.polimi.ingsw.controller.exceptions.*;
+import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.GameSettings;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.ResourceContainer;
@@ -27,9 +28,9 @@ public class GameLobby implements Lobby {
     private final ServerController serverController;
     private GameSettings gameSettings;
 
-    public GameLobby(String id, GameSettings gameSettings, int maxPlayers) throws IllegalArgumentException {
+    public GameLobby(String id, int maxPlayers) throws IllegalArgumentException {
         this.id = id;
-        this.gameSettings = gameSettings;
+        this.gameSettings = GameSettings.loadDefaultGameSettings();
         this.maxPlayers = maxPlayers;
         this.connectedPlayers = new HashMap<>();
         this.serverController = new ServerController(id, maxPlayers);
@@ -126,4 +127,5 @@ public class GameLobby implements Lobby {
     public LobbyType getType() {
         return LobbyType.GAME_LOBBY;
     }
+
 }

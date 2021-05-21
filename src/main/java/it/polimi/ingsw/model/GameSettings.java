@@ -456,4 +456,9 @@ public class GameSettings implements Serializable {
     public int getLeaderCardNum() {
         return leaderCardNum;
     }
+
+    public static GameSettings loadDefaultGameSettings() {
+        // TODO
+        return null;
+    }
 }

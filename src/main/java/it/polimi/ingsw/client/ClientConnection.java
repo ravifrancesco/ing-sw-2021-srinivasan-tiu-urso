@@ -1,15 +1,14 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.server.Server;
+import it.polimi.ingsw.client.IO.CLI;
+import it.polimi.ingsw.client.IO.ClientInputParser;
+import it.polimi.ingsw.server.lobby.LobbyType;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.ClientMessage;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.lobbyMessage.lobby.RegisterName;
 import it.polimi.ingsw.server.lobby.messages.serverMessages.ServerMessage;
 
-import javax.naming.InvalidNameException;
 import java.io.*;
 import java.net.Socket;
-import java.net.SocketException;
-import java.net.UnknownHostException;
 
 public class ClientConnection implements Runnable {
     private String playerNickname;
@@ -98,6 +97,35 @@ public class ClientConnection implements Runnable {
 
     @Override
     public void run() {
-
+        startReceivingThread();
+        startReadingThread();
     }
+
+    private void startReceivingThread() {
+        new Thread(() -> {
+            while(true) {
+                try{
+                    ServerMessage serverMessage = receiveServerMessage();
+                    cli.printMessage(serverMessage.toString());
+                } catch (ClassNotFoundException | IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
+    private void startReadingThread() {
+        new Thread(() -> {
+            while(true) {
+                String command = cli.readCommand();
+                ClientMessage clientMessage = ClientInputParser.parseInput(command);
+                if (clientMessage == null) {
+                    cli.printErrorMessage("Invalid command");
+                } else {
+                    send(clientMessage);
+                }
+            }
+        }).start();
+    }
+
 }

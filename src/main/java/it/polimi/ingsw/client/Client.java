@@ -1,7 +1,8 @@
 package it.polimi.ingsw.client;
 
+import it.polimi.ingsw.client.IO.CLI;
+
 import java.io.IOException;
-import java.util.Scanner;
 
 public class Client {
     private CLI cli;
@@ -16,6 +17,7 @@ public class Client {
                 ClientConnection clientConnection = new ClientConnection(ip, port, cli);
                 clientConnection.connectToServer();
                 clientConnection.registerName();
+                clientConnection.run();
                 return;
             } catch (IllegalArgumentException e) {
                 cli.printErrorMessage("Invalid ip/port name");
