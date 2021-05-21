@@ -39,7 +39,6 @@ public class Game extends GameObservable {
 		this.playerOrder = players.keySet().iterator();
 		this.gameBoard = new GameBoard();
 		this.gameError = new GameError();
-
 	}
 
 	public void loadGameSettings(GameSettings gameSettings) {
@@ -52,6 +51,8 @@ public class Game extends GameObservable {
 		this.playerOrder = players.keySet().iterator();
 		players.values().forEach(Player::reset);
 		this.gameEnded = false;
+		notify(this);
+
 	}
 
 	public boolean checkEnd() {
@@ -64,7 +65,9 @@ public class Game extends GameObservable {
 		return players.values().stream().filter(player -> player.getVictoryPoints() == winnerPoints).findFirst().get();
 	}
 
-	public void addPlayer(String nickname, Player p) { players.put(nickname, p);
+	public void addPlayer(String nickname, Player p) {
+		players.put(nickname, p);
+		notify(this);
 	}
 
 	public HashMap<String, Player> getPlayers() {
@@ -135,10 +138,12 @@ public class Game extends GameObservable {
 
 	public void setFirstPlayer(String firstPlayer) {
 		this.firstPlayer = firstPlayer;
+		notify(this);
 	}
 
 	public void changePlayer() {
 		this.currentPlayer = getNextPlayer();
+		notify(this);
 	}
 
 	public void setError(Exception exception, String nickname) {

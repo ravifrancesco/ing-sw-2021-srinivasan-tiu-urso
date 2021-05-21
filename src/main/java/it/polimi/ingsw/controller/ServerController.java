@@ -135,6 +135,7 @@ public class ServerController {
 
     /**
      * Starts the game.
+     * TODO
      */
     public void startGame() {
         game.reset();
@@ -151,7 +152,6 @@ public class ServerController {
      */
     public void discardExcessLeaderCards(String nickname, int cardToDiscard) {
         try {
-            leaderCardController.setCurrentPlayer(game.getCurrentPlayer());
             leaderCardController.discardExcessLeaderCards(nickname, cardToDiscard);
         } catch (WrongTurnException | WrongMoveException | CardNotPlayableException e) {
             game.setError(e, nickname);
@@ -211,7 +211,6 @@ public class ServerController {
      */
     public void playLeaderCard(String nickname, int cardToPlay) {
         try {
-            leaderCardController.setCurrentPlayer(game.getCurrentPlayer());
             leaderCardController.playLeaderCard(nickname, cardToPlay);
         } catch (WrongTurnException | CardNotPlayableException e) {
             game.setError(e, nickname);
@@ -230,7 +229,6 @@ public class ServerController {
                                              Map<Resource, Integer> resourceRequiredOptional, Map<Resource, Integer> resourceProducedOptional) {
 
         try {
-            productionController.setCurrentPlayer(game.getCurrentPlayer());
             productionController.activateLeaderCardProduction(nickname, cardToActivate, resourcesToPayCost, resourceRequiredOptional, resourceProducedOptional);
         } catch (WrongTurnException | PowerNotActivatableException | WrongMoveException e) {
             game.setError(e, nickname);
@@ -244,7 +242,6 @@ public class ServerController {
      */
     public void discardLeaderCard(String nickname, int cardToDiscard) {
         try {
-            leaderCardController.setCurrentPlayer(game.getCurrentPlayer());
             leaderCardController.discardLeaderCard(nickname, cardToDiscard);
         } catch (WrongTurnException | CardNotPlayableException e) {
             game.setError(e, nickname);
@@ -262,7 +259,6 @@ public class ServerController {
                                             Map<Resource, Integer> resourceRequiredOptional, Map<Resource, Integer> resourceProducedOptional) {
 
         try {
-            productionController.setCurrentPlayer(game.getCurrentPlayer());
             productionController.activateDashboardProduction(nickname, resourcesToPayCost, resourceRequiredOptional, resourceProducedOptional);
         } catch (WrongTurnException | PowerNotActivatableException | WrongMoveException e) {
             game.setError(e, nickname);
@@ -277,7 +273,6 @@ public class ServerController {
      */
     public void getFromMarket(String nickname, int move, ArrayList<WhiteMarbleResource> wmrs) {
         try {
-            marketController.setCurrentPlayer(game.getCurrentPlayer());
             marketController.getFromMarket(nickname, move, wmrs);
         } catch (WrongTurnException | WrongMoveException e) {
             System.out.println("errore: ");
@@ -296,7 +291,6 @@ public class ServerController {
      */
     public void buyDevelopmentCard(String nickname, int row, int column, ResourceContainer resourcesToPayCost, int position)  {
         try {
-            developmentCardController.setCurrentPlayer(game.getCurrentPlayer());
             developmentCardController.buyDevelopmentCard(nickname, row, column, resourcesToPayCost, position);
         } catch (WrongTurnException | CardNotBuyableException | CardNotPlayableException | WrongMoveException e) {
             game.setError(e, nickname);
@@ -315,7 +309,6 @@ public class ServerController {
                                                        Map<Resource, Integer> resourceRequiredOptional, Map<Resource, Integer> resourceProducedOptional) {
 
         try {
-            productionController.setCurrentPlayer(game.getCurrentPlayer());
             productionController.activateDevelopmentCardProductionPower(nickname, cardToActivate, resourcesToPayCost, resourceRequiredOptional, resourceProducedOptional);
         } catch (WrongTurnException | PowerNotActivatableException | WrongMoveException e) {
             game.setError(e, nickname);
@@ -329,7 +322,6 @@ public class ServerController {
      */
     public void changeDeposit(String nickname, Resource[] deposit) {
         try {
-            warehouseController.setCurrentPlayer(game.getCurrentPlayer());
             warehouseController.changeResourcesDeposit(nickname, deposit);
         } catch (WrongTurnException | WrongMoveException | IllegalDepositStateException e) {
             game.setError(e, nickname);
@@ -339,7 +331,6 @@ public class ServerController {
     // TODO doc (paste from history)
     public void changeDepositExtraDeposit(String nickname, Resource[] deposit, Resource[] extraDeposit, int lcIndex) {
         try {
-            warehouseController.setCurrentPlayer(game.getCurrentPlayer());
             warehouseController.changeResourcesDepositExtraDeposit(nickname, deposit, extraDeposit, lcIndex);
         } catch (WrongTurnException | IllegalDepositStateException | WrongMoveException e) {
             game.setError(e, nickname);
@@ -354,7 +345,6 @@ public class ServerController {
      */
     public void storeFromSupply(String nickname, int from, int to) {
         try {
-            warehouseController.setCurrentPlayer(game.getCurrentPlayer());
             warehouseController.storeFromSupply(nickname, from, to);
         } catch (WrongTurnException | WrongMoveException | IllegalDepositStateException e) {
             game.setError(e, nickname);
@@ -370,7 +360,6 @@ public class ServerController {
      */
     public void storeFromSupplyInExtraDeposit(String nickname, int leaderCardPos, int from, int to) {
         try {
-            warehouseController.setCurrentPlayer(game.getCurrentPlayer());
             warehouseController.storeFromSupplyInExtraDeposit(nickname, leaderCardPos, from, to);
         } catch (WrongTurnException | WrongMoveException | IllegalDepositStateException e) {
             game.setError(e, nickname);

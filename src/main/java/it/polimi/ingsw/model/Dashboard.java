@@ -134,6 +134,8 @@ public class Dashboard extends DashboardObservable {
 
 		this.playerPoints = faithTrackVP + leaderCardsVP + developmentCardsVP + resourcePoints;
 
+		notify(this);
+
 	}
 
 
@@ -185,9 +187,9 @@ public class Dashboard extends DashboardObservable {
 			notify(this);
 			throw new IllegalStateException();
 		} else {
-			updatePlayerPoints();
-			notify(this);
 			playedDevelopmentCards.get(position).push(c);
+			notify(this);
+			updatePlayerPoints();
 		}
 	}
 
@@ -200,7 +202,6 @@ public class Dashboard extends DashboardObservable {
 	public void storeResourceInLocker(Resource r, int quantity) {
 		warehouse.storeInLocker(r, quantity);
 		updatePlayerPoints();
-		notify(this);
 	}
 
 	/**
@@ -224,8 +225,6 @@ public class Dashboard extends DashboardObservable {
 			throw new IllegalStateException();
 		} catch (IllegalArgumentException e) {
 			throw new IllegalArgumentException();
-		} finally {
-			notify(this);
 		}
 
 	}
@@ -357,9 +356,11 @@ public class Dashboard extends DashboardObservable {
 	 */
 	public void moveDepositResources(Resource[] newDeposit) throws IllegalArgumentException, IllegalStateException {
 		if (newDeposit.length != 6) {
+			notify(this);
 			throw new IllegalArgumentException();
 		}
 		if (!warehouse.checkShelvesRule(newDeposit) || !checkSameResourcesExtraDeposits(newDeposit, warehouse.getExtraDeposits()[0], 0)) {
+			notify(this);
 			throw new IllegalStateException("Moves create an illegal deposit");
 		}
 		warehouse.changeDeposit(newDeposit);
@@ -375,12 +376,15 @@ public class Dashboard extends DashboardObservable {
 	 */
 	public void moveDepositExtraDeposit(Resource[] newDeposit, Resource[] newExtraDeposit, int lcIndex) throws IllegalArgumentException, IllegalStateException {
 		if(newDeposit.length != 6 || newExtraDeposit.length != 2 || lcIndex < 0 || lcIndex > 1) {
+			notify(this);
 			throw new IllegalArgumentException();
 		} else if (!playedLeaderCards.get(lcIndex).getSpecialAbility().getType().equals(SpecialAbilityType.WAREHOUSE_EXTRA_SPACE)) {
+			notify(this);
 			throw new IllegalArgumentException();
 		}
 
 		if(!warehouse.checkShelvesRule(newDeposit) || !checkSameResourcesExtraDeposits(newDeposit, newExtraDeposit, lcIndex)) {
+			notify(this);
 			throw new IllegalStateException("Move creates an illegal deposit");
 		}
 
@@ -454,10 +458,8 @@ public class Dashboard extends DashboardObservable {
 		try {
 			warehouse.storeInDeposit(supply.get(from), to);
 		} catch(IllegalStateException e) {
-			notify(this);
 			throw new IllegalStateException();
 		} catch(Exception e) {
-			notify(this);
 			throw new IllegalArgumentException();
 		}
 
@@ -505,7 +507,6 @@ public class Dashboard extends DashboardObservable {
 		try {
 			warehouse.storeInExtraDeposit(leaderCardPosition, supply.get(from), to);
 		} catch (IllegalArgumentException e) {
-			notify(this);
 			throw new IllegalArgumentException();
 		}
 
@@ -562,6 +563,7 @@ public class Dashboard extends DashboardObservable {
 		IntStream.range(0, 1).forEach(i ->
 				resToPayWith.getSelectedExtraDepositIndexes().get(i).forEach(pos ->
 						warehouse.removeFromExtraDeposit(i, pos)));
+		notify(this);
 	}
 
 	public Warehouse getWarehouse() {
