@@ -38,6 +38,8 @@ public class DevelopmentCardGrid extends DevelopmentCardGridObservable {
 				.mapToObj(e->new Stack<DevelopmentCard>())
 				.collect(Collectors.toList());
 
+		notify(this);
+
 	}
 
 	/**
@@ -50,6 +52,8 @@ public class DevelopmentCardGrid extends DevelopmentCardGridObservable {
 		IntStream.range(0, DEVELOPMENT_CARD_NUM)
 				.mapToObj(i -> (DevelopmentCard) developmentCardDeck.getCard())
 				.forEach(c -> grid.get(getPosition(c.getBanner().getLevel(), getColumn(c.getBanner().getColor()))).push(c));
+
+		notify(this);
 	}
 
 	/**
@@ -87,7 +91,9 @@ public class DevelopmentCardGrid extends DevelopmentCardGridObservable {
 
 	public DevelopmentCard buy(int row, int column) {
 		int position = getPosition(row, column);
-		return grid.get(position).pop();
+		DevelopmentCard card = grid.get(position).pop();
+		notify(this);
+		return card;
 	}
 
 	/**

@@ -40,6 +40,8 @@ public class Market extends MarketObservable {
 		Collections.shuffle(allMarbles);
 
 		marblesGrid = allMarbles.toArray(new Marble[0]);
+
+		notify(this);
 	}
 
 	/**
@@ -126,6 +128,7 @@ public class Market extends MarketObservable {
 		shiftRow(move);
 		swapMarble(move, gridColLength-1, gridRowLength-1, gridColLength);
 		// the coordinates gridRowLength-1 (2) and gridColLength(4) return 2*4 + 4 = 12, the index of the freeMarble
+		notify(this);
 		return collectedResources;
 	}
 
@@ -147,6 +150,7 @@ public class Market extends MarketObservable {
 		shiftCol(move);
 		swapMarble(gridRowLength-1, move, gridRowLength-1, gridColLength);
 		// the coordinates gridRowLength-1 (2) and gridColLength(4) return 2*4 + 4 = 12, the index of the freeMarble
+		notify(this);
 		return collectedResources;
 	}
 
