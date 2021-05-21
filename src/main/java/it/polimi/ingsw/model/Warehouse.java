@@ -304,9 +304,8 @@ public class Warehouse extends WarehouseObservable {
 	 * @param newDeposit 								the new deposit.
 	 */
 	public void changeDeposit(Resource[] newDeposit) {
-		IntStream.range(0, MAX_DEPOSIT_SLOTS).forEach(i -> {
-			deposit[i] = newDeposit[i];
-		});
+		IntStream.range(0, MAX_DEPOSIT_SLOTS).forEach(i -> deposit[i] = newDeposit[i]);
+		notify(this);
 	}
 
 	/**
@@ -315,9 +314,8 @@ public class Warehouse extends WarehouseObservable {
 	 * @param lcIndex 									the index of the leader card where the extra deposit is
 	 */
 	public void changeExtraDeposit(Resource[] newExtraDeposit, int lcIndex) {
-		IntStream.range(0, MAX_EXTRA_DEPOSIT_SPACE).forEach(i -> {
-			extraDeposits[lcIndex][i] = newExtraDeposit[i];
-		});
+		IntStream.range(0, MAX_EXTRA_DEPOSIT_SPACE).forEach(i -> extraDeposits[lcIndex][i] = newExtraDeposit[i]);
+		notify(this);
 	}
 
 	public Resource[] getDeposit() {
