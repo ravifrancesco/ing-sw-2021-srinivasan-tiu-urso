@@ -9,9 +9,8 @@ import it.polimi.ingsw.model.*;
 import java.util.Map;
 
 public class LeaderCardController {
-    private final Game game;
 
-    private String currentPlayer;
+    private final Game game;
 
     /**
      * Constructor for a LeaderCard Controller object.
@@ -23,26 +22,17 @@ public class LeaderCardController {
     }
 
     /**
-     * Setter for the current player.
-     * @param currentPlayer the current player of the game.
-     */
-
-    public void setCurrentPlayer(String currentPlayer) {
-        this.currentPlayer = currentPlayer;
-    }
-
-    /**
      * @see ServerController#discardExcessLeaderCards(String, int)
      */
 
     public void discardExcessLeaderCards(String nickname, int cardToDiscard) throws WrongTurnException, WrongMoveException, CardNotPlayableException {
-        if (!currentPlayer.equals(nickname)) {
+        if (!game.getCurrentPlayer().equals(nickname)) {
             throw new WrongTurnException("Not " + nickname + " turn");
         } else if (!game.getTurnPhase().equals(TurnPhase.FIRST_TURN)) {
             throw new WrongTurnPhaseException("Turn phase is " + game.getTurnPhase().name());
         }
 
-        Player player = game.getPlayers().get(currentPlayer);
+        Player player = game.getPlayers().get(game.getCurrentPlayer());
         int handSize = player.getHandSize();
 
         if (handSize <= 2) {
@@ -61,7 +51,7 @@ public class LeaderCardController {
 
     public void playLeaderCard(String nickname, int cardToPlay) throws WrongTurnException, CardNotPlayableException {
 
-        if (!currentPlayer.equals(nickname)) {
+        if (!game.getCurrentPlayer().equals(nickname)) {
             throw new WrongTurnException("Not " + nickname + " turn");
         } else if (game.getTurnPhase().equals(TurnPhase.FIRST_TURN)) {
             throw new WrongTurnPhaseException("Turn phase is " + game.getTurnPhase().name());
@@ -91,13 +81,13 @@ public class LeaderCardController {
      */
 
     public void discardLeaderCard(String nickname, int cardToDiscard) throws WrongTurnException, CardNotPlayableException {
-        if (!currentPlayer.equals(nickname)) {
+        if (!game.getCurrentPlayer().equals(nickname)) {
             throw new WrongTurnException("Not " + nickname + " turn");
         } else if (game.getTurnPhase().equals(TurnPhase.FIRST_TURN)) {
             throw new WrongTurnPhaseException("Turn phase is " + game.getTurnPhase().name());
         }
 
-        Player player = game.getPlayers().get(currentPlayer);
+        Player player = game.getPlayers().get(game.getCurrentPlayer());
 
         if (cardToDiscard >= player.getHandSize() || cardToDiscard < 0) {
             throw new CardNotPlayableException("Invalid index");

@@ -16,8 +16,6 @@ public class ProductionController {
 
     private final Game game;
 
-    private String currentPlayer;
-
     /**
      * Constructor for a Production Controller object.
      * @param game represents the game which the controller belongs to.
@@ -28,22 +26,13 @@ public class ProductionController {
     }
 
     /**
-     * Setter for the current player.
-     * @param currentPlayer the current player of the game.
-     */
-
-    public void setCurrentPlayer(String currentPlayer) {
-        this.currentPlayer = currentPlayer;
-    }
-
-    /**
      * @see ServerController#activateLeaderCardProduction(String, int, ResourceContainer, Map, Map)
      */
 
     public void activateLeaderCardProduction(String nickname, int cardToActivate, ResourceContainer resourcesToPayCost,
                                              Map<Resource, Integer> resourceRequiredOptional, Map<Resource, Integer> resourceProducedOptional) throws WrongTurnException, PowerNotActivatableException, WrongMoveException {
 
-        if (!currentPlayer.equals(nickname)) {
+        if (!game.getCurrentPlayer().equals(nickname)) {
             throw new WrongTurnException("Not " + nickname + " turn");
         } else if (!(game.getTurnPhase().equals(TurnPhase.COMMON) || game.getTurnPhase().equals(TurnPhase.PRODUCTION))) {
             throw new WrongTurnPhaseException("Turn phase is " + game.getTurnPhase().name());
@@ -101,7 +90,7 @@ public class ProductionController {
     public void activateDashboardProduction(String nickname, ResourceContainer resourcesToPayCost,
                                             Map<Resource, Integer> resourceRequiredOptional, Map<Resource, Integer> resourceProducedOptional) throws WrongTurnException, PowerNotActivatableException, WrongMoveException {
 
-        if (!currentPlayer.equals(nickname)) {
+        if (!game.getCurrentPlayer().equals(nickname)) {
             throw new WrongTurnException("Not " + nickname + " turn");
         } else if (!(game.getTurnPhase().equals(TurnPhase.COMMON) || game.getTurnPhase().equals(TurnPhase.PRODUCTION))) {
             throw new WrongTurnPhaseException("Turn phase is " + game.getTurnPhase().name());
@@ -154,7 +143,7 @@ public class ProductionController {
     public void activateDevelopmentCardProductionPower(String nickname, int cardToActivate, ResourceContainer resourcesToPayCost,
                                                        Map<Resource, Integer> resourceRequiredOptional, Map<Resource, Integer> resourceProducedOptional) throws WrongTurnException, PowerNotActivatableException, WrongMoveException {
 
-        if (!currentPlayer.equals(nickname)) {
+        if (!game.getCurrentPlayer().equals(nickname)) {
             throw new WrongTurnException("Not " + nickname + " turn");
         } else if (!game.getTurnPhase().equals(TurnPhase.COMMON) || !game.getTurnPhase().equals(TurnPhase.PRODUCTION)) {
             throw new WrongTurnPhaseException("Turn phase is " + game.getTurnPhase().name());

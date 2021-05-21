@@ -11,8 +11,6 @@ import java.util.Map;
 public class DevelopmentCardController {
     private final Game game;
 
-    private String currentPlayer;
-
     /**
      * Constructor for a DevelopmentCard Controller object.
      * @param game represents the game which the controller belongs to.
@@ -23,21 +21,12 @@ public class DevelopmentCardController {
     }
 
     /**
-     * Setter for the current player.
-     * @param currentPlayer the current player of the game.
-     */
-
-    public void setCurrentPlayer(String currentPlayer) {
-        this.currentPlayer = currentPlayer;
-    }
-
-    /**
      * @see ServerController#buyDevelopmentCard(String, int, int, ResourceContainer, int) 
      */
     public void buyDevelopmentCard(String nickname, int row, int column, ResourceContainer resourcesToPayCost, int position)
             throws WrongTurnException, CardNotBuyableException, CardNotPlayableException, WrongMoveException {
 
-        if (!currentPlayer.equals(nickname)) {
+        if (!game.getCurrentPlayer().equals(nickname)) {
             throw new WrongTurnException("Not " + nickname + " turn");
         } else if (!game.getTurnPhase().equals(TurnPhase.COMMON)) {
             throw new WrongTurnPhaseException("Turn phase is " + game.getTurnPhase().name());
