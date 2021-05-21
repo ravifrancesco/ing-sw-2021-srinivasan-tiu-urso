@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.lobby.messages.serverMessages.commons;
 
+import it.polimi.ingsw.client.ClientConnection;
 import it.polimi.ingsw.server.lobby.messages.serverMessages.ServerMessage;
 
 import java.io.Serializable;
@@ -7,8 +8,8 @@ import java.io.Serializable;
 public class WelcomeMessage implements ServerMessage, Serializable {
 
     @Override
-    public void updateClient(Object client, String nickname) {
-        // TODO
+    public void updateClient(ClientConnection clientConnection, String nickname) {
+        clientConnection.cli.printMessage("Connection successfully registered");
     }
 
 }

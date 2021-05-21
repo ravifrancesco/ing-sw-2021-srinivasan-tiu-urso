@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.lobby.messages.serverMessages.updates;
 
+import it.polimi.ingsw.client.ClientConnection;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.server.lobby.messages.serverMessages.ServerMessage;
 
@@ -20,7 +21,7 @@ public class GameUpdateMessage implements ServerMessage {
     }
 
     @Override
-    public void updateClient(Object client, String nickname) {
+    public void updateClient(ClientConnection clientConnection, String nickname) {
         // TODO
     }
 }

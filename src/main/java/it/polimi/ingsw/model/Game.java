@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.observerPattern.observables.GameObservable;
 import it.polimi.ingsw.model.observerPattern.observers.GameObserver;
 import it.polimi.ingsw.server.Connection;
@@ -7,6 +8,7 @@ import it.polimi.ingsw.utils.Pair;
 import it.polimi.ingsw.model.GameError;
 
 import java.util.*;
+import java.util.stream.IntStream;
 
 public class Game extends GameObservable {
 
@@ -33,8 +35,8 @@ public class Game extends GameObservable {
 	public Game(String gameId, int numberOfPlayers) {
 		this.gameId = gameId;
 		this.numberOfPlayers = numberOfPlayers;
-		this.playerOrder = players.keySet().iterator();
 		this.players = new LinkedHashMap<>();
+		this.playerOrder = players.keySet().iterator();
 		this.gameBoard = new GameBoard();
 		this.gameError = new GameError();
 
@@ -62,8 +64,7 @@ public class Game extends GameObservable {
 		return players.values().stream().filter(player -> player.getVictoryPoints() == winnerPoints).findFirst().get();
 	}
 
-	public void addPlayer(String nickname, Player p) {
-		players.put(nickname, p);
+	public void addPlayer(String nickname, Player p) { players.put(nickname, p);
 	}
 
 	public HashMap<String, Player> getPlayers() {
@@ -95,6 +96,15 @@ public class Game extends GameObservable {
 
 	public TurnPhase getTurnPhase() {
 		return turnPhase;
+	}
+
+	public void distributeCards() {
+		IntStream.range(0, 4).forEach(i ->
+				players.values().forEach(p ->
+						p.addCard((LeaderCard) gameBoard.getLeaderDeck().getCard())
+				)
+		);
+
 	}
 
 	public void endGame() {

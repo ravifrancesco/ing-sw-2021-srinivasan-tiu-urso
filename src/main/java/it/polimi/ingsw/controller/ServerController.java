@@ -137,9 +137,11 @@ public class ServerController {
      * Starts the game.
      */
     public void startGame() {
-      game.startUniquePhase(TurnPhase.FIRST_TURN);
-      game.changePlayer();
-      game.setFirstPlayer(game.getCurrentPlayer());
+        game.reset();
+        game.startUniquePhase(TurnPhase.FIRST_TURN);
+        game.changePlayer();
+        game.setFirstPlayer(game.getCurrentPlayer());
+        game.distributeCards();
     }
 
     /**
@@ -278,6 +280,8 @@ public class ServerController {
             marketController.setCurrentPlayer(game.getCurrentPlayer());
             marketController.getFromMarket(nickname, move, wmrs);
         } catch (WrongTurnException | WrongMoveException e) {
+            System.out.println("errore: ");
+            System.out.println(e.getMessage());
             game.setError(e, nickname);
         }
     }
@@ -388,6 +392,8 @@ public class ServerController {
         Player player = game.getPlayers().get(nickname);
         Dashboard dashboard = player.getDashboard();
 
+        System.out.println(player.getHandSize());
+        System.out.println("subito dopo");
         if (player.getHandSize() > 2) {
             game.setError(new LeaderCardInExcessException(currentPlayer + " hasn't discarded enough cards"), nickname);
         }
@@ -408,7 +414,7 @@ public class ServerController {
 
         if(player.getDashboard().checkGameEnd() && game.getTurnPhase() != TurnPhase.ENDGAME) {
             game.startUniquePhase(TurnPhase.ENDGAME);
-        } else if(firstTurns < game.getNumberOfPlayers()) {
+        } else if(firstTurns < game.getNumberOfPlayers()-1) {
             dashboard.moveFaithMarker(firstTurns < 2 ? 0 : 1);
             firstTurns += 1;
             game.startUniquePhase(TurnPhase.FIRST_TURN);
@@ -430,7 +436,7 @@ public class ServerController {
     }
 
     public String getCurrentPlayer() {
-        return currentPlayer;
+        return game.getCurrentPlayer();
     }
 
 }

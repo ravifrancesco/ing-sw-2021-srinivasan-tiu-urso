@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.observerPattern.observables.DashboardObservable;
 import it.polimi.ingsw.model.specialAbilities.*;
 
+import java.lang.reflect.Array;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -569,5 +570,9 @@ public class Dashboard extends DashboardObservable {
 
 	public FaithTrack getFaithTrack() {
 		return faithTrack;
+	}
+
+	public ArrayList<Resource> getSupply() {
+		return supply;
 	}
 }

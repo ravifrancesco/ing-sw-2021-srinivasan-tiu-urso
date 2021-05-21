@@ -9,7 +9,7 @@ public class GameTest {
 
     @Test
     public void gameConstructorTest() {
-        Game game = new Game("1");
+        Game game = new Game("1", 3);
         Assert.assertNotNull(game.getGameId());
         Assert.assertNotNull(game.getPlayers());
         Assert.assertNotNull(game.getGameBoard());
@@ -17,7 +17,7 @@ public class GameTest {
 
     @Test
     public void loadGameSettingsTest() {
-        Game game = new Game("1");
+        Game game = new Game("1", 3);
         GameSettingsBuilder gameSettingsBuilder = new GameSettingsBuilder();
         GameSettings gameSettings = gameSettingsBuilder.build();
         Assert.assertNull(game.getGameSettings());
@@ -28,7 +28,7 @@ public class GameTest {
     @Test
     public void resetTest() {
         // TODO find a better way to test this?
-        Game game = new Game("1");
+        Game game = new Game("1", 3);
         GameSettingsBuilder gameSettingsBuilder = new GameSettingsBuilder();
         GameSettings gameSettings = gameSettingsBuilder.build();
         game.loadGameSettings(gameSettings);
@@ -41,7 +41,7 @@ public class GameTest {
 
     @Test
     public void checkWinner() {
-        Game game = new Game("1");
+        Game game = new Game("1", 3);
         GameSettingsBuilder gameSettingsBuilder = new GameSettingsBuilder();
         GameSettings gameSettings = gameSettingsBuilder.build();
         game.loadGameSettings(gameSettings);
@@ -56,16 +56,13 @@ public class GameTest {
 
         game.getGameStatus();
 
-        // game.getPlayers().entrySet().forEach((e ->
-        // System.out.println("Player " + e.getKey() + " has " + e.getValue().getVictoryPoints())));
-
         Player winner = game.checkWinner();
         Assert.assertEquals(winner, game.getPlayers().get("rbta-svg"));
     }
 
     @Test
     public void addPlayerTest() {
-        Game game = new Game("1");
+        Game game = new Game("1", 3);
         GameSettingsBuilder gameSettingsBuilder = new GameSettingsBuilder();
         GameSettings gameSettings = gameSettingsBuilder.build();
         game.loadGameSettings(gameSettings);
@@ -78,7 +75,7 @@ public class GameTest {
 
     @Test
     public void getNextPlayerTest() {
-        Game game = new Game("1");
+        Game game = new Game("1", 3);
         GameSettingsBuilder gameSettingsBuilder = new GameSettingsBuilder();
         GameSettings gameSettings = gameSettingsBuilder.build();
         game.loadGameSettings(gameSettings);
@@ -99,7 +96,7 @@ public class GameTest {
 
     @Test
     public void getTurnPhaseTest() {
-        Game game = new Game("1");
+        Game game = new Game("1",3);
         GameSettingsBuilder gameSettingsBuilder = new GameSettingsBuilder();
         GameSettings gameSettings = gameSettingsBuilder.build();
         game.loadGameSettings(gameSettings);

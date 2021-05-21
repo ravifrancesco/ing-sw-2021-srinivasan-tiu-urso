@@ -1,21 +1,18 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.controller.exceptions.GameFullException;
-import it.polimi.ingsw.controller.exceptions.IllegalDepositStateException;
-import it.polimi.ingsw.controller.exceptions.WrongMoveException;
 import it.polimi.ingsw.controller.exceptions.WrongTurnException;
-import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.GameSettings;
-import it.polimi.ingsw.model.Resource;
+import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.utils.GameSettingsBuilder;
 import org.junit.Assert;
 import org.junit.Test;
 
 import javax.naming.InvalidNameException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.stream.IntStream;
 
 public class WarehouseControllerTest {
-    private Game game;
     private ServerController serverController;
 
 
@@ -32,80 +29,56 @@ public class WarehouseControllerTest {
         } catch (InvalidNameException | GameFullException e) {
             e.printStackTrace();
         }
+        serverController.startGame();
+        serverController.discardExcessLeaderCards("rbta-svg", 0);
+        serverController.discardExcessLeaderCards("rbta-svg", 0);
+        serverController.endTurn("rbta-svg");
+        serverController.discardExcessLeaderCards("ravifrancesco", 0);
+        serverController.discardExcessLeaderCards("ravifrancesco", 0);
+        serverController.getInitialResources("ravifrancesco", Resource.GOLD, 0);
+        serverController.endTurn("ravifrancesco");
+        serverController.discardExcessLeaderCards("giuseppeurso", 0);
+        serverController.discardExcessLeaderCards("giuseppeurso", 0);
+        serverController.getInitialResources("giuseppeurso", Resource.STONE, 0);
+        serverController.endTurn("giuseppeurso");
+
+
+
     }
-    @Test
-    public void setCurrentPlayerTest() {
-        WarehouseController warehouseController = new WarehouseController(game);
-        Assert.assertNull(warehouseController.getCurrentPlayer());
-        warehouseController.setCurrentPlayer("rbta-svg");
-        Assert.assertNotNull(warehouseController.getCurrentPlayer());
-    }
+
+
 
     @Test
     public void changeResourcesDepositTest() {
         init();
-        Resource[] testDeposit = new Resource[6];
-        int thrownExceptions = 0;
-
-        // wrong turn
+        int thrownException = 0;
+        Resource[] resourcesDeposit = new Resource[6];
         try {
-            serverController.changeDeposit("ravifrancesco", testDeposit);
-        } catch (WrongMoveException e) {
-            e.printStackTrace();
-        } catch (WrongTurnException e) {
-            e.printStackTrace();
-            thrownExceptions += 1;
-        } catch (IllegalDepositStateException e) {
-            e.printStackTrace();
+            serverController.changeDeposit("ravifrancesco", resourcesDeposit);
+        } catch (Exception e) {
+            thrownException += 1;
         }
-        Assert.assertEquals(thrownExceptions, 1);
-
-        // wrong deposit state
-        testDeposit[0] = Resource.STONE;
-        testDeposit[1] = Resource.STONE;
-        try {
-            serverController.changeDeposit("rbta-svg", testDeposit);
-        } catch (WrongMoveException e) {
-            e.printStackTrace();
-        } catch (WrongTurnException e) {
-            e.printStackTrace();
-        } catch (IllegalDepositStateException e) {
-            thrownExceptions += 1;
-            e.printStackTrace();
-        }
-        Assert.assertEquals(thrownExceptions, 2);
-
-        // wrong deposit state
-        testDeposit[1] = Resource.SHIELD;
-        Resource[] wrongDeposit = new Resource[7];
-        try {
-            serverController.changeDeposit("rbta-svg", wrongDeposit);
-        } catch (WrongMoveException e) {
-            thrownExceptions += 1;
-            e.printStackTrace();
-        } catch (WrongTurnException e) {
-            e.printStackTrace();
-        } catch (IllegalDepositStateException e) {
-            e.printStackTrace();
-        }
-        Assert.assertEquals(thrownExceptions, 3);
-
-        // still an illegal move because you have to insert a deposit with the same resources from before
-        try {
-            serverController.changeDeposit("rbta-svg", testDeposit);
-        } catch (WrongMoveException e) {
-            e.printStackTrace();
-        } catch (WrongTurnException e) {
-            e.printStackTrace();
-        } catch (IllegalDepositStateException e) {
-            thrownExceptions += 1;
-            e.printStackTrace();
-        }
-        Assert.assertEquals(thrownExceptions, 4);
-        // TODO test with an actual filled deposit?
-        System.out.println(Arrays.toString(game.getGameBoard().getMarket().getMarblesGrid()));
-
-        System.out.println(Arrays.toString(serverController.gameSettings.getLeaderCards()));
+        Assert.assertEquals(thrownException, 1);
+        System.out.println(serverController.getGameStatus().getPlayers().get(serverController.getCurrentPlayer()).getDashboard().getAllPlayerResources());
+        serverController.endTurn("rbta-svg");
+        System.out.println(serverController.getGameStatus().getPlayers().get(serverController.getCurrentPlayer()).getDashboard().getAllPlayerResources());
+        // ravifrancesco has 1 gold from the initial phase, placed in deposit 0
+        // trying to change position
+        System.out.println(Arrays.toString(serverController.getGameStatus().getPlayers().get(serverController.getCurrentPlayer()).getDashboard().getWarehouse().getDeposit()));
+        resourcesDeposit[1] = Resource.GOLD;
+        Assert.assertEquals(serverController.getGameStatus().getPlayers().get(serverController.getCurrentPlayer()).getDashboard().getWarehouse().getDeposit()[0], Resource.GOLD);
+        IntStream.range(1, 6).forEach(i -> Assert.assertNull(serverController.getGameStatus().getPlayers().get(serverController.getCurrentPlayer()).getDashboard().getWarehouse().getDeposit()[i]));
+        serverController.changeDeposit("ravifrancesco", resourcesDeposit);
+        Assert.assertEquals(serverController.getGameStatus().getPlayers().get(serverController.getCurrentPlayer()).getDashboard().getWarehouse().getDeposit()[1], Resource.GOLD);
+        IntStream.range(1, 6).filter(i -> i != 1).forEach(i -> Assert.assertNull(serverController.getGameStatus().getPlayers().get(serverController.getCurrentPlayer()).getDashboard().getWarehouse().getDeposit()[i]));
     }
-}
+
+    public void changeResourcesDepositExtraDepositTest() {
+        init();
+    }
+
+
+
+    }
+
 

@@ -1,12 +1,12 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.client;
 
 
 import java.io.IOException;
 
 public class GameClient {
     public static void main(String[] args) throws IOException, ClassNotFoundException {
-        Client client = new Client("127.0.0.1", 53510);
+        Client client = new Client();
 
-        client.startClient();
+        client.run();
     }
 }
