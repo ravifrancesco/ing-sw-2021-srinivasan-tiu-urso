@@ -10,7 +10,9 @@ public class ClientInputParser {
         String command = in[0].toUpperCase();
 
         return switch (command) {
-            case "CREATE_GAME" -> InputChecker.createGame(in);
+            case "CREATEGAME" -> InputChecker.createGame(in);
+            case "SHOWGAMES"-> InputChecker.showGames(in);
+            case "JOINGAME" -> InputChecker.joinGame(in);
             default -> null;
         };
     }

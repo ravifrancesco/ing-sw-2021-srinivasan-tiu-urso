@@ -2,7 +2,6 @@ package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.IO.CLI;
 import it.polimi.ingsw.client.IO.ClientInputParser;
-import it.polimi.ingsw.server.lobby.LobbyType;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.ClientMessage;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.lobbyMessage.lobby.RegisterName;
 import it.polimi.ingsw.server.lobby.messages.serverMessages.ServerMessage;
@@ -20,9 +19,9 @@ public class ClientConnection implements Runnable {
     private ObjectOutputStream outputStream;
     private ObjectInputStream inputStream;
 
-    private ReducedModel reducedModel;
-
     private boolean nameRegistered;
+
+    Socket socket;
 
     public ClientConnection(String ip, int port, CLI cli) {
         this.ip = ip;
@@ -37,7 +36,6 @@ public class ClientConnection implements Runnable {
 
     public void connectToServer() throws IOException {
         System.out.println("Connection at " + ip + " on port " + port);
-        Socket socket;
         try {
             socket = new Socket(ip, port);
         } catch (IOException e) {
@@ -69,8 +67,7 @@ public class ClientConnection implements Runnable {
     }
 
     public ServerMessage receiveServerMessage() throws IOException, ClassNotFoundException {
-        ServerMessage serverMessage =  (ServerMessage) inputStream.readObject();
-        return serverMessage;
+        return (ServerMessage) inputStream.readObject();
     }
 
     public void nicknameRegister(String playerNickname, ObjectInputStream input) throws IOException, ClassNotFoundException {
@@ -89,10 +86,17 @@ public class ClientConnection implements Runnable {
             outputStream.writeObject(message);
             outputStream.flush();
             outputStream.reset();
-        } catch (IOException e) {
-            // close()
+        } catch (Exception e) {
+            close();
         }
+    }
 
+    private void close() {
+        try{
+            socket.close();
+        }catch (IOException e){
+            System.err.println(e.getMessage());
+        }
     }
 
     @Override
@@ -106,13 +110,19 @@ public class ClientConnection implements Runnable {
             while(true) {
                 try{
                     ServerMessage serverMessage = receiveServerMessage();
-                    cli.printMessage(serverMessage.toString());
+                    System.out.println("Received server message: " + serverMessage.toString());
+                    serverMessage.updateClient(this, playerNickname);
+
                 } catch (ClassNotFoundException | IOException e) {
+                    System.out.println("Connection with server lost");
                     e.printStackTrace();
+                    break;
                 }
             }
         }).start();
     }
+
+
 
     private void startReadingThread() {
         new Thread(() -> {
@@ -122,7 +132,16 @@ public class ClientConnection implements Runnable {
                 if (clientMessage == null) {
                     cli.printErrorMessage("Invalid command");
                 } else {
-                    send(clientMessage);
+                    try {
+                        send(clientMessage);
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                    }
+                }
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             }
         }).start();

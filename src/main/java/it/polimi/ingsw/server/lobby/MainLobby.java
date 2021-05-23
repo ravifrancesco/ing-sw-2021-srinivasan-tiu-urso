@@ -19,6 +19,7 @@ public class MainLobby implements Lobby {
     private final Map<String, Connection> playingConnection;
 
 
+
     private final List<GameLobby> activeGameLobbies;
 
     private final ExecutorService executor = Executors.newFixedThreadPool(Server.THREAD_NUMBER);
@@ -62,11 +63,13 @@ public class MainLobby implements Lobby {
 
         String uniqueID = UUID.randomUUID().toString();
         GameLobby gameLobby = new GameLobby(uniqueID, numberOfPlayers);
+
         gameLobby.enterLobby(c);
 
         activeGameLobbies.add(gameLobby);
         playingConnection.put(c.getNickname(), waitingConnection.remove(c.getNickname()));
     }
+
 
     public void joinGame(Connection c, String id) throws IllegalArgumentException, InvalidNameException, IllegalStateException {
 
@@ -82,5 +85,9 @@ public class MainLobby implements Lobby {
 
     public LobbyType getType() {
         return LobbyType.MAIN_LOBBY;
+    }
+
+    public List<GameLobby> getActiveGameLobbies() {
+        return activeGameLobbies;
     }
 }

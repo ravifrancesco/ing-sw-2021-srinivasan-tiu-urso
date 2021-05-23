@@ -1,7 +1,9 @@
 package it.polimi.ingsw.client.IO;
 
 import it.polimi.ingsw.server.lobby.messages.clientMessages.ClientMessage;
+import it.polimi.ingsw.server.lobby.messages.clientMessages.lobbyMessage.lobby.AskGameLobbies;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.lobbyMessage.lobby.CreateGameLobby;
+import it.polimi.ingsw.server.lobby.messages.clientMessages.lobbyMessage.lobby.JoinGameLobby;
 
 public class InputChecker {
 
@@ -14,4 +16,24 @@ public class InputChecker {
         }
     }
 
+    public static ClientMessage showGames(String[] input) {
+        try {
+            return new AskGameLobbies();
+        } catch (Exception e) {
+            System.out.println("AskGameLobbies creation failed");
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+
+    public static ClientMessage joinGame(String[] input) {
+        try {
+            String id = input[1];
+            System.out.println("I've read the request to join: " + id);
+            return new JoinGameLobby(id);
+        } catch (Exception e) {
+            System.out.println("Something went wrong while joining a game");
+            return null;
+        }
+    }
 }

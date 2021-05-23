@@ -2,10 +2,7 @@ package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.observerPattern.observers.*;
-import it.polimi.ingsw.server.lobby.GameLobby;
-import it.polimi.ingsw.server.lobby.Lobby;
-import it.polimi.ingsw.server.lobby.LobbyType;
-import it.polimi.ingsw.server.lobby.MainLobby;
+import it.polimi.ingsw.server.lobby.*;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.ClientGameMessage;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.lobbyMessage.ClientLobbyMessage;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.lobbyMessage.lobby.RegisterName;
@@ -18,6 +15,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 
 /**
  * TODO doc
@@ -136,8 +134,9 @@ public class Connection implements Runnable,
             ClientLobbyMessage read;
             try {
                 read = receiveLobbyMessage();
+                System.out.println("Received lobby message: " + read.toString());
                 currentLobby.handleMessage(read, this);
-                send(new SuccessfulConnectionMessage(((GameLobby)currentLobby).getId()));
+                send(new CorrectHandlingMessage());
             } catch (ClassNotFoundException | IllegalArgumentException | InvalidNameException | IllegalStateException e) {
                 send(new ErrorMessage());
             }
@@ -150,7 +149,14 @@ public class Connection implements Runnable,
                 send(new ErrorMessage());
             }
         }
+    }
 
+    public void sendGameLobbiesDetails() {
+        ArrayList<GameLobbyDetails> gameLobbies = new ArrayList<>();
+        mainLobby.getActiveGameLobbies().forEach(gameLobby -> gameLobbies.add(new GameLobbyDetails(gameLobby.getId(),
+                        gameLobby.getCreator(), gameLobby.getConnectedPlayers().size(), gameLobby.getMaxPlayers()))
+                );
+        send(new GameLobbiesMessage(gameLobbies));
     }
 
     public String getNickname() {

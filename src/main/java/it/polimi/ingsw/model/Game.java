@@ -70,7 +70,7 @@ public class Game extends GameObservable {
 		notify(this);
 	}
 
-	public HashMap<String, Player> getPlayers() {
+	public LinkedHashMap<String, Player> getPlayers() {
 		return players;
 	}
 

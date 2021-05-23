@@ -2,26 +2,36 @@ package it.polimi.ingsw.server.lobby;
 
 import it.polimi.ingsw.controller.ServerController;
 import it.polimi.ingsw.controller.exceptions.*;
-import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.GameSettings;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.ResourceContainer;
 import it.polimi.ingsw.model.specialAbilities.WhiteMarbleResource;
 import it.polimi.ingsw.server.Connection;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.ClientMessage;
-import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.ClientGameMessage;
 import it.polimi.ingsw.utils.Pair;
 
 import javax.naming.InvalidNameException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GameLobby implements Lobby {
+public class GameLobby implements Lobby, Serializable {
 
     private final String id;
 
     private final int maxPlayers;
+
+    private String creator;
+
+    public int getMaxPlayers() {
+        return maxPlayers;
+    }
+
+    public Map<String, Connection> getConnectedPlayers() {
+        return connectedPlayers;
+    }
+
     private final Map<String, Connection> connectedPlayers;
 
 
@@ -30,7 +40,9 @@ public class GameLobby implements Lobby {
 
     public GameLobby(String id, int maxPlayers) throws IllegalArgumentException {
         this.id = id;
+
         this.gameSettings = GameSettings.loadDefaultGameSettings();
+
         this.maxPlayers = maxPlayers;
         this.connectedPlayers = new HashMap<>();
         this.serverController = new ServerController(id, maxPlayers);
@@ -41,14 +53,22 @@ public class GameLobby implements Lobby {
         // TODO
     }
 
+    public String getCreator() {
+        return creator;
+    }
+
     public synchronized void enterLobby(Connection c) throws InvalidNameException, IllegalStateException {
-        try {
+        if(connectedPlayers.size() == 0) { // if it was the first player
             serverController.loadGameSettings(gameSettings);
+            creator = c.getNickname();
+        }
+        try {
             serverController.joinGame(c.getNickname());
         } catch (GameFullException e) {
             throw new IllegalStateException();
         }
         connectedPlayers.put(c.getNickname(), c);
+
         c.enterLobby(this);
         System.out.println(connectedPlayers);
         serverController.addObservers(c);
