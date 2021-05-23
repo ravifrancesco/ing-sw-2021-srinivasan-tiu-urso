@@ -48,6 +48,30 @@ public class DefaultSettingsBuilder {
         developmentCards[21] = buildDevelopmentCard("ID=22;VP=6;BA=PURPLE:2;RC=SERVANT:3,GOLD:2;SA=PP;RR=GOLD:1,SERVANT:1;RP=SHIELD:3;FP=0;");
         developmentCards[22] = buildDevelopmentCard("ID=23;VP=6;BA=BLUE:2;RC=GOLD:3,STONE:2;SA=PP;RR=GOLD:1,STONE:1;RP=SERVANT:3;FP=0;");
         developmentCards[23] = buildDevelopmentCard("ID=24;VP=6;BA=YELLOW:2;RC=STONE:3,SHIELD:2;SA=PP;RR=STONE:1,SHIELD:1;RP=GOLD:3;FP=0;");
+        developmentCards[24] = buildDevelopmentCard("ID=25;VP=7;BA=GREEN:2;RC=SHIELD:5;SA=PP;RR=GOLD:2;RP=STONE:2;FP=2;");
+        developmentCards[25] = buildDevelopmentCard("ID=26;VP=7;BA=PURPLE:2;RC=SERVANT:5;SA=PP;RR=STONE:2;RP=GOLD:2;FP=2;");
+        developmentCards[26] = buildDevelopmentCard("ID=27;VP=7;BA=BLUE:2;RC=GOLD:5;SA=PP;RR=SERVANT:2;RP=SHIELD:2;FP=2;");
+        developmentCards[27] = buildDevelopmentCard("ID=28;VP=7;BA=YELLOW:2;RC=STONE:5;SA=PP;RR=SHIELD:2;RP=SERVANT:2;FP=2;");
+        developmentCards[28] = buildDevelopmentCard("ID=29;VP=8;BA=GREEN:2;RC=SHIELD:3,GOLD:3;SA=PP;RR=GOLD:1;RP=SHIELD:2;FP=1;");
+        developmentCards[29] = buildDevelopmentCard("ID=30;VP=8;BA=PURPLE:2;RC=SERVANT:3,SHIELD:3;SA=PP;RR=STONE:1;RP=SERVANT:2;FP=1;");
+        developmentCards[30] = buildDevelopmentCard("ID=31;VP=8;BA=BLUE:2;RC=GOLD:3,STONE:3;SA=PP;RR=SERVANT:1;RP=STONE:2;FP=1;");
+        developmentCards[31] = buildDevelopmentCard("ID=32;VP=8;BA=YELLOW:2;RC=STONE:3,SERVANT:3;SA=PP;RR=SHIELD:1;RP=GOLD:2;FP=1;");
+        developmentCards[32] = buildDevelopmentCard("ID=33;VP=9;BA=GREEN:3;RC=SHIELD:6;SA=PP;RR=GOLD:2;RP=STONE:3;FP=2;");
+        developmentCards[33] = buildDevelopmentCard("ID=34;VP=9;BA=PURPLE:3;RC=SERVANT:6;SA=PP;RR=STONE:2;RP=GOLD:3;FP=2;");
+        developmentCards[34] = buildDevelopmentCard("ID=35;VP=9;BA=BLUE:3;RC=GOLD:6;SA=PP;RR=SERVANT:2;RP=SHIELD:3;FP=2;");
+        developmentCards[35] = buildDevelopmentCard("ID=36;VP=9;BA=YELLOW:3;RC=STONE:6;SA=PP;RR=SHIELD:2;RP=SERVANT:3;FP=2;");
+        developmentCards[36] = buildDevelopmentCard("ID=37;VP=10;BA=GREEN:3;RC=SHIELD:5,SERVANT:2;SA=PP;RR=GOLD:1,SERVANT:1;RP=SHIELD:2,STONE:2;FP=1;");
+        developmentCards[37] = buildDevelopmentCard("ID=38;VP=10;BA=PURPLE:3;RC=SERVANT:5,GOLD:2;SA=PP;RR=STONE:1,SHIELD:1;RP=GOLD:2,SERVANT:2;FP=1;");
+        developmentCards[38] = buildDevelopmentCard("ID=39;VP=10;BA=BLUE:3;RC=GOLD:5,STONE:2;SA=PP;RR=GOLD:1,SHIELD:1;RP=SERVANT:2,STONE:2;FP=1;");
+        developmentCards[39] = buildDevelopmentCard("ID=40;VP=10;BA=YELLOW:3;RC=STONE:5,SERVANT:2;SA=PP;RR=STONE:1,SERVANT:1;RP=GOLD:2,SHIELD:2;FP=1;");
+        developmentCards[40] = buildDevelopmentCard("ID=41;VP=11;BA=GREEN:3;RC=SHIELD:7;SA=PP;RR=SERVANT:1;RP=GOLD:1;FP=3;");
+        developmentCards[41] = buildDevelopmentCard("ID=42;VP=11;BA=PURPLE:3;RC=SERVANT:7;SA=PP;RR=GOLD:1;RP=STONE:1;FP=3;");
+        developmentCards[42] = buildDevelopmentCard("ID=43;VP=11;BA=BLUE:3;RC=GOLD:7;SA=PP;RR=STONE:1;RP=SHIELD:1;FP=3;");
+        developmentCards[43] = buildDevelopmentCard("ID=44;VP=11;BA=YELLOW:3;RC=STONE:7;SA=PP;RR=SHIELD:1;RP=SERVANT:1;FP=3;");
+        developmentCards[44] = buildDevelopmentCard("ID=45;VP=12;BA=GREEN:3;RC=SHIELD:4,GOLD:4;SA=PP;RR=STONE:1;RP=GOLD:3,SHIELD:1;FP=0;");
+        developmentCards[45] = buildDevelopmentCard("ID=46;VP=12;BA=PURPLE:3;RC=SERVANT:4,SHIELD:4;SA=PP;RR=GOLD:1;RP=STONE:3,SERVANT:1;FP=0;");
+        developmentCards[46] = buildDevelopmentCard("ID=47;VP=12;BA=BLUE:3;RC=GOLD:4,STONE:4;SA=PP;RR=SERVANT:1;RP=GOLD:1,SHIELD:3;FP=0;");
+        developmentCards[47] = buildDevelopmentCard("ID=48;VP=12;BA=YELLOW:3;RC=STONE:4,SERVANT:4;SA=PP;RR=SHIELD:1;RP=STONE:1,SERVANT:3;FP=0;");
 
         return developmentCards;
     }
