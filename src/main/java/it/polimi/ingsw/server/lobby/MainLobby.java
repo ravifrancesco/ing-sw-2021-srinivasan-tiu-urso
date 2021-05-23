@@ -90,4 +90,7 @@ public class MainLobby implements Lobby {
     public List<GameLobby> getActiveGameLobbies() {
         return activeGameLobbies;
     }
+
+    public void removeGameLobby(GameLobby gameLobby) { activeGameLobbies.remove(gameLobby); }
+
 }

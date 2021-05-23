@@ -13,6 +13,7 @@ public class ClientInputParser {
             case "CREATEGAME" -> InputChecker.createGame(in);
             case "SHOWGAMES"-> InputChecker.showGames(in);
             case "JOINGAME" -> InputChecker.joinGame(in);
+            case "LEAVELOBBY" -> InputChecker.leaveLobby(in);
             default -> null;
         };
     }

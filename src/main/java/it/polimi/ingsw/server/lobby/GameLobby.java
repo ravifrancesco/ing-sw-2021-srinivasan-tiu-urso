@@ -8,6 +8,9 @@ import it.polimi.ingsw.model.ResourceContainer;
 import it.polimi.ingsw.model.specialAbilities.WhiteMarbleResource;
 import it.polimi.ingsw.server.Connection;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.ClientMessage;
+import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.ClientGameMessage;
+import it.polimi.ingsw.server.lobby.messages.clientMessages.lobbyMessage.ClientLobbyMessage;
+import it.polimi.ingsw.server.lobby.messages.serverMessages.updates.GameUpdateMessage;
 import it.polimi.ingsw.utils.Pair;
 
 import javax.naming.InvalidNameException;
@@ -50,7 +53,7 @@ public class GameLobby implements Lobby, Serializable {
 
     @Override
     public synchronized void handleMessage(ClientMessage clientMessage, Connection c) {
-        // TODO
+        ((ClientGameMessage) clientMessage).handle(c, serverController);
     }
 
     public String getCreator() {
@@ -70,14 +73,23 @@ public class GameLobby implements Lobby, Serializable {
         connectedPlayers.put(c.getNickname(), c);
 
         c.enterLobby(this);
-        System.out.println(connectedPlayers);
         serverController.addObservers(c);
+        if(connectedPlayers.size() == maxPlayers) {
+            System.out.println("Starting game..");
+            // serverController.startGame();
+        }
     }
 
     public synchronized void leaveLobby(Connection c) {
         if (connectedPlayers.containsValue(c)) {
-            connectedPlayers.remove(c.getNickname());
-            serverController.removeObservers(c);
+            try {
+                connectedPlayers.remove(c.getNickname());
+                serverController.removeObservers(c);
+                serverController.leaveGame(c.getNickname());
+            } catch (InvalidNameException e) {
+                throw new IllegalStateException();
+            }
+
         }
     }
 

@@ -80,6 +80,14 @@ public class ServerController {
         }
     }
 
+    public void leaveGame(String nickname) throws InvalidNameException {
+        if (!game.getPlayers().containsKey(nickname)) {
+            throw new InvalidNameException("Nickname " + nickname + " is not a part of the game");
+        } else {
+            game.removePlayer(nickname);
+        }
+    }
+
     /**
      * Adds the connection as the observer of all observable classes
      *

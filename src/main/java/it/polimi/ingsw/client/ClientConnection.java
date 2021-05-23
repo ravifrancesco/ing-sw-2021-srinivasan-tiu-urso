@@ -3,6 +3,7 @@ package it.polimi.ingsw.client;
 import it.polimi.ingsw.client.IO.CLI;
 import it.polimi.ingsw.client.IO.ClientInputParser;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.ClientMessage;
+import it.polimi.ingsw.server.lobby.messages.clientMessages.lobbyMessage.lobby.AskGameLobbies;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.lobbyMessage.lobby.RegisterName;
 import it.polimi.ingsw.server.lobby.messages.serverMessages.ServerMessage;
 
@@ -21,7 +22,8 @@ public class ClientConnection implements Runnable {
 
     private boolean nameRegistered;
 
-    Socket socket;
+    private Socket socket;
+
 
     public ClientConnection(String ip, int port, CLI cli) {
         this.ip = ip;
@@ -81,7 +83,6 @@ public class ClientConnection implements Runnable {
     }
 
     private synchronized void send(ClientMessage message){
-
         try {
             outputStream.writeObject(message);
             outputStream.flush();
@@ -92,9 +93,9 @@ public class ClientConnection implements Runnable {
     }
 
     private void close() {
-        try{
+        try {
             socket.close();
-        }catch (IOException e){
+        } catch (IOException e){
             System.err.println(e.getMessage());
         }
     }
@@ -108,7 +109,7 @@ public class ClientConnection implements Runnable {
     private void startReceivingThread() {
         new Thread(() -> {
             while(true) {
-                try{
+                try {
                     ServerMessage serverMessage = receiveServerMessage();
                     System.out.println("Received server message: " + serverMessage.toString());
                     serverMessage.updateClient(this, playerNickname);
@@ -138,6 +139,7 @@ public class ClientConnection implements Runnable {
                         System.out.println(e.getMessage());
                     }
                 }
+                // TODO find a better way
                 try {
                     Thread.sleep(500);
                 } catch (InterruptedException e) {

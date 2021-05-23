@@ -25,6 +25,6 @@ public class GameUpdateMessage implements ServerMessage, Serializable {
 
     @Override
     public void updateClient(ClientConnection clientConnection, String nickname) {
-        clientConnection.cli.printMessage("Lobby contains the following players:" + players);
+        clientConnection.cli.printMessage("Lobby contains the following players: " + players);
     }
 }

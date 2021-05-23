@@ -33,6 +33,11 @@ public class Connection implements Runnable,
     private String nickname;
 
     private final MainLobby mainLobby;
+
+    public MainLobby getMainLobby() {
+        return mainLobby;
+    }
+
     private Lobby currentLobby;
 
     private boolean active = true;
@@ -42,6 +47,10 @@ public class Connection implements Runnable,
         this.server = server;
         this.mainLobby = mainLobby;
         this.currentLobby = mainLobby;
+    }
+
+    public Lobby getCurrentLobby() {
+        return currentLobby;
     }
 
     public synchronized void enterLobby(Lobby lobby) {
@@ -82,19 +91,21 @@ public class Connection implements Runnable,
     }
 
     private void deregisterConnection() {
-
         if (currentLobby.getType() == LobbyType.GAME_LOBBY) {
-            ((GameLobby) currentLobby).leaveLobby(this);
+            GameLobby gameLobby = (GameLobby) currentLobby;
+            gameLobby.leaveLobby(this);
+            if (gameLobby.getConnectedPlayers().size() == 0) {
+                mainLobby.removeGameLobby(gameLobby);
+            }
         }
         mainLobby.deregisterConnection(this);
-
     }
 
     public void close() {
         closeConnection();
-        System.out.println("Deregistering client...");
+        System.out.println("Deregistering client " + nickname + "..");
         deregisterConnection();
-        System.out.println("Done!");
+        System.out.println("Deregistration complete");
     }
 
     @Override
@@ -107,8 +118,11 @@ public class Connection implements Runnable,
             while(isActive()){
                 handleMessage();
             }
-        } catch(IOException e) {
+        } catch(Exception e) {
+            System.out.println("Message:");
             System.err.println(e.getMessage());
+            System.out.println("StackTrace:");
+            e.printStackTrace();
         } finally {
             close();
         }
@@ -134,10 +148,13 @@ public class Connection implements Runnable,
             ClientLobbyMessage read;
             try {
                 read = receiveLobbyMessage();
-                System.out.println("Received lobby message: " + read.toString());
+                System.out.println("Received lobby message by " + nickname + ": " + read.toString());
                 currentLobby.handleMessage(read, this);
                 send(new CorrectHandlingMessage());
             } catch (ClassNotFoundException | IllegalArgumentException | InvalidNameException | IllegalStateException e) {
+                System.out.println();
+                System.out.println(e.getMessage());
+                e.printStackTrace();
                 send(new ErrorMessage());
             }
         } else {

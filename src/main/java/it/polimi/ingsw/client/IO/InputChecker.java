@@ -4,6 +4,7 @@ import it.polimi.ingsw.server.lobby.messages.clientMessages.ClientMessage;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.lobbyMessage.lobby.AskGameLobbies;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.lobbyMessage.lobby.CreateGameLobby;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.lobbyMessage.lobby.JoinGameLobby;
+import it.polimi.ingsw.server.lobby.messages.clientMessages.lobbyMessage.lobby.LeaveLobby;
 
 public class InputChecker {
 
@@ -29,11 +30,15 @@ public class InputChecker {
     public static ClientMessage joinGame(String[] input) {
         try {
             String id = input[1];
-            System.out.println("I've read the request to join: " + id);
+            System.out.println("Joining lobby " + id + "...");
             return new JoinGameLobby(id);
         } catch (Exception e) {
             System.out.println("Something went wrong while joining a game");
             return null;
         }
+    }
+
+    public static ClientMessage leaveLobby(String[] in) {
+        return new LeaveLobby();
     }
 }

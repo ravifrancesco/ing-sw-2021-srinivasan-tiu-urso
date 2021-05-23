@@ -60,13 +60,18 @@ public class Game extends GameObservable {
 	}
 
 	public Player checkWinner() {
-		int winnerPoints  = players.values().stream().map(Player::getVictoryPoints).min(Comparator.reverseOrder()).get();
+		int winnerPoints  = players.values().stream().map(Player::getVictoryPoints).max(Comparator.naturalOrder()).get();
 
 		return players.values().stream().filter(player -> player.getVictoryPoints() == winnerPoints).findFirst().get();
 	}
 
 	public void addPlayer(String nickname, Player p) {
 		players.put(nickname, p);
+		notify(this);
+	}
+
+	public void removePlayer(String nickname) {
+		players.remove(nickname);
 		notify(this);
 	}
 
