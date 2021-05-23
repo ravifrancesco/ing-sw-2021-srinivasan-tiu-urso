@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 public class DefaultSettingsBuilder {
 
-    private static final int leaderCardNum = 1;
+    private static final int leaderCardNum = 16;
     private String path;
     private final GameSettings gameSettings;
 
@@ -27,10 +27,24 @@ public class DefaultSettingsBuilder {
     }
 
     private LeaderCard[] leaderCardsBuilder() {
-        // TODO
         LeaderCard[] leaderCards = new LeaderCard[leaderCardNum];
 
         leaderCards[0] = leaderCardBuilder("ID=1;VP=2;BC=YELLOW:1:1,GREEN:1:1;RC=;SA=DCD;R=SERVANT;Q=1;");
+        leaderCards[1] = leaderCardBuilder("ID=2;VP=2;BC=BLUE:1:1,PURPLE:1:1;RC=;SA=DCD;R=SHIELD;Q=1;");
+        leaderCards[2] = leaderCardBuilder("ID=3;VP=2;BC=GREEN:1:1,BLUE:1:1;RC=;SA=DCD;R=STONE;Q=1;");
+        leaderCards[3] = leaderCardBuilder("ID=4;VP=2;BC=YELLOW:1:1,PURPLE:1:1;RC=;SA=DCD;R=GOLD;Q=1;");
+        leaderCards[4] = leaderCardBuilder("ID=5;VP=3;BC=;RC=GOLD:5;SA=WES;R=STONE;");
+        leaderCards[5] = leaderCardBuilder("ID=6;VP=3;BC=;RC=STONE:5;SA=WES;R=SERVANT;");
+        leaderCards[6] = leaderCardBuilder("ID=7;VP=3;BC=;RC=SERVANT:5;SA=WES;R=SHIELD;");
+        leaderCards[7] = leaderCardBuilder("ID=8;VP=3;BC=;RC=SHIELD:5;SA=WES;R=GOLD;");
+        leaderCards[8] = leaderCardBuilder("ID=9;VP=5;BC=YELLOW:1:2,BLUE:1:1;RC=;SA=WMR;R=SERVANT;");
+        leaderCards[9] = leaderCardBuilder("ID=10;VP=5;BC=GREEN:1:2,PURPLE:1:1;RC=;SA=WMR;R=SHIELD;");
+        leaderCards[10] = leaderCardBuilder("ID=11;VP=5;BC=BLUE:1:2,YELLOW:1:1;RC=;SA=WMR;R=STONE;");
+        leaderCards[11] = leaderCardBuilder("ID=12;VP=5;BC=PURPLE:1:2,GREEN:1:1;RC=;SA=WMR;R=GOLD;");
+        leaderCards[12] = leaderCardBuilder("ID=13;VP=4;BC=YELLOW:2:1;RC=;SA=PP;RR=SHIELD:1;RP=ANY:1;FP=1;");
+        leaderCards[13] = leaderCardBuilder("ID=14;VP=4;BC=BLUE:2:1;RC=;SA=PP;RR=SERVANT:1;RP=ANY:1;FP=1;");
+        leaderCards[14] = leaderCardBuilder("ID=15;VP=4;BC=PURPLE:2:1;RC=;SA=PP;RR=STONE:1;RP=ANY:1;FP=1;");
+        leaderCards[15] = leaderCardBuilder("ID=16;VP=4;BC=GREEN:2:1;RC=;SA=PP;RR=GOLD:1;RP=ANY:1;FP=1;");
 
         return leaderCards;
     }
