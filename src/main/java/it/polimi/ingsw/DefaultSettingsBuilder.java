@@ -14,14 +14,16 @@ public class DefaultSettingsBuilder {
     private String path;
     private final GameSettings gameSettings;
 
-    public DefaultSettingsBuilder(String path) {
+    public DefaultSettingsBuilder() {
         gameSettings = new GameSettings(developmentCardsBuilder(), leaderCardNum, leaderCardsBuilder(), dashboardProductionPowerBuilder(),
                 vaticanReportsListBuilder(), faithTrackVictoryPointsBuilder());
+    }
+
+    public void saveSettings(String path) {
         gameSettings.saveSettings(path);
     }
 
     private DevelopmentCard[] developmentCardsBuilder() {
-        // TODO
         DevelopmentCard[] developmentCards = new DevelopmentCard[48];
 
         developmentCards[0] = buildDevelopmentCard("ID=1;VP=1;BA=GREEN:1;RC=SHIELD:2;SA=PP;RR=GOLD:1;RP=;FP=1;");
@@ -195,13 +197,17 @@ public class DefaultSettingsBuilder {
 
     private ProductionPower parseProductionPower(Map<String, String> propertyMap) {
 
+        Map<Resource, Integer> resourceProduced = new HashMap<>();
+
         Map<Resource, Integer> resourceRequired = Arrays.stream(propertyMap.get("RR").split(","))
                 .map(e -> e.split(":"))
                 .collect(Collectors.toMap(e -> parseResource(e[0]), e -> Integer.parseInt(e[1])));
 
-        Map<Resource, Integer> resourceProduced = Arrays.stream(propertyMap.get("RP").split(","))
-                .map(e -> e.split(":"))
-                .collect(Collectors.toMap(e -> parseResource(e[0]), e -> Integer.parseInt(e[1])));
+        if  (propertyMap.get("RP") != null) {
+            resourceProduced = Arrays.stream(propertyMap.get("RP").split(","))
+                    .map(e -> e.split(":"))
+                    .collect(Collectors.toMap(e -> parseResource(e[0]), e -> Integer.parseInt(e[1])));
+        }
 
         int numberFaithPoints = Integer.parseInt(propertyMap.get("FP"));
 
