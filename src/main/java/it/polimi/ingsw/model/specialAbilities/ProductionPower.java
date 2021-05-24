@@ -151,11 +151,9 @@ public class ProductionPower implements SpecialAbility, Serializable {
 				.map(key -> key + ":" + resourceRequired.get(key))
 				.collect(Collectors.joining(",", "RR=", ";"));
 
-		if(resourceProduced!=null && !resourceProduced.isEmpty()) { //it could be null in case it is the production power of a leader card
-			result += resourceProduced.keySet().stream()
-					.map(key -> key + ":" + resourceProduced.get(key))
-					.collect(Collectors.joining(",", "RP=", ";"));
-		}
+		result += resourceProduced.keySet().stream()
+				.map(key -> key + ":" + resourceProduced.get(key))
+				.collect(Collectors.joining(",", "RP=", ";"));
 
 		result += "FP=" + numberFaithPoints + ";";
 
