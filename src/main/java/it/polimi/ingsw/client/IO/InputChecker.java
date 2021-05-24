@@ -18,13 +18,7 @@ public class InputChecker {
     }
 
     public static ClientMessage showGames(String[] input) {
-        try {
-            return new AskGameLobbies();
-        } catch (Exception e) {
-            System.out.println("AskGameLobbies creation failed");
-            System.out.println(e.getMessage());
-            return null;
-        }
+        return new AskGameLobbies();
     }
 
     public static ClientMessage joinGame(String[] input) {

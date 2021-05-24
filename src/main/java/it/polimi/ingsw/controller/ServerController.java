@@ -84,6 +84,7 @@ public class ServerController {
         if (!game.getPlayers().containsKey(nickname)) {
             throw new InvalidNameException("Nickname " + nickname + " is not a part of the game");
         } else {
+            // TODO reconnection?
             game.removePlayer(nickname);
         }
     }
@@ -389,8 +390,6 @@ public class ServerController {
         Player player = game.getPlayers().get(nickname);
         Dashboard dashboard = player.getDashboard();
 
-        System.out.println(player.getHandSize());
-        System.out.println("subito dopo");
         if (player.getHandSize() > 2) {
             game.setError(new LeaderCardInExcessException(currentPlayer + " hasn't discarded enough cards"), nickname);
         }

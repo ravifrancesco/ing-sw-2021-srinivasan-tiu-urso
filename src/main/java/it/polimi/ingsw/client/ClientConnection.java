@@ -3,7 +3,6 @@ package it.polimi.ingsw.client;
 import it.polimi.ingsw.client.IO.CLI;
 import it.polimi.ingsw.client.IO.ClientInputParser;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.ClientMessage;
-import it.polimi.ingsw.server.lobby.messages.clientMessages.lobbyMessage.lobby.AskGameLobbies;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.lobbyMessage.lobby.RegisterName;
 import it.polimi.ingsw.server.lobby.messages.serverMessages.ServerMessage;
 
@@ -48,8 +47,8 @@ public class ClientConnection implements Runnable {
         try {
             ServerMessage serverMessage = receiveServerMessage();
             serverMessage.updateClient(this, null);
-
         } catch (Exception e) {
+            // welcome message not received
             // connection failed
         }
     }
@@ -126,6 +125,7 @@ public class ClientConnection implements Runnable {
 
 
     private void startReadingThread() {
+        // TODO try to kill this thread if server crashes
         new Thread(() -> {
             while(true) {
                 String command = cli.readCommand();

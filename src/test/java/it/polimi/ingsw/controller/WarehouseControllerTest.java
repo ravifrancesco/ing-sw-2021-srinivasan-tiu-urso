@@ -20,7 +20,6 @@ public class WarehouseControllerTest {
         this.serverController = new ServerController("01", 3);
         GameSettingsBuilder gameSettingsBuilder = new GameSettingsBuilder();
         GameSettings gameSettings = gameSettingsBuilder.build();
-        System.out.println(gameSettings == null);
         serverController.loadGameSettings(gameSettings);
         try {
             serverController.joinGame("rbta-svg");
@@ -59,12 +58,9 @@ public class WarehouseControllerTest {
             thrownException += 1;
         }
         Assert.assertEquals(thrownException, 1);
-        System.out.println(serverController.getGameStatus().getPlayers().get(serverController.getCurrentPlayer()).getDashboard().getAllPlayerResources());
         serverController.endTurn("rbta-svg");
-        System.out.println(serverController.getGameStatus().getPlayers().get(serverController.getCurrentPlayer()).getDashboard().getAllPlayerResources());
         // ravifrancesco has 1 gold from the initial phase, placed in deposit 0
         // trying to change position
-        System.out.println(Arrays.toString(serverController.getGameStatus().getPlayers().get(serverController.getCurrentPlayer()).getDashboard().getWarehouse().getDeposit()));
         resourcesDeposit[1] = Resource.GOLD;
         Assert.assertEquals(serverController.getGameStatus().getPlayers().get(serverController.getCurrentPlayer()).getDashboard().getWarehouse().getDeposit()[0], Resource.GOLD);
         IntStream.range(1, 6).forEach(i -> Assert.assertNull(serverController.getGameStatus().getPlayers().get(serverController.getCurrentPlayer()).getDashboard().getWarehouse().getDeposit()[i]));

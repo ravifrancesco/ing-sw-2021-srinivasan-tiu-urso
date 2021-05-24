@@ -376,9 +376,7 @@ public class DashboardTest {
         Assert.assertEquals(dashboard.getWarehouse().getDeposit()[1], Resource.STONE);
         Assert.assertEquals(dashboard.getWarehouse().getDeposit()[2], Resource.STONE);
 
-        System.out.println(Arrays.toString(dashboard.getWarehouse().getDeposit()));
         dashboard.moveDepositResources(newDeposit);
-        System.out.println(Arrays.toString(dashboard.getWarehouse().getDeposit()));
 
         Assert.assertEquals(dashboard.getWarehouse().getDeposit()[3], Resource.STONE);
         Assert.assertEquals(dashboard.getWarehouse().getDeposit()[3], Resource.STONE);
@@ -558,17 +556,21 @@ public class DashboardTest {
     // TODO wait for explanation
     @Test
     public void payPriceTest() {
+
         // TODO change when we have the view
         dashboard.reset();
 
+        // HAPPY FLOW
         dashboard.storeResourceInLocker(Resource.GOLD, 3);
         dashboard.storeResourceInDeposit(Resource.STONE, 1);
         dashboard.storeResourceInDeposit(Resource.STONE, 2);
 
+        Warehouse warehouse = dashboard.getWarehouse();
+
         ResourceContainer rc = new ResourceContainer();
-        rc.addDepositSelectedResource(1, new Warehouse());
-        rc.addDepositSelectedResource(2, new Warehouse());
-        rc.addLockerSelectedResource(Resource.GOLD, 3, new Warehouse());
+        rc.addDepositSelectedResource(1, warehouse);
+        rc.addDepositSelectedResource(2, warehouse);
+        rc.addLockerSelectedResource(Resource.GOLD, 3, warehouse);
 
         HashMap<Resource, Integer> cost = new HashMap<>();
         cost.put(Resource.GOLD, 3);
@@ -580,7 +582,6 @@ public class DashboardTest {
         Assert.assertEquals(java.util.Optional.ofNullable(allResources.get(Resource.SHIELD)), Optional.of(0));
         Assert.assertEquals(java.util.Optional.ofNullable(allResources.get(Resource.SERVANT)), Optional.of(0));
 
-        // HAPPY FLOW
         dashboard.payPrice(rc, cost);
 
         allResources = dashboard.getAllPlayerResources();
@@ -590,20 +591,27 @@ public class DashboardTest {
         Assert.assertEquals(java.util.Optional.ofNullable(allResources.get(Resource.SHIELD)), Optional.of(0));
         Assert.assertEquals(java.util.Optional.ofNullable(allResources.get(Resource.SERVANT)), Optional.of(0));
 
-        int thrownExceptions = 0;
 
+        // SAD FLOW
+        int thrownExceptions = 0;
+        dashboard.reset();
+
+        dashboard.storeResourceInDeposit(Resource.STONE, 1);
+        dashboard.storeResourceInDeposit(Resource.STONE, 2);
+        dashboard.storeResourceInLocker(Resource.GOLD, 3);
+        // I have 2 stones and 3 golds
 
         ResourceContainer rc2 = new ResourceContainer();
-        rc2.addDepositSelectedResource(1, new Warehouse());
-        rc2.addDepositSelectedResource(2, new Warehouse());
-        rc2.addLockerSelectedResource(Resource.GOLD, 3, new Warehouse());
-
+        rc2.addDepositSelectedResource(1, warehouse);
+        rc2.addDepositSelectedResource(2, warehouse);
+        rc2.addLockerSelectedResource(Resource.GOLD, 3, warehouse);
 
         cost = new HashMap<>();
         cost.put(Resource.GOLD, 3);
         cost.put(Resource.STONE, 3);
         cost.put(Resource.SHIELD, 0);
         cost.put(Resource.SERVANT, 0);
+        // 1 too many golds than what I have
 
 
         try {
@@ -637,7 +645,6 @@ public class DashboardTest {
         dashboard.storeFromSupplyInExtraDeposit(0, 0, 1);
 
 
-        System.out.println(dashboard.getAllPlayerResources());
 
 
         Map<Resource, Integer> cost2 = new HashMap<>();
@@ -646,11 +653,11 @@ public class DashboardTest {
         cost2.put(Resource.SERVANT, 3);
 
         ResourceContainer rcc = new ResourceContainer();
-        rcc.addDepositSelectedResource(3, new Warehouse());
-        rcc.addDepositSelectedResource(4, new Warehouse());
-        rcc.addDepositSelectedResource(5, new Warehouse());
-        rcc.addExtraDepositSelectedResource(0, 0, new Warehouse());
-        rcc.addExtraDepositSelectedResource(0, 1, new Warehouse());
+        rcc.addDepositSelectedResource(3, warehouse);
+        rcc.addDepositSelectedResource(4, warehouse);
+        rcc.addDepositSelectedResource(5, warehouse);
+        rcc.addExtraDepositSelectedResource(0, 0, warehouse);
+        rcc.addExtraDepositSelectedResource(0, 1, warehouse);
 
         dashboard.payPrice(rcc, cost2);
 

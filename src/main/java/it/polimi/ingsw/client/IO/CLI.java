@@ -1,15 +1,10 @@
 package it.polimi.ingsw.client.IO;
 
 import it.polimi.ingsw.client.ReducedModel;
-import it.polimi.ingsw.client.ServerMessageHandler;
 import it.polimi.ingsw.client.UI;
-import it.polimi.ingsw.server.lobby.GameLobby;
 import it.polimi.ingsw.server.lobby.GameLobbyDetails;
 
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class CLI implements UI {
@@ -17,7 +12,6 @@ public class CLI implements UI {
     private Scanner input;
 
     private ReducedModel reducedModel;
-    private ServerMessageHandler serverMessageHandler;
     private String ip;
     private int port;
 
@@ -66,4 +60,6 @@ public class CLI implements UI {
                                 "         CREATOR: " + gameLobbyDetails.creator +
                                 "         PLAYERS: " + gameLobbyDetails.connectedPlayers + "/" + gameLobbyDetails.maxPlayers));
     }
+
+
 }
