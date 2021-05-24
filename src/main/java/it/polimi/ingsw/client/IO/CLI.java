@@ -54,11 +54,18 @@ public class CLI implements UI {
     }
 
     public void showGameLobbies(ArrayList<GameLobbyDetails> activeGameLobbies) {
-        activeGameLobbies.forEach(gameLobbyDetails ->
-                System.out.println(
-                        "ID: " + gameLobbyDetails.id +
-                                "         CREATOR: " + gameLobbyDetails.creator +
-                                "         PLAYERS: " + gameLobbyDetails.connectedPlayers + "/" + gameLobbyDetails.maxPlayers));
+        if (activeGameLobbies.size() > 0) {
+            activeGameLobbies.forEach(gameLobbyDetails ->
+                    System.out.println(
+                            "ID: " + gameLobbyDetails.id +
+                                    "         CREATOR: " + gameLobbyDetails.creator +
+                                    "         PLAYERS: " +
+                                    gameLobbyDetails.connectedPlayers + "/" + gameLobbyDetails.maxPlayers));
+        } else {
+            System.out.println("No game lobbies found");
+        }
+
+
     }
 
 

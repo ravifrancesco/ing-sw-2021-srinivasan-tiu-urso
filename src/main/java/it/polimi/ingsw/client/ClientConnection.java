@@ -125,7 +125,7 @@ public class ClientConnection implements Runnable {
 
 
     private void startReadingThread() {
-        // TODO try to kill this thread if server crashes
+        // TODO how to kill this thread if the receivingThread dies?
         new Thread(() -> {
             while(true) {
                 String command = cli.readCommand();
@@ -139,7 +139,8 @@ public class ClientConnection implements Runnable {
                         System.out.println(e.getMessage());
                     }
                 }
-                // TODO find a better way
+                // TODO ugly asf, need to find a way to show the "enter command" after server answers
+                // and client is shown the response to its command
                 try {
                     Thread.sleep(500);
                 } catch (InterruptedException e) {

@@ -74,7 +74,7 @@ public class GameLobby implements Lobby, Serializable {
         serverController.addObservers(c);
         if(connectedPlayers.size() == maxPlayers) {
             System.out.println("Starting game..");
-            // serverController.startGame();
+            serverController.startGame();
         }
     }
 

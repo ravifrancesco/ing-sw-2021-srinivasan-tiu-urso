@@ -5,7 +5,9 @@ import it.polimi.ingsw.model.GameError;
 import it.polimi.ingsw.server.lobby.messages.serverMessages.ServerMessage;
 import it.polimi.ingsw.utils.Pair;
 
-public class GameErrorUpdateMessage implements ServerMessage {
+import java.io.Serializable;
+
+public class GameErrorUpdateMessage implements ServerMessage, Serializable {
 
     private final Pair<String,Exception> gameError;
 

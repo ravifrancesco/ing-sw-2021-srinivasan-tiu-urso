@@ -68,7 +68,6 @@ public class Connection implements Runnable,
             out.flush();
             out.reset();
         } catch (IOException e) {
-            System.out.println("c");
             close();
         }
 
@@ -151,23 +150,25 @@ public class Connection implements Runnable,
             ClientLobbyMessage read;
             try {
                 read = receiveLobbyMessage();
-                System.out.println("Received lobby message by " + nickname + ": " + read.toString());
+                System.out.println("Received main lobby message by " + nickname + ": " + read.toString());
                 currentLobby.handleMessage(read, this);
-                System.out.println("2");
                 send(new CorrectHandlingMessage());
-            } catch (ClassNotFoundException | IllegalArgumentException | InvalidNameException | IllegalStateException e) {
-                System.out.println();
+                // } catch (ClassNotFoundException | ClassCastException | IllegalArgumentException | InvalidNameException | IllegalStateException e) {
+            } catch (Exception e) {
                 System.out.println(e.getMessage());
                 e.printStackTrace();
-                System.out.println("3");
                 send(new ErrorMessage());
             }
         } else {
             ClientGameMessage read;
             try {
                 read = receiveGameMessage();
+                System.out.println("Received game lobby message by " + nickname + ": " + read.toString());
                 currentLobby.handleMessage(read, this);
-            } catch (ClassNotFoundException | InvalidNameException e) {
+                // ClassNotFoundException | InvalidNameException
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                e.printStackTrace();
                 send(new ErrorMessage());
             }
         }

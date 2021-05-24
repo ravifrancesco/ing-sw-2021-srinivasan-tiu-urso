@@ -458,7 +458,7 @@ public class GameSettings implements Serializable {
         return leaderCardNum;
     }
 
-    public static GameSettings loadDefaultGameSettings() {
+    public static GameSettings  loadDefaultGameSettings() {
         // TODO remove hotfix and do
         GameSettingsBuilder gsb = new GameSettingsBuilder();
         return gsb.build();

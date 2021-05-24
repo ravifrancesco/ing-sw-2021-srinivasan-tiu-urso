@@ -4,10 +4,12 @@ import it.polimi.ingsw.client.ClientConnection;
 import it.polimi.ingsw.model.Dashboard;
 import it.polimi.ingsw.server.lobby.messages.serverMessages.ServerMessage;
 
+import java.io.Serializable;
+
 /**
  * Class used to send Dashboard updates to the clients.
  */
-public class DashboardUpdateMessage implements ServerMessage {
+public class DashboardUpdateMessage implements ServerMessage, Serializable {
 
     private final Dashboard dashboard;
 

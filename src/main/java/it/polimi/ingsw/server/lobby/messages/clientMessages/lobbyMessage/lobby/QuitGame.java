@@ -5,7 +5,6 @@ import it.polimi.ingsw.server.lobby.Lobby;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.lobbyMessage.ClientLobbyMessage;
 
 import javax.naming.InvalidNameException;
-import java.io.IOException;
 import java.io.Serializable;
 
 public class QuitGame extends ClientLobbyMessage implements Serializable {
