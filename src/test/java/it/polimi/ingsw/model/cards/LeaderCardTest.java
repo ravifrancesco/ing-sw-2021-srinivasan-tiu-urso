@@ -58,8 +58,8 @@ public class LeaderCardTest{
 
         LeaderCard leaderCard = new LeaderCard(1, 5, bannerCost, resourceCost, sa);
 
-        String s1 = "ID=1;VP=5;BC=BLUE:2:1,GREEN:1:2;RC=GOLD:3;SA=PP;RR=ANY:1;FP=1;";
-        String s2 = "ID=1;VP=5;BC=GREEN:1:2,BLUE:2:1;RC=GOLD:3;SA=PP;RR=ANY:1;FP=1;";
+        String s1 = "ID=1;VP=5;BC=BLUE:2:1,GREEN:1:2;RC=GOLD:3;SA=PP;RR=ANY:1;RP=;FP=1;";
+        String s2 = "ID=1;VP=5;BC=GREEN:1:2,BLUE:2:1;RC=GOLD:3;SA=PP;RR=ANY:1;RP=;FP=1;";
 
         Assert.assertTrue(s1.equals(leaderCard.toString()) || s2.equals(leaderCard.toString()));
 

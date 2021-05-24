@@ -53,10 +53,10 @@ public class ProductionPowerTest {
         resourceRequired.put(Resource.GOLD, 1);
         resourceRequired.put(Resource.STONE, 1);
 
-        ProductionPower p = new ProductionPower(resourceRequired, null,2);
+        ProductionPower p = new ProductionPower(resourceRequired, new HashMap<>(),2);
 
-        String s1 = "SA=PP;RR=STONE:1,GOLD:1;FP=2;";
-        String s2 = "SA=PP;RR=GOLD:1,STONE:1;FP=2;";
+        String s1 = "SA=PP;RR=STONE:1,GOLD:1;RP=;FP=2;";
+        String s2 = "SA=PP;RR=GOLD:1,STONE:1;RP=;FP=2;";
 
         Assert.assertTrue(s1.equals(p.toString()) || s2.equals(p.toString()));
     }
