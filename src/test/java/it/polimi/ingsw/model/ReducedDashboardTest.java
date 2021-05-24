@@ -10,20 +10,19 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.fail;
 
-public class DashboardTest {
+public class ReducedDashboardTest {
 
     private static Dashboard dashboard;
 
     @BeforeClass
     static public void createDashboard() {
 
-        GameSettings gameSettings = new GameSettingsTest().buildGameSettings();
+        GameSettings gameSettings = new ReducedGameSettingsTest().buildGameSettings();
         dashboard = new Dashboard(gameSettings);
 
         Assert.assertNotNull(dashboard);

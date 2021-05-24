@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.IntStream;
 
-public class GameSettingsTest {
+public class ReducedGameSettingsTest {
 
     private String path = "testSave.properties";
 

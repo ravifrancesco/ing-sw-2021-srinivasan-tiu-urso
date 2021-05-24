@@ -13,7 +13,7 @@ import java.util.stream.IntStream;
 
 import static it.polimi.ingsw.model.DevelopmentCardGrid.*;
 
-public class GameBoardTest {
+public class ReducedGameBoardTest {
 
     @Test
     public void constructorTest() {
