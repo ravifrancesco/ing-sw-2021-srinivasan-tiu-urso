@@ -68,6 +68,7 @@ public class Connection implements Runnable,
             out.flush();
             out.reset();
         } catch (IOException e) {
+            System.out.println("c");
             close();
         }
 
@@ -119,13 +120,15 @@ public class Connection implements Runnable,
                 handleMessage();
             }
         } catch(Exception e) {
-            System.out.println("Message:");
-            System.err.println(e.getMessage());
-            System.out.println("StackTrace:");
-            e.printStackTrace();
+            System.out.println("solo questo");
         } finally {
+            System.out.println("3");
             close();
         }
+    }
+
+    public void quit() throws IOException {
+        throw new IOException();
     }
 
     public void registerName() throws IOException {
@@ -150,11 +153,13 @@ public class Connection implements Runnable,
                 read = receiveLobbyMessage();
                 System.out.println("Received lobby message by " + nickname + ": " + read.toString());
                 currentLobby.handleMessage(read, this);
+                System.out.println("2");
                 send(new CorrectHandlingMessage());
             } catch (ClassNotFoundException | IllegalArgumentException | InvalidNameException | IllegalStateException e) {
                 System.out.println();
                 System.out.println(e.getMessage());
                 e.printStackTrace();
+                System.out.println("3");
                 send(new ErrorMessage());
             }
         } else {

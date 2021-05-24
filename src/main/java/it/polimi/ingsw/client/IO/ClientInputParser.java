@@ -14,6 +14,7 @@ public class ClientInputParser {
             case "SHOWGAMES"-> InputChecker.showGames(in);
             case "JOINGAME" -> InputChecker.joinGame(in);
             case "LEAVELOBBY" -> InputChecker.leaveLobby(in);
+            case "QUIT" -> InputChecker.quit(in);
             default -> null;
         };
     }

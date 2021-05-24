@@ -1,10 +1,7 @@
 package it.polimi.ingsw.client.IO;
 
 import it.polimi.ingsw.server.lobby.messages.clientMessages.ClientMessage;
-import it.polimi.ingsw.server.lobby.messages.clientMessages.lobbyMessage.lobby.AskGameLobbies;
-import it.polimi.ingsw.server.lobby.messages.clientMessages.lobbyMessage.lobby.CreateGameLobby;
-import it.polimi.ingsw.server.lobby.messages.clientMessages.lobbyMessage.lobby.JoinGameLobby;
-import it.polimi.ingsw.server.lobby.messages.clientMessages.lobbyMessage.lobby.LeaveLobby;
+import it.polimi.ingsw.server.lobby.messages.clientMessages.lobbyMessage.lobby.*;
 
 public class InputChecker {
 
@@ -34,5 +31,9 @@ public class InputChecker {
 
     public static ClientMessage leaveLobby(String[] in) {
         return new LeaveLobby();
+    }
+
+    public static ClientMessage quit(String[] in) {
+        return new QuitGame();
     }
 }
