@@ -376,9 +376,6 @@ public class WarehouseTest {
         newDeposit[3] = Resource.STONE;
         newDeposit[4] = Resource.STONE;
 
-        System.out.println(Arrays.toString(wh.getDeposit()));
-        System.out.println(Arrays.toString(newDeposit));
-
         Assert.assertEquals(wh.getDeposit()[1], Resource.STONE);
         Assert.assertEquals(wh.getDeposit()[2], Resource.STONE);
         wh.changeDeposit(newDeposit);

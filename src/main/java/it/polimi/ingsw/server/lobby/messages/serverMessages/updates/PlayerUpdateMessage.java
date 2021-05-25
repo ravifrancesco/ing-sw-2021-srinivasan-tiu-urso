@@ -1,12 +1,15 @@
 package it.polimi.ingsw.server.lobby.messages.serverMessages.updates;
 
+import it.polimi.ingsw.client.ClientConnection;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.server.lobby.messages.serverMessages.ServerMessage;
+
+import java.io.Serializable;
 
 /**
  * Class used to send Player updates to the clients.
  */
-public class PlayerUpdateMessage implements ServerMessage {
+public class PlayerUpdateMessage implements ServerMessage, Serializable {
 
     private final Player player;
 
@@ -20,7 +23,7 @@ public class PlayerUpdateMessage implements ServerMessage {
     }
 
     @Override
-    public void updateClient(Object client, String nickname) {
+    public void updateClient(ClientConnection clientConnection, String nickname) {
         // TODO
     }
 }

@@ -2,10 +2,7 @@ package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.observerPattern.observers.*;
-import it.polimi.ingsw.server.lobby.GameLobby;
-import it.polimi.ingsw.server.lobby.Lobby;
-import it.polimi.ingsw.server.lobby.LobbyType;
-import it.polimi.ingsw.server.lobby.MainLobby;
+import it.polimi.ingsw.server.lobby.*;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.ClientGameMessage;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.lobbyMessage.ClientLobbyMessage;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.lobbyMessage.lobby.RegisterName;
@@ -18,6 +15,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 
 /**
  * TODO doc
@@ -35,6 +33,11 @@ public class Connection implements Runnable,
     private String nickname;
 
     private final MainLobby mainLobby;
+
+    public MainLobby getMainLobby() {
+        return mainLobby;
+    }
+
     private Lobby currentLobby;
 
     private boolean active = true;
@@ -44,6 +47,10 @@ public class Connection implements Runnable,
         this.server = server;
         this.mainLobby = mainLobby;
         this.currentLobby = mainLobby;
+    }
+
+    public Lobby getCurrentLobby() {
+        return currentLobby;
     }
 
     public synchronized void enterLobby(Lobby lobby) {
@@ -84,19 +91,21 @@ public class Connection implements Runnable,
     }
 
     private void deregisterConnection() {
-
         if (currentLobby.getType() == LobbyType.GAME_LOBBY) {
-            ((GameLobby) currentLobby).leaveLobby(this);
+            GameLobby gameLobby = (GameLobby) currentLobby;
+            gameLobby.leaveLobby(this);
+            if (gameLobby.getConnectedPlayers().size() == 0) {
+                mainLobby.removeGameLobby(gameLobby);
+            }
         }
         mainLobby.deregisterConnection(this);
-
     }
 
     public void close() {
         closeConnection();
-        System.out.println("Deregistering client...");
+        System.out.println("Deregistering client " + nickname + "..");
         deregisterConnection();
-        System.out.println("Done!");
+        System.out.println("Deregistration complete");
     }
 
     @Override
@@ -109,11 +118,16 @@ public class Connection implements Runnable,
             while(isActive()){
                 handleMessage();
             }
-        } catch(IOException e) {
-            System.err.println(e.getMessage());
+        } catch(Exception e) {
+            System.out.println("solo questo");
         } finally {
+            System.out.println("3");
             close();
         }
+    }
+
+    public void quit() throws IOException {
+        throw new IOException();
     }
 
     public void registerName() throws IOException {
@@ -136,21 +150,36 @@ public class Connection implements Runnable,
             ClientLobbyMessage read;
             try {
                 read = receiveLobbyMessage();
+                System.out.println("Received main lobby message by " + nickname + ": " + read.toString());
                 currentLobby.handleMessage(read, this);
-                send(new SuccessfulConnectionMessage(((GameLobby)currentLobby).getId()));
-            } catch (ClassNotFoundException | IllegalArgumentException | InvalidNameException | IllegalStateException e) {
+                send(new CorrectHandlingMessage());
+                // } catch (ClassNotFoundException | ClassCastException | IllegalArgumentException | InvalidNameException | IllegalStateException e) {
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                e.printStackTrace();
                 send(new ErrorMessage());
             }
         } else {
             ClientGameMessage read;
             try {
                 read = receiveGameMessage();
+                System.out.println("Received game lobby message by " + nickname + ": " + read.toString());
                 currentLobby.handleMessage(read, this);
-            } catch (ClassNotFoundException | InvalidNameException e) {
+                // ClassNotFoundException | InvalidNameException
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                e.printStackTrace();
                 send(new ErrorMessage());
             }
         }
+    }
 
+    public void sendGameLobbiesDetails() {
+        ArrayList<GameLobbyDetails> gameLobbies = new ArrayList<>();
+        mainLobby.getActiveGameLobbies().forEach(gameLobby -> gameLobbies.add(new GameLobbyDetails(gameLobby.getId(),
+                        gameLobby.getCreator(), gameLobby.getConnectedPlayers().size(), gameLobby.getMaxPlayers()))
+                );
+        send(new GameLobbiesMessage(gameLobbies));
     }
 
     public String getNickname() {

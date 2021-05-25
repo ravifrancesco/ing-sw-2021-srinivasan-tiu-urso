@@ -1,10 +1,13 @@
 package it.polimi.ingsw.server.lobby.messages.serverMessages.updates;
 
+import it.polimi.ingsw.client.ClientConnection;
 import it.polimi.ingsw.model.GameError;
 import it.polimi.ingsw.server.lobby.messages.serverMessages.ServerMessage;
 import it.polimi.ingsw.utils.Pair;
 
-public class GameErrorUpdateMessage implements ServerMessage {
+import java.io.Serializable;
+
+public class GameErrorUpdateMessage implements ServerMessage, Serializable {
 
     private final Pair<String,Exception> gameError;
 
@@ -17,7 +20,7 @@ public class GameErrorUpdateMessage implements ServerMessage {
     }
 
     @Override
-    public void updateClient(Object client, String nickname) {
+    public void updateClient(ClientConnection clientConnection, String nickname) {
         // TODO
     }
 }

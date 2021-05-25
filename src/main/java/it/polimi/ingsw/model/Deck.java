@@ -20,7 +20,7 @@ public class Deck {
 	 * The constructor for a Deck object.
 	 */
 
-	Deck() {
+	public Deck() {
 		deck = new Stack<>();
 	}
 

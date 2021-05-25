@@ -12,24 +12,38 @@ import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.ClientG
 import it.polimi.ingsw.utils.Pair;
 
 import javax.naming.InvalidNameException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GameLobby implements Lobby {
+public class GameLobby implements Lobby, Serializable {
 
     private final String id;
 
     private final int maxPlayers;
+
+    private String creator;
+
+    public int getMaxPlayers() {
+        return maxPlayers;
+    }
+
+    public Map<String, Connection> getConnectedPlayers() {
+        return connectedPlayers;
+    }
+
     private final Map<String, Connection> connectedPlayers;
 
 
     private final ServerController serverController;
     private GameSettings gameSettings;
 
-    public GameLobby(String id, GameSettings gameSettings, int maxPlayers) throws IllegalArgumentException {
+    public GameLobby(String id, int maxPlayers) throws IllegalArgumentException {
         this.id = id;
-        this.gameSettings = gameSettings;
+
+        this.gameSettings = GameSettings.loadDefaultGameSettings();
+
         this.maxPlayers = maxPlayers;
         this.connectedPlayers = new HashMap<>();
         this.serverController = new ServerController(id, maxPlayers);
@@ -37,26 +51,43 @@ public class GameLobby implements Lobby {
 
     @Override
     public synchronized void handleMessage(ClientMessage clientMessage, Connection c) {
-        // TODO
+        ((ClientGameMessage) clientMessage).handle(c, serverController);
+    }
+
+    public String getCreator() {
+        return creator;
     }
 
     public synchronized void enterLobby(Connection c) throws InvalidNameException, IllegalStateException {
-        try {
+        if(connectedPlayers.size() == 0) { // if it was the first player
             serverController.loadGameSettings(gameSettings);
+            creator = c.getNickname();
+        }
+        try {
             serverController.joinGame(c.getNickname());
         } catch (GameFullException e) {
             throw new IllegalStateException();
         }
         connectedPlayers.put(c.getNickname(), c);
+
         c.enterLobby(this);
-        System.out.println(connectedPlayers);
         serverController.addObservers(c);
+        if(connectedPlayers.size() == maxPlayers) {
+            System.out.println("Starting game..");
+            serverController.startGame();
+        }
     }
 
     public synchronized void leaveLobby(Connection c) {
         if (connectedPlayers.containsValue(c)) {
-            connectedPlayers.remove(c.getNickname());
-            serverController.removeObservers(c);
+            try {
+                connectedPlayers.remove(c.getNickname());
+                serverController.removeObservers(c);
+                serverController.leaveGame(c.getNickname());
+            } catch (InvalidNameException e) {
+                throw new IllegalStateException();
+            }
+
         }
     }
 
@@ -126,4 +157,12 @@ public class GameLobby implements Lobby {
     public LobbyType getType() {
         return LobbyType.GAME_LOBBY;
     }
+
+
+    /**
+     * SHOWDEVELOPMENTCARDS
+     * //////
+     * INSERT BUYCARD
+     * "
+     */
 }

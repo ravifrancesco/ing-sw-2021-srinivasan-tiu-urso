@@ -80,6 +80,15 @@ public class ServerController {
         }
     }
 
+    public void leaveGame(String nickname) throws InvalidNameException {
+        if (!game.getPlayers().containsKey(nickname)) {
+            throw new InvalidNameException("Nickname " + nickname + " is not a part of the game");
+        } else {
+            // TODO reconnection?
+            game.removePlayer(nickname);
+        }
+    }
+
     /**
      * Adds the connection as the observer of all observable classes
      *
@@ -138,9 +147,11 @@ public class ServerController {
      * TODO
      */
     public void startGame() {
-      game.startUniquePhase(TurnPhase.FIRST_TURN);
-      game.changePlayer();
-      game.setFirstPlayer(game.getCurrentPlayer());
+        game.reset();
+        game.startUniquePhase(TurnPhase.FIRST_TURN);
+        game.changePlayer();
+        game.setFirstPlayer(game.getCurrentPlayer());
+        game.distributeCards();
     }
 
     /**
@@ -273,6 +284,8 @@ public class ServerController {
         try {
             marketController.getFromMarket(nickname, move, wmrs);
         } catch (WrongTurnException | WrongMoveException e) {
+            System.out.println("errore: ");
+            System.out.println(e.getMessage());
             game.setError(e, nickname);
         }
     }
@@ -397,7 +410,7 @@ public class ServerController {
 
         if(player.getDashboard().checkGameEnd() && game.getTurnPhase() != TurnPhase.ENDGAME) {
             game.startUniquePhase(TurnPhase.ENDGAME);
-        } else if(firstTurns < game.getNumberOfPlayers()) {
+        } else if(firstTurns < game.getNumberOfPlayers()-1) {
             dashboard.moveFaithMarker(firstTurns < 2 ? 0 : 1);
             firstTurns += 1;
             game.startUniquePhase(TurnPhase.FIRST_TURN);
@@ -416,6 +429,10 @@ public class ServerController {
      */
     public Game getGameStatus() {
         return game.getGameStatus();
+    }
+
+    public String getCurrentPlayer() {
+        return game.getCurrentPlayer();
     }
 
 }

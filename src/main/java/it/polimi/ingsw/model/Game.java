@@ -1,13 +1,14 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.observerPattern.observables.GameObservable;
 import it.polimi.ingsw.model.observerPattern.observers.GameObserver;
 import it.polimi.ingsw.server.Connection;
 import it.polimi.ingsw.utils.Pair;
+import it.polimi.ingsw.model.GameError;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
+import java.util.*;
+import java.util.stream.IntStream;
 
 public class Game extends GameObservable {
 
@@ -35,6 +36,7 @@ public class Game extends GameObservable {
 		this.gameId = gameId;
 		this.numberOfPlayers = numberOfPlayers;
 		this.players = new LinkedHashMap<>();
+		this.playerOrder = players.keySet().iterator();
 		this.gameBoard = new GameBoard();
 		this.gameError = new GameError();
 	}
@@ -47,21 +49,20 @@ public class Game extends GameObservable {
 		gameBoard.reset(gameSettings);
 		players.values().forEach(Player::reset);
 		this.playerOrder = players.keySet().iterator();
+		players.values().forEach(Player::reset);
 		this.gameEnded = false;
 		notify(this);
 
 	}
 
 	public boolean checkEnd() {
-		return false;
+		return gameEnded;
 	}
 
 	public Player checkWinner() {
-		return null;
-	}
+		int winnerPoints  = players.values().stream().map(Player::getVictoryPoints).max(Comparator.naturalOrder()).get();
 
-	public boolean checkDiscardedResources() {
-		return false;
+		return players.values().stream().filter(player -> player.getVictoryPoints() == winnerPoints).findFirst().get();
 	}
 
 	public void addPlayer(String nickname, Player p) {
@@ -69,7 +70,12 @@ public class Game extends GameObservable {
 		notify(this);
 	}
 
-	public HashMap<String, Player> getPlayers() {
+	public void removePlayer(String nickname) {
+		players.remove(nickname);
+		notify(this);
+	}
+
+	public LinkedHashMap<String, Player> getPlayers() {
 		return players;
 	}
 
@@ -100,8 +106,18 @@ public class Game extends GameObservable {
 		return turnPhase;
 	}
 
-	public void endGame() {
+	public void distributeCards() {
+		IntStream.range(0, 4).forEach(i ->
+				players.values().forEach(p ->
+						p.addCard((LeaderCard) gameBoard.getLeaderDeck().getCard())
+				)
+		);
 
+	}
+
+	public void endGame() {
+		gameEnded = true;
+		// TODO
 	}
 
 	public Game getGameStatus() {
