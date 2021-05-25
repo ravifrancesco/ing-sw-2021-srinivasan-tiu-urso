@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 public class DefaultSettingsBuilder {
 
     private static final int leaderCardNum = 16;
-    private String path;
     private final GameSettings gameSettings;
 
     public DefaultSettingsBuilder() {
@@ -19,8 +18,8 @@ public class DefaultSettingsBuilder {
                 vaticanReportsListBuilder(), faithTrackVictoryPointsBuilder());
     }
 
-    public void saveSettings(String path) {
-        gameSettings.saveSettings(path);
+    public GameSettings getGameSettings() {
+        return gameSettings;
     }
 
     private DevelopmentCard[] developmentCardsBuilder() {

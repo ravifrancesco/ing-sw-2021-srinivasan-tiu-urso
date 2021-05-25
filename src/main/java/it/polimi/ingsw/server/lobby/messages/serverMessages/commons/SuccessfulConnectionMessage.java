@@ -13,12 +13,8 @@ public class SuccessfulConnectionMessage implements ServerMessage, Serializable 
         this.id = id;
     }
 
-    public void showMessage() {
-        System.out.println("GAME ID: " + id);
-    }
-
     @Override
     public void updateClient(ClientConnection clientConnection, String nickname) {
-        // TODO
+        clientConnection.cli.printMessage("Successfully connected to the game. Game ID: " + id);
     }
 }

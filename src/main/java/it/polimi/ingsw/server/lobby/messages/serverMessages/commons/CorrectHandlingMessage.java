@@ -6,8 +6,9 @@ import it.polimi.ingsw.server.lobby.messages.serverMessages.ServerMessage;
 import java.io.Serializable;
 
 public class CorrectHandlingMessage implements Serializable, ServerMessage {
+
     @Override
     public void updateClient(ClientConnection clientConnection, String nickname) {
-        // TODO
+        clientConnection.cli.printMessage("Message successfully handled by the server!");
     }
 }
