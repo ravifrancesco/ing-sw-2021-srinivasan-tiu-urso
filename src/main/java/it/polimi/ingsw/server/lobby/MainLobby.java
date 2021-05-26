@@ -49,6 +49,7 @@ public class MainLobby implements Lobby {
     public synchronized void deregisterConnection(Connection c) {
         connections.remove(c);
         waitingConnection.remove(c.getNickname());
+        playingConnection.remove(c.getNickname()); // TODO reconnection
     }
 
     @Override

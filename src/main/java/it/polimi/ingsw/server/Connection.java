@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.ArrayList;
 
 /**
@@ -61,7 +62,7 @@ public class Connection implements Runnable,
         return active;
     }
 
-    private synchronized void send(ServerMessage message){
+    private synchronized void send(ServerMessage message) {
 
         try {
             out.writeObject(message);
@@ -118,11 +119,12 @@ public class Connection implements Runnable,
             while(isActive()){
                 handleMessage();
             }
-        } catch(Exception e) {
-            System.out.println("solo questo");
+        } catch (Exception e) {
+            //System.out.println("solo questo");
         } finally {
-            System.out.println("3");
-            close();
+            if (active) {
+                close();
+            }
         }
     }
 
@@ -145,7 +147,7 @@ public class Connection implements Runnable,
         }
     }
 
-    public void handleMessage() throws IOException {
+    public void handleMessage() {
         if (currentLobby.getType() == LobbyType.MAIN_LOBBY) {
             ClientLobbyMessage read;
             try {
@@ -156,7 +158,7 @@ public class Connection implements Runnable,
                 // } catch (ClassNotFoundException | ClassCastException | IllegalArgumentException | InvalidNameException | IllegalStateException e) {
             } catch (Exception e) {
                 System.out.println(e.getMessage());
-                e.printStackTrace();
+                //e.printStackTrace();
                 send(new ErrorMessage());
             }
         } else {
@@ -168,7 +170,7 @@ public class Connection implements Runnable,
                 // ClassNotFoundException | InvalidNameException
             } catch (Exception e) {
                 System.out.println(e.getMessage());
-                e.printStackTrace();
+                //e.printStackTrace();
                 send(new ErrorMessage());
             }
         }

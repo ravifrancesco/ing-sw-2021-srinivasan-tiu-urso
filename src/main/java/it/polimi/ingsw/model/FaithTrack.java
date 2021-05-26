@@ -110,6 +110,11 @@ public class FaithTrack extends FaithTrackObservable {
 		return victoryPoints;
 	}
 
+	//TODO doc
+	public int[] getFaithTrackVictoryPoints() {
+		return faithTrackVictoryPoints;
+	}
+
 	/**
 	 * Getter for vaticanReports
 	 *
