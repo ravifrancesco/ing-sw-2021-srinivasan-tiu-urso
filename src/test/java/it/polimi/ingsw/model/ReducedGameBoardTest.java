@@ -76,7 +76,7 @@ public class ReducedGameBoardTest {
         GameBoard gameBoard = new GameBoard();
         gameBoard.reset(gameSettings);
 
-        Player player = new Player(gameSettings);
+        Player player = new Player(gameSettings, "test");
         player.reset();
 
         Deck leaderCardDeck = gameBoard.getLeaderDeck();
@@ -117,7 +117,7 @@ public class ReducedGameBoardTest {
         GameSettings gameSettings = buildGameSettings();
         GameBoard gameBoard = new GameBoard();
         gameBoard.reset(gameSettings);
-        Player p = new Player(gameSettings);
+        Player p = new Player(gameSettings, "test");
         Market market = gameBoard.getMarket();
 
         for(int possibleMove = 0; possibleMove < 7; possibleMove++) {

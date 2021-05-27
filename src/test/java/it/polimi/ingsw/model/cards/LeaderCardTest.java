@@ -276,7 +276,7 @@ public class LeaderCardTest{
         LeaderCard leaderCard = new LeaderCard(1, 5, bannerCost, new HashMap<>(), sa);
 
         GameSettings gameSettings = buildGameSettings();
-        Player player = new Player(gameSettings);
+        Player player = new Player(gameSettings, "test");
         player.reset();
 
         Map<Resource, Integer> resourceSelectable = new HashMap<>();
@@ -319,7 +319,7 @@ public class LeaderCardTest{
         LeaderCard leaderCard = new LeaderCard(1, 5, bannerCost, new HashMap<>(), sa);
 
         GameSettings gameSettings = buildGameSettings();
-        Player player = new Player(gameSettings);
+        Player player = new Player(gameSettings, "test");
         player.reset();
 
         leaderCard.activate(player);
@@ -341,7 +341,7 @@ public class LeaderCardTest{
         LeaderCard leaderCard = new LeaderCard(1, 5, bannerCost, new HashMap<>(), warehouseExtraSpace);
 
         GameSettings gameSettings = buildGameSettings();
-        Player player = new Player(gameSettings);
+        Player player = new Player(gameSettings, "test");
         player.reset();
 
         player.getDashboard().placeLeaderCard(leaderCard);
@@ -377,7 +377,7 @@ public class LeaderCardTest{
         LeaderCard leaderCard = new LeaderCard(1, 5, bannerCost, new HashMap<>(), whiteMarbleResource);
 
         GameSettings gameSettings = buildGameSettings();
-        Player player = new Player(gameSettings);
+        Player player = new Player(gameSettings, "test");
         player.reset();
 
         leaderCard.activate(player);

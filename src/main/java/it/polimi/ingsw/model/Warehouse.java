@@ -23,15 +23,18 @@ public class Warehouse extends WarehouseObservable {
 	private final Map<Resource, Integer> locker;
 	private Resource[][] extraDeposits;
 
+	private Dashboard dashboard;
+
 	/**
 	 * The constructor for the class.
 	 * Allocates space for the locker and the deposit (both are Resource-Integer HashMaps), and calls the clear
 	 * (initialization) method.
 	 */
-	public Warehouse() {
+	public Warehouse(Dashboard dashboard) {
 		locker = new HashMap<>();
 		deposit = new Resource[MAX_DEPOSIT_SLOTS];
 		extraDeposits = new Resource[MAX_EXTRA_DEPOSIT_SLOTS][];
+		this.dashboard = dashboard;
 		reset();
 	}
 

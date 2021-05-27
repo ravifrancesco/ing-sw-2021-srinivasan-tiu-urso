@@ -76,7 +76,7 @@ public class ServerController {
         } else if (game.getPlayers().containsKey(nickname)) {
             throw new InvalidNameException("Nickname " + nickname + " is already in use");
         } else {
-            game.addPlayer(nickname, new Player(gameSettings));
+            game.addPlayer(nickname, new Player(gameSettings, nickname));
         }
     }
 

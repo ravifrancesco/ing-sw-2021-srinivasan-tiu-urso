@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.cards.LeaderCard;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 /**
  * This class represents the player's hand.
@@ -13,12 +14,16 @@ import java.util.List;
 public class Hand {
 
 	private ArrayList<LeaderCard> cards;
+	public static final int MAX_HAND_SIZE = 5;
+
+	private Player player;
 
 	/**
 	 * Constructor for the class.
 	 */
-	public Hand() {
+	public Hand(Player player) {
 		this.cards = new ArrayList<>();
+		this.player = player;
 	}
 
 	/**

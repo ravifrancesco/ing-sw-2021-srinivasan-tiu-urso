@@ -20,6 +20,7 @@ import java.util.ArrayList;
 
 /**
  * TODO doc
+ * TODO check synchronized methods (send/close)
  */
 public class Connection implements Runnable,
         FaithTrackObserver, WarehouseObserver, DashboardObserver,
@@ -82,7 +83,7 @@ public class Connection implements Runnable,
         return (ClientLobbyMessage) in.readObject();
     }
 
-    private synchronized void closeConnection() {
+    private void closeConnection() {
         try{
             socket.close();
         }catch (IOException e){
@@ -102,11 +103,13 @@ public class Connection implements Runnable,
         mainLobby.deregisterConnection(this);
     }
 
-    public void close() {
-        closeConnection();
-        System.out.println("Deregistering client " + nickname + "..");
-        deregisterConnection();
-        System.out.println("Deregistration complete");
+    public synchronized void close() {
+        if (active) {
+            closeConnection();
+            System.out.println("Deregistering client " + nickname + "..");
+            deregisterConnection();
+            System.out.println("Deregistration complete");
+        }
     }
 
     @Override
@@ -122,9 +125,7 @@ public class Connection implements Runnable,
         } catch (Exception e) {
             //System.out.println("solo questo");
         } finally {
-            if (active) {
-                close();
-            }
+            close();
         }
     }
 
@@ -193,7 +194,7 @@ public class Connection implements Runnable,
     }
 
     /**
-     *  TODO all of this methods and mesages should handle only the necessary information. To be defined after client.
+     *  TODO all of this methods and messages should handle only the necessary information. To be defined after client.
      *  TODO, this will be done changing the messages.
      *  TODO the notifies have to be handled. (Together)
      */

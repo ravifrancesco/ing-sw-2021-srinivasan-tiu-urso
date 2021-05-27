@@ -10,6 +10,7 @@ import it.polimi.ingsw.model.specialAbilities.WhiteMarbleResource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * This class represents the player. It contains references to:
@@ -41,6 +42,8 @@ public class Player extends PlayerObservable {
 
 	private int victoryPoints;
 
+	String nickname;
+
 	// WMR = white marble resource
 
 	/**
@@ -48,11 +51,12 @@ public class Player extends PlayerObservable {
 	 *
 	 * @param gameSettings the settings for the current game.
 	 */
-	public Player(GameSettings gameSettings) {
-		this.dashboard = new Dashboard(gameSettings);
-		this.hand = new Hand();
+	public Player(GameSettings gameSettings, String nickname) {
+		this.dashboard = new Dashboard(gameSettings, this);
+		this.hand = new Hand(this);
 		this.activeDiscounts = new ArrayList<>();
 		this.activatedWMR = new ArrayList<>();
+		this.nickname = nickname;
 	}
 
 
@@ -241,6 +245,12 @@ public class Player extends PlayerObservable {
 	// TODO doc
 	public void addCard(LeaderCard lc) {
 		this.hand.addCard(lc);
+		notify(this);
+	}
+
+	public void fillHand(List<LeaderCard> leaderCards) {
+		leaderCards.forEach(card -> hand.addCard(card));
+		notify(this);
 	}
 
 	public List<LeaderCard> getHand() {

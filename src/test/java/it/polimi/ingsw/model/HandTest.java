@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.DefaultSettingsBuilder;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.specialAbilities.ProductionPower;
 import it.polimi.ingsw.model.specialAbilities.SpecialAbility;
@@ -14,13 +15,25 @@ public class HandTest {
     @Test
     public void ContstructorTest() {
 
-        Hand hand = new Hand();
+        DefaultSettingsBuilder defaultSettingsBuilder = new DefaultSettingsBuilder();
+        GameSettings gameSettings = defaultSettingsBuilder.getGameSettings();
+
+        Player player = new Player(gameSettings, "test");
+
+        Hand hand = new Hand(player);
 
         Assert.assertNotNull(hand);
     }
 
     @Test
     public void addCardTest() {
+
+        DefaultSettingsBuilder defaultSettingsBuilder = new DefaultSettingsBuilder();
+        GameSettings gameSettings = defaultSettingsBuilder.getGameSettings();
+
+        Player player = new Player(gameSettings, "test");
+
+        Hand hand = new Hand(player);
 
         Map<Resource, Integer> resourceCost = new HashMap<>();
 
@@ -37,8 +50,6 @@ public class HandTest {
         SpecialAbility sa = new ProductionPower(resourceRequired, null, 1);
 
         LeaderCard leaderCard = new LeaderCard(1, 5, bannerCost, new HashMap<>(), sa);
-
-        Hand hand = new Hand();
 
         hand.addCard(leaderCard);
 
@@ -50,6 +61,13 @@ public class HandTest {
     @Test
     public void removeCardTest() {
 
+        DefaultSettingsBuilder defaultSettingsBuilder = new DefaultSettingsBuilder();
+        GameSettings gameSettings = defaultSettingsBuilder.getGameSettings();
+
+        Player player = new Player(gameSettings, "test");
+
+        Hand hand = new Hand(player);
+
         Map<Resource, Integer> resourceCost = new HashMap<>();
 
         resourceCost.put(Resource.SHIELD, 1);
@@ -65,8 +83,6 @@ public class HandTest {
         SpecialAbility sa = new ProductionPower(resourceRequired, null, 1);
 
         LeaderCard leaderCard = new LeaderCard(1, 5, bannerCost, new HashMap<>(), sa);
-
-        Hand hand = new Hand();
 
         hand.addCard(leaderCard);
 
@@ -78,6 +94,13 @@ public class HandTest {
     @Test
     public void resetTest() {
 
+        DefaultSettingsBuilder defaultSettingsBuilder = new DefaultSettingsBuilder();
+        GameSettings gameSettings = defaultSettingsBuilder.getGameSettings();
+
+        Player player = new Player(gameSettings, "test");
+
+        Hand hand = new Hand(player);
+
         Map<Resource, Integer> resourceCost = new HashMap<>();
 
         resourceCost.put(Resource.SHIELD, 1);
@@ -93,8 +116,6 @@ public class HandTest {
         SpecialAbility sa = new ProductionPower(resourceRequired, null, 1);
 
         LeaderCard leaderCard = new LeaderCard(1, 5, bannerCost, new HashMap<>(), sa);
-
-        Hand hand = new Hand();
 
         hand.addCard(leaderCard);
         hand.reset();

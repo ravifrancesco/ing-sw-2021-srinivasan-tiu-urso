@@ -45,9 +45,9 @@ public class GameTest {
         GameSettingsBuilder gameSettingsBuilder = new GameSettingsBuilder();
         GameSettings gameSettings = gameSettingsBuilder.build();
         game.loadGameSettings(gameSettings);
-        game.getPlayers().put("rbta-svg", new Player(gameSettings));
-        game.getPlayers().put("ravifrancesco", new Player(gameSettings));
-        game.getPlayers().put("giuseppeurso", new Player(gameSettings));
+        game.getPlayers().put("rbta-svg", new Player(gameSettings, "rbta-svg"));
+        game.getPlayers().put("ravifrancesco", new Player(gameSettings, "ravifrancesco"));
+        game.getPlayers().put("giuseppeurso", new Player(gameSettings, "giuseppeurso"));
         game.getPlayers().get("rbta-svg").getDashboard().placeLeaderCard(gameSettings.getLeaderCards()[0]);
         game.getPlayers().get("rbta-svg").getDashboard().placeLeaderCard(gameSettings.getLeaderCards()[1]);
         game.getPlayers().get("ravifrancesco").getDashboard().placeLeaderCard(gameSettings.getLeaderCards()[3]);
@@ -67,7 +67,7 @@ public class GameTest {
         GameSettings gameSettings = gameSettingsBuilder.build();
         game.loadGameSettings(gameSettings);
         Assert.assertEquals(game.getPlayers().values().size(), 0);
-        game.addPlayer("rbta-svg", new Player(gameSettings));
+        game.addPlayer("rbta-svg", new Player(gameSettings, "rbta-svg"));
         Assert.assertEquals(game.getPlayers().values().size(), 1);
 
 
@@ -79,9 +79,9 @@ public class GameTest {
         GameSettingsBuilder gameSettingsBuilder = new GameSettingsBuilder();
         GameSettings gameSettings = gameSettingsBuilder.build();
         game.loadGameSettings(gameSettings);
-        game.addPlayer("rbta-svg", new Player(gameSettings));
-        game.addPlayer("ravifrancesco", new Player(gameSettings));
-        game.addPlayer("giuseppeurso", new Player(gameSettings));
+        game.addPlayer("rbta-svg", new Player(gameSettings, "rbta-svg"));
+        game.addPlayer("ravifrancesco", new Player(gameSettings, "ravifrancesco"));
+        game.addPlayer("giuseppeurso", new Player(gameSettings, "giuseppeurso"));
 
         Assert.assertEquals(game.getNextPlayer(), "rbta-svg");
         Assert.assertEquals(game.getNextPlayer(), "ravifrancesco");

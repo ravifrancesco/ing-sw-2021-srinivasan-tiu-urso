@@ -37,7 +37,7 @@ public class WarehouseExtraSpaceTest  {
         GameSettings gameSettings = new GameSettings(null, 0, null, null, vaticanReports, faithTrackVictoryPoints);
 
         int thrownExceptions = 0;
-        Player player = new Player(gameSettings);
+        Player player = new Player(gameSettings, "test");
         ArrayList<Resource> res = new ArrayList<>();
         res.add(Resource.STONE);
         // no wes, shit shouldn't work

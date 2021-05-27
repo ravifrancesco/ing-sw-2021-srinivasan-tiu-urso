@@ -15,6 +15,7 @@ public class PlayerUpdateMessage implements ServerMessage, Serializable {
 
     private final String nickname;
     private List<LeaderCard> hand;
+    private int handSize;
 
     /**
      * Constructor.
@@ -24,10 +25,13 @@ public class PlayerUpdateMessage implements ServerMessage, Serializable {
     public PlayerUpdateMessage(Player player, String nickname) {
         this.nickname = nickname;
         this.hand = player.getHand();
+        this.handSize = player.getHandSize();
     }
 
     @Override
     public void updateClient(ClientConnection clientConnection, String nickname) {
         // TODO clientConnection.updateReducedPlayer(nickname, hand);
+        clientConnection.cli.printMessage(this.nickname);
+        hand.forEach(card -> clientConnection.cli.printMessage(card.toString()));
     }
 }

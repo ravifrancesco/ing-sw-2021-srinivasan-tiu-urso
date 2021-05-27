@@ -47,16 +47,18 @@ public class Dashboard extends DashboardObservable {
 
 	private int playerPoints;
 
+	private Player player;
+
 	/**
 	 * The constructor for a Dashboard object.
 	 *
 	 * @param gameSettings the settings for the current game.
 	 */
-	public Dashboard(GameSettings gameSettings) {
+	public Dashboard(GameSettings gameSettings, Player player) {
 
-		this.warehouse = new Warehouse();
+		this.warehouse = new Warehouse(this);
 
-		this.faithTrack = new FaithTrack(gameSettings);
+		this.faithTrack = new FaithTrack(gameSettings, this);
 
 		this.playedLeaderCards = new ArrayList<>();
 
@@ -66,6 +68,8 @@ public class Dashboard extends DashboardObservable {
 
 		this.dashBoardProductionPower = gameSettings.getDashBoardProductionPower();
 		this.supply = new ArrayList<>();
+
+		this.player = player;
 	}
 
 
