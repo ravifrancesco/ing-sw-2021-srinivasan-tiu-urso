@@ -31,6 +31,6 @@ public class FaithTrackUpdateMessage implements ServerMessage, Serializable {
 
     @Override
     public void updateClient(ClientConnection clientConnection, String nickname) {
-        // TODO clientConnection.updateReducedFaithTrack(position, vaticanReports, faithTrackVictoryPoints);
+        clientConnection.updateReducedFaithTrack(nickname, position, vaticanReports, faithTrackVictoryPoints);
     }
 }

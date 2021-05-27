@@ -13,6 +13,7 @@ public class ReducedPlayer {
 
     // Hand
     private List<LeaderCard> hand;
+    private int handSize;
 
     // Dashboard
     private final ReducedDashboard dashboard;
@@ -37,6 +38,14 @@ public class ReducedPlayer {
 
     public void setHand(List<LeaderCard> hand) {
         this.hand = hand;
+    }
+
+    public int getHandSize() {
+        return handSize;
+    }
+
+    public void setHandSize(int handSize) {
+        this.handSize = handSize;
     }
 
     public ReducedDashboard getDashboard() {

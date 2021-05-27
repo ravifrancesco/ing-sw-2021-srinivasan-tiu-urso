@@ -25,6 +25,6 @@ public class MarketUpdateMessage implements ServerMessage, Serializable {
 
     @Override
     public void updateClient(ClientConnection clientConnection, String nickname) {
-        // TODO clientConnection.updateReducedMarket(marblesGrid);
+        clientConnection.updateReducedMarket(marblesGrid);
     }
 }

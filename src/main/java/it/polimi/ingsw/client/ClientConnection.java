@@ -2,12 +2,26 @@ package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.IO.CLI;
 import it.polimi.ingsw.client.IO.ClientInputParser;
+import it.polimi.ingsw.controller.client.reducedModel.ReducedDashboard;
+import it.polimi.ingsw.controller.client.reducedModel.ReducedGame;
+import it.polimi.ingsw.controller.client.reducedModel.ReducedGameBoard;
+import it.polimi.ingsw.controller.client.reducedModel.ReducedPlayer;
+import it.polimi.ingsw.model.Resource;
+import it.polimi.ingsw.model.cards.Card;
+import it.polimi.ingsw.model.cards.DevelopmentCard;
+import it.polimi.ingsw.model.cards.LeaderCard;
+import it.polimi.ingsw.model.marbles.Marble;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.ClientMessage;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.lobbyMessage.lobby.RegisterName;
 import it.polimi.ingsw.server.lobby.messages.serverMessages.ServerMessage;
+import it.polimi.ingsw.utils.Pair;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Stack;
 
 public class ClientConnection implements Runnable {
     private String playerNickname;
@@ -144,4 +158,77 @@ public class ClientConnection implements Runnable {
         }).start();
     }
 
+
+    public void updateReducedGame(String firstPlayer, String currentPlayer, List<String> playersNicknames) {
+        ReducedGame reducedGame = cli.getReducedModel().getReducedGame();
+        reducedGame.setFirstPlayer(firstPlayer);
+        reducedGame.setCurrentPlayer(currentPlayer);
+        reducedGame.updatePlayers(playersNicknames);
+    }
+
+    public void updateReducedDashboard(String nickname, int playerPoints, List<LeaderCard> playedLeaderCards, List<Stack<DevelopmentCard>> playedDevelopmentCards, ArrayList<Resource> supply) {
+        ReducedGame reducedGame = cli.getReducedModel().getReducedGame();
+        if (!reducedGame.getPlayers().containsKey(nickname)) {
+            reducedGame.createPlayer(nickname);
+        }
+        ReducedDashboard reducedDashboard = reducedGame.getPlayers().get(nickname).getDashboard();
+        reducedDashboard.setPlayerPoints(playerPoints);
+        reducedDashboard.setPlayedLeaderCards(playedLeaderCards);
+        reducedDashboard.setPlayedDevelopmentCards(playedDevelopmentCards);
+        reducedDashboard.setSupply(supply);
+    }
+
+    public void updateReducedDVGrid(List<Stack<DevelopmentCard>> grid) {
+        cli.getReducedModel().getReducedGameBoard().setGrid(grid);
+    }
+
+    public void updateReducedGameBoard(List<LeaderCard> leaderCardDeck, List<DevelopmentCard> developmentCardDeck, List<Card> discardDeck) {
+        ReducedGameBoard reducedGameBoard = cli.getReducedModel().getReducedGameBoard();
+        reducedGameBoard.setLeaderCardDeck(leaderCardDeck);
+        reducedGameBoard.setDevelopmentCardDeck(developmentCardDeck);
+        reducedGameBoard.setDiscardDeck(discardDeck);
+    }
+
+    public void updateReducedMarket(Marble[] marblesGrid) {
+        cli.getReducedModel().getReducedGameBoard().setMarblesGrid(marblesGrid);
+    }
+
+    public void updateReducedPlayer(String nickname, List<LeaderCard> hand, int handSize) {
+        ReducedGame reducedGame = cli.getReducedModel().getReducedGame();
+        if (!reducedGame.getPlayers().containsKey(nickname)) {
+            reducedGame.createPlayer(nickname);
+        }
+        ReducedPlayer reducedPlayer = reducedGame.getPlayers().get(nickname);
+        reducedPlayer.setNickname(nickname);
+        reducedPlayer.setHand(hand);
+        reducedPlayer.setHandSize(handSize);
+    }
+
+    public void updateReducedWarehouse(String nickname, Resource[] deposit, Resource[][] extraDeposits, Map<Resource, Integer> locker) {
+        ReducedGame reducedGame = cli.getReducedModel().getReducedGame();
+        if (!reducedGame.getPlayers().containsKey(nickname)) {
+            reducedGame.createPlayer(nickname);
+        }
+        ReducedDashboard reducedDashboard = reducedGame.getPlayers().get(nickname).getDashboard();
+        reducedDashboard.setDeposit(deposit);
+        reducedDashboard.setExtraDeposits(extraDeposits);
+        reducedDashboard.setLocker(locker);
+    }
+
+    public void updateReducedFaithTrack(String nickname, int position, Map<Pair<Integer, Integer>, Pair<Integer, Integer>> vaticanReports, int[] faithTrackVictoryPoints) {
+        ReducedGame reducedGame = cli.getReducedModel().getReducedGame();
+        if (!reducedGame.getPlayers().containsKey(nickname)) {
+            reducedGame.createPlayer(nickname);
+        }
+        ReducedDashboard reducedDashboard = reducedGame.getPlayers().get(nickname).getDashboard();
+        reducedDashboard.setPosition(position);
+        reducedDashboard.setVaticanReports(vaticanReports);
+        reducedDashboard.setFaithTrackVictoryPoints(faithTrackVictoryPoints);
+    }
+
+    public void updateGameInfo(String gameID, int numberOfPlayers) {
+        ReducedGame reducedGame = cli.getReducedModel().getReducedGame();
+        reducedGame.setGameId(gameID);
+        reducedGame.setNumberOfPlayers(numberOfPlayers);
+    }
 }

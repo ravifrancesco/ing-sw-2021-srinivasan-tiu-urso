@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.server.lobby.messages.serverMessages.ServerMessage;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,14 +25,19 @@ public class PlayerUpdateMessage implements ServerMessage, Serializable {
      */
     public PlayerUpdateMessage(Player player) {
         this.nickname = player.getNickname();
-        this.hand = player.getHand();
+        if (this.nickname.equals(player.getNickname())) {
+            this.hand = player.getHand();
+        }
+        else {
+            this.hand = new ArrayList<>();
+        }
         this.handSize = player.getHandSize();
     }
 
     @Override
     public void updateClient(ClientConnection clientConnection, String nickname) {
-        // TODO clientConnection.updateReducedPlayer(nickname, hand);
-        clientConnection.cli.printMessage(this.nickname);
-        hand.forEach(card -> clientConnection.cli.printMessage(card.toString()));
+        clientConnection.updateReducedPlayer(nickname, hand, handSize);
+        //clientConnection.cli.printMessage(this.nickname);
+        //hand.forEach(card -> clientConnection.cli.printMessage(card.toString()));
     }
 }

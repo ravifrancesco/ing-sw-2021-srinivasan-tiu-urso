@@ -84,4 +84,12 @@ public class ReducedGame {
     public void setTurnPhase(TurnPhase turnPhase) {
         this.turnPhase = turnPhase;
     }
+
+    public void updatePlayers(List<String> playersNicknames) {
+        playersNicknames.forEach(nickname -> this.players.putIfAbsent(nickname, new ReducedPlayer()));
+    }
+
+    public void createPlayer(String playerNickname) {
+        players.putIfAbsent(playerNickname, new ReducedPlayer());
+    }
 }

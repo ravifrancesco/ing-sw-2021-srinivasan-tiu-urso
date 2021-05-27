@@ -27,6 +27,6 @@ public class DevelopmentCardGridUpdateMessage implements ServerMessage, Serializ
 
     @Override
     public void updateClient(ClientConnection clientConnection, String nickname) {
-        // TODO clientConnection.updateReducedDVGrid(grid);
+        clientConnection.updateReducedDVGrid(grid);
     }
 }

@@ -36,6 +36,6 @@ public class DashboardUpdateMessage implements ServerMessage, Serializable {
 
     @Override
     public void updateClient(ClientConnection clientConnection, String nickname) {
-        // TODO clientConnection.updateReducedDashboard(playerPoints, playedLeaderCards, playedDevelopmentCards, supply);
+        clientConnection.updateReducedDashboard(nickname, playerPoints, playedLeaderCards, playedDevelopmentCards, supply);
     }
 }
