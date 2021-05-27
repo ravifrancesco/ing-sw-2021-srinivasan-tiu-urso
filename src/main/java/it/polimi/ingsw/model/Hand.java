@@ -3,6 +3,7 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.cards.LeaderCard;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class represents the player's hand.
@@ -43,8 +44,7 @@ public class Hand {
 	 * @return	the card that was removed.
 	 */
 	public LeaderCard removeCard(int c) {
-		LeaderCard removed = cards.remove(c);
-		return removed;
+		return cards.remove(c);
 	}
 
 	/**
@@ -64,5 +64,9 @@ public class Hand {
 	 */
 	public int getHandSize() {
 		return cards.size();
+	}
+
+	public List<LeaderCard> getAllCards() {
+		return cards;
 	}
 }

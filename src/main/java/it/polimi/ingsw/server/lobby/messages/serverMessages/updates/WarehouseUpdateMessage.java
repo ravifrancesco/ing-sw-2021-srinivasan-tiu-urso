@@ -29,6 +29,6 @@ public class WarehouseUpdateMessage implements ServerMessage, Serializable {
 
     @Override
     public void updateClient(ClientConnection clientConnection, String nickname) {
-
+        // TODO clientConnection.updateReducedWarehouse(deposit, extraDeposits, locker);
     }
 }

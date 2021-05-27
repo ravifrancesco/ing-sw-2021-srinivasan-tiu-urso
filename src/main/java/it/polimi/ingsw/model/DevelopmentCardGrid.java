@@ -147,4 +147,8 @@ public class DevelopmentCardGrid extends DevelopmentCardGridObservable {
 
 		return contResources>=resourceCost.size();
 	}
+
+	public List<Stack<DevelopmentCard>> getGrid() {
+		return grid;
+	}
 }

@@ -566,6 +566,8 @@ public class Dashboard extends DashboardObservable {
 		notify(this);
 	}
 
+	// TODO doc
+
 	public Warehouse getWarehouse() {
 		return warehouse;
 	}
@@ -576,5 +578,13 @@ public class Dashboard extends DashboardObservable {
 
 	public ArrayList<Resource> getSupply() {
 		return supply;
+	}
+
+	public List<LeaderCard> getPlayedLeaderCards() {
+		return playedLeaderCards;
+	}
+
+	public List<Stack<DevelopmentCard>> getPlayedDevelopmentCards() {
+		return playedDevelopmentCards;
 	}
 }

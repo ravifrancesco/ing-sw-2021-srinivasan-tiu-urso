@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.specialAbilities.ProductionPower;
 import it.polimi.ingsw.model.specialAbilities.SpecialAbilityType;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * The class represents a deck of cards.
@@ -97,6 +98,10 @@ public class Deck {
 		deck.stream().map(card -> (LeaderCard) card).filter(card -> card.getSpecialAbility().getType()== SpecialAbilityType.PRODUCTION_POWER)
 				.map(card -> (ProductionPower) card.getSpecialAbility())
 				.forEach(ProductionPower::reset);
+	}
+
+	public ArrayList<Card> toList() {
+		return new ArrayList<>(deck);
 	}
 
 }
