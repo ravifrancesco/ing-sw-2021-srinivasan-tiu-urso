@@ -23,7 +23,6 @@ public class ClientConnection implements Runnable {
 
     private Socket socket;
 
-
     public ClientConnection(String ip, int port, CLI cli) {
         this.ip = ip;
         this.port = port;
@@ -33,6 +32,7 @@ public class ClientConnection implements Runnable {
 
     public void setPlayerNickname(String playerNickname) {
         this.playerNickname = playerNickname;
+        this.cli.getReducedModel().setNickname(playerNickname);
     }
 
     public void connectToServer() throws IOException {
@@ -69,12 +69,6 @@ public class ClientConnection implements Runnable {
 
     public ServerMessage receiveServerMessage() throws IOException, ClassNotFoundException {
         return (ServerMessage) inputStream.readObject();
-    }
-
-    public void nicknameRegister(String playerNickname, ObjectInputStream input) throws IOException, ClassNotFoundException {
-        send(new RegisterName(playerNickname));
-        ServerMessage serverMessage = (ServerMessage) input.readObject();
-
     }
 
     public void nameRegistered() {

@@ -11,22 +11,77 @@ public class ReducedGame {
 
     private String gameId;
 
-    private final int numberOfPlayers;
+    private int numberOfPlayers;
 
     private String clientPlayer;
 
     private String currentPlayer;
     private String firstPlayer;
 
-    private Map<String, ReducedGame> players;
+    private Map<String, ReducedPlayer> players;
 
     private TurnPhase turnPhase;
 
-    public ReducedGame(String gameId, int numberOfPlayers, String clientPlayer) {
-        this.gameId = gameId;
-        this.numberOfPlayers = numberOfPlayers;
-        this.clientPlayer = clientPlayer;
+    public ReducedGame() {
+        this.gameId = "";
+        this.numberOfPlayers = 0;
+        this.clientPlayer = "";
         this.players = new HashMap<>();
     }
 
+    public String getGameId() {
+        return gameId;
+    }
+
+    public void setGameId(String gameId) {
+        this.gameId = gameId;
+    }
+
+    public int getNumberOfPlayers() {
+        return numberOfPlayers;
+    }
+
+    public void setNumberOfPlayers(int numberOfPlayers) {
+        this.numberOfPlayers = numberOfPlayers;
+    }
+
+    public String getClientPlayer() {
+        return clientPlayer;
+    }
+
+    public void setClientPlayer(String clientPlayer) {
+        this.clientPlayer = clientPlayer;
+    }
+
+    public String getCurrentPlayer() {
+        return currentPlayer;
+    }
+
+    public void setCurrentPlayer(String currentPlayer) {
+        this.currentPlayer = currentPlayer;
+    }
+
+    public String getFirstPlayer() {
+        return firstPlayer;
+    }
+
+    public void setFirstPlayer(String firstPlayer) {
+        this.firstPlayer = firstPlayer;
+    }
+
+    public Map<String, ReducedPlayer> getPlayers() {
+        return players;
+    }
+
+    public void setPlayers(Map<String, ReducedPlayer> players) {
+        this.players = players;
+    }
+
+    public TurnPhase getTurnPhase() {
+        return turnPhase;
+    }
+
+    public void setTurnPhase(TurnPhase turnPhase) {
+        this.turnPhase = turnPhase;
+    }
 }

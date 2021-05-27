@@ -17,6 +17,7 @@ public class CLI implements UI {
 
     public CLI() {
         this.input = new Scanner(System.in);
+        this.reducedModel = new ReducedModel();
     }
 
     public String getIp() {
@@ -31,6 +32,10 @@ public class CLI implements UI {
         int port = input.nextInt();
         input.nextLine();
         return port;
+    }
+
+    public ReducedModel getReducedModel() {
+        return reducedModel;
     }
 
     public String readCommand() {

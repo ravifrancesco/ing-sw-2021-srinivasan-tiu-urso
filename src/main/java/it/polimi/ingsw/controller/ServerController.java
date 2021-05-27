@@ -115,7 +115,7 @@ public class ServerController {
         players.forEach(p -> p.getDashboard().getFaithTrack().addObserver(c));
         players.forEach(p -> p.getDashboard().getWarehouse().addObserver(c));
 
-        Player currentPlayer = players.stream().filter(p -> p.getNickname().equals(c.getNickname())).findFirst().get();
+        Player currentPlayer = game.getPlayers().get(c.getNickname());
         connectedPlayers.values().stream().filter(connection -> !connection.getNickname().equals(currentPlayer.getNickname()))
                 .forEach(connection -> { currentPlayer.addObserver(connection); currentPlayer.getDashboard().addObserver(connection);
                 currentPlayer.getDashboard().getFaithTrack().addObserver(connection);
@@ -147,7 +147,7 @@ public class ServerController {
         players.forEach(p -> p.getDashboard().getFaithTrack().removeObserver(c));
         players.forEach(p -> p.getDashboard().getWarehouse().removeObserver(c));
 
-        Player currentPlayer = players.stream().filter(p -> p.getNickname().equals(c.getNickname())).findFirst().get();
+        Player currentPlayer = game.getPlayers().get(c.getNickname());
         connectedPlayers.values().stream().filter(connection -> !connection.getNickname().equals(currentPlayer.getNickname()))
                 .forEach(connection -> { currentPlayer.removeObserver(connection); currentPlayer.getDashboard().removeObserver(connection);
                     currentPlayer.getDashboard().getFaithTrack().removeObserver(connection);

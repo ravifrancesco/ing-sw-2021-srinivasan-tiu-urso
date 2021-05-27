@@ -86,7 +86,7 @@ public class Connection implements Runnable,
     private void closeConnection() {
         try{
             socket.close();
-        }catch (IOException e){
+        } catch (IOException e){
             System.err.println(e.getMessage());
         }
         active = false;
@@ -155,7 +155,15 @@ public class Connection implements Runnable,
                 read = receiveLobbyMessage();
                 System.out.println("Received main lobby message by " + nickname + ": " + read.toString());
                 currentLobby.handleMessage(read, this);
-                send(new CorrectHandlingMessage());
+                if (currentLobby.getType() == LobbyType.GAME_LOBBY) {
+                    GameLobby gameLobby = (GameLobby) currentLobby;
+                    send(new GameInfoMessage(gameLobby.getId(), gameLobby.getMaxPlayers()));
+                }
+                else
+                {
+                    send(new CorrectHandlingMessage());
+                }
+
                 // } catch (ClassNotFoundException | ClassCastException | IllegalArgumentException | InvalidNameException | IllegalStateException e) {
             } catch (Exception e) {
                 System.out.println(e.getMessage());
