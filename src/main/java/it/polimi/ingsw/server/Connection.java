@@ -216,7 +216,7 @@ public class Connection implements Runnable,
 
     @Override
     public void update(Player message) {
-        send(new PlayerUpdateMessage(message, nickname));
+        send(new PlayerUpdateMessage(message));
     }
 
     @Override

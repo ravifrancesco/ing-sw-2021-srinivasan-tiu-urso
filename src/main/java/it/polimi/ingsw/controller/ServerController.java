@@ -94,7 +94,7 @@ public class ServerController {
      *
      * @param c observer
      */
-    public void addObservers(Connection c) {
+    public void addObservers(Connection c, Map<String, Connection> connectedPlayers) {
 
         game.addObserver(c);
         game.getGameError().addObserver(c);
@@ -104,12 +104,22 @@ public class ServerController {
         gameBoard.getMarket().addObserver(c);
         gameBoard.getDevelopmentCardGrid().addObserver(c);
 
+        updatePlayerObservers(c, connectedPlayers);
+    }
+
+    //TODO doc
+    public void updatePlayerObservers(Connection c, Map<String, Connection> connectedPlayers) {
         List<Player> players = new ArrayList<>(game.getPlayers().values());
         players.forEach(p -> p.addObserver(c));
         players.forEach(p -> p.getDashboard().addObserver(c));
         players.forEach(p -> p.getDashboard().getFaithTrack().addObserver(c));
         players.forEach(p -> p.getDashboard().getWarehouse().addObserver(c));
 
+        Player currentPlayer = players.stream().filter(p -> p.getNickname().equals(c.getNickname())).findFirst().get();
+        connectedPlayers.values().stream().filter(connection -> !connection.getNickname().equals(currentPlayer.getNickname()))
+                .forEach(connection -> { currentPlayer.addObserver(connection); currentPlayer.getDashboard().addObserver(connection);
+                currentPlayer.getDashboard().getFaithTrack().addObserver(connection);
+                currentPlayer.getDashboard().getWarehouse().addObserver(connection);} );
     }
 
     /**
@@ -117,7 +127,7 @@ public class ServerController {
      *
      * @param c observer
      */
-    public void removeObservers(Connection c) {
+    public void removeObservers(Connection c, Map<String, Connection> connectedPlayers) {
 
         game.removeObserver(c);
 
@@ -126,12 +136,22 @@ public class ServerController {
         gameBoard.getMarket().removeObserver(c);
         gameBoard.getDevelopmentCardGrid().removeObserver(c);
 
+        removePlayerObservers(c, connectedPlayers);
+    }
+
+    //TODO doc
+    public void removePlayerObservers(Connection c, Map<String, Connection> connectedPlayers) {
         List<Player> players = new ArrayList<>(game.getPlayers().values());
         players.forEach(p -> p.removeObserver(c));
         players.forEach(p -> p.getDashboard().removeObserver(c));
         players.forEach(p -> p.getDashboard().getFaithTrack().removeObserver(c));
         players.forEach(p -> p.getDashboard().getWarehouse().removeObserver(c));
 
+        Player currentPlayer = players.stream().filter(p -> p.getNickname().equals(c.getNickname())).findFirst().get();
+        connectedPlayers.values().stream().filter(connection -> !connection.getNickname().equals(currentPlayer.getNickname()))
+                .forEach(connection -> { currentPlayer.removeObserver(connection); currentPlayer.getDashboard().removeObserver(connection);
+                    currentPlayer.getDashboard().getFaithTrack().removeObserver(connection);
+                    currentPlayer.getDashboard().getWarehouse().removeObserver(connection);} );
     }
 
     /**

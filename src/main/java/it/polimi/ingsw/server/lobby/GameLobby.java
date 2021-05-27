@@ -71,7 +71,7 @@ public class GameLobby implements Lobby, Serializable {
         connectedPlayers.put(c.getNickname(), c);
 
         c.enterLobby(this);
-        serverController.addObservers(c);
+        serverController.addObservers(c, connectedPlayers);
         if(connectedPlayers.size() == maxPlayers) {
             System.out.println("Starting game..");
             serverController.startGame();
@@ -81,8 +81,8 @@ public class GameLobby implements Lobby, Serializable {
     public synchronized void leaveLobby(Connection c) {
         if (connectedPlayers.containsValue(c)) {
             try {
+                serverController.removeObservers(c, connectedPlayers);
                 connectedPlayers.remove(c.getNickname());
-                serverController.removeObservers(c);
                 serverController.leaveGame(c.getNickname());
             } catch (InvalidNameException e) {
                 throw new IllegalStateException();
@@ -95,54 +95,53 @@ public class GameLobby implements Lobby, Serializable {
         serverController.loadGameSettings(gameSettings);
     }
 
-    public void discardExcessLeaderCards(String nickname, int cardIndex) throws WrongTurnException, WrongMoveException, CardNotPlayableException {
+    public void discardExcessLeaderCards(String nickname, int cardIndex) {
         serverController.discardExcessLeaderCards(nickname, cardIndex);
     }
-    public void getInitialResources(String nickname, Resource resource, int position) throws WrongTurnException, WrongMoveException, DepositCellNotEmpty, IllegalDepositStateException {
+    public void getInitialResources(String nickname, Resource resource, int position) {
         serverController.getInitialResources(nickname, resource, position);
     }
 
-    public void playLeaderCard(String nickname, int cardToPlay) throws WrongTurnException, CardNotPlayableException {
+    public void playLeaderCard(String nickname, int cardToPlay) {
         serverController.playLeaderCard(nickname, cardToPlay);
     }
 
     public void activateLeaderCardProductionPower(String nickname, int cardToActivate, ResourceContainer resourcesToPayCost,
-                                             Map<Resource, Integer> resourceRequiredOptional, Map<Resource, Integer> resourceProducedOptional) throws WrongTurnException, WrongMoveException, PowerNotActivatableException {
+                                             Map<Resource, Integer> resourceRequiredOptional, Map<Resource, Integer> resourceProducedOptional) {
         serverController.activateLeaderCardProductionPower(nickname, cardToActivate, resourcesToPayCost, resourceRequiredOptional, resourceProducedOptional);
     }
 
     public void activateDashboardProductionPower(String nickname, ResourceContainer resourcesToPayCost,
-                                            Map<Resource, Integer> resourceRequiredOptional, Map<Resource, Integer> resourceProducedOptional) throws WrongTurnException, WrongMoveException, PowerNotActivatableException {
+                                            Map<Resource, Integer> resourceRequiredOptional, Map<Resource, Integer> resourceProducedOptional) {
         serverController.activateDashboardProductionPower(nickname, resourcesToPayCost, resourceRequiredOptional, resourceProducedOptional);
     }
 
     public void activateDevelopmentCardProductionPower(String nickname, int cardToActivate, ResourceContainer resourcesToPayCost,
-                                                       Map<Resource, Integer> resourceRequiredOptional, Map<Resource, Integer> resourceProducedOptional) throws WrongTurnException, WrongMoveException, PowerNotActivatableException {
+                                                       Map<Resource, Integer> resourceRequiredOptional, Map<Resource, Integer> resourceProducedOptional) {
         serverController.activateDevelopmentCardProductionPower(nickname, cardToActivate, resourcesToPayCost, resourceRequiredOptional, resourceProducedOptional);
     }
 
-    public void getFromMarket(String nickname, int move, ArrayList<WhiteMarbleResource> wmrs) throws WrongMoveException, WrongTurnException {
+    public void getFromMarket(String nickname, int move, ArrayList<WhiteMarbleResource> wmrs) {
         serverController.getFromMarket(nickname, move, wmrs);
     }
 
-    public void storeFromSupply(String nickname, int from, int to) throws WrongMoveException, WrongTurnException, IllegalDepositStateException {
+    public void storeFromSupply(String nickname, int from, int to) {
         serverController.storeFromSupply(nickname, from, to);
     }
 
-    public void storeFromSupplyInExtraDeposit(String nickname, int leaderCardPos, int from, int to) throws WrongMoveException, WrongTurnException, IllegalDepositStateException {
+    public void storeFromSupplyInExtraDeposit(String nickname, int leaderCardPos, int from, int to) {
         serverController.storeFromSupplyInExtraDeposit(nickname, leaderCardPos, from, to);
     }
 
-    public void discardLeaderCard(String nickname, int cardToDiscard) throws CardNotPlayableException, WrongTurnException {
+    public void discardLeaderCard(String nickname, int cardToDiscard) {
         serverController.discardLeaderCard(nickname, cardToDiscard);
     }
 
-    public void endTurn(String nickname) throws WrongMoveException, WrongTurnException, LeaderCardInExcessException {
+    public void endTurn(String nickname) {
         serverController.endTurn(nickname);
     }
 
-    public void buyDevelopmentCard(String nickname, int row, int column, ResourceContainer resourcesToPayCost, int position)
-            throws WrongTurnException, CardNotBuyableException, CardNotPlayableException, WrongMoveException {
+    public void buyDevelopmentCard(String nickname, int row, int column, ResourceContainer resourcesToPayCost, int position) {
         serverController.buyDevelopmentCard(nickname, row, column, resourcesToPayCost, position);
     }
 
@@ -158,11 +157,4 @@ public class GameLobby implements Lobby, Serializable {
         return LobbyType.GAME_LOBBY;
     }
 
-
-    /**
-     * SHOWDEVELOPMENTCARDS
-     * //////
-     * INSERT BUYCARD
-     * "
-     */
 }

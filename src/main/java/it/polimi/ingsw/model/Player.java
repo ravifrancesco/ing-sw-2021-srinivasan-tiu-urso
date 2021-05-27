@@ -256,4 +256,8 @@ public class Player extends PlayerObservable {
 	public List<LeaderCard> getHand() {
 		return hand.getAllCards();
 	}
+
+	public String getNickname() {
+		return nickname;
+	}
 }

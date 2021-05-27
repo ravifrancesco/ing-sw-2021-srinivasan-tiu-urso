@@ -22,8 +22,8 @@ public class PlayerUpdateMessage implements ServerMessage, Serializable {
      *
      * @param player player for the update.
      */
-    public PlayerUpdateMessage(Player player, String nickname) {
-        this.nickname = nickname;
+    public PlayerUpdateMessage(Player player) {
+        this.nickname = player.getNickname();
         this.hand = player.getHand();
         this.handSize = player.getHandSize();
     }
