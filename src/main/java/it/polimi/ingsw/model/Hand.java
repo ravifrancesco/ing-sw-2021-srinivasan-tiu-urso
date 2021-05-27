@@ -14,7 +14,7 @@ import java.util.stream.IntStream;
 public class Hand {
 
 	private ArrayList<LeaderCard> cards;
-	public static final int MAX_HAND_SIZE = 5;
+	public static final int MAX_HAND_SIZE = 4;
 
 	private Player player;
 
