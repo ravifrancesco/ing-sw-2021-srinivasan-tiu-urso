@@ -14,6 +14,8 @@ import java.util.ArrayList;
 public class WarehouseController {
     private final Game game;
 
+    private String currentPlayer;
+
     /**
      * Constructor for a Warehouse Controller object.
      * @param game represents the game which the controller belongs to.
@@ -21,6 +23,15 @@ public class WarehouseController {
 
     public WarehouseController(Game game) {
         this.game = game;
+    }
+
+    /**
+     * Setter for the current player.
+     * @param currentPlayer the current player of the game.
+     */
+
+    public void setCurrentPlayer(String currentPlayer) {
+        this.currentPlayer = currentPlayer;
     }
 
     /**
@@ -105,5 +116,8 @@ public class WarehouseController {
         } catch (IllegalStateException e) {
             throw new IllegalDepositStateException("Invalid deposit state");
         }
+    }
+    public String getCurrentPlayer() {
+        return currentPlayer;
     }
 }

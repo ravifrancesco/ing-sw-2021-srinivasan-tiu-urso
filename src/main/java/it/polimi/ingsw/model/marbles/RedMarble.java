@@ -3,7 +3,9 @@ package it.polimi.ingsw.model.marbles;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Resource;
 
-public class RedMarble implements Marble {
+import java.io.Serializable;
+
+public class RedMarble implements Marble, Serializable {
     /**
      * @param p
      * @see Marble#getResource(Player)

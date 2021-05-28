@@ -76,7 +76,16 @@ public class ServerController {
         } else if (game.getPlayers().containsKey(nickname)) {
             throw new InvalidNameException("Nickname " + nickname + " is already in use");
         } else {
-            game.addPlayer(nickname, new Player(gameSettings));
+            game.addPlayer(nickname, new Player(gameSettings, nickname));
+        }
+    }
+
+    public void leaveGame(String nickname) throws InvalidNameException {
+        if (!game.getPlayers().containsKey(nickname)) {
+            throw new InvalidNameException("Nickname " + nickname + " is not a part of the game");
+        } else {
+            // TODO reconnection?
+            game.removePlayer(nickname);
         }
     }
 
@@ -85,7 +94,7 @@ public class ServerController {
      *
      * @param c observer
      */
-    public void addObservers(Connection c) {
+    public void addObservers(Connection c, Map<String, Connection> connectedPlayers) {
 
         game.addObserver(c);
         game.getGameError().addObserver(c);
@@ -95,12 +104,22 @@ public class ServerController {
         gameBoard.getMarket().addObserver(c);
         gameBoard.getDevelopmentCardGrid().addObserver(c);
 
+        updatePlayerObservers(c, connectedPlayers);
+    }
+
+    //TODO doc
+    public void updatePlayerObservers(Connection c, Map<String, Connection> connectedPlayers) {
         List<Player> players = new ArrayList<>(game.getPlayers().values());
         players.forEach(p -> p.addObserver(c));
         players.forEach(p -> p.getDashboard().addObserver(c));
         players.forEach(p -> p.getDashboard().getFaithTrack().addObserver(c));
         players.forEach(p -> p.getDashboard().getWarehouse().addObserver(c));
 
+        Player currentPlayer = game.getPlayers().get(c.getNickname());
+        connectedPlayers.values().stream().filter(connection -> !connection.getNickname().equals(currentPlayer.getNickname()))
+                .forEach(connection -> { currentPlayer.addObserver(connection); currentPlayer.getDashboard().addObserver(connection);
+                currentPlayer.getDashboard().getFaithTrack().addObserver(connection);
+                currentPlayer.getDashboard().getWarehouse().addObserver(connection);} );
     }
 
     /**
@@ -108,7 +127,7 @@ public class ServerController {
      *
      * @param c observer
      */
-    public void removeObservers(Connection c) {
+    public void removeObservers(Connection c, Map<String, Connection> connectedPlayers) {
 
         game.removeObserver(c);
 
@@ -117,12 +136,22 @@ public class ServerController {
         gameBoard.getMarket().removeObserver(c);
         gameBoard.getDevelopmentCardGrid().removeObserver(c);
 
+        removePlayerObservers(c, connectedPlayers);
+    }
+
+    //TODO doc
+    public void removePlayerObservers(Connection c, Map<String, Connection> connectedPlayers) {
         List<Player> players = new ArrayList<>(game.getPlayers().values());
         players.forEach(p -> p.removeObserver(c));
         players.forEach(p -> p.getDashboard().removeObserver(c));
         players.forEach(p -> p.getDashboard().getFaithTrack().removeObserver(c));
         players.forEach(p -> p.getDashboard().getWarehouse().removeObserver(c));
 
+        Player currentPlayer = game.getPlayers().get(c.getNickname());
+        connectedPlayers.values().stream().filter(connection -> !connection.getNickname().equals(currentPlayer.getNickname()))
+                .forEach(connection -> { currentPlayer.removeObserver(connection); currentPlayer.getDashboard().removeObserver(connection);
+                    currentPlayer.getDashboard().getFaithTrack().removeObserver(connection);
+                    currentPlayer.getDashboard().getWarehouse().removeObserver(connection);} );
     }
 
     /**
@@ -138,9 +167,11 @@ public class ServerController {
      * TODO
      */
     public void startGame() {
-      game.startUniquePhase(TurnPhase.FIRST_TURN);
-      game.changePlayer();
-      game.setFirstPlayer(game.getCurrentPlayer());
+        game.reset();
+        game.startUniquePhase(TurnPhase.FIRST_TURN);
+        game.changePlayer();
+        game.setFirstPlayer(game.getCurrentPlayer());
+        game.distributeCards();
     }
 
     /**
@@ -273,6 +304,8 @@ public class ServerController {
         try {
             marketController.getFromMarket(nickname, move, wmrs);
         } catch (WrongTurnException | WrongMoveException e) {
+            System.out.println("errore: ");
+            System.out.println(e.getMessage());
             game.setError(e, nickname);
         }
     }
@@ -397,7 +430,7 @@ public class ServerController {
 
         if(player.getDashboard().checkGameEnd() && game.getTurnPhase() != TurnPhase.ENDGAME) {
             game.startUniquePhase(TurnPhase.ENDGAME);
-        } else if(firstTurns < game.getNumberOfPlayers()) {
+        } else if(firstTurns < game.getNumberOfPlayers()-1) {
             dashboard.moveFaithMarker(firstTurns < 2 ? 0 : 1);
             firstTurns += 1;
             game.startUniquePhase(TurnPhase.FIRST_TURN);
@@ -416,6 +449,10 @@ public class ServerController {
      */
     public Game getGameStatus() {
         return game.getGameStatus();
+    }
+
+    public String getCurrentPlayer() {
+        return game.getCurrentPlayer();
     }
 
 }

@@ -107,4 +107,18 @@ public class VaticanReport implements Serializable {
         return result;
 
     }
+
+    //TODO doc
+
+    public int getStart() {
+        return start;
+    }
+
+    public int getEnd() {
+        return end;
+    }
+
+    public int getVictoryPoints() {
+        return victoryPoints;
+    }
 }

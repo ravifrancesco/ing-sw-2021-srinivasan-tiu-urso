@@ -2,10 +2,7 @@ package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.observerPattern.observers.*;
-import it.polimi.ingsw.server.lobby.GameLobby;
-import it.polimi.ingsw.server.lobby.Lobby;
-import it.polimi.ingsw.server.lobby.LobbyType;
-import it.polimi.ingsw.server.lobby.MainLobby;
+import it.polimi.ingsw.server.lobby.*;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.ClientGameMessage;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.lobbyMessage.ClientLobbyMessage;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.lobbyMessage.lobby.RegisterName;
@@ -18,9 +15,12 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.net.SocketException;
+import java.util.ArrayList;
 
 /**
  * TODO doc
+ * TODO check synchronized methods (send/close)
  */
 public class Connection implements Runnable,
         FaithTrackObserver, WarehouseObserver, DashboardObserver,
@@ -35,6 +35,11 @@ public class Connection implements Runnable,
     private String nickname;
 
     private final MainLobby mainLobby;
+
+    public MainLobby getMainLobby() {
+        return mainLobby;
+    }
+
     private Lobby currentLobby;
 
     private boolean active = true;
@@ -46,6 +51,10 @@ public class Connection implements Runnable,
         this.currentLobby = mainLobby;
     }
 
+    public Lobby getCurrentLobby() {
+        return currentLobby;
+    }
+
     public synchronized void enterLobby(Lobby lobby) {
         this.currentLobby = lobby;
     }
@@ -54,7 +63,7 @@ public class Connection implements Runnable,
         return active;
     }
 
-    private synchronized void send(ServerMessage message){
+    private synchronized void send(ServerMessage message) {
 
         try {
             out.writeObject(message);
@@ -74,29 +83,33 @@ public class Connection implements Runnable,
         return (ClientLobbyMessage) in.readObject();
     }
 
-    private synchronized void closeConnection() {
+    private void closeConnection() {
         try{
             socket.close();
-        }catch (IOException e){
+        } catch (IOException e){
             System.err.println(e.getMessage());
         }
         active = false;
     }
 
     private void deregisterConnection() {
-
         if (currentLobby.getType() == LobbyType.GAME_LOBBY) {
-            ((GameLobby) currentLobby).leaveLobby(this);
+            GameLobby gameLobby = (GameLobby) currentLobby;
+            gameLobby.leaveLobby(this);
+            if (gameLobby.getConnectedPlayers().size() == 0) {
+                mainLobby.removeGameLobby(gameLobby);
+            }
         }
         mainLobby.deregisterConnection(this);
-
     }
 
-    public void close() {
-        closeConnection();
-        System.out.println("Deregistering client...");
-        deregisterConnection();
-        System.out.println("Done!");
+    public synchronized void close() {
+        if (active) {
+            closeConnection();
+            System.out.println("Deregistering client " + nickname + "..");
+            deregisterConnection();
+            System.out.println("Deregistration complete");
+        }
     }
 
     @Override
@@ -109,11 +122,15 @@ public class Connection implements Runnable,
             while(isActive()){
                 handleMessage();
             }
-        } catch(IOException e) {
-            System.err.println(e.getMessage());
+        } catch (Exception e) {
+            //System.out.println("solo questo");
         } finally {
             close();
         }
+    }
+
+    public void quit() throws IOException {
+        throw new IOException();
     }
 
     public void registerName() throws IOException {
@@ -131,26 +148,49 @@ public class Connection implements Runnable,
         }
     }
 
-    public void handleMessage() throws IOException {
+    public void handleMessage() {
         if (currentLobby.getType() == LobbyType.MAIN_LOBBY) {
             ClientLobbyMessage read;
             try {
                 read = receiveLobbyMessage();
+                System.out.println("Received main lobby message by " + nickname + ": " + read.toString());
                 currentLobby.handleMessage(read, this);
-                send(new SuccessfulConnectionMessage(((GameLobby)currentLobby).getId()));
-            } catch (ClassNotFoundException | IllegalArgumentException | InvalidNameException | IllegalStateException e) {
+                if (currentLobby.getType() == LobbyType.GAME_LOBBY) {
+                    GameLobby gameLobby = (GameLobby) currentLobby;
+                    send(new GameInfoMessage(gameLobby.getId(), gameLobby.getMaxPlayers()));
+                }
+                else
+                {
+                    send(new CorrectHandlingMessage());
+                }
+
+                // } catch (ClassNotFoundException | ClassCastException | IllegalArgumentException | InvalidNameException | IllegalStateException e) {
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                //e.printStackTrace();
                 send(new ErrorMessage());
             }
         } else {
             ClientGameMessage read;
             try {
                 read = receiveGameMessage();
+                System.out.println("Received game lobby message by " + nickname + ": " + read.toString());
                 currentLobby.handleMessage(read, this);
-            } catch (ClassNotFoundException | InvalidNameException e) {
+                // ClassNotFoundException | InvalidNameException
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                //e.printStackTrace();
                 send(new ErrorMessage());
             }
         }
+    }
 
+    public void sendGameLobbiesDetails() {
+        ArrayList<GameLobbyDetails> gameLobbies = new ArrayList<>();
+        mainLobby.getActiveGameLobbies().forEach(gameLobby -> gameLobbies.add(new GameLobbyDetails(gameLobby.getId(),
+                        gameLobby.getCreator(), gameLobby.getConnectedPlayers().size(), gameLobby.getMaxPlayers()))
+                );
+        send(new GameLobbiesMessage(gameLobbies));
     }
 
     public String getNickname() {
@@ -162,7 +202,7 @@ public class Connection implements Runnable,
     }
 
     /**
-     *  TODO all of this methods and mesages should handle only the necessary information. To be defined after client.
+     *  TODO all of this methods and messages should handle only the necessary information. To be defined after client.
      *  TODO, this will be done changing the messages.
      *  TODO the notifies have to be handled. (Together)
      */

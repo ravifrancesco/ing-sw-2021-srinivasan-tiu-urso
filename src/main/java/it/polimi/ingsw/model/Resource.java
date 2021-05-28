@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model;
 
-public enum Resource {
+import java.io.Serializable;
+
+public enum Resource implements Serializable {
 
 	SHIELD,
 

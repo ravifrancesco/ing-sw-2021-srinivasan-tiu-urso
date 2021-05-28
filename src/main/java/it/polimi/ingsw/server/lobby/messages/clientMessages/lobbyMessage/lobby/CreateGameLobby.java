@@ -11,18 +11,16 @@ import java.io.Serializable;
 
 public class CreateGameLobby extends ClientLobbyMessage implements Serializable {
 
-    GameSettings gameSettings;
     int numberOfPlayers;
 
-    public CreateGameLobby(GameSettings gameSettings, int numberOfPlayers) {
-        this.gameSettings = gameSettings;
+    public CreateGameLobby(int numberOfPlayers) {
         this.numberOfPlayers = numberOfPlayers;
     }
 
     @Override
     public void handle(Connection connection, Lobby lobby) {
         try {
-            ((MainLobby) lobby).createGame(connection, gameSettings, numberOfPlayers);
+            ((MainLobby) lobby).createGame(connection, numberOfPlayers);
         } catch (InvalidNameException e) {
             e.printStackTrace();
         }

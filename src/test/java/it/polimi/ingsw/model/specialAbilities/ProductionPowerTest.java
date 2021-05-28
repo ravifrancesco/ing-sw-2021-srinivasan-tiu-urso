@@ -53,10 +53,10 @@ public class ProductionPowerTest {
         resourceRequired.put(Resource.GOLD, 1);
         resourceRequired.put(Resource.STONE, 1);
 
-        ProductionPower p = new ProductionPower(resourceRequired, null,2);
+        ProductionPower p = new ProductionPower(resourceRequired, new HashMap<>(),2);
 
-        String s1 = "SA=PP;RR=STONE:1,GOLD:1;FP=2;";
-        String s2 = "SA=PP;RR=GOLD:1,STONE:1;FP=2;";
+        String s1 = "SA=PP;RR=STONE:1,GOLD:1;RP=;FP=2;";
+        String s2 = "SA=PP;RR=GOLD:1,STONE:1;RP=;FP=2;";
 
         Assert.assertTrue(s1.equals(p.toString()) || s2.equals(p.toString()));
     }
@@ -236,7 +236,7 @@ public class ProductionPowerTest {
     @Test
     public void activateTest() {
         GameSettings gameSettings = buildGameSettings();
-        Player player = new Player(gameSettings);
+        Player player = new Player(gameSettings, "test");
         player.reset();
 
         Map<Resource, Integer> resourceRequired = new HashMap<>();
@@ -274,7 +274,7 @@ public class ProductionPowerTest {
     @Test
     public void activateWithoutFaithPointsTest() {
         GameSettings gameSettings = buildGameSettings();
-        Player player = new Player(gameSettings);
+        Player player = new Player(gameSettings, "test");
         player.reset();
 
         Map<Resource, Integer> resourceRequired = new HashMap<>();
@@ -312,7 +312,7 @@ public class ProductionPowerTest {
     @Test
     public void activateWithoutResourceProducedTest() {
         GameSettings gameSettings = buildGameSettings();
-        Player player = new Player(gameSettings);
+        Player player = new Player(gameSettings, "test");
         player.reset();
 
         Map<Resource, Integer> resourceRequired = new HashMap<>();
@@ -348,7 +348,7 @@ public class ProductionPowerTest {
         int thrownExceptions = 0;
 
         GameSettings gameSettings = buildGameSettings();
-        Player player = new Player(gameSettings);
+        Player player = new Player(gameSettings, "test");
         player.reset();
 
         Map<Resource, Integer> resourceRequired = new HashMap<>();
@@ -381,7 +381,7 @@ public class ProductionPowerTest {
     public void doubleActivationTest() {
         int thrownExceptions = 0;
         GameSettings gameSettings = buildGameSettings();
-        Player player = new Player(gameSettings);
+        Player player = new Player(gameSettings, "test");
         player.reset();
 
         Map<Resource, Integer> resourceRequired = new HashMap<>();
@@ -424,7 +424,7 @@ public class ProductionPowerTest {
     @Test
     public void resetTest() {
         GameSettings gameSettings = buildGameSettings();
-        Player player = new Player(gameSettings);
+        Player player = new Player(gameSettings, "test");
         player.reset();
 
         Map<Resource, Integer> resourceRequired = new HashMap<>();

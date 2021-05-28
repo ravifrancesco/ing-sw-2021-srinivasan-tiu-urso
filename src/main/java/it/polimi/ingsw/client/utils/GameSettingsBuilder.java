@@ -1,52 +1,19 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.client.utils;
 
+import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.specialAbilities.*;
-import org.junit.Assert;
-import org.junit.Test;
 
-import javax.management.MBeanServerDelegateMBean;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.IntStream;
 
-public class GameSettingsTest {
+public class GameSettingsBuilder {
 
-    private String path = "testSave.properties";
-
-    // Tests if the game settings file can be saved
-    @Test
-    public void saveGameSettingsTest() {
-
-        GameSettings gameSettings = buildGameSettings();
-
-        gameSettings.saveSettings(path);
-
-        File file = new File(path);
-        Assert.assertTrue(file.exists());
-
-    }
-
-    // checks if loading settings works correctly
-    @Test
-    public void loadGameSettings() {
-
-        GameSettings gameSettings = buildGameSettings();
-
-        gameSettings.saveSettings(path);
-
-        GameSettings loadedGameSettings = new GameSettings(path);
-
-        Assert.assertNotNull(loadedGameSettings);
-
-    }
-
-    // Handles creation of game settings
-    public GameSettings buildGameSettings() {
+    public GameSettings build() {
 
 
         DevelopmentCard[] developmentCards = developmentCardDeckBuilder();
@@ -66,14 +33,12 @@ public class GameSettingsTest {
 
     }
 
-    // Building a deck of 40 cards of two types. Could be changed to include more types of cards, but I don't think
-    // it is necessary
     private DevelopmentCard[] developmentCardDeckBuilder() {
 
-        Banner banner = new Banner(BannerEnum.BLUE, 2);
-
         Map<Resource, Integer> resourceCost = new HashMap<>();
-        resourceCost.put(Resource.SERVANT, 3);
+        resourceCost.put(Resource.SERVANT, 2);
+        resourceCost.put(Resource.GOLD, 1);
+        resourceCost.put(Resource.SHIELD, 1);
 
         Map<Resource, Integer> resourceRequired = new HashMap<>();
         resourceRequired.put(Resource.GOLD, 1);
@@ -81,16 +46,12 @@ public class GameSettingsTest {
 
         Map<Resource, Integer> resourceProduced = new HashMap<>();
         resourceProduced.put(Resource.SHIELD, 1);
-        resourceProduced.put(Resource.ANY, 2);
 
         ProductionPower p = new ProductionPower(resourceRequired, resourceProduced,2);
 
-        Map<Resource, Integer> resourceCostDC = new HashMap<>();
-        resourceCostDC.put(Resource.SERVANT, 3);
-
         return IntStream.range(0, GameSettings.DEVELOPMENT_CARD_NUM)
                 .boxed()
-                .map(i -> new DevelopmentCard(i, 4, resourceCost, p, banner))
+                .map(i -> new DevelopmentCard(i, 4, resourceCost, p, chooseBanner(i)))
                 .toArray(DevelopmentCard[]::new);
 
     }
@@ -134,7 +95,6 @@ public class GameSettingsTest {
 
         Map<Resource, Integer> resourceProduced = new HashMap<>();
         resourceProduced.put(Resource.SHIELD, 1);
-        resourceProduced.put(Resource.ANY, 1);
 
         return new ProductionPower(resourceRequired, resourceProduced,2);
 
@@ -149,7 +109,24 @@ public class GameSettingsTest {
 
         return vaticanReportsList;
 
+
     }
 
-
+    private Banner chooseBanner(int val) {
+        return switch (val % 12) {
+            case 0 -> new Banner(BannerEnum.GREEN, 1);
+            case 1 -> new Banner(BannerEnum.GREEN, 2);
+            case 2 -> new Banner(BannerEnum.GREEN, 3);
+            case 3 -> new Banner(BannerEnum.YELLOW, 1);
+            case 4 -> new Banner(BannerEnum.YELLOW, 2);
+            case 5 -> new Banner(BannerEnum.YELLOW, 3);
+            case 6 -> new Banner(BannerEnum.BLUE, 1);
+            case 7 -> new Banner(BannerEnum.BLUE, 2);
+            case 8 -> new Banner(BannerEnum.BLUE, 3);
+            case 9 -> new Banner(BannerEnum.PURPLE, 1);
+            case 10 -> new Banner(BannerEnum.PURPLE, 2);
+            case 11 -> new Banner(BannerEnum.PURPLE, 3);
+            default -> null;
+        };
+    }
 }

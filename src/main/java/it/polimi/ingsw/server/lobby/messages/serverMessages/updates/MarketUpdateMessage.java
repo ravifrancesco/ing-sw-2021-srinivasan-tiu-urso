@@ -1,26 +1,30 @@
 package it.polimi.ingsw.server.lobby.messages.serverMessages.updates;
 
+import it.polimi.ingsw.client.ClientConnection;
 import it.polimi.ingsw.model.Market;
+import it.polimi.ingsw.model.marbles.Marble;
 import it.polimi.ingsw.server.lobby.messages.serverMessages.ServerMessage;
+
+import java.io.Serializable;
 
 /**
  * Class used to send Market updates to the clients.
  */
-public class MarketUpdateMessage implements ServerMessage {
+public class MarketUpdateMessage implements ServerMessage, Serializable {
 
-    private final Market market;
+    private Marble[] marblesGrid;
 
     /**
      * Constructor.
      *
-     * @param market faithTrack for the update.
+     * @param market for the update.
      */
     public MarketUpdateMessage(Market market) {
-        this.market = market;
+        this.marblesGrid = market.getMarblesGrid();
     }
 
     @Override
-    public void updateClient(Object client, String nickname) {
-        // TODO
+    public void updateClient(ClientConnection clientConnection, String nickname) {
+        clientConnection.updateReducedMarket(marblesGrid);
     }
 }

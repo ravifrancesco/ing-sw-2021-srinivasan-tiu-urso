@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.DefaultSettingsBuilder;
+import it.polimi.ingsw.client.utils.GameSettingsBuilder;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.specialAbilities.*;
@@ -455,5 +457,10 @@ public class GameSettings implements Serializable {
 
     public int getLeaderCardNum() {
         return leaderCardNum;
+    }
+
+    public static GameSettings loadDefaultGameSettings() {
+        DefaultSettingsBuilder defaultSettingsBuilder = new DefaultSettingsBuilder();
+        return defaultSettingsBuilder.getGameSettings();
     }
 }

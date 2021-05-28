@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.lobby.messages.serverMessages.commons;
 
+import it.polimi.ingsw.client.ClientConnection;
 import it.polimi.ingsw.server.lobby.messages.serverMessages.ServerMessage;
 
 import java.io.Serializable;
@@ -12,12 +13,8 @@ public class SuccessfulConnectionMessage implements ServerMessage, Serializable 
         this.id = id;
     }
 
-    public void showMessage() {
-        System.out.println("GAME ID: " + id);
-    }
-
     @Override
-    public void updateClient(Object client, String nickname) {
-        // TODO
+    public void updateClient(ClientConnection clientConnection, String nickname) {
+        clientConnection.cli.printMessage("Successfully connected to the game. Game ID: " + id);
     }
 }

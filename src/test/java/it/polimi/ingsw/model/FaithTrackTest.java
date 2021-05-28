@@ -23,7 +23,9 @@ public class FaithTrackTest {
 
         GameSettings gameSettings = new GameSettings(null, 0, null, null, vaticanReports, faithTrackVictoryPoints);
 
-        FaithTrack faithTrack = new FaithTrack(gameSettings);
+        Player player = new Player(gameSettings, "test");
+
+        FaithTrack faithTrack = new FaithTrack(gameSettings, player.getDashboard());
 
         Assert.assertEquals(0, faithTrack.getVictoryPoints());
         Assert.assertEquals(0, faithTrack.getPosition());
@@ -44,7 +46,9 @@ public class FaithTrackTest {
 
         GameSettings gameSettings = new GameSettings(null, 0, null, null, vaticanReports, faithTrackVictoryPoints);
 
-        FaithTrack faithTrack = new FaithTrack(gameSettings);
+        Player player = new Player(gameSettings, "test");
+
+        FaithTrack faithTrack = new FaithTrack(gameSettings, player.getDashboard());
 
         faithTrack.moveFaithMarker(15);
 
@@ -72,7 +76,9 @@ public class FaithTrackTest {
 
         GameSettings gameSettings = new GameSettings(null, 0, null, null, vaticanReports, faithTrackVictoryPoints);
 
-        FaithTrack faithTrack = new FaithTrack(gameSettings);
+        Player player = new Player(gameSettings, "test");
+
+        FaithTrack faithTrack = new FaithTrack(gameSettings, player.getDashboard());
 
         faithTrack.moveFaithMarker(4);
 
@@ -98,7 +104,9 @@ public class FaithTrackTest {
 
         GameSettings gameSettings = new GameSettings(null, 0, null, null, vaticanReports, faithTrackVictoryPoints);
 
-        FaithTrack faithTrack = new FaithTrack(gameSettings);
+        Player player = new Player(gameSettings, "test");
+
+        FaithTrack faithTrack = new FaithTrack(gameSettings, player.getDashboard());
 
         Assumptions.assumeFalse(faithTrack.getVaticanReports().get(8).isAchieved());
         Assumptions.assumeFalse(faithTrack.getVaticanReports().get(8).isMissed());

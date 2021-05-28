@@ -131,7 +131,7 @@ public class DevelopmentCardTest {
         DevelopmentCard c = new DevelopmentCard(1, 5, resourceCost, p, banner);
 
         GameSettings gameSettings = buildGameSettings();
-        Player player = new Player(gameSettings);
+        Player player = new Player(gameSettings, "test");
         player.reset();
 
         p.setSelectableResource(new HashMap<>(), new HashMap<>());
@@ -175,7 +175,7 @@ public class DevelopmentCardTest {
         DevelopmentCard c = new DevelopmentCard(1, 5, resourceCost, p, banner);
 
         GameSettings gameSettings = buildGameSettings();
-        Player player = new Player(gameSettings);
+        Player player = new Player(gameSettings, "test");
         player.reset();
 
         p.setSelectableResource(new HashMap<>(), new HashMap<>());

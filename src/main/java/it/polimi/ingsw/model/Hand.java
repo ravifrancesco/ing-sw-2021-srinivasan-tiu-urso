@@ -3,6 +3,8 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.cards.LeaderCard;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.IntStream;
 
 /**
  * This class represents the player's hand.
@@ -12,12 +14,16 @@ import java.util.ArrayList;
 public class Hand {
 
 	private ArrayList<LeaderCard> cards;
+	public static final int MAX_HAND_SIZE = 4;
+
+	private Player player;
 
 	/**
 	 * Constructor for the class.
 	 */
-	public Hand() {
+	public Hand(Player player) {
 		this.cards = new ArrayList<>();
+		this.player = player;
 	}
 
 	/**
@@ -43,8 +49,7 @@ public class Hand {
 	 * @return	the card that was removed.
 	 */
 	public LeaderCard removeCard(int c) {
-		LeaderCard removed = cards.remove(c);
-		return removed;
+		return cards.remove(c);
 	}
 
 	/**
@@ -64,5 +69,9 @@ public class Hand {
 	 */
 	public int getHandSize() {
 		return cards.size();
+	}
+
+	public List<LeaderCard> getAllCards() {
+		return cards;
 	}
 }

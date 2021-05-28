@@ -8,7 +8,7 @@ import java.net.Socket;
 
 //  TODO Logger
 public class Server {
-    static final int PORT = 53510;
+    static final int PORT = 3001;
 
     public static final int THREAD_NUMBER = 256;
 

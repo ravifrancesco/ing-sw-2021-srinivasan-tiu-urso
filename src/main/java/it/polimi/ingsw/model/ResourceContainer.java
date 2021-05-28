@@ -7,63 +7,75 @@ import java.util.stream.IntStream;
 
 public class ResourceContainer {
 
-    private ArrayList<Integer> containedDepositResources;
-    private Map<Resource, Integer> containedLockerResources;
-    private Map<Integer, ArrayList<Integer>> containedExtraDepositResources;
+    private ArrayList<Integer> selectedDepositIndexes;
+    private Map<Resource, Integer> selectedLockerResources;
+    private Map<Integer, ArrayList<Integer>> selectedExtraDepositIndexes;
 
     public ResourceContainer() {
-        containedDepositResources = new ArrayList<>();
-        containedLockerResources = new HashMap<>();
-        containedExtraDepositResources = new HashMap<>();
+        selectedDepositIndexes = new ArrayList<>();
+        selectedLockerResources = new HashMap<>();
+        selectedExtraDepositIndexes = new HashMap<>();
         selectedLockerPosInit();
         selectedExtraDepositInit();
     }
 
     public void selectedLockerPosInit() {
-        containedLockerResources.put(Resource.GOLD, 0);
-        containedLockerResources.put(Resource.STONE, 0);
-        containedLockerResources.put(Resource.SERVANT, 0);
-        containedLockerResources.put(Resource.SHIELD, 0);
+        selectedLockerResources.put(Resource.GOLD, 0);
+        selectedLockerResources.put(Resource.STONE, 0);
+        selectedLockerResources.put(Resource.SERVANT, 0);
+        selectedLockerResources.put(Resource.SHIELD, 0);
     }
 
     public void selectedExtraDepositInit() {
         IntStream.range(0, Warehouse.MAX_EXTRA_DEPOSIT_SLOTS).forEach(i ->
-                containedExtraDepositResources.put(i, new ArrayList<>()));
+                selectedExtraDepositIndexes.put(i, new ArrayList<>()));
     }
 
     // TODO during view coding: add checks to never select an empty slot
     public void addDepositSelectedResource(int pos, Warehouse wh) {
-        containedDepositResources.add(pos);
+        if (wh.getDeposit()[pos] != null) {
+            selectedDepositIndexes.add(pos);
+        } else {
+            throw new IllegalArgumentException();
+        }
     }
 
     public void addExtraDepositSelectedResource(int leaderCardPos, int pos, Warehouse wh) {
-        containedExtraDepositResources.get(leaderCardPos).add(pos);
+        if (wh.getExtraDeposits()[leaderCardPos] != null && wh.getExtraDeposits()[leaderCardPos][pos] != null) {
+            selectedExtraDepositIndexes.get(leaderCardPos).add(pos);
+        } else {
+            throw new IllegalArgumentException();
+        }
     }
 
     public void addLockerSelectedResource(Resource r, int qty, Warehouse wh) {
-        containedLockerResources.put(r, qty);
+        if (wh.getLocker().get(r) >= qty) {
+            selectedLockerResources.put(r, qty);
+        } else {
+            throw new IllegalArgumentException();
+        }
     }
 
-    public ArrayList<Integer> getContainedDepositResources() {
-        return containedDepositResources;
+    public ArrayList<Integer> getSelectedDepositIndexes() {
+        return selectedDepositIndexes;
     }
 
-    public Map<Resource, Integer> getContainedLockerResources() {
-        return containedLockerResources;
+    public Map<Resource, Integer> getSelectedLockerResources() {
+        return selectedLockerResources;
     }
 
-    public Map<Integer, ArrayList<Integer>> getContainedExtraDepositResources() {
-        return containedExtraDepositResources;
+    public Map<Integer, ArrayList<Integer>> getSelectedExtraDepositIndexes() {
+        return selectedExtraDepositIndexes;
     }
 
     public Map<Resource, Integer> getAllResources(Warehouse wh) {
-        HashMap<Resource, Integer> res = new HashMap<>(containedLockerResources);
+        HashMap<Resource, Integer> res = new HashMap<>(selectedLockerResources);
 
-        containedDepositResources.stream().filter(i -> wh.getDeposit()[i] != null).forEach(i ->
+        selectedDepositIndexes.stream().filter(i -> wh.getDeposit()[i] != null).forEach(i ->
                 res.put(wh.getDeposit()[i], res.get(wh.getDeposit()[i]) + 1));
 
         IntStream.range(0, Warehouse.MAX_EXTRA_DEPOSIT_SLOTS)
-                .forEach(i -> containedExtraDepositResources.get(i)
+                .forEach(i -> selectedExtraDepositIndexes.get(i)
                         .forEach(j -> res.put(wh.getExtraDeposits()[i][j],
                             res.get(wh.getExtraDeposits()[i][j]) + 1)));
         return res;

@@ -13,7 +13,7 @@ import java.util.stream.IntStream;
 
 import static it.polimi.ingsw.model.DevelopmentCardGrid.*;
 
-public class GameBoardTest {
+public class ReducedGameBoardTest {
 
     @Test
     public void constructorTest() {
@@ -76,7 +76,7 @@ public class GameBoardTest {
         GameBoard gameBoard = new GameBoard();
         gameBoard.reset(gameSettings);
 
-        Player player = new Player(gameSettings);
+        Player player = new Player(gameSettings, "test");
         player.reset();
 
         Deck leaderCardDeck = gameBoard.getLeaderDeck();
@@ -117,7 +117,7 @@ public class GameBoardTest {
         GameSettings gameSettings = buildGameSettings();
         GameBoard gameBoard = new GameBoard();
         gameBoard.reset(gameSettings);
-        Player p = new Player(gameSettings);
+        Player p = new Player(gameSettings, "test");
         Market market = gameBoard.getMarket();
 
         for(int possibleMove = 0; possibleMove < 7; possibleMove++) {

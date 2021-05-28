@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.observerPattern.observables.DashboardObservable;
 import it.polimi.ingsw.model.specialAbilities.*;
 
+import java.lang.reflect.Array;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -46,16 +47,18 @@ public class Dashboard extends DashboardObservable {
 
 	private int playerPoints;
 
+	private Player player;
+
 	/**
 	 * The constructor for a Dashboard object.
 	 *
 	 * @param gameSettings the settings for the current game.
 	 */
-	public Dashboard(GameSettings gameSettings) {
+	public Dashboard(GameSettings gameSettings, Player player) {
 
-		this.warehouse = new Warehouse();
+		this.warehouse = new Warehouse(this);
 
-		this.faithTrack = new FaithTrack(gameSettings);
+		this.faithTrack = new FaithTrack(gameSettings, this);
 
 		this.playedLeaderCards = new ArrayList<>();
 
@@ -65,6 +68,8 @@ public class Dashboard extends DashboardObservable {
 
 		this.dashBoardProductionPower = gameSettings.getDashBoardProductionPower();
 		this.supply = new ArrayList<>();
+
+		this.player = player;
 	}
 
 
@@ -557,13 +562,15 @@ public class Dashboard extends DashboardObservable {
 			notify(this);
 			throw new IllegalArgumentException("Resources do not match the cost");
 		}
-		resToPayWith.getContainedDepositResources().forEach(warehouse::removeFromDeposit);
-		resToPayWith.getContainedLockerResources().forEach(warehouse::removeFromLocker);
+		resToPayWith.getSelectedDepositIndexes().forEach(warehouse::removeFromDeposit);
+		resToPayWith.getSelectedLockerResources().forEach(warehouse::removeFromLocker);
 		IntStream.range(0, 1).forEach(i ->
-				resToPayWith.getContainedExtraDepositResources().get(i).forEach(pos ->
+				resToPayWith.getSelectedExtraDepositIndexes().get(i).forEach(pos ->
 						warehouse.removeFromExtraDeposit(i, pos)));
 		notify(this);
 	}
+
+	// TODO doc
 
 	public Warehouse getWarehouse() {
 		return warehouse;
@@ -571,5 +578,21 @@ public class Dashboard extends DashboardObservable {
 
 	public FaithTrack getFaithTrack() {
 		return faithTrack;
+	}
+
+	public ArrayList<Resource> getSupply() {
+		return supply;
+	}
+
+	public List<LeaderCard> getPlayedLeaderCards() {
+		return playedLeaderCards;
+	}
+
+	public List<Stack<DevelopmentCard>> getPlayedDevelopmentCards() {
+		return playedDevelopmentCards;
+	}
+
+	public Player getPlayer() {
+		return player;
 	}
 }

@@ -80,7 +80,7 @@ public class DevelopmentCardGridTest {
         playerResources.put(Resource.GOLD, 2);
         playerResources.put(Resource.SERVANT, 3);
 
-        Player p = new Player(gameSettings);
+        Player p = new Player(gameSettings, "test");
         p.reset();
 
         DevelopmentCardDiscount discount1 = new DevelopmentCardDiscount(Resource.SHIELD, 1);
@@ -106,7 +106,7 @@ public class DevelopmentCardGridTest {
         Map<Resource, Integer> playerResources = new HashMap<>();
         playerResources.put(Resource.GOLD, 2);
 
-        Player p = new Player(gameSettings);
+        Player p = new Player(gameSettings, "test");
         p.reset();
 
         DevelopmentCardDiscount discount1 = new DevelopmentCardDiscount(Resource.SHIELD, 1);

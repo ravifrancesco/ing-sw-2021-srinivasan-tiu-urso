@@ -20,8 +20,8 @@ public class PlayerTest {
     @BeforeClass
     static public void createPlayer() {
 
-        GameSettings gameSettings = new GameSettingsTest().buildGameSettings();
-        player = new Player(gameSettings);
+        GameSettings gameSettings = new ReducedGameSettingsTest().buildGameSettings();
+        player = new Player(gameSettings, "test");
 
         Assert.assertNotNull(player);
 
