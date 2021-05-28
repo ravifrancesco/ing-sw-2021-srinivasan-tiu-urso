@@ -76,6 +76,7 @@ public class CLI implements UI {
         }
     }
 
+    // TODO are there other things to show?
     public void showPlayerComponent(String objectToShow, String nickname) {
         switch(objectToShow) {
             case "HAND" -> showHand(nickname);
@@ -154,6 +155,7 @@ public class CLI implements UI {
         }
     }
 
+    // TODO are there other things to show (for example, game id and number of players)?
     public void showGlobalComponent(String objectToShow) {
         switch(objectToShow) {
             case "DVGRID" -> showDVGrid();
@@ -179,11 +181,12 @@ public class CLI implements UI {
 
     private void showMarket() {
         ReducedGameBoard reducedGameBoard = reducedModel.getReducedGameBoard();
-        for (int i = 0; i < reducedGameBoard.getMarblesGrid().length; i++) {
-            System.out.print(reducedGameBoard.getMarblesGrid()[i] + " | ");
+        for (int i = 0; i < reducedGameBoard.getMarblesGrid().length-1; i++) {
+            System.out.print(reducedGameBoard.getMarblesGrid()[i].toString() + " | ");
             if ((i+1) % 4 == 0) {
                 System.out.println();
             }
         }
+        System.out.println("FREE MARBLE: " + reducedGameBoard.getMarblesGrid()[reducedGameBoard.getMarblesGrid().length-1].toString());
     }
 }
