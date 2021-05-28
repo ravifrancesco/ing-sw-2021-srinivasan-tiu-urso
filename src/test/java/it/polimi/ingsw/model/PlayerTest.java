@@ -21,7 +21,7 @@ public class PlayerTest {
     static public void createPlayer() {
 
         GameSettings gameSettings = new ReducedGameSettingsTest().buildGameSettings();
-        player = new Player(gameSettings);
+        player = new Player(gameSettings, "test");
 
         Assert.assertNotNull(player);
 

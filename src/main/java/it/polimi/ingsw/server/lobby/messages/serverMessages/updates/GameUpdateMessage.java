@@ -1,6 +1,7 @@
 package it.polimi.ingsw.server.lobby.messages.serverMessages.updates;
 
 import it.polimi.ingsw.client.ClientConnection;
+import it.polimi.ingsw.controller.client.reducedModel.ReducedGame;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.server.lobby.messages.serverMessages.ServerMessage;
@@ -25,6 +26,6 @@ public class GameUpdateMessage implements ServerMessage, Serializable {
 
     @Override
     public void updateClient(ClientConnection clientConnection, String nickname) {
-        clientConnection.cli.printMessage("New player joined, game lobby now contains the following players: " + players);
+        clientConnection.updateReducedGame(firstPlayer, currentPlayer, players);
     }
 }

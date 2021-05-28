@@ -10,6 +10,7 @@ public class RegisteredNameMessage implements ServerMessage, Serializable {
 
     @Override
     public void updateClient(ClientConnection clientConnection, String nickname) {
+        clientConnection.setPlayerNickname(nickname);
         clientConnection.nameRegistered();
         clientConnection.cli.printMessage("Client " + nickname + " registered");
     }

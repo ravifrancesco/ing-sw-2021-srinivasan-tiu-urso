@@ -23,7 +23,10 @@ public class ReducedDashboardTest {
     static public void createDashboard() {
 
         GameSettings gameSettings = new ReducedGameSettingsTest().buildGameSettings();
-        dashboard = new Dashboard(gameSettings);
+
+        Player player = new Player(gameSettings, "test");
+
+        dashboard = player.getDashboard();
 
         Assert.assertNotNull(dashboard);
 

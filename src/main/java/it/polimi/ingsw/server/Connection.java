@@ -15,10 +15,12 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.ArrayList;
 
 /**
  * TODO doc
+ * TODO check synchronized methods (send/close)
  */
 public class Connection implements Runnable,
         FaithTrackObserver, WarehouseObserver, DashboardObserver,
@@ -61,7 +63,7 @@ public class Connection implements Runnable,
         return active;
     }
 
-    private synchronized void send(ServerMessage message){
+    private synchronized void send(ServerMessage message) {
 
         try {
             out.writeObject(message);
@@ -81,10 +83,10 @@ public class Connection implements Runnable,
         return (ClientLobbyMessage) in.readObject();
     }
 
-    private synchronized void closeConnection() {
+    private void closeConnection() {
         try{
             socket.close();
-        }catch (IOException e){
+        } catch (IOException e){
             System.err.println(e.getMessage());
         }
         active = false;
@@ -101,11 +103,13 @@ public class Connection implements Runnable,
         mainLobby.deregisterConnection(this);
     }
 
-    public void close() {
-        closeConnection();
-        System.out.println("Deregistering client " + nickname + "..");
-        deregisterConnection();
-        System.out.println("Deregistration complete");
+    public synchronized void close() {
+        if (active) {
+            closeConnection();
+            System.out.println("Deregistering client " + nickname + "..");
+            deregisterConnection();
+            System.out.println("Deregistration complete");
+        }
     }
 
     @Override
@@ -118,10 +122,9 @@ public class Connection implements Runnable,
             while(isActive()){
                 handleMessage();
             }
-        } catch(Exception e) {
-            System.out.println("solo questo");
+        } catch (Exception e) {
+            //System.out.println("solo questo");
         } finally {
-            System.out.println("3");
             close();
         }
     }
@@ -145,18 +148,26 @@ public class Connection implements Runnable,
         }
     }
 
-    public void handleMessage() throws IOException {
+    public void handleMessage() {
         if (currentLobby.getType() == LobbyType.MAIN_LOBBY) {
             ClientLobbyMessage read;
             try {
                 read = receiveLobbyMessage();
                 System.out.println("Received main lobby message by " + nickname + ": " + read.toString());
                 currentLobby.handleMessage(read, this);
-                send(new CorrectHandlingMessage());
+                if (currentLobby.getType() == LobbyType.GAME_LOBBY) {
+                    GameLobby gameLobby = (GameLobby) currentLobby;
+                    send(new GameInfoMessage(gameLobby.getId(), gameLobby.getMaxPlayers()));
+                }
+                else
+                {
+                    send(new CorrectHandlingMessage());
+                }
+
                 // } catch (ClassNotFoundException | ClassCastException | IllegalArgumentException | InvalidNameException | IllegalStateException e) {
             } catch (Exception e) {
                 System.out.println(e.getMessage());
-                e.printStackTrace();
+                //e.printStackTrace();
                 send(new ErrorMessage());
             }
         } else {
@@ -168,7 +179,7 @@ public class Connection implements Runnable,
                 // ClassNotFoundException | InvalidNameException
             } catch (Exception e) {
                 System.out.println(e.getMessage());
-                e.printStackTrace();
+                //e.printStackTrace();
                 send(new ErrorMessage());
             }
         }
@@ -191,7 +202,7 @@ public class Connection implements Runnable,
     }
 
     /**
-     *  TODO all of this methods and mesages should handle only the necessary information. To be defined after client.
+     *  TODO all of this methods and messages should handle only the necessary information. To be defined after client.
      *  TODO, this will be done changing the messages.
      *  TODO the notifies have to be handled. (Together)
      */

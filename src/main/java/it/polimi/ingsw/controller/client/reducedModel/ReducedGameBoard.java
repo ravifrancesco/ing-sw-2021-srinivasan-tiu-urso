@@ -34,5 +34,43 @@ public class ReducedGameBoard {
         discardDeck = new ArrayList<>();
     }
 
+    public Marble[] getMarblesGrid() {
+        return marblesGrid;
+    }
 
+    public void setMarblesGrid(Marble[] marblesGrid) {
+        this.marblesGrid = marblesGrid;
+    }
+
+    public List<Stack<DevelopmentCard>> getGrid() {
+        return grid;
+    }
+
+    public void setGrid(List<Stack<DevelopmentCard>> grid) {
+        this.grid = grid;
+    }
+
+    public List<LeaderCard> getLeaderCardDeck() {
+        return leaderCardDeck;
+    }
+
+    public void setLeaderCardDeck(List<LeaderCard> leaderCardDeck) {
+        this.leaderCardDeck = leaderCardDeck;
+    }
+
+    public List<DevelopmentCard> getDevelopmentCardDeck() {
+        return developmentCardDeck;
+    }
+
+    public void setDevelopmentCardDeck(List<DevelopmentCard> developmentCardDeck) {
+        this.developmentCardDeck = developmentCardDeck;
+    }
+
+    public List<Card> getDiscardDeck() {
+        return discardDeck;
+    }
+
+    public void setDiscardDeck(List<Card> discardDeck) {
+        this.discardDeck = discardDeck;
+    }
 }

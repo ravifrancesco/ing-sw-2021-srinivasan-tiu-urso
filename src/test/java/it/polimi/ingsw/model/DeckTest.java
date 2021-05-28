@@ -111,7 +111,7 @@ public class DeckTest {
     public void resetProductionPowerDevelopmentCardsTest() {
         DevelopmentCard[] developmentCards = developmentCardDeckBuilder();
         Deck developmentDeck = new Deck();
-        Player player = new Player(buildGameSettings());
+        Player player = new Player(buildGameSettings(), "test");
         player.reset();
 
         developmentDeck.reset(Arrays.asList(developmentCards));
@@ -152,7 +152,7 @@ public class DeckTest {
         int leaderCardNum = 16;
         LeaderCard[] leaderCards = leaderCardDeckBuilder(leaderCardNum);
         Deck leaderDeck = new Deck();
-        Player player = new Player(buildGameSettings());
+        Player player = new Player(buildGameSettings(), "test");
         player.reset();
 
         leaderDeck.reset(Arrays.asList(leaderCards));

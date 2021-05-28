@@ -27,6 +27,8 @@ public class FaithTrack extends FaithTrackObservable {
 
 	private int victoryPoints;
 
+	private Dashboard dashboard;
+
 	/**
 	 * The constructor for a FaithTrack object.
 	 * It initializes the winning points and the user position
@@ -35,12 +37,13 @@ public class FaithTrack extends FaithTrackObservable {
 	 *
 	 * @param gameSettings the settings for the current game.
 	 */
-	public FaithTrack(GameSettings gameSettings) {
+	public FaithTrack(GameSettings gameSettings, Dashboard dashboard) {
 		this.victoryPoints = 0;
 		this.position = 0;
 		this.vaticanReports = gameSettings.getVaticanReports().stream()
 				.collect(Collectors.toMap(v -> v.end, VaticanReport::copy));
 		this.faithTrackVictoryPoints = gameSettings.getFaithTrackVictoryPoints();
+		this.dashboard = dashboard;
 	}
 
 	/**
@@ -110,6 +113,11 @@ public class FaithTrack extends FaithTrackObservable {
 		return victoryPoints;
 	}
 
+	//TODO doc
+	public int[] getFaithTrackVictoryPoints() {
+		return faithTrackVictoryPoints;
+	}
+
 	/**
 	 * Getter for vaticanReports
 	 *
@@ -119,6 +127,7 @@ public class FaithTrack extends FaithTrackObservable {
 		return vaticanReports;
 	}
 
-
-
+	public Dashboard getDashboard() {
+		return dashboard;
+	}
 }

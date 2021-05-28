@@ -34,7 +34,7 @@ public class DevelopmentCardDiscountTest {
         DevelopmentCardDiscount discount = new DevelopmentCardDiscount(Resource.GOLD, 1);
         GameSettings gameSettings = buildGameSettings();
 
-        Player p = new Player(gameSettings);
+        Player p = new Player(gameSettings, "test");
         p.reset();
 
         discount.activate(p);

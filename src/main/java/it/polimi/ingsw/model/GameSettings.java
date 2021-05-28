@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.DefaultSettingsBuilder;
 import it.polimi.ingsw.client.utils.GameSettingsBuilder;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
@@ -458,9 +459,8 @@ public class GameSettings implements Serializable {
         return leaderCardNum;
     }
 
-    public static GameSettings  loadDefaultGameSettings() {
-        // TODO remove hotfix and do
-        GameSettingsBuilder gsb = new GameSettingsBuilder();
-        return gsb.build();
+    public static GameSettings loadDefaultGameSettings() {
+        DefaultSettingsBuilder defaultSettingsBuilder = new DefaultSettingsBuilder();
+        return defaultSettingsBuilder.getGameSettings();
     }
 }

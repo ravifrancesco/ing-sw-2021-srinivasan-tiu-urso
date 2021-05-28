@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.DefaultSettingsBuilder;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -19,8 +20,13 @@ public class ResourceContainerTest {
 
     @Test
     public void everythingTest() {
+        DefaultSettingsBuilder defaultSettingsBuilder = new DefaultSettingsBuilder();
+        GameSettings gameSettings = defaultSettingsBuilder.getGameSettings();
+
+        Player player = new Player(gameSettings, "test");
+
         ResourceContainer rc = new ResourceContainer();
-        Warehouse wh = new Warehouse();
+        Warehouse wh = new Warehouse(player.getDashboard());
         wh.storeInDeposit(Resource.GOLD, 1);
         rc.addDepositSelectedResource(1, wh);
 
@@ -53,7 +59,7 @@ public class ResourceContainerTest {
 
         int thrownExceptions = 0;
 
-        Warehouse newWarehouse = new Warehouse();
+        Warehouse newWarehouse = new Warehouse(player.getDashboard());
         ResourceContainer r_c = new ResourceContainer();
         newWarehouse.storeInDeposit(Resource.STONE, 1);
         newWarehouse.storeInDeposit(Resource.STONE, 2);

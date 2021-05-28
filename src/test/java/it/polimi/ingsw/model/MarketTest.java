@@ -31,7 +31,7 @@ public class MarketTest {
     public void resetTest() {
         setGs();
         Market market = new Market();
-        Player p = new Player(gs);
+        Player p = new Player(gs, "test");
 
         Assert.assertEquals(3, Market.gridRowLength);
         Assert.assertEquals(4, Market.gridColLength);
@@ -55,7 +55,7 @@ public class MarketTest {
     public void getResourcesTest() {
         setGs();
         Market market = new Market();
-        Player p = new Player(gs);
+        Player p = new Player(gs, "test");
 
         market.reset();
 

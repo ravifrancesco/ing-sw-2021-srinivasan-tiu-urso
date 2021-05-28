@@ -29,8 +29,8 @@ public class WhiteMarbleResourceTest {
     @Test
     public void activateTest() {
         setGs();
-        Player p = new Player(gs);
-        Player p2 = new Player(gs);
+        Player p = new Player(gs, "test");
+        Player p2 = new Player(gs, "test");
         SpecialAbility sa = new WhiteMarbleResource(Resource.GOLD);
 
         Assert.assertEquals(p.getNumActiveWMR(), 0);
@@ -48,7 +48,7 @@ public class WhiteMarbleResourceTest {
     @Test
     public void getResTest() {
         setGs();
-        Player p = new Player(gs);
+        Player p = new Player(gs, "test");
         WhiteMarbleResource sa = new WhiteMarbleResource(Resource.GOLD);
         sa.activate(p);
 

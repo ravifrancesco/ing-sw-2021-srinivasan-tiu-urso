@@ -49,7 +49,7 @@ public class Game extends GameObservable {
 		gameBoard.reset(gameSettings);
 		players.values().forEach(Player::reset);
 		this.playerOrder = players.keySet().iterator();
-		players.values().forEach(Player::reset);
+		//players.values().forEach(Player::reset);
 		this.gameEnded = false;
 		notify(this);
 
@@ -107,11 +107,16 @@ public class Game extends GameObservable {
 	}
 
 	public void distributeCards() {
-		IntStream.range(0, 4).forEach(i ->
-				players.values().forEach(p ->
-						p.addCard((LeaderCard) gameBoard.getLeaderDeck().getCard())
-				)
-		);
+		Deck leaderDeck = gameBoard.getLeaderDeck();
+		List<LeaderCard> leaderCards = new ArrayList<>();
+
+		players.forEach((key, value) -> {
+			IntStream.range(0, Hand.MAX_HAND_SIZE)
+					.forEach(i -> leaderCards.add((LeaderCard) leaderDeck.getCard()));
+			value.fillHand(leaderCards);
+			leaderCards.clear();
+		});
+
 
 	}
 

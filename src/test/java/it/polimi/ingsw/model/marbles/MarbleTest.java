@@ -31,7 +31,7 @@ public class MarbleTest {
     public void greyGetResources() {
         setGs();
         Marble a = new GreyMarble();
-        Player p = new Player(gs);
+        Player p = new Player(gs, "test");
 
         Assert.assertEquals(a.getResource(p), Resource.STONE);
     }
@@ -41,7 +41,7 @@ public class MarbleTest {
         setGs();
 
         Marble a = new BlueMarble();
-        Player p = new Player(gs);
+        Player p = new Player(gs, "test");
 
         Assert.assertEquals(a.getResource(p), Resource.SHIELD);
     }
@@ -51,7 +51,7 @@ public class MarbleTest {
         setGs();
 
         Marble a = new YellowMarble();
-        Player p = new Player(gs);
+        Player p = new Player(gs, "test");
 
         Assert.assertEquals(a.getResource(p), Resource.GOLD);
     }
@@ -61,7 +61,7 @@ public class MarbleTest {
         setGs();
 
         Marble a = new PurpleMarble();
-        Player p = new Player(gs);
+        Player p = new Player(gs, "test");
 
         Assert.assertEquals(a.getResource(p), Resource.SERVANT);
     }
@@ -71,7 +71,7 @@ public class MarbleTest {
         setGs();
 
         Marble w = new WhiteMarble();
-        Player p = new Player(gs);
+        Player p = new Player(gs, "test");
 
         // case 1: no WMR
         Assert.assertNull(w.getResource(p));
@@ -93,7 +93,7 @@ public class MarbleTest {
         GameSettings gameSettings = new GameSettings(null, 0, null, null, vaticanReports, faithTrackVictoryPoints);
 
         Marble w = new RedMarble();
-        Player p = new Player(gameSettings);
+        Player p = new Player(gameSettings, "test");
 
         Assert.assertEquals(p.getDashboard().getFaithMarkerPosition(), 0);
 

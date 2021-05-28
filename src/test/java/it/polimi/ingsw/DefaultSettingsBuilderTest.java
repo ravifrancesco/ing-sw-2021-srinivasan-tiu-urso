@@ -7,6 +7,6 @@ public class DefaultSettingsBuilderTest {
     @Test
     public void saveSettingsTest() {
         DefaultSettingsBuilder defaultSettingsBuilder = new DefaultSettingsBuilder();
-        defaultSettingsBuilder.saveSettings("defaultGameSettings.properties");
+        defaultSettingsBuilder.getGameSettings().saveSettings("defaultGameSettings.properties");
     }
 }

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.DefaultSettingsBuilder;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -11,7 +12,13 @@ import java.util.stream.IntStream;
 public class WarehouseTest {
     @Test
     public void WarehouseCreationTest() {
-        Warehouse wh = new Warehouse();
+
+        DefaultSettingsBuilder defaultSettingsBuilder = new DefaultSettingsBuilder();
+        GameSettings gameSettings = defaultSettingsBuilder.getGameSettings();
+
+        Player player = new Player(gameSettings, "test");
+
+        Warehouse wh = new Warehouse(player.getDashboard());
         Assert.assertEquals(wh.getLocker().size(), 4);
         Assert.assertEquals(wh.getDeposit().length, 6);
         Assert.assertEquals(wh.getExtraDeposits().length, 2);
@@ -20,7 +27,12 @@ public class WarehouseTest {
     @Test
     public void storeInDepositTest() {
         int thrownExceptions = 0;
-        Warehouse wh = new Warehouse();
+        DefaultSettingsBuilder defaultSettingsBuilder = new DefaultSettingsBuilder();
+        GameSettings gameSettings = defaultSettingsBuilder.getGameSettings();
+
+        Player player = new Player(gameSettings, "test");
+
+        Warehouse wh = new Warehouse(player.getDashboard());
 
         // SECTION 1: error cases
         // Same resource in two different depots: shelve 1 and 2
@@ -112,7 +124,12 @@ public class WarehouseTest {
 
     @Test
     public void removeFromDepositTest() {
-        Warehouse wh = new Warehouse();
+        DefaultSettingsBuilder defaultSettingsBuilder = new DefaultSettingsBuilder();
+        GameSettings gameSettings = defaultSettingsBuilder.getGameSettings();
+
+        Player player = new Player(gameSettings, "test");
+
+        Warehouse wh = new Warehouse(player.getDashboard());
         // Adding and removing from every position
         wh.storeInDeposit(Resource.STONE, 0);
         wh.removeFromDeposit(0);
@@ -142,7 +159,12 @@ public class WarehouseTest {
 
     @Test
     public void doDepositMoveTest() {
-        Warehouse wh = new Warehouse();
+        DefaultSettingsBuilder defaultSettingsBuilder = new DefaultSettingsBuilder();
+        GameSettings gameSettings = defaultSettingsBuilder.getGameSettings();
+
+        Player player = new Player(gameSettings, "test");
+
+        Warehouse wh = new Warehouse(player.getDashboard());
         // Switch two full positions
         wh.storeInDeposit(Resource.STONE, 0);
         wh.storeInDeposit(Resource.GOLD, 1);
@@ -164,7 +186,12 @@ public class WarehouseTest {
 
     @Test
     public void getDepositResourceQtyTest() {
-        Warehouse wh = new Warehouse();
+        DefaultSettingsBuilder defaultSettingsBuilder = new DefaultSettingsBuilder();
+        GameSettings gameSettings = defaultSettingsBuilder.getGameSettings();
+
+        Player player = new Player(gameSettings, "test");
+
+        Warehouse wh = new Warehouse(player.getDashboard());
         Assert.assertEquals(wh.getDepositResourceQty(), 0);
         wh.storeInDeposit(Resource.STONE, 0);
         Assert.assertEquals(wh.getDepositResourceQty(), 1);
@@ -182,7 +209,12 @@ public class WarehouseTest {
 
     @Test
     public void storeInLockerTest() {
-        Warehouse wh = new Warehouse();
+        DefaultSettingsBuilder defaultSettingsBuilder = new DefaultSettingsBuilder();
+        GameSettings gameSettings = defaultSettingsBuilder.getGameSettings();
+
+        Player player = new Player(gameSettings, "test");
+
+        Warehouse wh = new Warehouse(player.getDashboard());
         int fuckYouJava;
 
         fuckYouJava = wh.getLocker().get(Resource.STONE);
@@ -195,7 +227,12 @@ public class WarehouseTest {
 
     @Test
     public void removeFromLockerTest() {
-        Warehouse wh = new Warehouse();
+        DefaultSettingsBuilder defaultSettingsBuilder = new DefaultSettingsBuilder();
+        GameSettings gameSettings = defaultSettingsBuilder.getGameSettings();
+
+        Player player = new Player(gameSettings, "test");
+
+        Warehouse wh = new Warehouse(player.getDashboard());
         int fuckYouJava;
 
         wh.storeInLocker(Resource.STONE, 3);
@@ -208,7 +245,12 @@ public class WarehouseTest {
 
     @Test
     public void activateExtraDepositTest() {
-        Warehouse wh = new Warehouse();
+        DefaultSettingsBuilder defaultSettingsBuilder = new DefaultSettingsBuilder();
+        GameSettings gameSettings = defaultSettingsBuilder.getGameSettings();
+
+        Player player = new Player(gameSettings, "test");
+
+        Warehouse wh = new Warehouse(player.getDashboard());
         Assert.assertNull(wh.getExtraDeposits()[0]);
         Assert.assertNull(wh.getExtraDeposits()[1]);
         wh.activateExtraDeposit(0);
@@ -224,7 +266,12 @@ public class WarehouseTest {
 
     @Test
     public void storeInExtraDepositTest() {
-        Warehouse wh = new Warehouse();
+        DefaultSettingsBuilder defaultSettingsBuilder = new DefaultSettingsBuilder();
+        GameSettings gameSettings = defaultSettingsBuilder.getGameSettings();
+
+        Player player = new Player(gameSettings, "test");
+
+        Warehouse wh = new Warehouse(player.getDashboard());
         wh.activateExtraDeposit(0);
         wh.storeInExtraDeposit(0, Resource.STONE, 0);
         Assert.assertNull(wh.getExtraDeposits()[1]);
@@ -253,7 +300,12 @@ public class WarehouseTest {
 
     @Test
     public void swapExtraDepositTest() {
-        Warehouse wh = new Warehouse();
+        DefaultSettingsBuilder defaultSettingsBuilder = new DefaultSettingsBuilder();
+        GameSettings gameSettings = defaultSettingsBuilder.getGameSettings();
+
+        Player player = new Player(gameSettings, "test");
+
+        Warehouse wh = new Warehouse(player.getDashboard());
 
         wh.activateExtraDeposit(0);
         wh.storeInExtraDeposit(0, Resource.STONE, 0);
@@ -269,7 +321,12 @@ public class WarehouseTest {
 
     @Test
     public void doExtraDepositMoveTest() {
-        Warehouse wh = new Warehouse();
+        DefaultSettingsBuilder defaultSettingsBuilder = new DefaultSettingsBuilder();
+        GameSettings gameSettings = defaultSettingsBuilder.getGameSettings();
+
+        Player player = new Player(gameSettings, "test");
+
+        Warehouse wh = new Warehouse(player.getDashboard());
 
 
         wh.activateExtraDeposit(0);
@@ -300,7 +357,12 @@ public class WarehouseTest {
 
     @Test
     public void removeFromExtraDepositTest() {
-        Warehouse wh = new Warehouse();
+        DefaultSettingsBuilder defaultSettingsBuilder = new DefaultSettingsBuilder();
+        GameSettings gameSettings = defaultSettingsBuilder.getGameSettings();
+
+        Player player = new Player(gameSettings, "test");
+
+        Warehouse wh = new Warehouse(player.getDashboard());
 
         wh.activateExtraDeposit(0);
         wh.storeInExtraDeposit(0, Resource.STONE, 0);
@@ -314,7 +376,12 @@ public class WarehouseTest {
 
     @Test
     public void getAllResourcesTest() {
-        Warehouse wh = new Warehouse();
+        DefaultSettingsBuilder defaultSettingsBuilder = new DefaultSettingsBuilder();
+        GameSettings gameSettings = defaultSettingsBuilder.getGameSettings();
+
+        Player player = new Player(gameSettings, "test");
+
+        Warehouse wh = new Warehouse(player.getDashboard());
 
 
         // case 1: no extraDeposits
@@ -367,7 +434,12 @@ public class WarehouseTest {
 
     @Test
     public void changeDeposit() {
-        Warehouse wh = new Warehouse();
+        DefaultSettingsBuilder defaultSettingsBuilder = new DefaultSettingsBuilder();
+        GameSettings gameSettings = defaultSettingsBuilder.getGameSettings();
+
+        Player player = new Player(gameSettings, "test");
+
+        Warehouse wh = new Warehouse(player.getDashboard());
         Resource[] newDeposit = new Resource[6];
 
         wh.storeInDeposit(Resource.STONE, 1);
@@ -387,7 +459,12 @@ public class WarehouseTest {
 
     @Test
     public void changeDepositExtraDepositTest() {
-        Warehouse wh = new Warehouse();
+        DefaultSettingsBuilder defaultSettingsBuilder = new DefaultSettingsBuilder();
+        GameSettings gameSettings = defaultSettingsBuilder.getGameSettings();
+
+        Player player = new Player(gameSettings, "test");
+
+        Warehouse wh = new Warehouse(player.getDashboard());
         wh.storeInDeposit(Resource.STONE, 3);
         wh.storeInDeposit(Resource.STONE, 4);
         wh.activateExtraDeposit(0);

@@ -9,18 +9,46 @@ import java.util.List;
 
 public class ReducedPlayer {
 
-    private final String nickname;
+    private String nickname;
 
     // Hand
     private List<LeaderCard> hand;
+    private int handSize;
 
     // Dashboard
     private final ReducedDashboard dashboard;
 
-    public ReducedPlayer(String nickname) {
-        this.nickname = nickname;
+    public ReducedPlayer() {
+        this.nickname = "";
         this.hand = new ArrayList<>();
         this.dashboard = new ReducedDashboard();
     }
 
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public List<LeaderCard> getHand() {
+        return hand;
+    }
+
+    public void setHand(List<LeaderCard> hand) {
+        this.hand = hand;
+    }
+
+    public int getHandSize() {
+        return handSize;
+    }
+
+    public void setHandSize(int handSize) {
+        this.handSize = handSize;
+    }
+
+    public ReducedDashboard getDashboard() {
+        return dashboard;
+    }
 }

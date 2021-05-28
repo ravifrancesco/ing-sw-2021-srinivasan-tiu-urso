@@ -13,6 +13,7 @@ import java.util.Map;
  */
 public class WarehouseUpdateMessage implements ServerMessage, Serializable {
 
+    private String playerNickname;
     private final Resource[] deposit;
     private final Resource[][] extraDeposits;
     private final Map<Resource, Integer> locker;
@@ -22,6 +23,7 @@ public class WarehouseUpdateMessage implements ServerMessage, Serializable {
      * @param warehouse warehouse for the update.
      */
     public WarehouseUpdateMessage(Warehouse warehouse) {
+        this.playerNickname = warehouse.getDashboard().getPlayer().getNickname();
         this.deposit = warehouse.getDeposit();
         this.extraDeposits = warehouse.getExtraDeposits();
         this.locker = warehouse.getLocker();
@@ -29,6 +31,6 @@ public class WarehouseUpdateMessage implements ServerMessage, Serializable {
 
     @Override
     public void updateClient(ClientConnection clientConnection, String nickname) {
-
+        clientConnection.updateReducedWarehouse(playerNickname, deposit, extraDeposits, locker);
     }
 }
