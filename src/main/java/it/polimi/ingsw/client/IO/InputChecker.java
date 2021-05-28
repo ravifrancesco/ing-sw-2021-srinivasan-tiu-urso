@@ -5,6 +5,8 @@ import it.polimi.ingsw.server.lobby.messages.clientMessages.lobbyMessage.lobby.*
 
 public class InputChecker {
 
+    // Message
+
     public static ClientMessage createGame(String[] input) {
         try {
             int numberOfPlayers = Integer.parseInt(input[1]);
