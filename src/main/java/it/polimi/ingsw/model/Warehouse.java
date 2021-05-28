@@ -332,6 +332,10 @@ public class Warehouse extends WarehouseObservable {
 	public Resource[][] getExtraDeposits() {
 		return extraDeposits;
 	}
+
+	public Dashboard getDashboard() {
+		return dashboard;
+	}
 }
 
 

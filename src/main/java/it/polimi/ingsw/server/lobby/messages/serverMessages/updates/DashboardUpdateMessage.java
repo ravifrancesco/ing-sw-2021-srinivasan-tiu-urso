@@ -17,6 +17,7 @@ import java.util.Stack;
  */
 public class DashboardUpdateMessage implements ServerMessage, Serializable {
 
+    private String playerNickname;
     private int playerPoints;
     private final List<LeaderCard> playedLeaderCards;
     private final List<Stack<DevelopmentCard>> playedDevelopmentCards;
@@ -28,6 +29,7 @@ public class DashboardUpdateMessage implements ServerMessage, Serializable {
      * @param dashboard dashboard for the update.
      */
     public DashboardUpdateMessage(Dashboard dashboard) {
+        this.playerNickname = dashboard.getPlayer().getNickname();
         this.playerPoints = dashboard.getPlayerPoints();
         this.playedLeaderCards = dashboard.getPlayedLeaderCards();
         this.playedDevelopmentCards = dashboard.getPlayedDevelopmentCards();
@@ -36,6 +38,6 @@ public class DashboardUpdateMessage implements ServerMessage, Serializable {
 
     @Override
     public void updateClient(ClientConnection clientConnection, String nickname) {
-        clientConnection.updateReducedDashboard(nickname, playerPoints, playedLeaderCards, playedDevelopmentCards, supply);
+        clientConnection.updateReducedDashboard(playerNickname, playerPoints, playedLeaderCards, playedDevelopmentCards, supply);
     }
 }

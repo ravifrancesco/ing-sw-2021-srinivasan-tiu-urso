@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class PlayerUpdateMessage implements ServerMessage, Serializable {
 
-    private final String nickname;
+    private final String playerNickname;
     private List<LeaderCard> hand;
     private int handSize;
 
@@ -24,20 +24,16 @@ public class PlayerUpdateMessage implements ServerMessage, Serializable {
      * @param player player for the update.
      */
     public PlayerUpdateMessage(Player player) {
-        this.nickname = player.getNickname();
-        if (this.nickname.equals(player.getNickname())) {
-            this.hand = player.getHand();
-        }
-        else {
-            this.hand = new ArrayList<>();
-        }
+        this.playerNickname = player.getNickname();
+        this.hand = player.getHand();
         this.handSize = player.getHandSize();
     }
 
     @Override
     public void updateClient(ClientConnection clientConnection, String nickname) {
-        clientConnection.updateReducedPlayer(nickname, hand, handSize);
-        //clientConnection.cli.printMessage(this.nickname);
-        //hand.forEach(card -> clientConnection.cli.printMessage(card.toString()));
+        if (!playerNickname.equals(nickname)) {
+            hand.clear();
+        }
+        clientConnection.updateReducedPlayer(this.playerNickname, hand, handSize);
     }
 }

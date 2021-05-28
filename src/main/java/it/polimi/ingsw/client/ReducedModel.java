@@ -24,6 +24,10 @@ public class ReducedModel {
         return reducedPlayer;
     }
 
+    public void setReducedPlayer(ReducedPlayer reducedPlayer) {
+        this.reducedPlayer = reducedPlayer;
+    }
+
     public ReducedGameBoard getReducedGameBoard() {
         return reducedGameBoard;
     }
@@ -31,5 +35,6 @@ public class ReducedModel {
     public void setNickname(String nickname) {
         reducedPlayer.setNickname(nickname);
         reducedGame.setClientPlayer(nickname);
+        reducedGame.createPlayer(reducedPlayer); // TODO is there a better way to do this?
     }
 }

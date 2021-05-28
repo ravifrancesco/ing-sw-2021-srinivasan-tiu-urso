@@ -591,4 +591,8 @@ public class Dashboard extends DashboardObservable {
 	public List<Stack<DevelopmentCard>> getPlayedDevelopmentCards() {
 		return playedDevelopmentCards;
 	}
+
+	public Player getPlayer() {
+		return player;
+	}
 }

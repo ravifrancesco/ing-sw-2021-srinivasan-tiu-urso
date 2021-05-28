@@ -92,4 +92,8 @@ public class ReducedGame {
     public void createPlayer(String playerNickname) {
         players.putIfAbsent(playerNickname, new ReducedPlayer());
     }
+
+    public void createPlayer(ReducedPlayer reducedPlayer) {
+        players.put(reducedPlayer.getNickname(), reducedPlayer);
+    }
 }

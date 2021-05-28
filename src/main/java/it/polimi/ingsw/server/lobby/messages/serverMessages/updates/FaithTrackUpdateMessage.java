@@ -14,6 +14,7 @@ import java.util.Map;
  */
 public class FaithTrackUpdateMessage implements ServerMessage, Serializable {
 
+    private String playerNickname;
     private final int position;
     private Map<Pair<Integer, Integer>, Pair<Integer, Integer>> vaticanReports; // TODO how should this be?
     private int[] faithTrackVictoryPoints;
@@ -23,6 +24,7 @@ public class FaithTrackUpdateMessage implements ServerMessage, Serializable {
      * @param faithTrack faithTrack for the update.
      */
     public FaithTrackUpdateMessage(FaithTrack faithTrack) {
+        this.playerNickname = faithTrack.getDashboard().getPlayer().getNickname();
         this.position = faithTrack.getPosition();
         this.vaticanReports = new HashMap<>();
         faithTrack.getVaticanReports().forEach((key, value) -> vaticanReports.put(new Pair<>(key, value.getVictoryPoints()), new Pair<>(value.getStart(), value.getEnd())));
@@ -31,6 +33,6 @@ public class FaithTrackUpdateMessage implements ServerMessage, Serializable {
 
     @Override
     public void updateClient(ClientConnection clientConnection, String nickname) {
-        clientConnection.updateReducedFaithTrack(nickname, position, vaticanReports, faithTrackVictoryPoints);
+        clientConnection.updateReducedFaithTrack(playerNickname, position, vaticanReports, faithTrackVictoryPoints);
     }
 }

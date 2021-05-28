@@ -127,6 +127,7 @@ public class FaithTrack extends FaithTrackObservable {
 		return vaticanReports;
 	}
 
-
-
+	public Dashboard getDashboard() {
+		return dashboard;
+	}
 }
