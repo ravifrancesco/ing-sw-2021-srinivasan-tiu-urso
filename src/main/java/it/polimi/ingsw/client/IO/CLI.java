@@ -2,18 +2,23 @@ package it.polimi.ingsw.client.IO;
 
 import it.polimi.ingsw.client.ReducedModel;
 import it.polimi.ingsw.client.UI;
+import it.polimi.ingsw.controller.client.reducedModel.ReducedDashboard;
+import it.polimi.ingsw.controller.client.reducedModel.ReducedGameBoard;
+import it.polimi.ingsw.controller.client.reducedModel.ReducedPlayer;
+import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.server.lobby.GameLobbyDetails;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
+import java.util.stream.IntStream;
 
 public class CLI implements UI {
 
     private Scanner input;
 
     private ReducedModel reducedModel;
-    private String ip;
-    private int port;
 
     public CLI() {
         this.input = new Scanner(System.in);
@@ -69,9 +74,116 @@ public class CLI implements UI {
         } else {
             System.out.println("No game lobbies found");
         }
-
-
     }
 
+    public void showPlayerComponent(String objectToShow, String nickname) {
+        switch(objectToShow) {
+            case "HAND" -> showHand(nickname);
+            case "DASHBOARD" -> showDashboard(nickname);
+            case "FAITHTRACK" -> showFaithTrack(nickname);
+            case "WAREHOUSE" -> showWarehouse(nickname);
+            default -> System.out.println("Invalid command");
+        }
+    }
 
+    public void showHand(String nickname) {
+        ReducedPlayer reducedPlayer = reducedModel.getReducedGame().getPlayers().get(nickname);
+        if (reducedPlayer != null) {
+            System.out.println(nickname + "'s HAND: ");
+            List<LeaderCard> leaderCardList = reducedPlayer.getHand();
+            if (leaderCardList.size() != 0) {
+                leaderCardList.forEach(card -> System.out.println(card.toString()));
+            } else
+            {
+                System.out.println(reducedPlayer.getHandSize() + " cards");
+            }
+        } else {
+            System.out.println("PLAYER " + nickname + "DOESN'T EXISTS");
+        }
+    }
+
+    private void showDashboard(String nickname) {
+        ReducedPlayer reducedPlayer = reducedModel.getReducedGame().getPlayers().get(nickname);
+        if (reducedPlayer != null) {
+            System.out.println(nickname + "'s DASHBOARD: ");
+            ReducedDashboard reducedDashboard = reducedPlayer.getDashboard();
+            System.out.println(nickname + "'s victory points = " + reducedDashboard.getPlayerPoints());
+            System.out.println(nickname + "'s played leader cards:");
+            reducedDashboard.getPlayedLeaderCards().forEach(leaderCard -> System.out.println(leaderCard.toString()));
+            System.out.print(nickname + "'s played development cards:");
+            reducedDashboard.getPlayedDevelopmentCards().stream().map(stack -> stack.isEmpty() ? " | " : stack.peek().toString() + " | ").forEach(System.out::print);
+            System.out.println();
+            //TODO print supply
+        } else {
+            System.out.println("PLAYER " + nickname + "DOESN'T EXISTS");
+        }
+    }
+
+    private void showFaithTrack(String nickname) {
+        ReducedPlayer reducedPlayer = reducedModel.getReducedGame().getPlayers().get(nickname);
+        if (reducedPlayer != null) {
+            System.out.println(nickname + "'s FAITHTRACK: ");
+            ReducedDashboard reducedDashboard = reducedPlayer.getDashboard();
+            int position = reducedDashboard.getPosition();
+            IntStream.range(0, reducedDashboard.getFaithTrackVictoryPoints().length)
+                    .forEach(pos -> System.out.print(pos==position ? " x " : " o "));
+            System.out.println();
+            // TODO print victory points and vatican reports
+        } else {
+            System.out.println("PLAYER " + nickname + "DOESN'T EXISTS");
+        }
+    }
+
+    private void showWarehouse(String nickname) {
+        ReducedPlayer reducedPlayer = reducedModel.getReducedGame().getPlayers().get(nickname);
+        if (reducedPlayer != null) {
+            ReducedDashboard reducedDashboard = reducedPlayer.getDashboard();
+            System.out.println("DEPOSIT:");
+            for (int i=0; i<reducedDashboard.getDeposit().length; i++) {
+                System.out.print(reducedDashboard.getDeposit()[i] == null ? " EMPTY " : reducedDashboard.getDeposit()[i]);
+                if (i == 0 || i == 2) {
+                    System.out.println();
+                }
+            }
+            System.out.println("\nLOCKER:");
+            reducedDashboard.getLocker().entrySet().forEach(entry -> System.out.println("RESOURCE = " + entry.getKey() + " | QUANTITY = " + entry.getValue()));
+            // TODO print extradeposit
+        } else
+        {
+            System.out.println("PLAYER " + nickname + "DOESN'T EXISTS");
+        }
+    }
+
+    public void showGlobalComponent(String objectToShow) {
+        switch(objectToShow) {
+            case "DVGRID" -> showDVGrid();
+            case "GAMEBOARD" -> showGameBoard();
+            case "MARKET" -> showMarket();
+            default -> System.out.println("Invalid command");
+        }
+    }
+
+    private void showDVGrid() {
+        ReducedGameBoard reducedGameBoard = reducedModel.getReducedGameBoard();
+        for (int i = 0; i < reducedGameBoard.getGrid().size(); i++) {
+            System.out.print(reducedGameBoard.getGrid().get(i).isEmpty() ? " | " : reducedGameBoard.getGrid().get(i).peek().toString() + " | ");
+            if ((i+1) % 4 == 0) {
+                System.out.println();
+            }
+        }
+    }
+
+    private void showGameBoard() {
+        // TODO
+    }
+
+    private void showMarket() {
+        ReducedGameBoard reducedGameBoard = reducedModel.getReducedGameBoard();
+        for (int i = 0; i < reducedGameBoard.getMarblesGrid().length; i++) {
+            System.out.print(reducedGameBoard.getMarblesGrid()[i] + " | ");
+            if ((i+1) % 4 == 0) {
+                System.out.println();
+            }
+        }
+    }
 }

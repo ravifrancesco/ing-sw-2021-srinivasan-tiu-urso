@@ -137,14 +137,25 @@ public class ClientConnection implements Runnable {
         new Thread(() -> {
             while(true) {
                 String command = cli.readCommand();
-                ClientMessage clientMessage = ClientInputParser.parseInput(command);
-                if (clientMessage == null) {
-                    cli.printErrorMessage("Invalid command");
-                } else {
-                    try {
-                        send(clientMessage);
-                    } catch (Exception e) {
-                        System.out.println(e.getMessage());
+                String[] commandArray = command.split(" ");
+                if (commandArray[0].equalsIgnoreCase("SHOW")) {
+                    if (commandArray.length == 3) {
+                        cli.showPlayerComponent(command.split(" ")[1], command.split(" ")[2]);
+                    }
+                    else if (commandArray.length == 2) {
+                        cli.showGlobalComponent(commandArray[1]);
+                    }
+                }
+                else {
+                    ClientMessage clientMessage = ClientInputParser.parseInput(command);
+                    if (clientMessage == null) {
+                        cli.printErrorMessage("Invalid command");
+                    } else {
+                        try {
+                            send(clientMessage);
+                        } catch (Exception e) {
+                            System.out.println(e.getMessage());
+                        }
                     }
                 }
                 // TODO ugly asf, need to find a way to show the "enter command" after server answers
