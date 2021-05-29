@@ -121,6 +121,7 @@ public class Connection implements Runnable,
             registerName();
             while(isActive()){
                 handleMessage();
+                System.out.println(isActive());
             }
         } catch (Exception e) {
             //System.out.println("solo questo");

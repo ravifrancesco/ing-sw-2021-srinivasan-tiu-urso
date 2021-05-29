@@ -1,7 +1,7 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.IO.CLI;
-import it.polimi.ingsw.client.IO.ClientInputParser;
+import it.polimi.ingsw.client.IO.ClientMessageInputParser;
 import it.polimi.ingsw.controller.client.reducedModel.ReducedDashboard;
 import it.polimi.ingsw.controller.client.reducedModel.ReducedGame;
 import it.polimi.ingsw.controller.client.reducedModel.ReducedGameBoard;
@@ -50,7 +50,7 @@ public class ClientConnection implements Runnable {
     }
 
     public void connectToServer() throws IOException {
-        System.out.println("Connection at " + ip + " on port " + port);
+        cli.printMessage("Connection at " + ip + " on port " + port);
         try {
             socket = new Socket(ip, port);
         } catch (IOException e) {
@@ -118,11 +118,11 @@ public class ClientConnection implements Runnable {
             while(true) {
                 try {
                     ServerMessage serverMessage = receiveServerMessage();
-                    System.out.println("Received server message: " + serverMessage.toString());
+                    cli.printMessage("Received server message: " + serverMessage.toString());
                     serverMessage.updateClient(this, playerNickname);
 
                 } catch (ClassNotFoundException | IOException e) {
-                    System.out.println("Connection with server lost");
+                    cli.printErrorMessage("Connection with server lost");
                     e.printStackTrace();
                     break;
                 }
@@ -137,25 +137,12 @@ public class ClientConnection implements Runnable {
         new Thread(() -> {
             while(true) {
                 String command = cli.readCommand();
-                String[] commandArray = command.split(" ");
-                if (commandArray[0].equalsIgnoreCase("SHOW")) {
-                    if (commandArray.length == 3) {
-                        cli.showPlayerComponent(command.split(" ")[1], command.split(" ")[2]);
-                    }
-                    else if (commandArray.length == 2) {
-                        cli.showGlobalComponent(commandArray[1]);
-                    }
-                }
-                else {
-                    ClientMessage clientMessage = ClientInputParser.parseInput(command);
-                    if (clientMessage == null) {
-                        cli.printErrorMessage("Invalid command");
-                    } else {
-                        try {
-                            send(clientMessage);
-                        } catch (Exception e) {
-                            System.out.println(e.getMessage());
-                        }
+                ClientMessage clientMessage = ClientMessageInputParser.parseInput(command, cli);
+                if (clientMessage != null) {
+                    try {
+                        send(clientMessage);
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
                     }
                 }
                 // TODO ugly asf, need to find a way to show the "enter command" after server answers

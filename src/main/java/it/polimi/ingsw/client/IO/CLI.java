@@ -72,18 +72,7 @@ public class CLI implements UI {
                                     "         PLAYERS: " +
                                     gameLobbyDetails.connectedPlayers + "/" + gameLobbyDetails.maxPlayers));
         } else {
-            System.out.println("No game lobbies found");
-        }
-    }
-
-    // TODO are there other things to show?
-    public void showPlayerComponent(String objectToShow, String nickname) {
-        switch(objectToShow) {
-            case "HAND" -> showHand(nickname);
-            case "DASHBOARD" -> showDashboard(nickname);
-            case "FAITHTRACK" -> showFaithTrack(nickname);
-            case "WAREHOUSE" -> showWarehouse(nickname);
-            default -> System.out.println("Invalid command");
+            printErrorMessage("No game lobbies found");
         }
     }
 
@@ -99,11 +88,11 @@ public class CLI implements UI {
                 System.out.println(reducedPlayer.getHandSize() + " cards");
             }
         } else {
-            System.out.println("PLAYER " + nickname + "DOESN'T EXISTS");
+            printErrorMessage("PLAYER " + nickname + "DOESN'T EXISTS");
         }
     }
 
-    private void showDashboard(String nickname) {
+    public void showDashboard(String nickname) {
         ReducedPlayer reducedPlayer = reducedModel.getReducedGame().getPlayers().get(nickname);
         if (reducedPlayer != null) {
             System.out.println(nickname + "'s DASHBOARD: ");
@@ -116,11 +105,11 @@ public class CLI implements UI {
             System.out.println();
             //TODO print supply
         } else {
-            System.out.println("PLAYER " + nickname + "DOESN'T EXISTS");
+            printErrorMessage("PLAYER " + nickname + "DOESN'T EXISTS");
         }
     }
 
-    private void showFaithTrack(String nickname) {
+    public void showFaithTrack(String nickname) {
         ReducedPlayer reducedPlayer = reducedModel.getReducedGame().getPlayers().get(nickname);
         if (reducedPlayer != null) {
             System.out.println(nickname + "'s FAITHTRACK: ");
@@ -131,11 +120,11 @@ public class CLI implements UI {
             System.out.println();
             // TODO print victory points and vatican reports
         } else {
-            System.out.println("PLAYER " + nickname + "DOESN'T EXISTS");
+            printErrorMessage("PLAYER " + nickname + "DOESN'T EXISTS");
         }
     }
 
-    private void showWarehouse(String nickname) {
+    public void showWarehouse(String nickname) {
         ReducedPlayer reducedPlayer = reducedModel.getReducedGame().getPlayers().get(nickname);
         if (reducedPlayer != null) {
             ReducedDashboard reducedDashboard = reducedPlayer.getDashboard();
@@ -151,21 +140,11 @@ public class CLI implements UI {
             // TODO print extradeposit
         } else
         {
-            System.out.println("PLAYER " + nickname + "DOESN'T EXISTS");
+            printErrorMessage("PLAYER " + nickname + "DOESN'T EXISTS");
         }
     }
 
-    // TODO are there other things to show (for example, game id and number of players)?
-    public void showGlobalComponent(String objectToShow) {
-        switch(objectToShow) {
-            case "DVGRID" -> showDVGrid();
-            case "GAMEBOARD" -> showGameBoard();
-            case "MARKET" -> showMarket();
-            default -> System.out.println("Invalid command");
-        }
-    }
-
-    private void showDVGrid() {
+    public void showDVGrid() {
         ReducedGameBoard reducedGameBoard = reducedModel.getReducedGameBoard();
         for (int i = 0; i < reducedGameBoard.getGrid().size(); i++) {
             System.out.print(reducedGameBoard.getGrid().get(i).isEmpty() ? " | " : reducedGameBoard.getGrid().get(i).peek().toString() + " | ");
@@ -175,11 +154,11 @@ public class CLI implements UI {
         }
     }
 
-    private void showGameBoard() {
+    public void showGameBoard() {
         // TODO
     }
 
-    private void showMarket() {
+    public void showMarket() {
         ReducedGameBoard reducedGameBoard = reducedModel.getReducedGameBoard();
         for (int i = 0; i < reducedGameBoard.getMarblesGrid().length-1; i++) {
             System.out.print(reducedGameBoard.getMarblesGrid()[i].toString() + " | ");
