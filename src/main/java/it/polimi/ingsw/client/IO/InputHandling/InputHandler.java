@@ -4,13 +4,10 @@ import it.polimi.ingsw.client.IO.CLI;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.ClientMessage;
 
 public class InputHandler {
-    public static ClientMessage createGame(String[] in) {
-        return MainLobbyHandler.createGame(in);
-    }
 
-    public static ClientMessage showGames() {
-        return MainLobbyHandler.showGames();
-    }
+    public static ClientMessage createGame(String[] in) { return MainLobbyHandler.createGame(in); }
+
+    public static ClientMessage showGames() { return MainLobbyHandler.showGames(); }
 
     public static ClientMessage joinGame(String[] in, CLI cli) {
         return MainLobbyHandler.joinGame(in, cli);
@@ -44,9 +41,7 @@ public class InputHandler {
         return WarehouseHandler.storeFromSupply(in);
     }
 
-    public static ClientMessage storeFromSupplyToExtraDeposit(String[] in) {
-        return WarehouseHandler.storeFromSupplyToExtraDeposit(in);
-    }
+    public static ClientMessage storeFromSupplyToExtraDeposit(String[] in) { return WarehouseHandler.storeFromSupplyToExtraDeposit(in); }
 
     public static ClientMessage getInitialResources(String[] in) {
         return GameLobbyHandler.getInitialResources(in);
@@ -64,24 +59,14 @@ public class InputHandler {
         return LeaderCardHandler.playLeaderCard(in);
     }
 
-    public static ClientMessage activateDashboardProduction(String[] in, CLI cli) {
-        return ProductionHandler.activateDashboardProduction(in, cli);
-    }
+    public static ClientMessage activateDashboardProduction(String[] in, CLI cli) { return ProductionHandler.activateDashboardProduction(in, cli); }
 
-    public static ClientMessage activateDevelopmentProduction(String[] in, CLI cli) {
-        return DevelopmentCardHandler.activateDevelopmentProduction(in, cli);
-    }
+    public static ClientMessage activateDevelopmentProduction(String[] in, CLI cli) { return DevelopmentCardHandler.activateDevelopmentProduction(in, cli); }
 
-    public static ClientMessage activateLeaderProduction(String[] in, CLI cli) {
-        return LeaderCardHandler.activateLeaderProduction(in, cli);
-    }
+    public static ClientMessage activateLeaderProduction(String[] in, CLI cli) { return LeaderCardHandler.activateLeaderProduction(in, cli); }
 
-    public static ClientMessage startGame(String[] in, CLI cli) {
-        return GameLobbyHandler.startGame(in, cli);
-    }
+    public static ClientMessage startGame(String[] in, CLI cli) { return GameLobbyHandler.startGame(in, cli); }
 
-    public static ClientMessage buyDevelopmentCard(String[] in, CLI cli) {
-        return DevelopmentCardHandler.buyDevelopmentCard(in, cli);
-    }
+    public static ClientMessage buyDevelopmentCard(String[] in, CLI cli) { return DevelopmentCardHandler.buyDevelopmentCard(in, cli); }
 
 }

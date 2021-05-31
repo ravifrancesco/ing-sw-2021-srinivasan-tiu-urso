@@ -31,7 +31,7 @@ public class GameLobbyHandler {
             if(initialResource == null) { throw new IllegalArgumentException(); }
             int pos = Integer.parseInt(in[2]);
             return new GetInitialResourcesGameMessage(initialResource, pos);
-        } catch (NumberFormatException | IndexOutOfBoundsException e) {
+        } catch (Exception e) {
             return null;
         }
     }

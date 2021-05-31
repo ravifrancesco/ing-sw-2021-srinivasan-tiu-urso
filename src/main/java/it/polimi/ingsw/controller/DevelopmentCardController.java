@@ -62,7 +62,6 @@ public class DevelopmentCardController {
         System.out.println("Riga 55 devcardbuy");
 
         developmentCard = developmentCardGrid.peek(row, column);
-        game.startUniquePhase(TurnPhase.BUY);
 
         try {
             dashboard.placeDevelopmentCard(developmentCard, position);
@@ -87,7 +86,7 @@ public class DevelopmentCardController {
         }
 
         developmentCardGrid.buy(row, column);
-
+        game.startUniquePhase(TurnPhase.BUY);
         System.out.println("Finito");
     }
 }

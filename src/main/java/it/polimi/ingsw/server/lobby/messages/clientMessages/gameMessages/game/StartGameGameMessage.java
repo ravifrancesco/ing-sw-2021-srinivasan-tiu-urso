@@ -13,7 +13,7 @@ public class StartGameGameMessage extends ClientGameMessage implements Serializa
         try {
             serverController.startGame();
         } catch (Exception e) {
-            // TODO
+            System.err.println("why is this empty");
         }
     }
 }

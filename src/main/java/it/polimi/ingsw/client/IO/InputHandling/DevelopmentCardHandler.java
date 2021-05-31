@@ -5,7 +5,6 @@ import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.ResourceContainer;
 import it.polimi.ingsw.model.specialAbilities.ProductionPower;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.ClientMessage;
-import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.game.ActivateDashboardProductionGameMessage;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.game.ActivateDevelopmentProductionGameMessage;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.game.BuyDevelopmentCardGameMessage;
 
