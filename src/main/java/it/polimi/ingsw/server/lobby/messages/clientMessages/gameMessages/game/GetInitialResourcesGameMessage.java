@@ -5,7 +5,9 @@ import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.server.Connection;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.ClientGameMessage;
 
-public class GetInitialResourcesGameMessage extends ClientGameMessage {
+import java.io.Serializable;
+
+public class GetInitialResourcesGameMessage extends ClientGameMessage implements Serializable {
 
     Resource resource;
     int position;

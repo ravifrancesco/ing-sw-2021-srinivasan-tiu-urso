@@ -5,7 +5,9 @@ import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.server.Connection;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.ClientGameMessage;
 
-public class PlayerChangesExtraDeposit extends ClientGameMessage {
+import java.io.Serializable;
+
+public class PlayerChangesExtraDeposit extends ClientGameMessage implements Serializable {
     private Resource[] deposit;
     private Resource[] extraDeposit;
     private int lcIndex;

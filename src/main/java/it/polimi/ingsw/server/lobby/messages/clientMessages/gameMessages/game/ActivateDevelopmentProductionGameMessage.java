@@ -6,9 +6,10 @@ import it.polimi.ingsw.model.ResourceContainer;
 import it.polimi.ingsw.server.Connection;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.ClientGameMessage;
 
+import java.io.Serializable;
 import java.util.Map;
 
-public class ActivateDevelopmentProductionGameMessage extends ClientGameMessage {
+public class ActivateDevelopmentProductionGameMessage extends ClientGameMessage implements Serializable {
 
     int cardToActivate;
     ResourceContainer resourceToPayCost;

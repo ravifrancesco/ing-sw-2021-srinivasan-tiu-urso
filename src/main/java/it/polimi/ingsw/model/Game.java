@@ -157,6 +157,8 @@ public class Game extends GameObservable {
 	}
 
 	public void setError(Exception exception, String nickname) {
+		System.out.println("Error is being set by " + nickname + " with the following message:");
+		System.out.println(exception.getMessage());
 		Pair<String, Exception> error = new Pair<>(nickname, exception);
 
 		gameError.setError(error);

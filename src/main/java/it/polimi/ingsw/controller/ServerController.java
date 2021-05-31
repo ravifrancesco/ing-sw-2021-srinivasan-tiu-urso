@@ -322,6 +322,7 @@ public class ServerController {
         try {
             developmentCardController.buyDevelopmentCard(nickname, row, column, resourcesToPayCost, position);
         } catch (WrongTurnException | CardNotBuyableException | CardNotPlayableException | WrongMoveException e) {
+            System.out.println("Server error whilst buying developmentcard");
             game.setError(e, nickname);
         }
     }

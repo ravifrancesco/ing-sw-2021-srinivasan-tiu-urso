@@ -16,6 +16,21 @@ public class ClientMessageInputParser {
             case "LEAVELOBBY" -> InputChecker.leaveLobby(in);
             case "QUIT" -> InputChecker.quit(in);
             case "SHOW" -> parseShowCommand(in, cli);
+            case "DISCARDEXCESSCARD" -> InputChecker.discardExcessCard(in);
+            case "BUYDEVELOPMENTCARD" -> InputChecker.buyDevelopmentCard(in, cli);
+            case "ENDTURN" -> InputChecker.endTurn(in);
+            case "DISCARDCARD" -> InputChecker.discardCard(in);
+            case "GETFROMMARKET" -> InputChecker.getFromMarket(in, cli);
+            case "STOREFROMSUPPLY" -> InputChecker.storeFromSupply(in);
+            case "STOREFROMSUPPLYTOEXTRADEPOSIT" -> InputChecker.storeFromSupplyToExtraDeposit(in);
+            case "GETINITIALRESOURCES" -> InputChecker.getInitialResources(in);
+            case "LOADGAMESETTINGS" -> InputChecker.loadGameSettings(in);
+            case "CHANGEDEPOSIT" -> InputChecker.changeDeposit(in, cli);
+            case "PLAYLEADERCARD" -> InputChecker.playLeaderCard(in);
+            case "ACTIVATEDASHBOARDPRODUCTION" -> InputChecker.activateDashboardProduction(in, cli);
+            case "ACTIVATEDEVELOPMENTPRODUCTION" -> InputChecker.activateDevelopmentProduction(in);
+            case "ACTIVATELEADERPRODUCTION" -> InputChecker.activateLeaderProduction(in);
+            case "STARTGAME" -> InputChecker.startGame(in);
             default -> {
                 cli.printErrorMessage("Invalid Command");
                 yield null;

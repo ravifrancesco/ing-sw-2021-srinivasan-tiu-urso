@@ -4,8 +4,10 @@ import it.polimi.ingsw.controller.ServerController;
 import it.polimi.ingsw.server.Connection;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.ClientGameMessage;
 
+import java.io.Serializable;
 
-public class PlayerDiscardsExcessLeaderCards extends ClientGameMessage {
+
+public class PlayerDiscardsExcessLeaderCards extends ClientGameMessage implements Serializable {
     private int cardToDiscard;
 
     public PlayerDiscardsExcessLeaderCards(int cardToDiscard) {

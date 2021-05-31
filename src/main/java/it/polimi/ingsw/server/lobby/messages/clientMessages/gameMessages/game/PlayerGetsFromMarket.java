@@ -5,9 +5,10 @@ import it.polimi.ingsw.model.specialAbilities.WhiteMarbleResource;
 import it.polimi.ingsw.server.Connection;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.ClientGameMessage;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class PlayerGetsFromMarket extends ClientGameMessage {
+public class PlayerGetsFromMarket extends ClientGameMessage implements Serializable {
     private int move;
     private ArrayList<WhiteMarbleResource> wmrs;
 
@@ -15,6 +16,7 @@ public class PlayerGetsFromMarket extends ClientGameMessage {
         this.move = move;
         this.wmrs = wmrs;
     }
+
 
     @Override
     public void handle(Connection c, ServerController serverController)  {

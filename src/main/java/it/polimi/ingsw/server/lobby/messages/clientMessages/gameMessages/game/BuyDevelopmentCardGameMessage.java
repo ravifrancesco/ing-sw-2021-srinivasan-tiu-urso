@@ -5,7 +5,9 @@ import it.polimi.ingsw.model.ResourceContainer;
 import it.polimi.ingsw.server.Connection;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.ClientGameMessage;
 
-public class BuyDevelopmentCardGameMessage extends ClientGameMessage {
+import java.io.Serializable;
+
+public class BuyDevelopmentCardGameMessage extends ClientGameMessage implements Serializable {
 
     int row;
     int column;

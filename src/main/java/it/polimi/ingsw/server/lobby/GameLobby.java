@@ -72,10 +72,12 @@ public class GameLobby implements Lobby, Serializable {
 
         c.enterLobby(this);
         serverController.addObservers(c, connectedPlayers);
+        /*
         if(connectedPlayers.size() == maxPlayers) {
             System.out.println("Starting game..");
             serverController.startGame();
         }
+         */
     }
 
     public synchronized void leaveLobby(Connection c) {

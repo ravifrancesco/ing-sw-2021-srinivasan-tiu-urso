@@ -1,8 +1,8 @@
 package it.polimi.ingsw.controller.client.reducedModel;
 
-import it.polimi.ingsw.model.Dashboard;
-import it.polimi.ingsw.model.Hand;
+import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.cards.LeaderCard;
+import it.polimi.ingsw.model.specialAbilities.WhiteMarbleResource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +14,7 @@ public class ReducedPlayer {
     // Hand
     private List<LeaderCard> hand;
     private int handSize;
+    private Resource[] activatedWMR;
 
     // Dashboard
     private final ReducedDashboard dashboard;
@@ -51,4 +52,13 @@ public class ReducedPlayer {
     public ReducedDashboard getDashboard() {
         return dashboard;
     }
+
+    public Resource[] getActivatedWMR() {
+        return activatedWMR;
+    }
+
+    public void setActivatedWMR(Resource[] activatedWMR) {
+        this.activatedWMR = activatedWMR;
+    }
+
 }

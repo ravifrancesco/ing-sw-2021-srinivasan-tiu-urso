@@ -137,6 +137,9 @@ public class ClientConnection implements Runnable {
         new Thread(() -> {
             while(true) {
                 String command = cli.readCommand();
+                if(cli.getReducedModel().getReducedGame().getCurrentPlayer() != null) {
+                    System.out.println("# It's " + cli.getReducedModel().getReducedGame().getCurrentPlayer() + "'s turn");
+                }
                 ClientMessage clientMessage = ClientMessageInputParser.parseInput(command, cli);
                 if (clientMessage != null) {
                     try {
@@ -148,7 +151,7 @@ public class ClientConnection implements Runnable {
                 // TODO ugly asf, need to find a way to show the "enter command" after server answers
                 // and client is shown the response to its command
                 try {
-                    Thread.sleep(500);
+                    Thread.sleep(250);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -191,7 +194,7 @@ public class ClientConnection implements Runnable {
         cli.getReducedModel().getReducedGameBoard().setMarblesGrid(marblesGrid);
     }
 
-    public void updateReducedPlayer(String nickname, List<LeaderCard> hand, int handSize) {
+    public void updateReducedPlayer(String nickname, List<LeaderCard> hand, int handSize, Resource[] wmrs) {
         ReducedGame reducedGame = cli.getReducedModel().getReducedGame();
         if (!reducedGame.getPlayers().containsKey(nickname)) {
             reducedGame.createPlayer(nickname);
@@ -200,6 +203,7 @@ public class ClientConnection implements Runnable {
         reducedPlayer.setNickname(nickname);
         reducedPlayer.setHand(hand);
         reducedPlayer.setHandSize(handSize);
+        reducedPlayer.setActivatedWMR(wmrs);
     }
 
     public void updateReducedWarehouse(String nickname, Resource[] deposit, Resource[][] extraDeposits, Map<Resource, Integer> locker) {

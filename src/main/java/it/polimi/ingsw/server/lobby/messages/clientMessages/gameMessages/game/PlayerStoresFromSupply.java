@@ -4,7 +4,9 @@ import it.polimi.ingsw.controller.ServerController;
 import it.polimi.ingsw.server.Connection;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.ClientGameMessage;
 
-public class PlayerStoresFromSupply extends ClientGameMessage {
+import java.io.Serializable;
+
+public class PlayerStoresFromSupply extends ClientGameMessage implements Serializable {
     private int from;
     private int to;
 

@@ -9,7 +9,6 @@ import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.server.lobby.GameLobbyDetails;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.IntStream;
@@ -24,6 +23,33 @@ public class CLI implements UI {
         this.input = new Scanner(System.in);
         this.reducedModel = new ReducedModel();
     }
+
+
+    /*
+    private void showGameMenu() {
+        System.out.println("It is " + reducedModel.getReducedGame().getCurrentPlayer() + "'s turn");
+        System.out.println("Available commands:");
+        System.out.println("SHOW <element> <player> || Available objects: DASHBOARD, FAITHTRACK, WAREHOUSE");
+        System.out.println("SHOW <element> || Available objects: DVGRID, GAMEBOARD, MARKET");
+        System.out.println("DISCARDEXCESSCARD <cardindex>");
+        System.out.println("GETFROMMARKET <move>");
+        System.out.println("ENDTURN <cardindex> ");
+    }
+
+    private void showGameLobbyMenu() {
+        System.out.println("Available commands:");
+        System.out.println("LEAVELOBBY");
+    }
+
+    private void showMainLobbyMenu() {
+        System.out.println("Available commands:");
+        System.out.println("CREATEGAME <numberofplayers>");
+        System.out.println("JOINGAME <gameid>");
+        System.out.println("SHOWGAMES");
+        System.out.println("QUIT");
+    }
+
+     */
 
     public String getIp() {
         System.out.println("Insert the server ip: ");
@@ -103,7 +129,8 @@ public class CLI implements UI {
             System.out.print(nickname + "'s played development cards:");
             reducedDashboard.getPlayedDevelopmentCards().stream().map(stack -> stack.isEmpty() ? " | " : stack.peek().toString() + " | ").forEach(System.out::print);
             System.out.println();
-            //TODO print supply
+            System.out.println(nickname + "'s supply:");
+            System.out.println(reducedPlayer.getDashboard().getSupply());
         } else {
             printErrorMessage("PLAYER " + nickname + "DOESN'T EXISTS");
         }
