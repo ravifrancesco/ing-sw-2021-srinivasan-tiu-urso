@@ -15,6 +15,9 @@ import java.util.stream.IntStream;
 
 public class CLI implements UI {
 
+    public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_RED = "\u001B[31m";
+
     private Scanner input;
 
     private ReducedModel reducedModel;
@@ -23,33 +26,6 @@ public class CLI implements UI {
         this.input = new Scanner(System.in);
         this.reducedModel = new ReducedModel();
     }
-
-
-    /*
-    private void showGameMenu() {
-        System.out.println("It is " + reducedModel.getReducedGame().getCurrentPlayer() + "'s turn");
-        System.out.println("Available commands:");
-        System.out.println("SHOW <element> <player> || Available objects: DASHBOARD, FAITHTRACK, WAREHOUSE");
-        System.out.println("SHOW <element> || Available objects: DVGRID, GAMEBOARD, MARKET");
-        System.out.println("DISCARDEXCESSCARD <cardindex>");
-        System.out.println("GETFROMMARKET <move>");
-        System.out.println("ENDTURN <cardindex> ");
-    }
-
-    private void showGameLobbyMenu() {
-        System.out.println("Available commands:");
-        System.out.println("LEAVELOBBY");
-    }
-
-    private void showMainLobbyMenu() {
-        System.out.println("Available commands:");
-        System.out.println("CREATEGAME <numberofplayers>");
-        System.out.println("JOINGAME <gameid>");
-        System.out.println("SHOWGAMES");
-        System.out.println("QUIT");
-    }
-
-     */
 
     public String getIp() {
         System.out.println("Insert the server ip: ");
@@ -76,7 +52,7 @@ public class CLI implements UI {
     }
 
     public void printErrorMessage(String error) {
-        System.out.println(error);
+        System.out.println(ANSI_RED + error + ANSI_RESET);
     }
 
     public void printMessage(String message) {

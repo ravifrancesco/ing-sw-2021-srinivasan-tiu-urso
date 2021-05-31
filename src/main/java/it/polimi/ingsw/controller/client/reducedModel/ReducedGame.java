@@ -1,6 +1,7 @@
 package it.polimi.ingsw.controller.client.reducedModel;
 
 import it.polimi.ingsw.model.TurnPhase;
+import it.polimi.ingsw.model.specialAbilities.ProductionPower;
 
 import java.util.ArrayList;
 import java.util.HashMap;

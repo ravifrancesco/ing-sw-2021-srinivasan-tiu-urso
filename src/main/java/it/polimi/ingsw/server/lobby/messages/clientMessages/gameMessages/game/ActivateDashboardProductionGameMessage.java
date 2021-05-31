@@ -26,7 +26,9 @@ public class ActivateDashboardProductionGameMessage extends ClientGameMessage im
         try {
             serverController.activateDashboardProductionPower(c.getNickname(), resourceToPayCost, resourceRequiredOptional, resourceProducedOptional);
         } catch (Exception e) {
-            // TODO
+            System.err.println("Error while activating dashboard production");
+            System.err.println(e.getMessage());
+            e.printStackTrace();
         }
     }
 }

@@ -11,6 +11,7 @@ import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.marbles.Marble;
+import it.polimi.ingsw.model.specialAbilities.ProductionPower;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.ClientMessage;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.lobbyMessage.lobby.RegisterName;
 import it.polimi.ingsw.server.lobby.messages.serverMessages.ServerMessage;
@@ -167,7 +168,7 @@ public class ClientConnection implements Runnable {
         reducedGame.updatePlayers(playersNicknames);
     }
 
-    public void updateReducedDashboard(String nickname, int playerPoints, List<LeaderCard> playedLeaderCards, List<Stack<DevelopmentCard>> playedDevelopmentCards, ArrayList<Resource> supply) {
+    public void updateReducedDashboard(String nickname, int playerPoints, List<LeaderCard> playedLeaderCards, List<Stack<DevelopmentCard>> playedDevelopmentCards, ArrayList<Resource> supply, ProductionPower productionPower) {
         ReducedGame reducedGame = cli.getReducedModel().getReducedGame();
         if (!reducedGame.getPlayers().containsKey(nickname)) {
             reducedGame.createPlayer(nickname);
@@ -177,6 +178,7 @@ public class ClientConnection implements Runnable {
         reducedDashboard.setPlayedLeaderCards(playedLeaderCards);
         reducedDashboard.setPlayedDevelopmentCards(playedDevelopmentCards);
         reducedDashboard.setSupply(supply);
+        reducedDashboard.setProductionPower(productionPower);
     }
 
     public void updateReducedDVGrid(List<Stack<DevelopmentCard>> grid) {

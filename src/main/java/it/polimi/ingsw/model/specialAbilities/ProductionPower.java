@@ -205,4 +205,12 @@ public class ProductionPower implements SpecialAbility, Serializable {
 
 	}
 
+	public int getNumRequiredAny() {
+		return resourceRequired.get(Resource.ANY) == null ? 0 : resourceRequired.get(Resource.ANY);
+	}
+
+	public int getNumProducedAny() {
+		return resourceProduced.get(Resource.ANY) == null ? 0 : resourceProduced.get(Resource.ANY);
+	}
+
 }

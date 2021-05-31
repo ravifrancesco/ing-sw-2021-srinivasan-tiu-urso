@@ -1,5 +1,7 @@
 package it.polimi.ingsw.client.IO;
 
+import it.polimi.ingsw.client.IO.InputHandling.InputHandler;
+import it.polimi.ingsw.client.IO.InputHandling.ViewHandler;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.ClientMessage;
 
 public class ClientMessageInputParser {
@@ -10,56 +12,32 @@ public class ClientMessageInputParser {
         String command = in[0].toUpperCase();
 
         return switch (command) {
-            case "CREATEGAME" -> InputChecker.createGame(in);
-            case "SHOWGAMES"-> InputChecker.showGames(in);
-            case "JOINGAME" -> InputChecker.joinGame(in);
-            case "LEAVELOBBY" -> InputChecker.leaveLobby(in);
-            case "QUIT" -> InputChecker.quit(in);
-            case "SHOW" -> parseShowCommand(in, cli);
-            case "DISCARDEXCESSCARD" -> InputChecker.discardExcessCard(in);
-            case "BUYDEVELOPMENTCARD" -> InputChecker.buyDevelopmentCard(in, cli);
-            case "ENDTURN" -> InputChecker.endTurn(in);
-            case "DISCARDCARD" -> InputChecker.discardCard(in);
-            case "GETFROMMARKET" -> InputChecker.getFromMarket(in, cli);
-            case "STOREFROMSUPPLY" -> InputChecker.storeFromSupply(in);
-            case "STOREFROMSUPPLYTOEXTRADEPOSIT" -> InputChecker.storeFromSupplyToExtraDeposit(in);
-            case "GETINITIALRESOURCES" -> InputChecker.getInitialResources(in);
-            case "LOADGAMESETTINGS" -> InputChecker.loadGameSettings(in);
-            case "CHANGEDEPOSIT" -> InputChecker.changeDeposit(in, cli);
-            case "PLAYLEADERCARD" -> InputChecker.playLeaderCard(in);
-            case "ACTIVATEDASHBOARDPRODUCTION" -> InputChecker.activateDashboardProduction(in, cli);
-            case "ACTIVATEDEVELOPMENTPRODUCTION" -> InputChecker.activateDevelopmentProduction(in);
-            case "ACTIVATELEADERPRODUCTION" -> InputChecker.activateLeaderProduction(in);
-            case "STARTGAME" -> InputChecker.startGame(in);
+            case "CREATEGAME" -> InputHandler.createGame(in);
+            case "SHOWGAMES"-> InputHandler.showGames();
+            case "JOINGAME" -> InputHandler.joinGame(in, cli);
+            case "LEAVELOBBY" -> InputHandler.leaveLobby(in, cli);
+            case "QUIT" -> InputHandler.quit(in); // TODO fix
+            case "SHOW" -> ViewHandler.show(in, cli);
+            case "DISCARDEXCESSCARD" -> InputHandler.discardExcessCard(in);
+            case "BUYDEVELOPMENTCARD" -> InputHandler.buyDevelopmentCard(in, cli);
+            case "ENDTURN" -> InputHandler.endTurn(in);
+            case "DISCARDCARD" -> InputHandler.discardCard(in);
+            case "GETFROMMARKET" -> InputHandler.getFromMarket(in, cli);
+            case "STOREFROMSUPPLY" -> InputHandler.storeFromSupply(in);
+            case "STOREFROMSUPPLYTOEXTRADEPOSIT" -> InputHandler.storeFromSupplyToExtraDeposit(in);
+            case "GETINITIALRESOURCES" -> InputHandler.getInitialResources(in);
+            case "LOADGAMESETTINGS" -> InputHandler.loadGameSettings(in);
+            case "CHANGEDEPOSIT" -> InputHandler.changeDeposit(in, cli);
+            case "PLAYLEADERCARD" -> InputHandler.playLeaderCard(in);
+            case "ACTIVATEDASHBOARDPRODUCTION" -> InputHandler.activateDashboardProduction(in, cli);
+            case "ACTIVATEDEVELOPMENTPRODUCTION" -> InputHandler.activateDevelopmentProduction(in, cli);
+            case "ACTIVATELEADERPRODUCTION" -> InputHandler.activateLeaderProduction(in, cli);
+            case "STARTGAME" -> InputHandler.startGame(in, cli);
             default -> {
                 cli.printErrorMessage("Invalid Command");
                 yield null;
             }
-
         };
 
     }
-
-    private static ClientMessage parseShowCommand(String[] input, CLI cli) {
-
-        String objectToShow = input[1].toUpperCase();
-        String nickname = input.length == 3 ? input[2] : null;
-
-        switch(objectToShow) {
-            // global
-            case "DVGRID" -> cli.showDVGrid();
-            case "GAMEBOARD" -> cli.showGameBoard();
-            case "MARKET" -> cli.showMarket();
-            // player
-            case "HAND" -> cli.showHand(nickname);
-            case "DASHBOARD" -> cli.showDashboard(nickname);
-            case "FAITHTRACK" -> cli.showFaithTrack(nickname);
-            case "WAREHOUSE" -> cli.showWarehouse(nickname);
-            default -> System.out.println("Invalid command");
-        }
-
-        return null;
-
-    }
-
 }
