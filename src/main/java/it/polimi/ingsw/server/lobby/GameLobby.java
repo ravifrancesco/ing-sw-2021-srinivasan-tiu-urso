@@ -72,12 +72,6 @@ public class GameLobby implements Lobby, Serializable {
 
         c.enterLobby(this);
         serverController.addObservers(c, connectedPlayers);
-        /*
-        if(connectedPlayers.size() == maxPlayers) {
-            System.out.println("Starting game..");
-            serverController.startGame();
-        }
-         */
     }
 
     public synchronized void leaveLobby(Connection c) {
@@ -104,8 +98,8 @@ public class GameLobby implements Lobby, Serializable {
         serverController.getInitialResources(nickname, resource, position);
     }
 
-    public void playLeaderCard(String nickname, int cardToPlay) {
-        serverController.playLeaderCard(nickname, cardToPlay);
+    public void playLeaderCard(String nickname, int cardToPlay, ResourceContainer resourceContainer) {
+        serverController.playLeaderCard(nickname, cardToPlay, resourceContainer);
     }
 
     public void activateLeaderCardProductionPower(String nickname, int cardToActivate, ResourceContainer resourcesToPayCost,
@@ -123,7 +117,7 @@ public class GameLobby implements Lobby, Serializable {
         serverController.activateDevelopmentCardProductionPower(nickname, cardToActivate, resourcesToPayCost, resourceRequiredOptional, resourceProducedOptional);
     }
 
-    public void getFromMarket(String nickname, int move, ArrayList<WhiteMarbleResource> wmrs) {
+    public void getFromMarket(String nickname, int move, ArrayList<Resource> wmrs) {
         serverController.getFromMarket(nickname, move, wmrs);
     }
 

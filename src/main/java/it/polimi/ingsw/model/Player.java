@@ -200,10 +200,12 @@ public class Player extends PlayerObservable {
 	 * @return 		<code>true</code> player has the input WMRs.
 	 * 				<code>false</code> otherwise.
 	 */
-	public boolean checkWMR(ArrayList<WhiteMarbleResource> wmrs) {
-		return activatedWMR.containsAll(wmrs.stream()
-				.map(WhiteMarbleResource::getRes)
-				.collect(Collectors.toList()));
+	public boolean checkWMR(ArrayList<Resource> wmrs) {
+		ArrayList<Resource> copyWmr = new ArrayList<>(wmrs);
+		System.out.println("# Asked WMRS are: " + copyWmr);
+		copyWmr.removeAll(activatedWMR);
+		System.out.println("# After removal WMRS are: " + copyWmr);
+		return copyWmr.size() == 0;
 	}
 
 	/**

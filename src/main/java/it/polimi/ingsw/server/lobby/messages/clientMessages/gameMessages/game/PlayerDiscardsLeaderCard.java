@@ -15,10 +15,9 @@ public class PlayerDiscardsLeaderCard extends ClientGameMessage implements Seria
 
     @Override
     public void handle(Connection c, ServerController serverController) {
-        try {
-            serverController.discardLeaderCard(c.getNickname(), cardToDiscard);
-        } catch (Exception e) {
-            e.printStackTrace();
+        int output = serverController.discardLeaderCard(c.getNickname(), cardToDiscard);
+        if(output == 0) {
+            c.sendSuccessfulMoveMessage("Card with index " + cardToDiscard + " has been discarded successfully");
         }
     }
 }

@@ -16,20 +16,22 @@ public class LeaderCardHandler {
     public static String ANSI_BLUE = "\u001B[34m";
 
 
-    public static ClientMessage discardExcessCard(String[] in) {
+    public static ClientMessage discardExcessCard(String[] in, CLI cli) {
         try {
             int cardIndex = Integer.parseInt(in[1]);
             return new PlayerDiscardsExcessLeaderCards(cardIndex);
         } catch (NumberFormatException | IndexOutOfBoundsException e) {
+            cli.printErrorMessage("Error parsing card index");
             return null;
         }
     }
 
-    public static ClientMessage discardCard(String[] in) {
+    public static ClientMessage discardCard(String[] in, CLI cli) {
         try {
             int cardIndex = Integer.parseInt(in[1]);
             return new PlayerDiscardsLeaderCard(cardIndex);
         } catch (NumberFormatException | IndexOutOfBoundsException e) {
+            cli.printErrorMessage("Error parsing card index");
             return null;
         }
     }
@@ -41,7 +43,7 @@ public class LeaderCardHandler {
             ResourceContainer rc = ResourceHandler.chooseResources(cli);
             cli.printMessage("DEPOSIT INDEXES: " + rc.getSelectedDepositIndexes());
             cli.printMessage("LOCKER RESOURCES: " + rc.getSelectedLockerResources());
-            cli.printMessage("EXTRADEPOSIT INDEXES: " + rc.getSelectedExtraDepositIndexes());
+            cli.printMessage("EXTRA DEPOSIT INDEXES: " + rc.getSelectedExtraDepositIndexes());
             cli.printMessage("");
 
             cli.printMessage(ANSI_GREEN + "Activating production power..." + ANSI_RESET);
@@ -98,11 +100,14 @@ public class LeaderCardHandler {
         }
     }
 
-    public static ClientMessage playLeaderCard(String[] in) {
+    public static ClientMessage playLeaderCard(String[] in, CLI cli) {
         try {
             int cardIndex = Integer.parseInt(in[1]);
-            return new PlayLeaderCardGameMessage(cardIndex);
+            Map<Resource, Integer> resourceCost = cli.getReducedModel().getReducedPlayer().getHand().get(cardIndex).getResourceCost();
+            return new PlayLeaderCardGameMessage(cardIndex,
+                    resourceCost.size() == 0 ? new ResourceContainer() : ResourceHandler.chooseResources(cli));
         } catch (NumberFormatException | IndexOutOfBoundsException e) {
+            cli.printErrorMessage("Failed parsing leader card hand index");
             return null;
         }
     }

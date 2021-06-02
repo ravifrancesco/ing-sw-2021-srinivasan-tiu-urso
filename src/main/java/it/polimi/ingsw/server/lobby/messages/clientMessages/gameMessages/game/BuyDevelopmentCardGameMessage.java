@@ -9,10 +9,10 @@ import java.io.Serializable;
 
 public class BuyDevelopmentCardGameMessage extends ClientGameMessage implements Serializable {
 
-    int row;
-    int column;
-    ResourceContainer resourceToPayCost;
-    int position;
+    private int row;
+    private int column;
+    private ResourceContainer resourceToPayCost;
+    private int position;
 
     public BuyDevelopmentCardGameMessage(int row, int column, ResourceContainer resourceToPayCost, int position) {
         this.row = row;
@@ -23,10 +23,10 @@ public class BuyDevelopmentCardGameMessage extends ClientGameMessage implements 
 
     @Override
     public void handle(Connection c, ServerController serverController) {
-        try {
-            serverController.buyDevelopmentCard(c.getNickname(), row, column, resourceToPayCost, position);
-        } catch (Exception e) {
-            // TODO
+        int output = serverController.buyDevelopmentCard(c.getNickname(), row, column, resourceToPayCost, position);
+        if(output == 0) {
+            c.sendSuccessfulMoveMessage("Development card (" + row + "," + column + ")" +
+                    "has been succesfully bought and placed in position " + position);
         }
     }
 }

@@ -19,10 +19,10 @@ public class GetInitialResourcesGameMessage extends ClientGameMessage implements
 
     @Override
     public void handle(Connection c, ServerController serverController) {
-        try {
-            serverController.getInitialResources(c.getNickname(), resource, position);
-        } catch (Exception e) {
-            // TODO
+        int output = serverController.getInitialResources(c.getNickname(), resource, position);
+        if (output == 0) {
+            c.sendSuccessfulMoveMessage("Initial resources obtained successfully, adding "
+                    + resource + " to your deposition on position " + position);
         }
     }
 }

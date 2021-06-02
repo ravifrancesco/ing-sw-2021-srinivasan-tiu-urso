@@ -11,7 +11,7 @@ public class WhiteMarble implements Marble, Serializable {
      */
     @Override
     public Resource getResource(Player p) {
-        return p.checkActiveWMR() ? (p.getActivatedWMR().length == 1 ? p.getActivatedWMR()[0] : Resource.ANY) : (null);
+        return p.checkActiveWMR() ? Resource.ANY : null;
         /*
         Extra details: if there are two WhiteMarbleResource activated leader cards, then the controller will have to
         ask the player to make a choice for which resource to be returned. At the moment null is returned but will

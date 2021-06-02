@@ -16,11 +16,9 @@ public class PlayerDiscardsExcessLeaderCards extends ClientGameMessage implement
 
     @Override
     public void handle(Connection c, ServerController serverController) {
-        try {
-            serverController.discardExcessLeaderCards(c.getNickname(), cardToDiscard);
-            c.sendSuccessfulMoveMessage("Card with index " + cardToDiscard + " discarded successfully!");
-        } catch (Exception e) {
-            c.sendFailedMoveMessage("Card failed to discard, error: + " + e.getMessage());
+        int output = serverController.discardExcessLeaderCards(c.getNickname(), cardToDiscard);
+        if (output == 0) {
+            c.sendSuccessfulMoveMessage("Card with index " + cardToDiscard + " has been discarded successfully");
         }
     }
 }

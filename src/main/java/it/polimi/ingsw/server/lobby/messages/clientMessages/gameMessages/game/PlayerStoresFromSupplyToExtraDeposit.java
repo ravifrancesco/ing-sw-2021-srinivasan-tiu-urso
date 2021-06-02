@@ -19,10 +19,10 @@ public class PlayerStoresFromSupplyToExtraDeposit extends ClientGameMessage impl
 
     @Override
     public void handle(Connection c, ServerController serverController) {
-        try {
-            serverController.storeFromSupplyInExtraDeposit(c.getNickname(), leaderCardPos, from, to);
-        } catch (Exception e) {
-            e.printStackTrace();
+        int output = serverController.storeFromSupplyInExtraDeposit(c.getNickname(), leaderCardPos, from, to);
+        if(output == 0) {
+            c.sendSuccessfulMoveMessage("Successfull storage to extra deposit, adding resource to leader card " +
+                    leaderCardPos + " on position " + to);
         }
     }
 }

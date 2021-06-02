@@ -25,13 +25,14 @@ public class GameLobbyHandler {
         return new EndTurnGameMessage();
     }
 
-    public static ClientMessage getInitialResources(String[] in) {
+    public static ClientMessage getInitialResources(String[] in, CLI cli) {
         try {
             Resource initialResource = ResourceParser.parse(in[1]);
             if(initialResource == null) { throw new IllegalArgumentException(); }
             int pos = Integer.parseInt(in[2]);
             return new GetInitialResourcesGameMessage(initialResource, pos);
         } catch (Exception e) {
+            cli.printErrorMessage("Failed parsing resource or position");
             return null;
         }
     }

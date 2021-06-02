@@ -87,8 +87,7 @@ public class DevelopmentCardHandler {
             ResourceContainer resourceToPay = ResourceHandler.chooseResources(cli);
             return new BuyDevelopmentCardGameMessage(row, column, resourceToPay, position);
         } catch (Exception e) {
-            cli.printErrorMessage("Error while buying development card");
-            cli.printErrorMessage("Error message: " + e.getMessage());
+            cli.printErrorMessage("Failed parsing indexes");
             return null;
         }
     }

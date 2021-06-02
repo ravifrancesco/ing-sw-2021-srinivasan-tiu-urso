@@ -2,6 +2,8 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.controller.exceptions.*;
 import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.model.cards.DevelopmentCard;
+import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.specialAbilities.*;
 import it.polimi.ingsw.server.Connection;
 
@@ -179,11 +181,13 @@ public class ServerController {
      * @param nickname                      the nickname of the player who made the move.
      * @param cardToDiscard                 the index of the card to be discarded.
      */
-    public void discardExcessLeaderCards(String nickname, int cardToDiscard) {
+    public int discardExcessLeaderCards(String nickname, int cardToDiscard) {
         try {
             leaderCardController.discardExcessLeaderCards(nickname, cardToDiscard);
+            return 0;
         } catch (WrongTurnException | WrongMoveException | CardNotPlayableException e) {
             game.setError(e, nickname);
+            return -1;
         }
     }
 
@@ -193,12 +197,14 @@ public class ServerController {
      * @param resource                      the resource chosen by the player.
      * @param position                      the position where to store the resource.
      */
-    public void getInitialResources(String nickname, Resource resource, int position) {
+    public int getInitialResources(String nickname, Resource resource, int position) {
         String currentPlayer = game.getCurrentPlayer();
         if (!currentPlayer.equals(nickname)) {
             game.setError(new WrongTurnException("Not " + nickname + " turn"), nickname);
+            return -1;
         } else if (!game.getTurnPhase().equals(TurnPhase.FIRST_TURN)) {
             game.setError(new WrongTurnPhaseException("Turn phase is " + game.getTurnPhase().name()), nickname);
+            return -1;
         }
 
         Player player = game.getPlayers().get(currentPlayer);
@@ -206,15 +212,19 @@ public class ServerController {
 
         if (checkInitialPhaseCompletion(dashboard)) {
             game.setError(new WrongMoveException(currentPlayer + "has already acquired all due resources"), nickname);
+            return -1;
         }
 
         try {
             dashboard.storeResourceInDeposit(resource, position);
         } catch (IllegalArgumentException e) {
             game.setError(new DepositCellNotEmpty("Deposit cell " + position + " not empty"), nickname);
+            return -1;
         } catch (IllegalStateException e) {
             game.setError(new IllegalDepositStateException("Invalid deposit state"), nickname);
+            return -1;
         }
+        return 0;
     }
 
     /**
@@ -238,10 +248,10 @@ public class ServerController {
      * @param nickname                      the nickname of the player who made the move.
      * @param cardToPlay                    the index of the card to be played.
      */
-    public void playLeaderCard(String nickname, int cardToPlay) {
+    public void playLeaderCard(String nickname, int cardToPlay, ResourceContainer resourceContainer) {
         try {
-            leaderCardController.playLeaderCard(nickname, cardToPlay);
-        } catch (WrongTurnException | CardNotPlayableException e) {
+            leaderCardController.playLeaderCard(nickname, cardToPlay, resourceContainer);
+        } catch (WrongTurnException | CardNotPlayableException | WrongMoveException e) {
             game.setError(e, nickname);
         }
     }
@@ -269,11 +279,13 @@ public class ServerController {
      * @param nickname                      the nickname of the player who made the move.
      * @param cardToDiscard                 the index of the card to be discarded.
      */
-    public void discardLeaderCard(String nickname, int cardToDiscard) {
+    public int discardLeaderCard(String nickname, int cardToDiscard) {
         try {
             leaderCardController.discardLeaderCard(nickname, cardToDiscard);
+            return 0;
         } catch (WrongTurnException | CardNotPlayableException e) {
             game.setError(e, nickname);
+            return -1;
         }
     }
 
@@ -300,13 +312,13 @@ public class ServerController {
      * @param move                          the number that represents the selected row or column in the market.
      * @param wmrs                          the collection of activated power related to the white marble resources.
      */
-    public void getFromMarket(String nickname, int move, ArrayList<WhiteMarbleResource> wmrs) {
+    public int getFromMarket(String nickname, int move, ArrayList<Resource> wmrs) {
         try {
             marketController.getFromMarket(nickname, move, wmrs);
+            return 0;
         } catch (WrongTurnException | WrongMoveException e) {
-            System.out.println("errore: ");
-            System.out.println(e.getMessage());
             game.setError(e, nickname);
+            return -1;
         }
     }
 
@@ -318,12 +330,13 @@ public class ServerController {
      * @param resourcesToPayCost            the resources to pay for the cost of the development card.
      * @param position                      the index that represent where to place the card.
      */
-    public void buyDevelopmentCard(String nickname, int row, int column, ResourceContainer resourcesToPayCost, int position)  {
+    public int buyDevelopmentCard(String nickname, int row, int column, ResourceContainer resourcesToPayCost, int position)  {
         try {
             developmentCardController.buyDevelopmentCard(nickname, row, column, resourcesToPayCost, position);
+            return 0;
         } catch (WrongTurnException | CardNotBuyableException | CardNotPlayableException | WrongMoveException e) {
-            System.out.println("Server error whilst buying developmentcard");
             game.setError(e, nickname);
+            return -1;
         }
     }
 
@@ -349,13 +362,23 @@ public class ServerController {
      * Moves resources between the deposit
      * @param nickname                      the player nickname
      * @param deposit                       the new deposit
+     * @return
      */
-    public void changeDeposit(String nickname, Resource[] deposit) {
+    public int changeDeposit(String nickname, Resource[] deposit) {
         try {
             warehouseController.changeResourcesDeposit(nickname, deposit);
+            return 0;
         } catch (WrongTurnException | WrongMoveException | IllegalDepositStateException e) {
             game.setError(e, nickname);
+            return -1;
         }
+    }
+
+    public void hack(String nickname) {
+        game.getPlayers().get(nickname).getDashboard().getWarehouse().storeInLocker(Resource.GOLD, 999);
+        game.getPlayers().get(nickname).getDashboard().getWarehouse().storeInLocker(Resource.STONE, 999);
+        game.getPlayers().get(nickname).getDashboard().getWarehouse().storeInLocker(Resource.SHIELD, 999);
+        game.getPlayers().get(nickname).getDashboard().getWarehouse().storeInLocker(Resource.SERVANT, 999);
     }
 
     // TODO doc (paste from history)
@@ -373,11 +396,13 @@ public class ServerController {
      * @param from                          the index of the supply where the resources are stored.
      * @param to                            the index of the warehouse where to store the resources.
      */
-    public void storeFromSupply(String nickname, int from, int to) {
+    public int storeFromSupply(String nickname, int from, int to) {
         try {
             warehouseController.storeFromSupply(nickname, from, to);
+            return 0;
         } catch (WrongTurnException | WrongMoveException | IllegalDepositStateException e) {
             game.setError(e, nickname);
+            return -1;
         }
     }
 
@@ -388,11 +413,13 @@ public class ServerController {
      * @param from                          the index of the supply where the resources are stored.
      * @param to                            the index of the extra deposit where to store the resources.
      */
-    public void storeFromSupplyInExtraDeposit(String nickname, int leaderCardPos, int from, int to) {
+    public int storeFromSupplyInExtraDeposit(String nickname, int leaderCardPos, int from, int to) {
         try {
             warehouseController.storeFromSupplyInExtraDeposit(nickname, leaderCardPos, from, to);
+            return 0;
         } catch (WrongTurnException | WrongMoveException | IllegalDepositStateException e) {
             game.setError(e, nickname);
+            return -1;
         }
     }
 
@@ -401,10 +428,11 @@ public class ServerController {
      * @param nickname                      the nickname of the player in turn.
      * @return                              true if the game is ended, false otherwise.
      */
-    public boolean endTurn(String nickname) {
+    public int endTurn(String nickname) {
         String currentPlayer = game.getCurrentPlayer();
         if (!currentPlayer.equals(nickname)) {
             game.setError(new WrongTurnException("Not " + nickname + " turn"), nickname);
+            return -1;
         }
         // no turn phase check needed: player may stupidly pass the turn whilst having done nothing.
 
@@ -413,6 +441,7 @@ public class ServerController {
 
         if (player.getHandSize() > 2) {
             game.setError(new LeaderCardInExcessException(currentPlayer + " hasn't discarded enough cards"), nickname);
+            return -1;
         }
 
         int faithPoints = dashboard.discardResources();
@@ -427,6 +456,7 @@ public class ServerController {
 
         if(game.getTurnPhase().equals(TurnPhase.FIRST_TURN) && !checkInitialPhaseCompletion(dashboard)) {
             game.setError(new WrongMoveException(currentPlayer + " has not acquired all due resources."), nickname);
+            return -1;
         }
 
         if(player.getDashboard().checkGameEnd() && game.getTurnPhase() != TurnPhase.ENDGAME) {
@@ -441,7 +471,8 @@ public class ServerController {
 
         game.changePlayer();
 
-        return game.getTurnPhase() == TurnPhase.ENDGAME && game.getCurrentPlayer().equals(game.getFirstPlayer());
+        //return game.getTurnPhase() == TurnPhase.ENDGAME && game.getCurrentPlayer().equals(game.getFirstPlayer());
+        return 0;
     }
 
     /**
@@ -456,4 +487,27 @@ public class ServerController {
         return game.getCurrentPlayer();
     }
 
+    public void gimme(String nickname, int row, int column, int index) {
+        Player player = game.getPlayers().get(nickname);
+        Dashboard dashboard = player.getDashboard();
+        GameBoard gameBoard = game.getGameBoard();
+        DevelopmentCardGrid developmentCardGrid = gameBoard.getDevelopmentCardGrid();
+
+        DevelopmentCard developmentCard = developmentCardGrid.peek(row, column);
+
+        dashboard.placeDevelopmentCard(developmentCard, index);
+
+        developmentCardGrid.buy(row, column);
+        game.startUniquePhase(TurnPhase.BUY);
+    }
+
+    public void play(String nickname, int index) {
+        Player player = game.getPlayers().get(nickname);
+        Dashboard dashboard = player.getDashboard();
+        Map<Banner, Integer> playerBanners = dashboard.getBanners();
+        Map<Resource, Integer> playerResources = dashboard.getAllPlayerResources();
+        LeaderCard lc = player.getHand().get(index);
+
+        player.playLeaderCard(index);
+    }
 }

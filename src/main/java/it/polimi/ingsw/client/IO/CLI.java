@@ -9,6 +9,7 @@ import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.server.lobby.GameLobbyDetails;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.IntStream;
@@ -17,6 +18,10 @@ public class CLI implements UI {
 
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_GREEN = "\u001B[32m";
+    public static final String ANSI_BLUE = "\u001B[34m";
+
+
 
     private Scanner input;
 
@@ -25,6 +30,10 @@ public class CLI implements UI {
     public CLI() {
         this.input = new Scanner(System.in);
         this.reducedModel = new ReducedModel();
+    }
+
+    public void printColoredMessage(String message, String color) {
+        System.out.println(color + message + ANSI_RESET);
     }
 
     public String getIp() {
@@ -48,6 +57,10 @@ public class CLI implements UI {
     public String readCommand() {
         System.out.println("Enter command:");
         System.out.print("> ");
+        return input.nextLine();
+    }
+
+    public String readLine() {
         return input.nextLine();
     }
 
@@ -84,13 +97,13 @@ public class CLI implements UI {
             System.out.println(nickname + "'s HAND: ");
             List<LeaderCard> leaderCardList = reducedPlayer.getHand();
             if (leaderCardList.size() != 0) {
-                leaderCardList.forEach(card -> System.out.println(card.toString()));
+                IntStream.range(0, leaderCardList.size()).forEach(i -> System.out.println(ANSI_BLUE + i + ANSI_RESET + " " + leaderCardList.get(i).toString()));
             } else
             {
                 System.out.println(reducedPlayer.getHandSize() + " cards");
             }
         } else {
-            printErrorMessage("PLAYER " + nickname + "DOESN'T EXISTS");
+            printErrorMessage("PLAYER " + nickname + " DOESN'T EXISTS");
         }
     }
 
@@ -108,7 +121,7 @@ public class CLI implements UI {
             System.out.println(nickname + "'s supply:");
             System.out.println(reducedPlayer.getDashboard().getSupply());
         } else {
-            printErrorMessage("PLAYER " + nickname + "DOESN'T EXISTS");
+            printErrorMessage("PLAYER " + nickname + " DOESN'T EXISTS");
         }
     }
 
@@ -123,7 +136,7 @@ public class CLI implements UI {
             System.out.println();
             // TODO print victory points and vatican reports
         } else {
-            printErrorMessage("PLAYER " + nickname + "DOESN'T EXISTS");
+            printErrorMessage("PLAYER " + nickname + " DOESN'T EXISTS");
         }
     }
 
@@ -139,11 +152,12 @@ public class CLI implements UI {
                 }
             }
             System.out.println("\nLOCKER:");
-            reducedDashboard.getLocker().entrySet().forEach(entry -> System.out.println("RESOURCE = " + entry.getKey() + " | QUANTITY = " + entry.getValue()));
-            // TODO print extradeposit
+            reducedDashboard.getLocker().forEach((key, value) -> System.out.println("RESOURCE = " + key + " | QUANTITY = " + value));
+            System.out.println("EXTRA DEPOSITS: ");
+            IntStream.range(0, reducedDashboard.getExtraDeposits().length).forEach(i -> System.out.println("INDEX " + i + ":" + Arrays.toString(reducedDashboard.getExtraDeposits()[i])));
         } else
         {
-            printErrorMessage("PLAYER " + nickname + "DOESN'T EXISTS");
+            printErrorMessage("PLAYER " + nickname + " DOESN'T EXISTS");
         }
     }
 

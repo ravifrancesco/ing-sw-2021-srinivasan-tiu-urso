@@ -16,10 +16,9 @@ public class PlayerChangesDeposit extends ClientGameMessage implements Serializa
 
     @Override
     public void handle(Connection c, ServerController serverController) {
-        try {
-            serverController.changeDeposit(c.getNickname(), deposit);
-        } catch (Exception e) {
-            e.printStackTrace();
+        int output = serverController.changeDeposit(c.getNickname(), deposit);
+        if (output == 0) {
+            c.sendSuccessfulMoveMessage("Deposit swaps successful");
         }
     }
 }

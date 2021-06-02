@@ -49,8 +49,7 @@ public class Game extends GameObservable {
 		gameBoard.reset(gameSettings);
 		players.values().forEach(Player::reset);
 		this.playerOrder = players.keySet().iterator();
-		//players.values().forEach(Player::reset);
-		this.gameEnded = false;
+			this.gameEnded = false;
 		notify(this);
 
 	}
