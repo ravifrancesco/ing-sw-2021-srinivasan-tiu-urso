@@ -29,7 +29,6 @@ public class CLI implements UI {
 
     public CLI() {
         this.input = new Scanner(System.in);
-        this.reducedModel = new ReducedModel();
     }
 
     public void printColoredMessage(String message, String color) {
@@ -52,6 +51,10 @@ public class CLI implements UI {
 
     public ReducedModel getReducedModel() {
         return reducedModel;
+    }
+
+    public void setReducedModel(ReducedModel reducedModel) {
+        this.reducedModel = reducedModel;
     }
 
     public String readCommand() {
