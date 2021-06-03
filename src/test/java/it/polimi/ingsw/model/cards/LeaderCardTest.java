@@ -385,8 +385,6 @@ public class LeaderCardTest{
         Assert.assertEquals(player.getNumActiveWMR(), 1);
         Assert.assertEquals(player.getActivatedWMR().length, 1);
         Assert.assertEquals(player.getActivatedWMR()[0], Resource.GOLD);
-        WhiteMarble m = new WhiteMarble();
-        Assert.assertEquals(m.getResource(player), Resource.GOLD);
     }
 
     private GameSettings buildGameSettings() {

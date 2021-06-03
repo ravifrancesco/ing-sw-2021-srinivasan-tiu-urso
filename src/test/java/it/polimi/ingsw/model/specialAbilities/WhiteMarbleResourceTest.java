@@ -41,7 +41,7 @@ public class WhiteMarbleResourceTest {
         Assert.assertEquals(p.getActivatedWMR().length, 1);
         Assert.assertEquals(p.getActivatedWMR()[0], Resource.GOLD);
         WhiteMarble m = new WhiteMarble();
-        Assert.assertEquals(m.getResource(p), Resource.GOLD);
+        Assert.assertEquals(m.getResource(p), Resource.ANY);
         Assert.assertNull(m.getResource(p2));
     }
 
