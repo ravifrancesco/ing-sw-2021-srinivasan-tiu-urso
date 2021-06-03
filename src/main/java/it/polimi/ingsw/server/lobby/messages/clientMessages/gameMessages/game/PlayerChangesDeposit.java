@@ -5,7 +5,9 @@ import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.server.Connection;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.ClientGameMessage;
 
-public class PlayerChangesDeposit extends ClientGameMessage {
+import java.io.Serializable;
+
+public class PlayerChangesDeposit extends ClientGameMessage implements Serializable {
     Resource[] deposit;
 
     public PlayerChangesDeposit(Resource[] deposit) {
@@ -14,10 +16,9 @@ public class PlayerChangesDeposit extends ClientGameMessage {
 
     @Override
     public void handle(Connection c, ServerController serverController) {
-        try {
-            serverController.changeDeposit(c.getNickname(), deposit);
-        } catch (Exception e) {
-            e.printStackTrace();
+        int output = serverController.changeDeposit(c.getNickname(), deposit);
+        if (output == 0) {
+            c.sendSuccessfulMoveMessage("Deposit swaps successful");
         }
     }
 }

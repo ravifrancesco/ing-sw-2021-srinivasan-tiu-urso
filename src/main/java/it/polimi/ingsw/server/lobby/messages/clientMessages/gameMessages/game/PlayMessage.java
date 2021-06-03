@@ -6,14 +6,15 @@ import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.ClientG
 
 import java.io.Serializable;
 
+public class PlayMessage extends ClientGameMessage implements Serializable {
+    private int index;
 
-public class PlayerJoinsGame extends ClientGameMessage implements Serializable {
+    public PlayMessage(int index) {
+        this.index = index;
+    }
+
     @Override
-    public void handle(Connection c, ServerController serverController) {
-        try {
-            serverController.joinGame(c.getNickname());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void handle(Connection connection, ServerController serverController) {
+        serverController.play(connection.getNickname(), index);
     }
 }

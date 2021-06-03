@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.Dashboard;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
+import it.polimi.ingsw.model.specialAbilities.ProductionPower;
 import it.polimi.ingsw.server.lobby.messages.serverMessages.ServerMessage;
 
 import java.io.Serializable;
@@ -22,6 +23,7 @@ public class DashboardUpdateMessage implements ServerMessage, Serializable {
     private final List<LeaderCard> playedLeaderCards;
     private final List<Stack<DevelopmentCard>> playedDevelopmentCards;
     private ArrayList<Resource> supply;
+    private ProductionPower productionPower;
 
     /**
      * Constructor.
@@ -34,10 +36,11 @@ public class DashboardUpdateMessage implements ServerMessage, Serializable {
         this.playedLeaderCards = dashboard.getPlayedLeaderCards();
         this.playedDevelopmentCards = dashboard.getPlayedDevelopmentCards();
         this.supply = dashboard.getSupply();
+        this.productionPower = dashboard.getDashBoardProductionPower();
     }
 
     @Override
     public void updateClient(ClientConnection clientConnection, String nickname) {
-        clientConnection.updateReducedDashboard(playerNickname, playerPoints, playedLeaderCards, playedDevelopmentCards, supply);
+        clientConnection.updateReducedDashboard(playerNickname, playerPoints, playedLeaderCards, playedDevelopmentCards, supply, productionPower);
     }
 }

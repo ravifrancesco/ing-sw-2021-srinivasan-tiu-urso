@@ -6,14 +6,9 @@ import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.ClientG
 
 import java.io.Serializable;
 
-
-public class PlayerJoinsGame extends ClientGameMessage implements Serializable {
+public class UnlimitedResourcesMessage extends ClientGameMessage implements Serializable {
     @Override
-    public void handle(Connection c, ServerController serverController) {
-        try {
-            serverController.joinGame(c.getNickname());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void handle(Connection connection, ServerController serverController) {
+        serverController.hack(connection.getNickname());
     }
 }

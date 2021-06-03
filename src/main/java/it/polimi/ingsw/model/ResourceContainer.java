@@ -1,11 +1,12 @@
 package it.polimi.ingsw.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.IntStream;
 
-public class ResourceContainer {
+public class ResourceContainer implements Serializable {
 
     private ArrayList<Integer> selectedDepositIndexes;
     private Map<Resource, Integer> selectedLockerResources;
@@ -32,24 +33,24 @@ public class ResourceContainer {
     }
 
     // TODO during view coding: add checks to never select an empty slot
-    public void addDepositSelectedResource(int pos, Warehouse wh) {
-        if (wh.getDeposit()[pos] != null) {
+    public void addDepositSelectedResource(int pos, Resource[] whDeposit) {
+        if (whDeposit[pos] != null) {
             selectedDepositIndexes.add(pos);
         } else {
             throw new IllegalArgumentException();
         }
     }
 
-    public void addExtraDepositSelectedResource(int leaderCardPos, int pos, Warehouse wh) {
-        if (wh.getExtraDeposits()[leaderCardPos] != null && wh.getExtraDeposits()[leaderCardPos][pos] != null) {
+    public void addExtraDepositSelectedResource(int leaderCardPos, int pos, Resource[][] whExtraDeposits) {
+        if (whExtraDeposits[leaderCardPos] != null && whExtraDeposits[leaderCardPos][pos] != null) {
             selectedExtraDepositIndexes.get(leaderCardPos).add(pos);
         } else {
             throw new IllegalArgumentException();
         }
     }
 
-    public void addLockerSelectedResource(Resource r, int qty, Warehouse wh) {
-        if (wh.getLocker().get(r) >= qty) {
+    public void addLockerSelectedResource(Resource r, int qty, Map<Resource, Integer> whLocker) {
+        if (whLocker.get(r) >= qty) {
             selectedLockerResources.put(r, qty);
         } else {
             throw new IllegalArgumentException();

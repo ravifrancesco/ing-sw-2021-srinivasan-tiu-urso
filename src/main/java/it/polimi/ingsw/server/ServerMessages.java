@@ -11,5 +11,4 @@ public enum ServerMessages {
     WELCOME_MESSAGE,
 
     CONNECTION_CLOSED
-
 }

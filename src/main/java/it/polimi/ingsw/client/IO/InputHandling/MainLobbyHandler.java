@@ -1,12 +1,10 @@
-package it.polimi.ingsw.client.IO;
+package it.polimi.ingsw.client.IO.InputHandling;
 
+import it.polimi.ingsw.client.IO.CLI;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.ClientMessage;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.lobbyMessage.lobby.*;
 
-public class InputChecker {
-
-    // Message
-
+public class MainLobbyHandler {
     public static ClientMessage createGame(String[] input) {
         try {
             int numberOfPlayers = Integer.parseInt(input[1]);
@@ -16,25 +14,20 @@ public class InputChecker {
         }
     }
 
-    public static ClientMessage showGames(String[] input) {
+    public static ClientMessage showGames() {
         return new AskGameLobbies();
     }
 
-    public static ClientMessage joinGame(String[] input) {
+    public static ClientMessage joinGame(String[] input, CLI cli) {
         try {
             String id = input[1];
-            System.out.println("Joining lobby " + id + "...");
+            cli.printMessage("Joining lobby " + id + "...");
             return new JoinGameLobby(id);
         } catch (Exception e) {
-            System.out.println("Something went wrong while joining a game");
+            cli.printErrorMessage("Something went wrong while joining a game");
             return null;
         }
     }
-
-    public static ClientMessage leaveLobby(String[] in) {
-        return new LeaveLobby();
-    }
-
     public static ClientMessage quit(String[] in) {
         return new QuitGame();
     }

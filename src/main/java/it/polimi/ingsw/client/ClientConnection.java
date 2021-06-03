@@ -11,6 +11,7 @@ import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.marbles.Marble;
+import it.polimi.ingsw.model.specialAbilities.ProductionPower;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.ClientMessage;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.lobbyMessage.lobby.RegisterName;
 import it.polimi.ingsw.server.lobby.messages.serverMessages.ServerMessage;
@@ -137,6 +138,9 @@ public class ClientConnection implements Runnable {
         new Thread(() -> {
             while(true) {
                 String command = cli.readCommand();
+                if(cli.getReducedModel().getReducedGame().getCurrentPlayer() != null) {
+                    System.out.println("# It's " + cli.getReducedModel().getReducedGame().getCurrentPlayer() + "'s turn");
+                }
                 ClientMessage clientMessage = ClientMessageInputParser.parseInput(command, cli);
                 if (clientMessage != null) {
                     try {
@@ -148,7 +152,7 @@ public class ClientConnection implements Runnable {
                 // TODO ugly asf, need to find a way to show the "enter command" after server answers
                 // and client is shown the response to its command
                 try {
-                    Thread.sleep(500);
+                    Thread.sleep(250);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -164,7 +168,7 @@ public class ClientConnection implements Runnable {
         reducedGame.updatePlayers(playersNicknames);
     }
 
-    public void updateReducedDashboard(String nickname, int playerPoints, List<LeaderCard> playedLeaderCards, List<Stack<DevelopmentCard>> playedDevelopmentCards, ArrayList<Resource> supply) {
+    public void updateReducedDashboard(String nickname, int playerPoints, List<LeaderCard> playedLeaderCards, List<Stack<DevelopmentCard>> playedDevelopmentCards, ArrayList<Resource> supply, ProductionPower productionPower) {
         ReducedGame reducedGame = cli.getReducedModel().getReducedGame();
         if (!reducedGame.getPlayers().containsKey(nickname)) {
             reducedGame.createPlayer(nickname);
@@ -174,6 +178,7 @@ public class ClientConnection implements Runnable {
         reducedDashboard.setPlayedLeaderCards(playedLeaderCards);
         reducedDashboard.setPlayedDevelopmentCards(playedDevelopmentCards);
         reducedDashboard.setSupply(supply);
+        reducedDashboard.setProductionPower(productionPower);
     }
 
     public void updateReducedDVGrid(List<Stack<DevelopmentCard>> grid) {
@@ -191,7 +196,7 @@ public class ClientConnection implements Runnable {
         cli.getReducedModel().getReducedGameBoard().setMarblesGrid(marblesGrid);
     }
 
-    public void updateReducedPlayer(String nickname, List<LeaderCard> hand, int handSize) {
+    public void updateReducedPlayer(String nickname, List<LeaderCard> hand, int handSize, Resource[] wmrs) {
         ReducedGame reducedGame = cli.getReducedModel().getReducedGame();
         if (!reducedGame.getPlayers().containsKey(nickname)) {
             reducedGame.createPlayer(nickname);
@@ -200,6 +205,7 @@ public class ClientConnection implements Runnable {
         reducedPlayer.setNickname(nickname);
         reducedPlayer.setHand(hand);
         reducedPlayer.setHandSize(handSize);
+        reducedPlayer.setActivatedWMR(wmrs);
     }
 
     public void updateReducedWarehouse(String nickname, Resource[] deposit, Resource[][] extraDeposits, Map<Resource, Integer> locker) {

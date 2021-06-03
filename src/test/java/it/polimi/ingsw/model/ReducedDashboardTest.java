@@ -570,9 +570,9 @@ public class ReducedDashboardTest {
         Warehouse warehouse = dashboard.getWarehouse();
 
         ResourceContainer rc = new ResourceContainer();
-        rc.addDepositSelectedResource(1, warehouse);
-        rc.addDepositSelectedResource(2, warehouse);
-        rc.addLockerSelectedResource(Resource.GOLD, 3, warehouse);
+        rc.addDepositSelectedResource(1, warehouse.getDeposit());
+        rc.addDepositSelectedResource(2, warehouse.getDeposit());
+        rc.addLockerSelectedResource(Resource.GOLD, 3, warehouse.getLocker());
 
         HashMap<Resource, Integer> cost = new HashMap<>();
         cost.put(Resource.GOLD, 3);
@@ -604,9 +604,9 @@ public class ReducedDashboardTest {
         // I have 2 stones and 3 golds
 
         ResourceContainer rc2 = new ResourceContainer();
-        rc2.addDepositSelectedResource(1, warehouse);
-        rc2.addDepositSelectedResource(2, warehouse);
-        rc2.addLockerSelectedResource(Resource.GOLD, 3, warehouse);
+        rc2.addDepositSelectedResource(1, warehouse.getDeposit());
+        rc2.addDepositSelectedResource(2, warehouse.getDeposit());
+        rc2.addLockerSelectedResource(Resource.GOLD, 3, warehouse.getLocker());
 
         cost = new HashMap<>();
         cost.put(Resource.GOLD, 3);
@@ -655,11 +655,11 @@ public class ReducedDashboardTest {
         cost2.put(Resource.SERVANT, 3);
 
         ResourceContainer rcc = new ResourceContainer();
-        rcc.addDepositSelectedResource(3, warehouse);
-        rcc.addDepositSelectedResource(4, warehouse);
-        rcc.addDepositSelectedResource(5, warehouse);
-        rcc.addExtraDepositSelectedResource(0, 0, warehouse);
-        rcc.addExtraDepositSelectedResource(0, 1, warehouse);
+        rcc.addDepositSelectedResource(3, warehouse.getDeposit());
+        rcc.addDepositSelectedResource(4, warehouse.getDeposit());
+        rcc.addDepositSelectedResource(5, warehouse.getDeposit());
+        rcc.addExtraDepositSelectedResource(0, 0, warehouse.getExtraDeposits());
+        rcc.addExtraDepositSelectedResource(0, 1, warehouse.getExtraDeposits());
 
         dashboard.payPrice(rcc, cost2);
 
@@ -690,4 +690,7 @@ public class ReducedDashboardTest {
         Assert.assertEquals(dashboard.getDepositResourceQty(), 3);
     }
 
+
 }
+
+

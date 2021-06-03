@@ -4,7 +4,9 @@ import it.polimi.ingsw.controller.ServerController;
 import it.polimi.ingsw.server.Connection;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.ClientGameMessage;
 
-public class PlayerStoresFromSupplyToExtraDeposit extends ClientGameMessage {
+import java.io.Serializable;
+
+public class PlayerStoresFromSupplyToExtraDeposit extends ClientGameMessage implements Serializable {
     private int leaderCardPos;
     private int from;
     private int to;
@@ -17,10 +19,10 @@ public class PlayerStoresFromSupplyToExtraDeposit extends ClientGameMessage {
 
     @Override
     public void handle(Connection c, ServerController serverController) {
-        try {
-            serverController.storeFromSupplyInExtraDeposit(c.getNickname(), leaderCardPos, from, to);
-        } catch (Exception e) {
-            e.printStackTrace();
+        int output = serverController.storeFromSupplyInExtraDeposit(c.getNickname(), leaderCardPos, from, to);
+        if(output == 0) {
+            c.sendSuccessfulMoveMessage("Successfull storage to extra deposit, adding resource to leader card " +
+                    leaderCardPos + " on position " + to);
         }
     }
 }

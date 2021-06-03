@@ -5,6 +5,7 @@ import it.polimi.ingsw.controller.exceptions.WrongMoveException;
 import it.polimi.ingsw.controller.exceptions.WrongTurnException;
 import it.polimi.ingsw.controller.exceptions.WrongTurnPhaseException;
 import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.model.cards.LeaderCard;
 
 import java.util.Map;
 
@@ -45,11 +46,8 @@ public class LeaderCardController {
         player.discardLeaderCard(cardToDiscard, gameboard);
     }
 
-    /**
-     * @see ServerController#playLeaderCard(String, int)
-     */
 
-    public void playLeaderCard(String nickname, int cardToPlay) throws WrongTurnException, CardNotPlayableException {
+    public void playLeaderCard(String nickname, int cardToPlay, ResourceContainer resourceContainer) throws WrongTurnException, CardNotPlayableException, WrongMoveException {
 
         if (!game.getCurrentPlayer().equals(nickname)) {
             throw new WrongTurnException("Not " + nickname + " turn");
@@ -61,6 +59,8 @@ public class LeaderCardController {
         Dashboard dashboard = player.getDashboard();
         Map<Banner, Integer> playerBanners = dashboard.getBanners();
         Map<Resource, Integer> playerResources = dashboard.getAllPlayerResources();
+        LeaderCard lc = player.getHand().get(cardToPlay);
+
 
         if (cardToPlay >= player.getHandSize() || cardToPlay < 0) {
             throw new CardNotPlayableException("Invalid index");
@@ -74,6 +74,17 @@ public class LeaderCardController {
         catch (IllegalStateException e) { throw new CardNotPlayableException("Leader Card places are full"); }
         catch (IllegalArgumentException e) { throw new CardNotPlayableException("Position given is already full"); }
 
+
+        if(lc.getResourceCost().size() != 0) {
+            System.out.println("SERVER: leadercard resource cost is not null");
+            try {
+                player.getDashboard().payPrice(resourceContainer, lc.getResourceCost());
+            } catch (IllegalArgumentException e) {
+                throw new WrongMoveException("Resources do not match the cost");
+            }
+        } else {
+            System.out.println("LeaderCard resource cost is null, no price to pay");
+        }
     }
 
     /**

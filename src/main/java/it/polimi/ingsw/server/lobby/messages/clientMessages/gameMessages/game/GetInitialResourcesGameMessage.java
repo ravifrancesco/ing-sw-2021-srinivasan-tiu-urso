@@ -5,7 +5,9 @@ import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.server.Connection;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.ClientGameMessage;
 
-public class GetInitialResourcesGameMessage extends ClientGameMessage {
+import java.io.Serializable;
+
+public class GetInitialResourcesGameMessage extends ClientGameMessage implements Serializable {
 
     Resource resource;
     int position;
@@ -17,10 +19,10 @@ public class GetInitialResourcesGameMessage extends ClientGameMessage {
 
     @Override
     public void handle(Connection c, ServerController serverController) {
-        try {
-            serverController.getInitialResources(c.getNickname(), resource, position);
-        } catch (Exception e) {
-            // TODO
+        int output = serverController.getInitialResources(c.getNickname(), resource, position);
+        if (output == 0) {
+            c.sendSuccessfulMoveMessage("Initial resources obtained successfully, adding "
+                    + resource + " to your deposition on position " + position);
         }
     }
 }

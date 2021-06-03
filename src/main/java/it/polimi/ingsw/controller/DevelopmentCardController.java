@@ -31,6 +31,7 @@ public class DevelopmentCardController {
         } else if (!game.getTurnPhase().equals(TurnPhase.COMMON)) {
             throw new WrongTurnPhaseException("Turn phase is " + game.getTurnPhase().name());
         }
+        System.out.println("Riga 34 devcardbuy");
 
         Player player = game.getPlayers().get(nickname);
         Dashboard dashboard = player.getDashboard();
@@ -41,16 +42,26 @@ public class DevelopmentCardController {
         ArrayList<DevelopmentCardDiscount> activeDiscounts = player.getActiveDiscounts();
         DevelopmentCard developmentCard;
 
+        System.out.println("Riga 45 devcardbuy");
+
+        System.out.println("player resources is");
+        System.out.println(playerResources);
+        System.out.println("active discounts is");
+        System.out.println(activeDiscounts);
+
         try {
             if (!developmentCardGrid.isBuyable(row, column, playerResources, activeDiscounts)) {
+                System.out.println("not enough resources");
                 throw new CardNotBuyableException("Not enough resources");
             }
         } catch (IllegalArgumentException e) {
+                System.out.println("card doesnt exist");
             throw new CardNotBuyableException("Card doesn't exist");
         }
 
+        System.out.println("Riga 55 devcardbuy");
+
         developmentCard = developmentCardGrid.peek(row, column);
-        game.startUniquePhase(TurnPhase.BUY);
 
         try {
             dashboard.placeDevelopmentCard(developmentCard, position);
@@ -58,6 +69,9 @@ public class DevelopmentCardController {
         catch (IllegalStateException e) {
             throw new CardNotPlayableException("Not a valid index");
         }
+
+        System.out.println("Riga 67 devcardbuy");
+
 
         Map<Resource, Integer> cost = developmentCard.getResourceCost();
         activeDiscounts.forEach(discount -> cost.entrySet().stream().filter(e -> e.getKey() == discount.getResource())
@@ -72,5 +86,7 @@ public class DevelopmentCardController {
         }
 
         developmentCardGrid.buy(row, column);
+        game.startUniquePhase(TurnPhase.BUY);
+        System.out.println("Finito");
     }
 }

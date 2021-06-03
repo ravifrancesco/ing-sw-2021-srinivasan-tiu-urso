@@ -10,6 +10,8 @@ public class ReducedModel {
     private ReducedPlayer reducedPlayer;
     private ReducedGameBoard reducedGameBoard;
 
+
+
     public ReducedModel() {
         reducedGame = new ReducedGame();
         reducedPlayer = new ReducedPlayer();

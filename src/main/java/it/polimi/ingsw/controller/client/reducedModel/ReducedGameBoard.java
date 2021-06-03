@@ -1,5 +1,7 @@
 package it.polimi.ingsw.controller.client.reducedModel;
 
+import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
@@ -73,4 +75,31 @@ public class ReducedGameBoard {
     public void setDiscardDeck(List<Card> discardDeck) {
         this.discardDeck = discardDeck;
     }
+
+    public ArrayList<Marble> getMarblesMove(int move) {
+        return move < 3 ? getMarblesRowMove(move) : getMarblesColMove(move-3);
+    }
+
+    public Marble getMarble(int row, int col) {
+        return marblesGrid[(row*gridColLength) + col];
+    }
+
+    private ArrayList<Marble> getMarblesRowMove(int move) {
+        ArrayList<Marble> marbles = new ArrayList<>();
+
+        for(int i = 0; i < gridColLength; i++) {
+            marbles.add(getMarble(move, i));
+        }
+        return marbles;
+    }
+
+    private ArrayList<Marble> getMarblesColMove(int move) {
+        ArrayList<Marble> marbles = new ArrayList<>();
+
+        for (int i = 0; i < gridRowLength; i++) {
+            marbles.add(getMarble(i, move));
+        }
+        return marbles;
+    }
+
 }

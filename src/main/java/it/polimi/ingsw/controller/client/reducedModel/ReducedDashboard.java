@@ -3,6 +3,7 @@ package it.polimi.ingsw.controller.client.reducedModel;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
+import it.polimi.ingsw.model.specialAbilities.ProductionPower;
 import it.polimi.ingsw.utils.Pair;
 
 import java.util.*;
@@ -10,6 +11,8 @@ import java.util.*;
 public class ReducedDashboard {
 
     private int playerPoints;
+
+    private ProductionPower productionPower;
 
     // Cards
     static final int NUM_DEVELOPMENT_CARD_STACKS = 3;
@@ -113,5 +116,13 @@ public class ReducedDashboard {
 
     public void setFaithTrackVictoryPoints(int[] faithTrackVictoryPoints) {
         this.faithTrackVictoryPoints = faithTrackVictoryPoints;
+    }
+
+    public void setProductionPower(ProductionPower productionPower) {
+        this.productionPower = productionPower;
+    }
+
+    public ProductionPower getProductionPower() {
+        return productionPower;
     }
 }

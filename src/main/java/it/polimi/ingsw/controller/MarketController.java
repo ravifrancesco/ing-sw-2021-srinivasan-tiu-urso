@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.specialAbilities.WhiteMarbleResource;
 
 import java.util.ArrayList;
+import java.util.stream.IntStream;
 
 public class MarketController {
     private final Game game;
@@ -24,7 +25,7 @@ public class MarketController {
      * @see ServerController#getFromMarket(String, int, ArrayList)
      */
     
-    public void getFromMarket(String nickname, int move, ArrayList<WhiteMarbleResource> wmrs) throws WrongTurnException, WrongMoveException {
+    public void getFromMarket(String nickname, int move, ArrayList<Resource> wmrs) throws WrongTurnException, WrongMoveException {
         if (!game.getCurrentPlayer().equals(nickname)) {
             throw new WrongTurnException("Not " + nickname + " turn");
         } else if (!game.getTurnPhase().equals(TurnPhase.COMMON)) {
@@ -46,7 +47,6 @@ public class MarketController {
             throw new WrongMoveException("Desired move is out of index");
         }
 
-        game.startUniquePhase(TurnPhase.MARKET);
 
         ArrayList<Resource> marketRes = market.getResources(move, player);
         // marketRes will return an arrayList of resources, where the white marbles will be converted to Resource.ANY
@@ -55,15 +55,19 @@ public class MarketController {
 
 
         // check to see that the WMRS size corresponds to the amount of white marbles (against hacked clients)
+        System.out.println("#1 : " + marketRes.stream().filter(r -> r == Resource.ANY).count());
+        System.out.println("#2 : " + wmrs);
         if (marketRes.stream().filter(r -> r == Resource.ANY).count() != wmrs.size()) {
             throw new IllegalArgumentException(game.getCurrentPlayer() + " asked for too many white marble transformed resources.");
         }
 
         // removes all ANYs
-        marketRes.remove(Resource.ANY);
+        IntStream.range(0, (int) marketRes.stream().filter(res -> res == Resource.ANY).count()).forEach(i -> marketRes.remove(Resource.ANY));
         // substitutes with the user's choice of returned resource
-        wmrs.forEach(r -> marketRes.add(r.getRes()));
+        marketRes.addAll(wmrs);
 
         dashboard.addResourcesToSupply(marketRes);
+        game.startUniquePhase(TurnPhase.MARKET);
+
     }
 }

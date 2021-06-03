@@ -5,7 +5,9 @@ import it.polimi.ingsw.model.GameSettings;
 import it.polimi.ingsw.server.Connection;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.ClientGameMessage;
 
-public class LoadGameSettingsGameMessage extends ClientGameMessage {
+import java.io.Serializable;
+
+public class LoadGameSettingsGameMessage extends ClientGameMessage implements Serializable {
 
     private GameSettings gameSettings;
 

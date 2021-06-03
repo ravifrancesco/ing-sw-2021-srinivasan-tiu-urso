@@ -26,7 +26,7 @@ public class ProductionController {
     }
 
     /**
-     * @see ServerController#activateLeaderCardProduction(String, int, ResourceContainer, Map, Map)
+     * // @see ServerController#activateLeaderCardProduction(String, int, ResourceContainer, Map, Map)
      */
 
     public void activateLeaderCardProduction(String nickname, int cardToActivate, ResourceContainer resourcesToPayCost,
@@ -84,7 +84,7 @@ public class ProductionController {
     }
 
     /**
-     * @see ServerController#activateDashboardProduction(String, ResourceContainer, Map, Map)
+     // @see ServerController#activateDashboardProduction(String, ResourceContainer, Map, Map)
      */
 
     public void activateDashboardProduction(String nickname, ResourceContainer resourcesToPayCost,
@@ -104,9 +104,6 @@ public class ProductionController {
         if (!productionPower.isActivatable()) {
             throw new PowerNotActivatableException("Production already activated");
         }
-        if (!productionPower.isActivatable(playerResources)) {
-            throw new PowerNotActivatableException("Not enough resources");
-        }
 
         if (game.getTurnPhase().equals(TurnPhase.COMMON)) {
             game.startUniquePhase(TurnPhase.PRODUCTION);
@@ -118,6 +115,10 @@ public class ProductionController {
             throw new PowerNotActivatableException("Illegal amount of required/produced resources");
         } catch(IllegalStateException e) {
             throw new PowerNotActivatableException("Selectable resources setting failed");
+        }
+
+        if (!productionPower.isActivatable(playerResources)) {
+            throw new PowerNotActivatableException("Not enough resources");
         }
 
         try {
@@ -145,7 +146,8 @@ public class ProductionController {
 
         if (!game.getCurrentPlayer().equals(nickname)) {
             throw new WrongTurnException("Not " + nickname + " turn");
-        } else if (!game.getTurnPhase().equals(TurnPhase.COMMON) || !game.getTurnPhase().equals(TurnPhase.PRODUCTION)) {
+        } else if (!(game.getTurnPhase().equals(TurnPhase.COMMON) || game.getTurnPhase().equals(TurnPhase.PRODUCTION))) {
+        // } else if (!game.getTurnPhase().equals(TurnPhase.COMMON) || !game.getTurnPhase().equals(TurnPhase.PRODUCTION)) {
             throw new WrongTurnPhaseException("Turn phase is " + game.getTurnPhase().name());
         }
 
@@ -160,10 +162,6 @@ public class ProductionController {
         ProductionPower productionPower = developmentCard.getProductionPower();
         Map<Resource, Integer> playerResources = dashboard.getAllPlayerResources();
 
-        if (!productionPower.isActivatable(playerResources)) {
-            throw new PowerNotActivatableException("Not enough resources");
-        }
-
         if (game.getTurnPhase().equals(TurnPhase.COMMON)) {
             game.startUniquePhase(TurnPhase.PRODUCTION);
         }
@@ -174,6 +172,10 @@ public class ProductionController {
             throw new PowerNotActivatableException("Illegal amount of required/produced resources");
         } catch(IllegalStateException e) {
             throw new PowerNotActivatableException("Selectable resources setting failed");
+        }
+
+        if (!productionPower.isActivatable(playerResources)) {
+            throw new PowerNotActivatableException("Not enough resources");
         }
 
         try {

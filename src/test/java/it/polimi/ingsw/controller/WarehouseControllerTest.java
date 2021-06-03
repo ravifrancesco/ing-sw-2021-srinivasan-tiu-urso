@@ -52,12 +52,7 @@ public class WarehouseControllerTest {
         init();
         int thrownException = 0;
         Resource[] resourcesDeposit = new Resource[6];
-        try {
-            serverController.changeDeposit("ravifrancesco", resourcesDeposit);
-        } catch (Exception e) {
-            thrownException += 1;
-        }
-        Assert.assertEquals(thrownException, 1);
+        Assert.assertEquals(serverController.changeDeposit("ravifrancesco", resourcesDeposit), -1);
         serverController.endTurn("rbta-svg");
         // ravifrancesco has 1 gold from the initial phase, placed in deposit 0
         // trying to change position

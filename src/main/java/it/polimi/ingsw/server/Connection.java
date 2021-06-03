@@ -6,6 +6,8 @@ import it.polimi.ingsw.server.lobby.*;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.ClientGameMessage;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.lobbyMessage.ClientLobbyMessage;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.lobbyMessage.lobby.RegisterName;
+import it.polimi.ingsw.server.lobby.messages.serverMessages.FailedMoveMessage;
+import it.polimi.ingsw.server.lobby.messages.serverMessages.SuccessfulMoveMessage;
 import it.polimi.ingsw.server.lobby.messages.serverMessages.ServerMessage;
 import it.polimi.ingsw.server.lobby.messages.serverMessages.commons.*;
 import it.polimi.ingsw.server.lobby.messages.serverMessages.updates.*;
@@ -15,7 +17,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.net.SocketException;
 import java.util.ArrayList;
 
 /**
@@ -81,6 +82,14 @@ public class Connection implements Runnable,
 
     public ClientLobbyMessage receiveLobbyMessage() throws IOException, ClassNotFoundException {
         return (ClientLobbyMessage) in.readObject();
+    }
+
+    public void sendSuccessfulMoveMessage(String message) {
+        send(new SuccessfulMoveMessage(message));
+    }
+
+    public void sendFailedMoveMessage(String message) {
+        send(new FailedMoveMessage(message));
     }
 
     private void closeConnection() {

@@ -16,6 +16,13 @@ import java.util.stream.IntStream;
 
 public class CLI implements UI {
 
+    public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_GREEN = "\u001B[32m";
+    public static final String ANSI_BLUE = "\u001B[34m";
+
+
+
     private Scanner input;
 
     private ReducedModel reducedModel;
@@ -23,6 +30,10 @@ public class CLI implements UI {
     public CLI() {
         this.input = new Scanner(System.in);
         this.reducedModel = new ReducedModel();
+    }
+
+    public void printColoredMessage(String message, String color) {
+        System.out.println(color + message + ANSI_RESET);
     }
 
     public String getIp() {
@@ -49,8 +60,12 @@ public class CLI implements UI {
         return input.nextLine();
     }
 
+    public String readLine() {
+        return input.nextLine();
+    }
+
     public void printErrorMessage(String error) {
-        System.out.println(error);
+        System.out.println(ANSI_RED + error + ANSI_RESET);
     }
 
     public void printMessage(String message) {
@@ -82,13 +97,13 @@ public class CLI implements UI {
             System.out.println(nickname + "'s HAND: ");
             List<LeaderCard> leaderCardList = reducedPlayer.getHand();
             if (leaderCardList.size() != 0) {
-                leaderCardList.forEach(card -> System.out.println(card.toString()));
+                IntStream.range(0, leaderCardList.size()).forEach(i -> System.out.println(ANSI_BLUE + i + ANSI_RESET + " " + leaderCardList.get(i).toString()));
             } else
             {
                 System.out.println(reducedPlayer.getHandSize() + " cards");
             }
         } else {
-            printErrorMessage("PLAYER " + nickname + "DOESN'T EXISTS");
+            printErrorMessage("PLAYER " + nickname + " DOESN'T EXISTS");
         }
     }
 
@@ -103,9 +118,10 @@ public class CLI implements UI {
             System.out.print(nickname + "'s played development cards:");
             reducedDashboard.getPlayedDevelopmentCards().stream().map(stack -> stack.isEmpty() ? " | " : stack.peek().toString() + " | ").forEach(System.out::print);
             System.out.println();
-            //TODO print supply
+            System.out.println(nickname + "'s supply:");
+            System.out.println(reducedPlayer.getDashboard().getSupply());
         } else {
-            printErrorMessage("PLAYER " + nickname + "DOESN'T EXISTS");
+            printErrorMessage("PLAYER " + nickname + " DOESN'T EXISTS");
         }
     }
 
@@ -120,7 +136,7 @@ public class CLI implements UI {
             System.out.println();
             // TODO print victory points and vatican reports
         } else {
-            printErrorMessage("PLAYER " + nickname + "DOESN'T EXISTS");
+            printErrorMessage("PLAYER " + nickname + " DOESN'T EXISTS");
         }
     }
 
@@ -136,11 +152,12 @@ public class CLI implements UI {
                 }
             }
             System.out.println("\nLOCKER:");
-            reducedDashboard.getLocker().entrySet().forEach(entry -> System.out.println("RESOURCE = " + entry.getKey() + " | QUANTITY = " + entry.getValue()));
-            // TODO print extradeposit
+            reducedDashboard.getLocker().forEach((key, value) -> System.out.println("RESOURCE = " + key + " | QUANTITY = " + value));
+            System.out.println("EXTRA DEPOSITS: ");
+            IntStream.range(0, reducedDashboard.getExtraDeposits().length).forEach(i -> System.out.println("INDEX " + i + ":" + Arrays.toString(reducedDashboard.getExtraDeposits()[i])));
         } else
         {
-            printErrorMessage("PLAYER " + nickname + "DOESN'T EXISTS");
+            printErrorMessage("PLAYER " + nickname + " DOESN'T EXISTS");
         }
     }
 
