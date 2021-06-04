@@ -9,6 +9,6 @@ public class CorrectHandlingMessage implements Serializable, ServerMessage {
 
     @Override
     public void updateClient(ClientConnection clientConnection, String nickname) {
-        clientConnection.cli.printMessage("Message successfully handled by the server!");
+        clientConnection.ui.printMessage("Message successfully handled by the server!");
     }
 }

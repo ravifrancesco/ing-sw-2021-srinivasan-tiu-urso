@@ -9,6 +9,6 @@ public class InvalidNameMessage implements ServerMessage, Serializable {
 
     @Override
     public void updateClient(ClientConnection clientConnection, String nickname) {
-        clientConnection.cli.printErrorMessage("Nickname already in use");
+        clientConnection.ui.printErrorMessage("Nickname already in use");
     }
 }

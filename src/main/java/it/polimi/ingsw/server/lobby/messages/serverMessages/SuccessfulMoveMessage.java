@@ -14,6 +14,6 @@ public class SuccessfulMoveMessage implements ServerMessage, Serializable {
 
     @Override
     public void updateClient(ClientConnection clientConnection, String nickname) {
-        clientConnection.cli.printColoredMessage(message, CLI.ANSI_GREEN);
+        clientConnection.ui.printColoredMessage(message, CLI.ANSI_GREEN);
     }
 }

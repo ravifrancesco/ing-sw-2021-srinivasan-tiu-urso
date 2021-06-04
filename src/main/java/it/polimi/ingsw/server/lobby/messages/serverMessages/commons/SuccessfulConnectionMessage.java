@@ -15,6 +15,6 @@ public class SuccessfulConnectionMessage implements ServerMessage, Serializable 
 
     @Override
     public void updateClient(ClientConnection clientConnection, String nickname) {
-        clientConnection.cli.printMessage("Successfully connected to the game. Game ID: " + id);
+        clientConnection.ui.printMessage("Successfully connected to the game. Game ID: " + id);
     }
 }
