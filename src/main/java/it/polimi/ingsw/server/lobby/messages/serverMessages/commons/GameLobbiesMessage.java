@@ -16,6 +16,6 @@ public class GameLobbiesMessage implements ServerMessage, Serializable {
 
     @Override
     public void updateClient(ClientConnection clientConnection, String nickname) {
-        clientConnection.cli.showGameLobbies(gameLobbies);
+        clientConnection.ui.showGameLobbies(gameLobbies);
     }
 }

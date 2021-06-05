@@ -29,7 +29,7 @@ public class ClientConnection implements Runnable {
 
     private String ip;
     private int port;
-    public final CLI cli;
+    public final UI ui;
 
     private ObjectOutputStream outputStream;
     private ObjectInputStream inputStream;
@@ -40,13 +40,13 @@ public class ClientConnection implements Runnable {
 
     ReducedModel reducedModel;
 
-    public ClientConnection(String ip, int port, CLI cli) {
+    public ClientConnection(String ip, int port, UI ui) {
         this.ip = ip;
         this.port = port;
-        this.cli = cli;
+        this.ui = ui;
         this.nameRegistered = false;
         this.reducedModel = new ReducedModel();
-        this.cli.setReducedModel(reducedModel);
+        this.ui.startUI(this, reducedModel);
     }
 
     public void setPlayerNickname(String playerNickname) {
@@ -55,7 +55,7 @@ public class ClientConnection implements Runnable {
     }
 
     public void connectToServer() throws IOException {
-        cli.printMessage("Connection at " + ip + " on port " + port);
+        ui.printMessage("Connection at " + ip + " on port " + port);
         try {
             socket = new Socket(ip, port);
         } catch (IOException e) {
@@ -74,14 +74,14 @@ public class ClientConnection implements Runnable {
 
     public void registerName() throws IOException, ClassNotFoundException {
         while(!nameRegistered) {
-            String nickname = cli.getNickname();
+            String nickname = ui.getNickname();
             send(new RegisterName(nickname));
             try {
                 ServerMessage serverMessage = receiveServerMessage();
                 serverMessage.updateClient(this, nickname);
 
             } catch (Exception e) {
-                cli.printErrorMessage("Connection error while reading server response");
+                ui.printErrorMessage("Connection error while reading server response");
             }
         }
     }
@@ -94,7 +94,7 @@ public class ClientConnection implements Runnable {
         nameRegistered = true;
     }
 
-    private synchronized void send(ClientMessage message){
+    public synchronized void send(ClientMessage message){
         try {
             outputStream.writeObject(message);
             outputStream.flush();
@@ -115,7 +115,9 @@ public class ClientConnection implements Runnable {
     @Override
     public void run() {
         startReceivingThread();
-        startReadingThread();
+        if (ui.getType() == UIType.CLI) {
+            ((CLI) ui).startReadingThread();
+        }
     }
 
     private void startReceivingThread() {
@@ -123,47 +125,17 @@ public class ClientConnection implements Runnable {
             while(true) {
                 try {
                     ServerMessage serverMessage = receiveServerMessage();
-                    cli.printMessage("Received server message: " + serverMessage.toString());
+                    ui.printMessage("Received server message: " + serverMessage.toString());
                     serverMessage.updateClient(this, playerNickname);
 
                 } catch (ClassNotFoundException | IOException e) {
-                    cli.printErrorMessage("Connection with server lost");
+                    ui.printErrorMessage("Connection with server lost");
                     System.exit(-1);
                     break;
                 }
             }
         }).start();
     }
-
-
-
-    private void startReadingThread() {
-        // TODO how to kill this thread if the receivingThread dies?
-        new Thread(() -> {
-            while(true) {
-                String command = cli.readCommand();
-                if(reducedModel.getReducedGame().getCurrentPlayer() != null) {
-                    System.out.println("# It's " + reducedModel.getReducedGame().getCurrentPlayer() + "'s turn");
-                }
-                ClientMessage clientMessage = ClientMessageInputParser.parseInput(command, cli);
-                if (clientMessage != null) {
-                    try {
-                        send(clientMessage);
-                    } catch (Exception e) {
-                        System.out.println(e.getMessage());
-                    }
-                }
-                // TODO ugly asf, need to find a way to show the "enter command" after server answers
-                // and client is shown the response to its command
-                try {
-                    Thread.sleep(250);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-    }
-
 
     public void updateReducedGame(String firstPlayer, String currentPlayer, List<String> playersNicknames) {
         ReducedGame reducedGame = reducedModel.getReducedGame();

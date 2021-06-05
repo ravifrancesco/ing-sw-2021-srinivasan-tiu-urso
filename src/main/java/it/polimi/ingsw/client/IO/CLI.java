@@ -1,12 +1,15 @@
 package it.polimi.ingsw.client.IO;
 
+import it.polimi.ingsw.client.ClientConnection;
 import it.polimi.ingsw.client.ReducedModel;
 import it.polimi.ingsw.client.UI;
+import it.polimi.ingsw.client.UIType;
 import it.polimi.ingsw.controller.client.reducedModel.ReducedDashboard;
 import it.polimi.ingsw.controller.client.reducedModel.ReducedGameBoard;
 import it.polimi.ingsw.controller.client.reducedModel.ReducedPlayer;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.server.lobby.GameLobbyDetails;
+import it.polimi.ingsw.server.lobby.messages.clientMessages.ClientMessage;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,11 +24,11 @@ public class CLI implements UI {
     public static final String ANSI_GREEN = "\u001B[32m";
     public static final String ANSI_BLUE = "\u001B[34m";
 
-
-
     private Scanner input;
 
     private ReducedModel reducedModel;
+
+    private ClientConnection clientConnection;
 
     public CLI() {
         this.input = new Scanner(System.in);
@@ -57,6 +60,10 @@ public class CLI implements UI {
         this.reducedModel = reducedModel;
     }
 
+    public void setClientConnection(ClientConnection clientConnection) {
+        this.clientConnection = clientConnection;
+    }
+
     public String readCommand() {
         System.out.println("Enter command:");
         System.out.print("> ");
@@ -73,6 +80,33 @@ public class CLI implements UI {
 
     public void printMessage(String message) {
         System.out.println(message);
+    }
+
+    public void startReadingThread() {
+        // TODO how to kill this thread if the receivingThread dies?
+        new Thread(() -> {
+            while(true) {
+                String command = this.readCommand();
+                if(reducedModel.getReducedGame().getCurrentPlayer() != null) {
+                    System.out.println("# It's " + reducedModel.getReducedGame().getCurrentPlayer() + "'s turn");
+                }
+                ClientMessage clientMessage = ClientMessageInputParser.parseInput(command, this);
+                if (clientMessage != null) {
+                    try {
+                        clientConnection.send(clientMessage);
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                    }
+                }
+                // TODO ugly asf, need to find a way to show the "enter command" after server answers
+                // and client is shown the response to its command
+                try {
+                    Thread.sleep(250);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 
     public String getNickname() {
@@ -187,5 +221,16 @@ public class CLI implements UI {
             }
         }
         System.out.println("FREE MARBLE: " + reducedGameBoard.getMarblesGrid()[reducedGameBoard.getMarblesGrid().length-1].toString());
+    }
+
+    @Override
+    public void startUI(ClientConnection clientConnection, ReducedModel reducedModel) {
+        setClientConnection(clientConnection);
+        setReducedModel(reducedModel);
+    }
+
+    @Override
+    public UIType getType() {
+        return UIType.CLI;
     }
 }

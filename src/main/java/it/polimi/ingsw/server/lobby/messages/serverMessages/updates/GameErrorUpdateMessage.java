@@ -21,6 +21,6 @@ public class GameErrorUpdateMessage implements ServerMessage, Serializable {
 
     @Override
     public void updateClient(ClientConnection clientConnection, String nickname) {
-        clientConnection.cli.printErrorMessage("Move failed: " + gameError.second.getMessage());
+        clientConnection.ui.printErrorMessage("Move failed: " + gameError.second.getMessage());
     }
 }

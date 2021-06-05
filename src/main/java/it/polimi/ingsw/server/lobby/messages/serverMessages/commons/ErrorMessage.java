@@ -9,6 +9,6 @@ public class ErrorMessage implements ServerMessage, Serializable {
 
     @Override
     public void updateClient(ClientConnection clientConnection, String nickname) {
-        clientConnection.cli.printErrorMessage("Server side error");
+        clientConnection.ui.printErrorMessage("Server side error");
     }
 }
