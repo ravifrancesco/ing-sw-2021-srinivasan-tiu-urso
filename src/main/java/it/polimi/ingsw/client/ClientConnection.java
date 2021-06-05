@@ -29,7 +29,7 @@ public class ClientConnection implements Runnable {
 
     private String ip;
     private int port;
-    public final CLI cli;
+    public final UI ui;
 
     private ObjectOutputStream outputStream;
     private ObjectInputStream inputStream;
@@ -38,20 +38,24 @@ public class ClientConnection implements Runnable {
 
     private Socket socket;
 
-    public ClientConnection(String ip, int port, CLI cli) {
+    ReducedModel reducedModel;
+
+    public ClientConnection(String ip, int port, UI ui) {
         this.ip = ip;
         this.port = port;
-        this.cli = cli;
+        this.ui = ui;
         this.nameRegistered = false;
+        this.reducedModel = new ReducedModel();
+        this.ui.startUI(this, reducedModel);
     }
 
     public void setPlayerNickname(String playerNickname) {
         this.playerNickname = playerNickname;
-        this.cli.getReducedModel().setNickname(playerNickname);
+        this.reducedModel.setNickname(playerNickname);
     }
 
     public void connectToServer() throws IOException {
-        cli.printMessage("Connection at " + ip + " on port " + port);
+        ui.printMessage("Connection at " + ip + " on port " + port);
         try {
             socket = new Socket(ip, port);
         } catch (IOException e) {
@@ -70,14 +74,14 @@ public class ClientConnection implements Runnable {
 
     public void registerName() throws IOException, ClassNotFoundException {
         while(!nameRegistered) {
-            String nickname = cli.getNickname();
+            String nickname = ui.getNickname();
             send(new RegisterName(nickname));
             try {
                 ServerMessage serverMessage = receiveServerMessage();
                 serverMessage.updateClient(this, nickname);
 
             } catch (Exception e) {
-                cli.printErrorMessage("Connection error while reading server response");
+                ui.printErrorMessage("Connection error while reading server response");
             }
         }
     }
@@ -90,7 +94,7 @@ public class ClientConnection implements Runnable {
         nameRegistered = true;
     }
 
-    private synchronized void send(ClientMessage message){
+    public synchronized void send(ClientMessage message){
         try {
             outputStream.writeObject(message);
             outputStream.flush();
@@ -111,7 +115,9 @@ public class ClientConnection implements Runnable {
     @Override
     public void run() {
         startReceivingThread();
-        startReadingThread();
+        if (ui.getType() == UIType.CLI) {
+            ((CLI) ui).startReadingThread();
+        }
     }
 
     private void startReceivingThread() {
@@ -119,57 +125,27 @@ public class ClientConnection implements Runnable {
             while(true) {
                 try {
                     ServerMessage serverMessage = receiveServerMessage();
-                    cli.printMessage("Received server message: " + serverMessage.toString());
+                    ui.printMessage("Received server message: " + serverMessage.toString());
                     serverMessage.updateClient(this, playerNickname);
 
                 } catch (ClassNotFoundException | IOException e) {
-                    cli.printErrorMessage("Connection with server lost");
-                    e.printStackTrace();
+                    ui.printErrorMessage("Connection with server lost");
+                    System.exit(-1);
                     break;
                 }
             }
         }).start();
     }
 
-
-
-    private void startReadingThread() {
-        // TODO how to kill this thread if the receivingThread dies?
-        new Thread(() -> {
-            while(true) {
-                String command = cli.readCommand();
-                if(cli.getReducedModel().getReducedGame().getCurrentPlayer() != null) {
-                    System.out.println("# It's " + cli.getReducedModel().getReducedGame().getCurrentPlayer() + "'s turn");
-                }
-                ClientMessage clientMessage = ClientMessageInputParser.parseInput(command, cli);
-                if (clientMessage != null) {
-                    try {
-                        send(clientMessage);
-                    } catch (Exception e) {
-                        System.out.println(e.getMessage());
-                    }
-                }
-                // TODO ugly asf, need to find a way to show the "enter command" after server answers
-                // and client is shown the response to its command
-                try {
-                    Thread.sleep(250);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-    }
-
-
     public void updateReducedGame(String firstPlayer, String currentPlayer, List<String> playersNicknames) {
-        ReducedGame reducedGame = cli.getReducedModel().getReducedGame();
+        ReducedGame reducedGame = reducedModel.getReducedGame();
         reducedGame.setFirstPlayer(firstPlayer);
         reducedGame.setCurrentPlayer(currentPlayer);
         reducedGame.updatePlayers(playersNicknames);
     }
 
     public void updateReducedDashboard(String nickname, int playerPoints, List<LeaderCard> playedLeaderCards, List<Stack<DevelopmentCard>> playedDevelopmentCards, ArrayList<Resource> supply, ProductionPower productionPower) {
-        ReducedGame reducedGame = cli.getReducedModel().getReducedGame();
+        ReducedGame reducedGame = reducedModel.getReducedGame();
         if (!reducedGame.getPlayers().containsKey(nickname)) {
             reducedGame.createPlayer(nickname);
         }
@@ -182,22 +158,22 @@ public class ClientConnection implements Runnable {
     }
 
     public void updateReducedDVGrid(List<Stack<DevelopmentCard>> grid) {
-        cli.getReducedModel().getReducedGameBoard().setGrid(grid);
+        reducedModel.getReducedGameBoard().setGrid(grid);
     }
 
     public void updateReducedGameBoard(List<LeaderCard> leaderCardDeck, List<DevelopmentCard> developmentCardDeck, List<Card> discardDeck) {
-        ReducedGameBoard reducedGameBoard = cli.getReducedModel().getReducedGameBoard();
+        ReducedGameBoard reducedGameBoard = reducedModel.getReducedGameBoard();
         reducedGameBoard.setLeaderCardDeck(leaderCardDeck);
         reducedGameBoard.setDevelopmentCardDeck(developmentCardDeck);
         reducedGameBoard.setDiscardDeck(discardDeck);
     }
 
     public void updateReducedMarket(Marble[] marblesGrid) {
-        cli.getReducedModel().getReducedGameBoard().setMarblesGrid(marblesGrid);
+        reducedModel.getReducedGameBoard().setMarblesGrid(marblesGrid);
     }
 
     public void updateReducedPlayer(String nickname, List<LeaderCard> hand, int handSize, Resource[] wmrs) {
-        ReducedGame reducedGame = cli.getReducedModel().getReducedGame();
+        ReducedGame reducedGame = reducedModel.getReducedGame();
         if (!reducedGame.getPlayers().containsKey(nickname)) {
             reducedGame.createPlayer(nickname);
         }
@@ -209,7 +185,7 @@ public class ClientConnection implements Runnable {
     }
 
     public void updateReducedWarehouse(String nickname, Resource[] deposit, Resource[][] extraDeposits, Map<Resource, Integer> locker) {
-        ReducedGame reducedGame = cli.getReducedModel().getReducedGame();
+        ReducedGame reducedGame = reducedModel.getReducedGame();
         if (!reducedGame.getPlayers().containsKey(nickname)) {
             reducedGame.createPlayer(nickname);
         }
@@ -220,7 +196,7 @@ public class ClientConnection implements Runnable {
     }
 
     public void updateReducedFaithTrack(String nickname, int position, Map<Pair<Integer, Integer>, Pair<Integer, Integer>> vaticanReports, int[] faithTrackVictoryPoints) {
-        ReducedGame reducedGame = cli.getReducedModel().getReducedGame();
+        ReducedGame reducedGame = reducedModel.getReducedGame();
         if (!reducedGame.getPlayers().containsKey(nickname)) {
             reducedGame.createPlayer(nickname);
         }
@@ -231,7 +207,7 @@ public class ClientConnection implements Runnable {
     }
 
     public void updateGameInfo(String gameID, int numberOfPlayers) {
-        ReducedGame reducedGame = cli.getReducedModel().getReducedGame();
+        ReducedGame reducedGame = reducedModel.getReducedGame();
         reducedGame.setGameId(gameID);
         reducedGame.setNumberOfPlayers(numberOfPlayers);
     }

@@ -9,7 +9,7 @@ public class WelcomeMessage implements ServerMessage, Serializable {
 
     @Override
     public void updateClient(ClientConnection clientConnection, String nickname) {
-        clientConnection.cli.printMessage("Connection successfully registered");
+        clientConnection.ui.printMessage("Connection successfully registered");
     }
 
 }

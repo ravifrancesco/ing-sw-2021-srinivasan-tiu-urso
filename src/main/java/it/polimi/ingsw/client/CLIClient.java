@@ -4,9 +4,8 @@ import it.polimi.ingsw.client.IO.CLI;
 
 import java.io.IOException;
 
-public class Client {
+public class CLIClient {
     private CLI cli;
-
 
     public void run() {
         CLI cli = new CLI();
@@ -27,7 +26,5 @@ public class Client {
                 e.printStackTrace();
             }
         }
-
-
     }
 }

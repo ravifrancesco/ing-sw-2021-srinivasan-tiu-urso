@@ -19,6 +19,6 @@ public class GameInfoMessage implements ServerMessage, Serializable {
     @Override
     public void updateClient(ClientConnection clientConnection, String nickname) {
         clientConnection.updateGameInfo(gameID, numberOfPlayers);
-        clientConnection.cli.printMessage("GAME ID: " + gameID + "          Number of players: " + numberOfPlayers);
+        clientConnection.ui.printMessage("GAME ID: " + gameID + "          Number of players: " + numberOfPlayers);
     }
 }

@@ -13,6 +13,6 @@ public class FailedMoveMessage implements ServerMessage, Serializable {
 
     @Override
     public void updateClient(ClientConnection clientConnection, String nickname) {
-        clientConnection.cli.printErrorMessage(message);
+        clientConnection.ui.printErrorMessage(message);
     }
 }
