@@ -11,7 +11,7 @@ public class ServerChoiceTest extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/ServerChoice.fxml"));
-        primaryStage.setTitle("Hello World");
+        primaryStage.setTitle("Choose a server");
         primaryStage.setScene(new Scene(root, 600, 400));
         primaryStage.show();
     }
