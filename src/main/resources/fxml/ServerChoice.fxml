@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.ServerChoiceController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.GUI">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
   </columnConstraints>
@@ -18,11 +18,11 @@
          <children>
             <Pane layoutX="25.0" layoutY="143.0" prefHeight="150.0" prefWidth="550.0">
                <children>
-                  <TextField id="ipfield" fx:id="ipfield" layoutX="192.0" layoutY="48.0" promptText="Server IP">
+                  <TextField id="ipField" fx:id="ipField" layoutX="192.0" layoutY="48.0" promptText="Server IP">
                      <font>
                         <Font name="Garamond" size="14.0" />
                      </font></TextField>
-                  <TextField id="portfield" fx:id="portfield" layoutX="192.0" layoutY="109.0" promptText="Server Port">
+                  <TextField id="portField" fx:id="portField" layoutX="192.0" layoutY="109.0" promptText="Server Port">
                      <font>
                         <Font name="Garamond" size="14.0" />
                      </font></TextField>
@@ -35,7 +35,7 @@
          </children></AnchorPane>
       <AnchorPane prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
          <children>
-            <Button layoutX="241.0" layoutY="19.0" mnemonicParsing="false" onMouseClicked="#handleButtonAction" prefHeight="62.0" prefWidth="119.0" style="-fx-background-color: #323232;" text="CONNECT" textFill="WHITE">
+            <Button layoutX="241.0" layoutY="19.0" mnemonicParsing="false" onMouseClicked="#handleConnectClick" prefHeight="62.0" prefWidth="119.0" style="-fx-background-color: #323232;" text="CONNECT" textFill="WHITE">
                <font>
                   <Font name="Garamond" size="14.0" />
                </font></Button>

@@ -15,7 +15,9 @@ public class CLIClient {
                 int port = cli.getPort();
                 ClientConnection clientConnection = new ClientConnection(ip, port, cli);
                 clientConnection.connectToServer();
-                clientConnection.registerName();
+                while (!clientConnection.isNameRegistered()) {
+                    clientConnection.registerName();
+                }
                 clientConnection.run();
                 return;
             } catch (IllegalArgumentException e) {

@@ -73,21 +73,26 @@ public class ClientConnection implements Runnable {
     }
 
     public void registerName() throws IOException, ClassNotFoundException {
-        while(!nameRegistered) {
-            String nickname = ui.getNickname();
+        String nickname = ui.getNickname();
+        if (!nickname.equals("")) {
             send(new RegisterName(nickname));
             try {
                 ServerMessage serverMessage = receiveServerMessage();
                 serverMessage.updateClient(this, nickname);
-
             } catch (Exception e) {
                 ui.printErrorMessage("Connection error while reading server response");
             }
+        } else {
+            ui.printErrorMessage("Insert a non-empty nickname");
         }
     }
 
     public ServerMessage receiveServerMessage() throws IOException, ClassNotFoundException {
         return (ServerMessage) inputStream.readObject();
+    }
+
+    public boolean isNameRegistered() {
+        return nameRegistered;
     }
 
     public void nameRegistered() {
