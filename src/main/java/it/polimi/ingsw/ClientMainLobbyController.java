@@ -58,11 +58,12 @@ public class ClientMainLobbyController {
                             serverItemController.setFields(gameLobbies.get(i));
                             //give the items some effect
                             nodes[i].setOnMouseEntered(event -> {
-                                nodes[j].setStyle("-fx-background-color : #0A0E3F");
+                                nodes[j].setStyle("-fx-background-color : #808080");
                             });
                             nodes[i].setOnMouseExited(event -> {
-                                nodes[j].setStyle("-fx-background-color : #02030A");
+                                nodes[j].setStyle("-fx-background-color : #FFFFFF");
                             });
+
                             listOfServersVBox.getChildren().add(nodes[i]);
                         } catch (IOException e) {
                             e.printStackTrace();
