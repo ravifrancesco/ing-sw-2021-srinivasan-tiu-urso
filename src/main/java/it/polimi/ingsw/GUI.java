@@ -17,6 +17,7 @@ public class GUI extends Application implements UI {
     private ClientConnection clientConnection;
     private NicknameChoiceController nicknameChoiceController;
     private ServerChoiceController serverChoiceController;
+    private ClientMainLobbyController clientMainLobbyController;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -65,7 +66,7 @@ public class GUI extends Application implements UI {
 
     @Override
     public void showGameLobbies(ArrayList<GameLobbyDetails> gameLobbies) {
-        // TODO
+        clientMainLobbyController.updateServerList(gameLobbies);
     }
 
     public ClientConnection getClientConnection() {
@@ -83,4 +84,13 @@ public class GUI extends Application implements UI {
     public NicknameChoiceController getNicknameChoiceController() {
         return nicknameChoiceController;
     }
+
+    public void setClientMainLobbyController(ClientMainLobbyController clientMainLobbyController) {
+        this.clientMainLobbyController = clientMainLobbyController;
+    }
+
+    public ClientMainLobbyController getClientMainLobbyController() {
+        return clientMainLobbyController;
+    }
+
 }

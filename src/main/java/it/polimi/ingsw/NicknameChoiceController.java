@@ -1,8 +1,13 @@
 package it.polimi.ingsw;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.scene.input.InputEvent;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 
@@ -19,7 +24,8 @@ public class NicknameChoiceController {
                 gui.getClientConnection().registerName();
                 if (gui.getClientConnection().isNameRegistered()) {
                     gui.printMessage("Nickname choosen");
-                    // TODO change screen
+                    gui.getClientConnection().run();
+                    openClientMainLobbyWindow(event);
                 }
             } catch (IllegalArgumentException e) {
                 gui.printErrorMessage("Invalid ip/port name");
@@ -40,5 +46,21 @@ public class NicknameChoiceController {
 
     public String getNickname() {
         return nicknameField.getText();
+    }
+
+    private void openClientMainLobbyWindow(InputEvent event) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/client_main_lobby.fxml"));
+            Parent root = fxmlLoader.load();
+            gui.setClientMainLobbyController(fxmlLoader.getController());
+            gui.getClientMainLobbyController().setGui(gui);
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root, 800, 600));
+            stage.show();
+            ((Node)(event.getSource())).getScene().getWindow().hide();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

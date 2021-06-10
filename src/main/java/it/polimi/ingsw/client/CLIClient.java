@@ -5,7 +5,6 @@ import it.polimi.ingsw.client.IO.CLI;
 import java.io.IOException;
 
 public class CLIClient {
-    private CLI cli;
 
     public void run() {
         CLI cli = new CLI();
