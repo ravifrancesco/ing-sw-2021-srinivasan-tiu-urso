@@ -4,6 +4,7 @@ import it.polimi.ingsw.client.ClientConnection;
 import it.polimi.ingsw.server.lobby.GameLobbyDetails;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.lobbyMessage.lobby.AskGameLobbies;
 import it.polimi.ingsw.server.lobby.messages.serverMessages.commons.GameLobbiesMessage;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -43,26 +44,32 @@ public class ClientMainLobbyController {
     }
 
     public void updateServerList(ArrayList<GameLobbyDetails> gameLobbies) {
-        Node[] nodes = new Node[gameLobbies.size()];
-        for (int i = 0; i < nodes.length; i++) {
-            try {
-                final int j = i;
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/server_item.fxml"));
-                nodes[i] = loader.load();
-                ServerItemController serverItemController = loader.getController();
-                serverItemController.setFields(gameLobbies.get(i));
-                //give the items some effect
-                nodes[i].setOnMouseEntered(event -> {
-                    nodes[j].setStyle("-fx-background-color : #0A0E3F");
-                });
-                nodes[i].setOnMouseExited(event -> {
-                    nodes[j].setStyle("-fx-background-color : #02030A");
-                });
-                listOfServersVBox.getChildren().add(nodes[i]);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+
+        Platform.runLater(
+                () -> {
+                    listOfServersVBox.getChildren().clear();
+                    Node[] nodes = new Node[gameLobbies.size()];
+                    for (int i = 0; i < nodes.length; i++) {
+                        try {
+                            final int j = i;
+                            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/server_item.fxml"));
+                            nodes[i] = loader.load();
+                            ServerItemController serverItemController = loader.getController();
+                            serverItemController.setFields(gameLobbies.get(i));
+                            //give the items some effect
+                            nodes[i].setOnMouseEntered(event -> {
+                                nodes[j].setStyle("-fx-background-color : #0A0E3F");
+                            });
+                            nodes[i].setOnMouseExited(event -> {
+                                nodes[j].setStyle("-fx-background-color : #02030A");
+                            });
+                            listOfServersVBox.getChildren().add(nodes[i]);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+        );
 
     }
 
