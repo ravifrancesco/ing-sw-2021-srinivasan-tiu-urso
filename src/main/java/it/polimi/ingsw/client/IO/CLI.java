@@ -230,7 +230,8 @@ public class CLI implements UI {
 
     @Override
     public void startUI(ClientConnection clientConnection, ReducedModel reducedModel) {
-       // TODO
+        setClientConnection(clientConnection);
+        setReducedModel(reducedModel);
     }
 
     @Override
