@@ -1,5 +1,6 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.server.lobby.messages.clientMessages.lobbyMessage.lobby.AskGameLobbies;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -54,6 +55,7 @@ public class NicknameChoiceController {
             Parent root = fxmlLoader.load();
             gui.setClientMainLobbyController(fxmlLoader.getController());
             gui.getClientMainLobbyController().setGui(gui);
+            gui.getClientConnection().send(new AskGameLobbies());
             Stage stage = new Stage();
             stage.setScene(new Scene(root, 800, 600));
             stage.show();

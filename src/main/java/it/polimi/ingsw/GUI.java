@@ -4,14 +4,19 @@ import it.polimi.ingsw.client.ClientConnection;
 import it.polimi.ingsw.client.ReducedModel;
 import it.polimi.ingsw.client.UI;
 import it.polimi.ingsw.client.UIType;
+import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.server.lobby.GameLobbyDetails;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
+
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class GUI extends Application implements UI {
@@ -20,6 +25,7 @@ public class GUI extends Application implements UI {
     private NicknameChoiceController nicknameChoiceController;
     private ServerChoiceController serverChoiceController;
     private ClientMainLobbyController clientMainLobbyController;
+    private GameController gameController;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -73,6 +79,27 @@ public class GUI extends Application implements UI {
     @Override
     public void showGameLobbies(ArrayList<GameLobbyDetails> gameLobbies) {
         clientMainLobbyController.updateServerList(gameLobbies);
+    }
+
+    @Override
+    public void enterGamePhase() {
+        Platform.runLater(
+                () -> {
+                    try {
+                        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/game.fxml"));
+                        Parent root = fxmlLoader.load();
+                        gameController = fxmlLoader.getController();
+                        gameController.setGui(this);
+                        Stage stage = new Stage();
+                        stage.setScene(new Scene(root, 800, 600));
+                        stage.show();
+                        clientMainLobbyController.getScene().getWindow().hide();
+                    }
+                    catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+        );
     }
 
     public ClientConnection getClientConnection() {

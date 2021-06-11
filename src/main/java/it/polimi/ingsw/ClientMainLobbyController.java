@@ -8,10 +8,8 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.input.InputEvent;
@@ -26,8 +24,6 @@ public class ClientMainLobbyController {
     String selectedGame = null;
 
     GUI gui;
-
-    @FXML private Button refreshButton;
 
     @FXML private VBox listOfServersVBox;
     Node[] nodes;
@@ -110,6 +106,10 @@ public class ClientMainLobbyController {
 
     public void setGui(GUI gui) {
         this.gui = gui;
+    }
+
+    public Scene getScene() {
+        return listOfServersVBox.getScene();
     }
 
 

@@ -72,6 +72,7 @@ public class GameLobby implements Lobby, Serializable {
 
         c.enterLobby(this);
         serverController.addObservers(c, connectedPlayers);
+        c.sendGameLobbyEntered(id);
     }
 
     public synchronized void leaveLobby(Connection c) {

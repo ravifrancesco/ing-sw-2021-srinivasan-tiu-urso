@@ -128,6 +128,11 @@ public class CLI implements UI {
         }
     }
 
+    @Override
+    public void enterGamePhase() {
+        // TODO
+    }
+
     public void showHand(String nickname) {
         ReducedPlayer reducedPlayer = reducedModel.getReducedGame().getPlayers().get(nickname);
         if (reducedPlayer != null) {
@@ -225,8 +230,7 @@ public class CLI implements UI {
 
     @Override
     public void startUI(ClientConnection clientConnection, ReducedModel reducedModel) {
-        setClientConnection(clientConnection);
-        setReducedModel(reducedModel);
+       // TODO
     }
 
     @Override
