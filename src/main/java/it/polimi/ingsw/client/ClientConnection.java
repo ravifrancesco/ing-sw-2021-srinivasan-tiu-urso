@@ -109,7 +109,7 @@ public class ClientConnection implements Runnable {
         }
     }
 
-    private void close() {
+    public void close() {
         try {
             socket.close();
         } catch (IOException e){

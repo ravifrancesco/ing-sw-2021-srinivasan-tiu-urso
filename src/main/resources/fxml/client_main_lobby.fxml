@@ -78,7 +78,7 @@
                         </AnchorPane>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <children>
-                              <Button fx:id="cancelButton" alignment="CENTER" contentDisplay="CENTER" layoutX="4.0" layoutY="5.0" mnemonicParsing="false" onMouseClicked="#handleCancelClick" prefHeight="50.0" prefWidth="191.0" style="-fx-background-color: #323232;" text="CANCEL" textFill="WHITE">
+                              <Button fx:id="quitButton" alignment="CENTER" contentDisplay="CENTER" layoutX="4.0" layoutY="5.0" mnemonicParsing="false" onMouseClicked="#handleQuitClick" prefHeight="50.0" prefWidth="191.0" style="-fx-background-color: #323232;" text="QUIT" textFill="WHITE">
                                  <font>
                                     <Font name="Garamond" size="14.0" />
                                  </font>
