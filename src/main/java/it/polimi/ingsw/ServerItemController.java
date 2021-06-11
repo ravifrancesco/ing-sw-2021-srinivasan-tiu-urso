@@ -19,7 +19,7 @@ public class ServerItemController {
 
     public void setFields(GameLobbyDetails gameLobbyDetails) {
 
-        gameID = gameLobbyDetails.id;
+        this.gameID = gameLobbyDetails.id;
 
         hostNameTextView.setText(gameLobbyDetails.creator);
         playersConnectedTextView.setText(String.valueOf(gameLobbyDetails.connectedPlayers));
@@ -27,4 +27,7 @@ public class ServerItemController {
 
     }
 
+    public String getGameID() {
+        return gameID;
+    }
 }

@@ -1,9 +1,7 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.client.ClientConnection;
 import it.polimi.ingsw.server.lobby.GameLobbyDetails;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.lobbyMessage.lobby.AskGameLobbies;
-import it.polimi.ingsw.server.lobby.messages.serverMessages.commons.GameLobbiesMessage;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,11 +15,15 @@ import java.util.ArrayList;
 
 public class ClientMainLobbyController {
 
+    String selectedGame = null;
+
     GUI gui;
 
     @FXML private Button refreshButton;
 
     @FXML private VBox listOfServersVBox;
+    Node[] nodes;
+    ServerItemController[] serverItemControllers;
 
     @FXML
     public void handleRefreshClick(InputEvent event) {
@@ -48,22 +50,21 @@ public class ClientMainLobbyController {
         Platform.runLater(
                 () -> {
                     listOfServersVBox.getChildren().clear();
-                    Node[] nodes = new Node[gameLobbies.size()];
+                    nodes = new Node[gameLobbies.size()];
+                    serverItemControllers = new ServerItemController[gameLobbies.size()];
                     for (int i = 0; i < nodes.length; i++) {
                         try {
                             final int j = i;
                             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/server_item.fxml"));
                             nodes[i] = loader.load();
-                            ServerItemController serverItemController = loader.getController();
-                            serverItemController.setFields(gameLobbies.get(i));
+                            serverItemControllers[i] = loader.getController();
+                            serverItemControllers[i].setFields(gameLobbies.get(i));
                             //give the items some effect
-                            nodes[i].setOnMouseEntered(event -> {
-                                nodes[j].setStyle("-fx-background-color : #808080");
+                            nodes[i].setOnMouseEntered(event -> nodes[j].setStyle("-fx-background-color : #808080"));
+                            nodes[i].setOnMouseExited(event -> nodes[j].setStyle("-fx-background-color : #FFFFFF"));
+                            nodes[i].setOnMouseClicked(event -> {
+                                selectedGame = serverItemControllers[j].getGameID();
                             });
-                            nodes[i].setOnMouseExited(event -> {
-                                nodes[j].setStyle("-fx-background-color : #FFFFFF");
-                            });
-
                             listOfServersVBox.getChildren().add(nodes[i]);
                         } catch (IOException e) {
                             e.printStackTrace();
