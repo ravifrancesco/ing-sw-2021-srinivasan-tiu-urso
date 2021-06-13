@@ -36,7 +36,7 @@ public class GameController {
 
         for (int i = 0; i < rectangles.length; i++) {
             rectangles[i].setFill(Color.TRANSPARENT);
-            rectangles[i].setStroke(Color.RED);
+            rectangles[i].setStroke(Color.TRANSPARENT);
             pane.getChildren().add(rectangles[i]);
         }
 
@@ -83,6 +83,39 @@ public class GameController {
         ColorAdjust colorAdjust = new ColorAdjust();
         colorAdjust.setBrightness(0);
         resource.setEffect(colorAdjust);
+        computePosition(resource);
+    }
+
+    private void computePosition(ImageView resource) {
+        double x = resource.getX() + 12.5;
+        double y = resource.getY() + 12.5;
+        if (y >= rectangles[0].getY() && y <= rectangles[1].getY() + rectangles[0].getHeight() &&
+            x >= rectangles[0].getX() && x <= rectangles[0].getX() + rectangles[0].getWidth()) {
+            resource.setX((rectangles[0].getX()+rectangles[0].getWidth()/2)-(resource.getFitWidth()/2));
+            resource.setY((rectangles[0].getY()+rectangles[0].getHeight()/2)-(resource.getFitWidth()/2));
+        }
+        if (y >= rectangles[1].getY() && y <= rectangles[1].getY() + rectangles[1].getHeight()) {
+            if (x >= rectangles[1].getX() && x <= rectangles[1].getX() + rectangles[1].getWidth()) {
+                resource.setX((rectangles[1].getX()+rectangles[1].getWidth()/2)-(resource.getFitWidth()/2));
+                resource.setY((rectangles[1].getY()+rectangles[1].getHeight()/2)-(resource.getFitWidth()/2));
+            } else if (x >= rectangles[2].getX() && x <= rectangles[2].getX() + rectangles[2].getWidth()) {
+                resource.setX((rectangles[2].getX()+rectangles[2].getWidth()/2)-(resource.getFitWidth()/2));
+                resource.setY((rectangles[2].getY()+rectangles[2].getHeight()/2)-(resource.getFitWidth()/2));
+            }
+        }
+        else if (y >= rectangles[3].getY() && y <= rectangles[3].getY() + rectangles[3].getHeight()) {
+            if (x >= rectangles[3].getX() && x <= rectangles[3].getX() + rectangles[3].getWidth()) {
+                resource.setX((rectangles[3].getX()+rectangles[3].getWidth()/2)-(resource.getFitWidth()/2));
+                resource.setY((rectangles[3].getY()+rectangles[3].getHeight()/2)-(resource.getFitWidth()/2));
+            } else if (x >= rectangles[4].getX() && x <= rectangles[4].getX() + rectangles[4].getWidth()) {
+                resource.setX((rectangles[4].getX()+rectangles[4].getWidth()/2)-(resource.getFitWidth()/2));
+                resource.setY((rectangles[4].getY()+rectangles[4].getHeight()/2)-(resource.getFitWidth()/2));
+            } else if (x >= rectangles[5].getX() && x <= rectangles[5].getX() + rectangles[5].getWidth()) {
+                resource.setX((rectangles[5].getX()+rectangles[5].getWidth()/2)-(resource.getFitWidth()/2));
+                resource.setY((rectangles[5].getY()+rectangles[5].getHeight()/2)-(resource.getFitWidth()/2));
+            }
+        }
+
     }
 
 }
