@@ -1,6 +1,7 @@
 package it.polimi.ingsw;
 
 import javafx.fxml.FXML;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.InputEvent;
@@ -39,7 +40,9 @@ public class GameController {
             pane.getChildren().add(rectangles[i]);
         }
 
-        pane.getChildren().add(getCoin());
+        pane.getChildren().add(getResource(100, 100, "coin"));
+        pane.getChildren().add(getResource(200, 200, "servant"));
+        pane.getChildren().add(getResource(300, 300, "shield"));
 
     }
 
@@ -49,16 +52,37 @@ public class GameController {
         System.out.println(event.getY());
     }
 
-    public ImageView getCoin() {
-        File file = new File("src/main/resources/png/coin.png");
+    private ImageView getResource(int x, int y, String resourceType) {
+        File file = new File("src/main/resources/png/"+resourceType+".png");
         Image image = new Image(file.toURI().toString());
-        ImageView coin = new ImageView(image);
+        ImageView resource = new ImageView(image);
 
-        coin.setX(100);
-        coin.setY(100);
-        coin.setFitHeight(30);
-        coin.setFitWidth(30);
-        return coin;
+        resource.setX(x);
+        resource.setY(y);
+        resource.setFitHeight(25);
+        resource.setFitWidth(25);
+        resource.setOnMousePressed(event -> pressed(event, resource));
+        resource.setOnMouseDragged(event -> dragged(event, resource));
+        resource.setOnMouseReleased(event -> released(event, resource));
+
+        return resource;
+    }
+
+    private void pressed(MouseEvent event, ImageView resource) {
+        ColorAdjust colorAdjust = new ColorAdjust();
+        colorAdjust.setBrightness(-0.5);
+        resource.setEffect(colorAdjust);
+    }
+
+    private void dragged(MouseEvent event, ImageView resource) {
+        resource.setX(event.getX()-12.5);
+        resource.setY(event.getY()-12.5);
+    }
+
+    private void released(MouseEvent event, ImageView resource) {
+        ColorAdjust colorAdjust = new ColorAdjust();
+        colorAdjust.setBrightness(0);
+        resource.setEffect(colorAdjust);
     }
 
 }
