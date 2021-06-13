@@ -26,12 +26,12 @@ public class GameController {
     @FXML
     public void initialize() {
         rectangles = new Rectangle[6];
-        rectangles[0] = new Rectangle(116, 312, 38, 38);
-        rectangles[1] = new Rectangle(96, 374, 38, 38);
-        rectangles[2] = new Rectangle(132, 374, 38, 38);
-        rectangles[3] = new Rectangle(76, 436, 38, 38);
-        rectangles[4] = new Rectangle(116, 436, 38, 38);
-        rectangles[5] = new Rectangle(152, 436, 38, 38);
+        rectangles[0] = new Rectangle(108, 306, 52, 52);
+        rectangles[1] = new Rectangle(90, 366, 42, 52);
+        rectangles[2] = new Rectangle(132, 366, 42, 52);
+        rectangles[3] = new Rectangle(68, 430, 42, 52);
+        rectangles[4] = new Rectangle(110, 430, 40, 52);
+        rectangles[5] = new Rectangle(150, 430, 42, 52);
 
         for (int i = 0; i < rectangles.length; i++) {
             rectangles[i].setFill(Color.TRANSPARENT);
