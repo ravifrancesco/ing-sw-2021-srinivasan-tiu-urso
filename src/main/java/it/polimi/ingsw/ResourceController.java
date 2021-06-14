@@ -2,6 +2,7 @@ package it.polimi.ingsw;
 
 import it.polimi.ingsw.model.Resource;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -76,12 +77,12 @@ public class ResourceController {
         ColorAdjust colorAdjust = new ColorAdjust();
         colorAdjust.setBrightness(0);
         item.setEffect(colorAdjust);
-        computePosition();
+        computePosition(event);
     }
 
-    private void computePosition() {
-        double x = this.x + item.getFitWidth()/2;
-        double y = this.y + item.getFitHeight()/2;
+    private void computePosition(MouseEvent event) {
+        double x = event.getX() + item.getFitWidth()/2;
+        double y = event.getY() + item.getFitHeight()/2;
         if (y >= slots[0].getY() && y <= slots[1].getY() + slots[0].getHeight() &&
                 x >= slots[0].getX() && x <= slots[0].getX() + slots[0].getWidth()) {
             setX((slots[0].getX()+slots[0].getWidth()/2)-(item.getFitWidth()/2));
@@ -94,6 +95,9 @@ public class ResourceController {
             } else if (x >= slots[2].getX() && x <= slots[2].getX() + slots[2].getWidth()) {
                 setX((slots[2].getX()+slots[2].getWidth()/2)-(item.getFitWidth()/2));
                 setY((slots[2].getY()+slots[2].getHeight()/2)-(item.getFitWidth()/2));
+            } else {
+                setX(this.x);
+                setY(this.y);
             }
         }
         else if (y >= slots[3].getY() && y <= slots[3].getY() + slots[3].getHeight()) {
@@ -106,7 +110,13 @@ public class ResourceController {
             } else if (x >= slots[5].getX() && x <= slots[5].getX() + slots[5].getWidth()) {
                 setX((slots[5].getX()+slots[5].getWidth()/2)-(item.getFitWidth()/2));
                 setY((slots[5].getY()+slots[5].getHeight()/2)-(item.getFitWidth()/2));
+            } else {
+                setX(this.x);
+                setY(this.y);
             }
+        } else {
+            setX(this.x);
+            setY(this.y);
         }
     }
 }

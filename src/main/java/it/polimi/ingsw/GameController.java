@@ -4,17 +4,11 @@ import it.polimi.ingsw.model.Resource;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.effect.ColorAdjust;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.InputEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-import java.io.File;
 import java.io.IOException;
 
 public class GameController {
@@ -38,21 +32,23 @@ public class GameController {
         rectangles[4] = new Rectangle(110, 430, 40, 52);
         rectangles[5] = new Rectangle(150, 430, 42, 52);
 
-        for (int i = 0; i < rectangles.length; i++) {
-            rectangles[i].setFill(Color.TRANSPARENT);
-            rectangles[i].setStroke(Color.TRANSPARENT);
-            pane.getChildren().add(rectangles[i]);
+        for (Rectangle rectangle : rectangles) {
+            rectangle.setFill(Color.TRANSPARENT);
+            rectangle.setStroke(Color.TRANSPARENT);
+            pane.getChildren().add(rectangle);
         }
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/resource_item.fxml"));
+        Node node = null;
         try {
-            Node node = loader.load();
+            node = loader.load();
         } catch (IOException e) {
             e.printStackTrace();
         }
         ResourceController resourceController = loader.getController();
         resourceController.assignSlots(rectangles);
         resourceController.createItem(Resource.GOLD);
+
         resourceController.setX(100);
         resourceController.setY(100);
 
