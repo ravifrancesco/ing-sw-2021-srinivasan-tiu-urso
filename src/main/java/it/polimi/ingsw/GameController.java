@@ -6,8 +6,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 
 import java.io.IOException;
 
@@ -16,7 +14,13 @@ public class GameController {
     private GUI gui;
     @FXML Pane pane;
 
-    private Rectangle[] rectangles;
+    private Slot[] slots;
+
+    private Node[] nodes;
+
+    private ResourceController[] resourceControllers;
+
+    public static final int NUM_SHELFES = 6;
 
     public void setGui(GUI gui) {
         this.gui = gui;
@@ -24,20 +28,26 @@ public class GameController {
 
     @FXML
     public void initialize() {
-        rectangles = new Rectangle[6];
-        rectangles[0] = new Rectangle(108, 306, 52, 52);
-        rectangles[1] = new Rectangle(90, 366, 42, 52);
-        rectangles[2] = new Rectangle(132, 366, 42, 52);
-        rectangles[3] = new Rectangle(68, 430, 42, 52);
-        rectangles[4] = new Rectangle(110, 430, 40, 52);
-        rectangles[5] = new Rectangle(150, 430, 42, 52);
+        slots = new Slot[NUM_SHELFES];
+        nodes = new Node[NUM_SHELFES];
+        resourceControllers = new ResourceController[NUM_SHELFES];
+        slots[0] = new Slot(108, 306, 52, 52);
+        slots[1] = new Slot(90, 366, 42, 52);
+        slots[2] = new Slot(132, 366, 42, 52);
+        slots[3] = new Slot(68, 430, 42, 52);
+        slots[4] = new Slot(110, 430, 40, 52);
+        slots[5] = new Slot(150, 430, 42, 52);
 
-        for (Rectangle rectangle : rectangles) {
-            rectangle.setFill(Color.TRANSPARENT);
-            rectangle.setStroke(Color.TRANSPARENT);
-            pane.getChildren().add(rectangle);
+        for (Slot slot : slots) {
+            pane.getChildren().add(slot.getRectangle());
         }
 
+        printResource(Resource.GOLD);
+        printResource(Resource.SHIELD);
+        printResource(Resource.SHIELD);
+    }
+
+    public void printResource(Resource resource) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/resource_item.fxml"));
         Node node = null;
         try {
@@ -46,8 +56,8 @@ public class GameController {
             e.printStackTrace();
         }
         ResourceController resourceController = loader.getController();
-        resourceController.assignSlots(rectangles);
-        resourceController.createItem(Resource.GOLD);
+        resourceController.assignSlots(slots);
+        resourceController.createItem(resource);
 
         resourceController.setX(100);
         resourceController.setY(100);
