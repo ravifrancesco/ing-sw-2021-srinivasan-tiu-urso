@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.Resource;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
@@ -29,6 +30,20 @@ public class GameController {
     public static final int NUM_SHELFES = 6;
 
     public static final int NUM_FAITH_SLOTS = 25;
+
+    // Label for locker
+
+    @FXML
+    Label coinLabel;
+
+    @FXML
+    Label shieldLabel;
+
+    @FXML
+    Label stoneLabel;
+
+    @FXML
+    Label servantLabel;
 
     public void setGui(GUI gui) {
         this.gui = gui;
