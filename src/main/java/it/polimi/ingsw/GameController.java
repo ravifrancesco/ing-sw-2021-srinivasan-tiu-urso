@@ -39,12 +39,12 @@ public class GameController {
         slots = new Slot[NUM_SHELFES];
         nodes = new Node[NUM_SHELFES];
         resourceControllers = new ResourceController[NUM_SHELFES];
-        slots[0] = new Slot(108, 306, 52, 52);
-        slots[1] = new Slot(90, 366, 42, 52);
-        slots[2] = new Slot(132, 366, 42, 52);
-        slots[3] = new Slot(68, 430, 42, 52);
-        slots[4] = new Slot(110, 430, 40, 52);
-        slots[5] = new Slot(150, 430, 42, 52);
+        slots[0] = new Slot(327, 390, 52, 58);
+        slots[1] = new Slot(308, 448, 42, 58);
+        slots[2] = new Slot(350, 448, 42, 58);
+        slots[3] = new Slot(289, 506, 42, 52);
+        slots[4] = new Slot(331, 506, 38, 52);
+        slots[5] = new Slot(369, 506, 42, 52);
 
         for (Slot slot : slots) {
             pane.getChildren().add(slot.getRectangle());

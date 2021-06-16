@@ -16,6 +16,10 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -94,7 +98,7 @@ public class GUI extends Application implements UI {
                         gameController = fxmlLoader.getController();
                         gameController.setGui(this);
                         Stage stage = new Stage();
-                        stage.setScene(new Scene(root, 1000, 714.82));
+                        stage.setScene(new Scene(root, 1366, 768));
                         stage.show();
                         clientMainLobbyController.getScene().getWindow().hide();
                     }

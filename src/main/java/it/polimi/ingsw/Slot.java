@@ -23,7 +23,7 @@ public class Slot {
         this.empty = true;
         rectangle = new Rectangle(this.x, this.y, this.width, this.height);
         rectangle.setFill(Color.TRANSPARENT);
-        rectangle.setStroke(Color.TRANSPARENT);
+        rectangle.setStroke(Color.BLUE);
     }
 
     public double getX() {

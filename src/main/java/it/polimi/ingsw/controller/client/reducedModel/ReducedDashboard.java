@@ -29,7 +29,7 @@ public class ReducedDashboard {
 
     // FaithTrack
     private int position;
-    private Map<Pair<Integer, Integer>, Pair<Integer, Integer>> vaticanReports;
+    private Map<Pair<Integer, Integer>, Pair<Integer, Integer>> vaticanReports; //TODO
     private int[] faithTrackVictoryPoints;
 
     public ReducedDashboard() {
