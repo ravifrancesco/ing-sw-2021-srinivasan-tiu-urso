@@ -27,14 +27,14 @@ public class FaithMarkerController {
         faithMarker = new ImageView(image);
         faithMarker.setFitHeight(35);
         faithMarker.setFitWidth(35);
-        faithMarker.setX(faithSlots[0].getX() + 5);
-        faithMarker.setY(faithSlots[0].getY() + 5);
+        faithMarker.setX(faithSlots[0].getX() + 2.5);
+        faithMarker.setY(faithSlots[0].getY() + 2.5);
         position = 0;
     }
 
     public void moveFaithMarker(int position) {
-        faithMarker.setX(faithSlots[position].getX() + 5);
-        faithMarker.setY(faithSlots[position].getY() + 5);
+        faithMarker.setX(faithSlots[position].getX() + 2.5);
+        faithMarker.setY(faithSlots[position].getY() + 2.5);
         this.position = position;
     }
 

@@ -84,8 +84,8 @@ public class ResourceController {
     }
 
     private void computePosition(MouseEvent event) {
-        double x = event.getX() + item.getFitWidth()/2;
-        double y = event.getY() + item.getFitHeight()/2;
+        double x = event.getX();
+        double y = event.getY();
 
         for (int i = 0; i < GameController.NUM_SHELFES; i++) {
             if (slots[i].isPointInSlot(x, y) && slots[i].isEmpty()) {

@@ -28,12 +28,16 @@ public class BuyDevCardController {
     }
 
     public void onCancelPressed() {
-
+        // TODO to close card
     }
 
     public void onConfirmPressed() {
         // TODO giuse your job
-        gui.getClientConnection().send(new BuyDevelopmentCardGameMessage(/* TODO add parameted */));
+        // TODO gui.getClientConnection().send(new BuyDevelopmentCardGameMessage(/* TODO add parameted */));
+    }
+
+    public void onCancelResourcePressed() {
+        // TODO giuse
     }
 
     private void loadCardImage(int id) {
