@@ -3,16 +3,16 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane prefHeight="714.82" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.GameController">
-   <center>
+<BorderPane prefHeight="768.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.GameController" style="-fx-background-image: url('png/dashboard_background.png')">
+    <bottom>
       <Pane id="pane" fx:id="pane" onMouseClicked="#testClick" BorderPane.alignment="CENTER">
          <children>
-            <ImageView fitHeight="714.82" fitWidth="1000.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="643.0" fitWidth="900.0" layoutX="233.0" layoutY="124.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../png/player_dashboard.png" />
                </image>
             </ImageView>
          </children>
       </Pane>
-   </center>
+   </bottom>
 </BorderPane>

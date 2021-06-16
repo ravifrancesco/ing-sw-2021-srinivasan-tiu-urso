@@ -22,9 +22,11 @@ public class ResourceController {
 
     Resource resourceType;
 
-    Rectangle[] slots;
+    Slot[] slots;
 
-    public void assignSlots(Rectangle[] slots) {
+    int currentSlot;
+
+    public void assignSlots(Slot[] slots) {
         this.slots = slots;
     }
 
@@ -45,6 +47,7 @@ public class ResourceController {
         item.setOnMousePressed(this::pressed);
         item.setOnMouseDragged(this::dragged);
         item.setOnMouseReleased(this::released);
+        currentSlot = -1;
     }
 
     public void setX(double x) {
@@ -83,40 +86,20 @@ public class ResourceController {
     private void computePosition(MouseEvent event) {
         double x = event.getX() + item.getFitWidth()/2;
         double y = event.getY() + item.getFitHeight()/2;
-        if (y >= slots[0].getY() && y <= slots[1].getY() + slots[0].getHeight() &&
-                x >= slots[0].getX() && x <= slots[0].getX() + slots[0].getWidth()) {
-            setX((slots[0].getX()+slots[0].getWidth()/2)-(item.getFitWidth()/2));
-            setY((slots[0].getY()+slots[0].getHeight()/2)-(item.getFitWidth()/2));
-        }
-        if (y >= slots[1].getY() && y <= slots[1].getY() + slots[1].getHeight()) {
-            if (x >= slots[1].getX() && x <= slots[1].getX() + slots[1].getWidth()) {
-                setX((slots[1].getX()+slots[1].getWidth()/2)-(item.getFitWidth()/2));
-                setY((slots[1].getY()+slots[1].getHeight()/2)-(item.getFitWidth()/2));
-            } else if (x >= slots[2].getX() && x <= slots[2].getX() + slots[2].getWidth()) {
-                setX((slots[2].getX()+slots[2].getWidth()/2)-(item.getFitWidth()/2));
-                setY((slots[2].getY()+slots[2].getHeight()/2)-(item.getFitWidth()/2));
-            } else {
-                setX(this.x);
-                setY(this.y);
+
+        for (int i = 0; i < GameController.NUM_SHELFES; i++) {
+            if (slots[i].isPointInSlot(x, y) && slots[i].isEmpty()) {
+                setX((slots[i].getX() + slots[i].getWidth()/2) - (item.getFitWidth() / 2));
+                setY((slots[i].getY() + slots[i].getHeight()/2) - (item.getFitWidth() / 2));
+                slots[i].filLSlot();
+                if (currentSlot != -1) {
+                    slots[currentSlot].freeSlot();
+                }
+                currentSlot = i;
+                return;
             }
         }
-        else if (y >= slots[3].getY() && y <= slots[3].getY() + slots[3].getHeight()) {
-            if (x >= slots[3].getX() && x <= slots[3].getX() + slots[3].getWidth()) {
-                setX((slots[3].getX()+slots[3].getWidth()/2)-(item.getFitWidth()/2));
-                setY((slots[3].getY()+slots[3].getHeight()/2)-(item.getFitWidth()/2));
-            } else if (x >= slots[4].getX() && x <= slots[4].getX() + slots[4].getWidth()) {
-                setX((slots[4].getX()+slots[4].getWidth()/2)-(item.getFitWidth()/2));
-                setY((slots[4].getY()+slots[4].getHeight()/2)-(item.getFitWidth()/2));
-            } else if (x >= slots[5].getX() && x <= slots[5].getX() + slots[5].getWidth()) {
-                setX((slots[5].getX()+slots[5].getWidth()/2)-(item.getFitWidth()/2));
-                setY((slots[5].getY()+slots[5].getHeight()/2)-(item.getFitWidth()/2));
-            } else {
-                setX(this.x);
-                setY(this.y);
-            }
-        } else {
-            setX(this.x);
-            setY(this.y);
-        }
+        setX(this.x);
+        setY(this.y);
     }
 }
