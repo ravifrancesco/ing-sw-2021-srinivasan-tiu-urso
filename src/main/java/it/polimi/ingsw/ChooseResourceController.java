@@ -13,7 +13,13 @@ import java.io.IOException;
 public class ChooseResourceController {
 
     private static final int NUM_SHELFES = 6;
+    private static final int EXTRA_DEPOSITS_SIZE = 2;
+
     private Slot[] depositSlots;
+
+    private Slot[] extraDeposit1Slots;
+
+    private Slot[] extraDeposit2Slots;
 
     @FXML
     private Pane pane;
@@ -28,16 +34,34 @@ public class ChooseResourceController {
     @FXML
     public void initialize() {
         depositSlots = new Slot[NUM_SHELFES];
+        extraDeposit1Slots = new Slot[EXTRA_DEPOSITS_SIZE];
+        extraDeposit2Slots = new Slot[EXTRA_DEPOSITS_SIZE];
+
         depositSlots[0] = new Slot(230, 20, 40, 40);
         depositSlots[1] = new Slot(210, 60, 40, 40);
         depositSlots[2] = new Slot(250, 60, 40, 40);
         depositSlots[3] = new Slot(190, 100, 40, 40);
         depositSlots[4] = new Slot(230, 100, 40, 40);
         depositSlots[5] = new Slot(270, 100, 40, 40);
+        extraDeposit1Slots[0] = new Slot(210, 390, 40, 40);
+        extraDeposit1Slots[1] = new Slot(250, 390, 40, 40);
+
+        extraDeposit2Slots[0] = new Slot(210, 450, 40, 40);
+        extraDeposit2Slots[1] = new Slot(250, 450, 40, 40);
 
         for (Slot depositSlot : depositSlots) {
             depositSlot.setStroke(Color.RED);
             pane.getChildren().add(depositSlot.getRectangle());
+        }
+
+        for (Slot extraSlot : extraDeposit1Slots) {
+            extraSlot.setStroke(Color.RED);
+            pane.getChildren().add(extraSlot.getRectangle());
+        }
+
+        for (Slot extraSlot : extraDeposit2Slots) {
+            extraSlot.setStroke(Color.RED);
+            pane.getChildren().add(extraSlot.getRectangle());
         }
     }
 
