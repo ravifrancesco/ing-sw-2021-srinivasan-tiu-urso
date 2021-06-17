@@ -61,4 +61,8 @@ public class Slot {
     public Rectangle getRectangle() {
         return rectangle;
     }
+
+    public void setStroke(Color color) {
+        rectangle.setStroke(color);
+    }
 }

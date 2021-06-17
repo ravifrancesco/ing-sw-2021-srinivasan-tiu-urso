@@ -4,9 +4,12 @@ import it.polimi.ingsw.model.Resource;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 
@@ -95,6 +98,7 @@ public class GameController {
         System.out.println(event.getX());
         System.out.println(event.getY());
         faithMarkerController.moveFaithMarker(faithMarkerController.getPosition()+1);
+        openChooseResourceWindow();
     }
 
     public void initializeFaithTrack() {
@@ -141,6 +145,20 @@ public class GameController {
         faithMarkerController.createItem();
 
         pane.getChildren().add(faithMarkerController.getItem());
+    }
+
+    public void openChooseResourceWindow() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/choose_resource.fxml"));
+            Parent root = fxmlLoader.load();
+            Stage stage = new Stage();
+            stage.setTitle("Select resources");
+            stage.setScene(new Scene(root, 500, 700));
+            stage.show();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }
