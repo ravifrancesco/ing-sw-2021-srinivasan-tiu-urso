@@ -23,7 +23,7 @@ public class Slot {
         this.empty = true;
         rectangle = new Rectangle(this.x, this.y, this.width, this.height);
         rectangle.setFill(Color.TRANSPARENT);
-        rectangle.setStroke(Color.BLUE);
+        rectangle.setStroke(Color.TRANSPARENT);
     }
 
     public double getX() {
@@ -60,5 +60,9 @@ public class Slot {
 
     public Rectangle getRectangle() {
         return rectangle;
+    }
+
+    public void setStroke(Color color) {
+        rectangle.setStroke(color);
     }
 }

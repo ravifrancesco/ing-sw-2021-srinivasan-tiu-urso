@@ -4,8 +4,12 @@ import it.polimi.ingsw.model.Resource;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 
@@ -29,6 +33,20 @@ public class GameController {
     public static final int NUM_SHELFES = 6;
 
     public static final int NUM_FAITH_SLOTS = 25;
+
+    // Label for locker
+
+    @FXML
+    Label coinLabel;
+
+    @FXML
+    Label shieldLabel;
+
+    @FXML
+    Label stoneLabel;
+
+    @FXML
+    Label servantLabel;
 
     public void setGui(GUI gui) {
         this.gui = gui;
@@ -80,35 +98,36 @@ public class GameController {
         System.out.println(event.getX());
         System.out.println(event.getY());
         faithMarkerController.moveFaithMarker(faithMarkerController.getPosition()+1);
+        openChooseResourceWindow();
     }
 
     public void initializeFaithTrack() {
         faithSlots = new Slot[NUM_FAITH_SLOTS];
-        faithSlots[0] = new Slot(38, 140, 45, 45);
-        faithSlots[1] = new Slot(87, 140, 45, 45);
-        faithSlots[2] = new Slot(135, 140, 45, 45);
-        faithSlots[3] = new Slot(135, 90, 45, 45);
-        faithSlots[4] = new Slot(135, 42, 45, 45);
-        faithSlots[5] = new Slot(184, 42, 45, 45);
-        faithSlots[6] = new Slot(233, 42, 45, 45);
-        faithSlots[7] = new Slot(283, 42, 45, 45);
-        faithSlots[8] = new Slot(332, 42, 45, 45);
-        faithSlots[9] = new Slot(380, 42, 45, 45);
-        faithSlots[10] = new Slot(380, 90, 45, 45);
-        faithSlots[11] = new Slot(380, 140, 45, 45);
-        faithSlots[12] = new Slot(430, 140, 45, 45);
-        faithSlots[13] = new Slot(478, 140, 45, 45);
-        faithSlots[14] = new Slot(528, 140, 45, 45);
-        faithSlots[15] = new Slot(576, 140, 45, 45);
-        faithSlots[16] = new Slot(626, 140, 45, 45);
-        faithSlots[17] = new Slot(626, 90, 45, 45);
-        faithSlots[18] = new Slot(624, 42, 45, 45);
-        faithSlots[19] = new Slot(674, 42, 45, 45);
-        faithSlots[20] = new Slot(724, 42, 45, 45);
-        faithSlots[21] = new Slot(772, 42, 45, 45);
-        faithSlots[22] = new Slot(822, 42, 45, 45);
-        faithSlots[23] = new Slot(870, 42, 45, 45);
-        faithSlots[24] = new Slot(920, 42, 45, 45);
+        faithSlots[0] = new Slot(267, 250, 40, 40);
+        faithSlots[1] = new Slot(311, 250, 40, 40);
+        faithSlots[2] = new Slot(355, 250, 40, 40);
+        faithSlots[3] = new Slot(355, 206, 40, 40);
+        faithSlots[4] = new Slot(355, 162, 40, 40);
+        faithSlots[5] = new Slot(399, 162, 40, 40);
+        faithSlots[6] = new Slot(443, 162, 40, 40);
+        faithSlots[7] = new Slot(487, 162, 40, 40);
+        faithSlots[8] = new Slot(531, 162, 40, 40);
+        faithSlots[9] = new Slot(575, 162, 40, 40);
+        faithSlots[10] = new Slot(575, 206, 40, 40);
+        faithSlots[11] = new Slot(575, 250, 40, 40);
+        faithSlots[12] = new Slot(619, 250, 40, 40);
+        faithSlots[13] = new Slot(663, 250, 40, 40);
+        faithSlots[14] = new Slot(707, 250, 40, 40);
+        faithSlots[15] = new Slot(751, 250, 40, 40);
+        faithSlots[16] = new Slot(795, 250, 40, 40);
+        faithSlots[17] = new Slot(795, 206, 40, 40);
+        faithSlots[18] = new Slot(795, 162, 40, 40);
+        faithSlots[19] = new Slot(839, 162, 40, 40);
+        faithSlots[20] = new Slot(883, 162, 40, 40);
+        faithSlots[21] = new Slot(927, 162, 40, 40);
+        faithSlots[22] = new Slot(971, 162, 40, 40);
+        faithSlots[23] = new Slot(1015, 162, 40, 40);
+        faithSlots[24] = new Slot(1059, 162, 40, 40);
 
         for (int i = 0; i < NUM_FAITH_SLOTS; i++) {
             pane.getChildren().add(faithSlots[i].getRectangle());
@@ -126,6 +145,20 @@ public class GameController {
         faithMarkerController.createItem();
 
         pane.getChildren().add(faithMarkerController.getItem());
+    }
+
+    public void openChooseResourceWindow() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/choose_resource.fxml"));
+            Parent root = fxmlLoader.load();
+            Stage stage = new Stage();
+            stage.setTitle("Select resources");
+            stage.setScene(new Scene(root, 500, 700));
+            stage.show();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }
