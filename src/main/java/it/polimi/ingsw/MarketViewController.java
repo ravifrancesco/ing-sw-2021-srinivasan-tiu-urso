@@ -35,13 +35,14 @@ public class MarketViewController {
         freeMarbleIW = new ImageView();
         marketGridPane.add(freeMarbleIW, 0, 5);
 
-        ImageView slot;
         for (int i = 1; i < 1 + NUM_OF_ROWS; i++) {
+            ImageView slot;
             slot = new ImageView();
             marketGridPane.add(slot, i, 5);
             slotsIW.add(slot);
         }
         for (int i = 1; i < 1 + NUM_OF_COLUMNS; i++) {
+            ImageView slot;
             slot = new ImageView();
             marketGridPane.add(slot, 4, i);
             slotsIW.add(slot);
@@ -55,6 +56,8 @@ public class MarketViewController {
                 marblesIW.add(marbleImage);
             }
         }
+
+        setDraggableFreeMarble();
     }
 
     public void update(Marble[][] marblesGrid, Marble freeMarble) {

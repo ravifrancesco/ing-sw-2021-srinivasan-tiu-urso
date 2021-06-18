@@ -17,9 +17,9 @@ public class BuyDevCardController {
 
     private Pair<Integer, Integer> position;
 
-    public void setParameters(GUI gui, int id, int row, int col) {
+    public void setParameters(GUI gui, Image image, int row, int col) {
         this.gui = gui;
-        loadCardImage(id);
+        loadCardImage(image);
         this.position = new Pair<>(row, col);
     }
 
@@ -36,9 +36,7 @@ public class BuyDevCardController {
         gui.getClientConnection().send(new BuyDevelopmentCardGameMessage(/* TODO add parameted */));
     }
 
-    private void loadCardImage(int id) {
-        File file = new File("src/main/resources/png/cards/devCards/dev_card_" + id + ".png");
-        Image image = new Image(file.toURI().toString());
+    private void loadCardImage(Image image) {
         cardImageView.setImage(image);
         cardImageView.setFitHeight(446);
         cardImageView.setFitWidth(309);
