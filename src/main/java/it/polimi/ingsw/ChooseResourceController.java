@@ -1,25 +1,36 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.client.ClientConnection;
+import it.polimi.ingsw.model.Resource;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.effect.ColorAdjust;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.InputEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.stream.IntStream;
 
 public class ChooseResourceController {
 
-    private static final int NUM_SHELFES = 6;
-    private static final int EXTRA_DEPOSITS_SIZE = 2;
+    private static final int NUM_SHELVES = 6;
+    private static final int EXTRA_DEPOSITS_SIZE = 4;
 
     private Slot[] depositSlots;
 
-    private Slot[] extraDeposit1Slots;
+    private Slot[] extraDepositSlots;
 
-    private Slot[] extraDeposit2Slots;
+    private boolean[] selectedDeposit;
+
+    private boolean[] selectedExtraDeposit;
 
     @FXML
     private Pane pane;
@@ -33,9 +44,10 @@ public class ChooseResourceController {
 
     @FXML
     public void initialize() {
-        depositSlots = new Slot[NUM_SHELFES];
-        extraDeposit1Slots = new Slot[EXTRA_DEPOSITS_SIZE];
-        extraDeposit2Slots = new Slot[EXTRA_DEPOSITS_SIZE];
+        depositSlots = new Slot[NUM_SHELVES];
+        extraDepositSlots = new Slot[EXTRA_DEPOSITS_SIZE];
+        selectedDeposit = new boolean[NUM_SHELVES];
+        selectedExtraDeposit = new boolean[EXTRA_DEPOSITS_SIZE];
 
         depositSlots[0] = new Slot(230, 20, 40, 40);
         depositSlots[1] = new Slot(210, 60, 40, 40);
@@ -43,26 +55,24 @@ public class ChooseResourceController {
         depositSlots[3] = new Slot(190, 100, 40, 40);
         depositSlots[4] = new Slot(230, 100, 40, 40);
         depositSlots[5] = new Slot(270, 100, 40, 40);
-        extraDeposit1Slots[0] = new Slot(210, 390, 40, 40);
-        extraDeposit1Slots[1] = new Slot(250, 390, 40, 40);
-
-        extraDeposit2Slots[0] = new Slot(210, 450, 40, 40);
-        extraDeposit2Slots[1] = new Slot(250, 450, 40, 40);
+        extraDepositSlots[0] = new Slot(210, 390, 40, 40);
+        extraDepositSlots[1] = new Slot(250, 390, 40, 40);
+        extraDepositSlots[2] = new Slot(210, 450, 40, 40);
+        extraDepositSlots[3] = new Slot(250, 450, 40, 40);
 
         for (Slot depositSlot : depositSlots) {
             depositSlot.setStroke(Color.RED);
             pane.getChildren().add(depositSlot.getRectangle());
         }
 
-        for (Slot extraSlot : extraDeposit1Slots) {
+        for (Slot extraSlot : extraDepositSlots) {
             extraSlot.setStroke(Color.RED);
             pane.getChildren().add(extraSlot.getRectangle());
         }
 
-        for (Slot extraSlot : extraDeposit2Slots) {
-            extraSlot.setStroke(Color.RED);
-            pane.getChildren().add(extraSlot.getRectangle());
-        }
+        Arrays.fill(selectedDeposit, false);
+        Arrays.fill(selectedExtraDeposit, false);
+
     }
 
     @FXML
@@ -111,5 +121,97 @@ public class ChooseResourceController {
     private void handleSubServant(InputEvent event) {
         int number = Math.max(Integer.parseInt(labelServant.getText()) - 1, 0);
         labelServant.setText(Integer.toString(number));
+    }
+
+    public void setResources(Resource[] deposit, Map<Resource, Integer> locker, Resource[][] extraDeposits) {
+        for (int i = 0; i < deposit.length; i++) {
+            if (deposit[i] != null) {
+                ImageView imageView = createSelectableResourceDeposit(deposit[i], i);
+                pane.getChildren().add(imageView);
+            }
+        }
+
+        //locker.forEach(this::updateLockerLabel);
+
+        for (int i = 0; i < EXTRA_DEPOSITS_SIZE/2; i++) {
+            for (int j = 0; j < EXTRA_DEPOSITS_SIZE/2; j++) {
+                if (extraDeposits[i][j] != null) {
+                    ImageView imageView2 = createSelectableResourceExtraDeposit(extraDeposits[i][j], i*2+j);
+                    pane.getChildren().add(imageView2);
+                }
+            }
+        }
+    }
+
+    private void updateLockerLabel(Resource resource, int quantity) {
+        String q = Integer.toString(quantity);
+        switch (resource) {
+            case GOLD -> labelGold.setText(q);
+            case SHIELD -> labelShield.setText(q);
+            case STONE -> labelStone.setText(q);
+            case SERVANT -> labelServant.setText(q);
+        }
+    }
+
+    private ImageView createSelectableResourceDeposit(Resource resource, int pos) {
+        String resourceName = "";
+        switch (resource) {
+            case GOLD -> resourceName = "coin";
+            case SHIELD -> resourceName = "shield";
+            case STONE -> resourceName = "stone";
+            case SERVANT -> resourceName = "servant";
+        }
+        File file = new File("src/main/resources/png/"+resourceName+".png");
+        Image image = new Image(file.toURI().toString());
+        ImageView imageView = new ImageView(image);
+        imageView.setOnMouseClicked(mouseEvent -> clickedDepositResource(imageView, mouseEvent, pos));
+        imageView.setFitWidth(25);
+        imageView.setFitHeight(25);
+        imageView.setX((depositSlots[pos].getX() + depositSlots[pos].getWidth()/2) - (imageView.getFitWidth() / 2));
+        imageView.setY((depositSlots[pos].getY() + depositSlots[pos].getHeight()/2) - (imageView.getFitHeight() / 2));
+        return imageView;
+    }
+
+    private void clickedDepositResource(ImageView imageView, MouseEvent mouseEvent, int pos) {
+        ColorAdjust colorAdjust = new ColorAdjust();
+        if (!selectedDeposit[pos]) {
+            colorAdjust.setBrightness(-0.5);
+            imageView.setEffect(colorAdjust);
+        } else {
+            colorAdjust.setBrightness(0);
+            imageView.setEffect(colorAdjust);
+        }
+        selectedDeposit[pos] = !selectedDeposit[pos];
+    }
+
+    private ImageView createSelectableResourceExtraDeposit(Resource resource, int pos) {
+        String resourceName = "";
+        switch (resource) {
+            case GOLD -> resourceName = "coin";
+            case SHIELD -> resourceName = "shield";
+            case STONE -> resourceName = "stone";
+            case SERVANT -> resourceName = "servant";
+        }
+        File file = new File("src/main/resources/png/"+resourceName+".png");
+        Image image = new Image(file.toURI().toString());
+        ImageView imageView = new ImageView(image);
+        imageView.setOnMouseClicked(mouseEvent -> clickedExtraDepositResource(imageView, mouseEvent, pos));
+        imageView.setFitWidth(25);
+        imageView.setFitHeight(25);
+        imageView.setX((extraDepositSlots[pos].getX() + extraDepositSlots[pos].getWidth()/2) - (imageView.getFitWidth() / 2));
+        imageView.setY((extraDepositSlots[pos].getY() + extraDepositSlots[pos].getHeight()/2) - (imageView.getFitHeight() / 2));
+        return imageView;
+    }
+
+    private void clickedExtraDepositResource(ImageView imageView, MouseEvent mouseEvent, int pos) {
+        ColorAdjust colorAdjust = new ColorAdjust();
+        if (!selectedExtraDeposit[pos]) {
+            colorAdjust.setBrightness(-0.5);
+            imageView.setEffect(colorAdjust);
+        } else {
+            colorAdjust.setBrightness(0);
+            imageView.setEffect(colorAdjust);
+        }
+        selectedExtraDeposit[pos] = !selectedExtraDeposit[pos];
     }
 }

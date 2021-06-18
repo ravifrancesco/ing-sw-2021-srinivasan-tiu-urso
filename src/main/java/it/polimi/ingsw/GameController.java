@@ -12,6 +12,8 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class GameController {
 
@@ -151,10 +153,28 @@ public class GameController {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/choose_resource.fxml"));
             Parent root = fxmlLoader.load();
+            ChooseResourceController controller = fxmlLoader.getController();
             Stage stage = new Stage();
-            stage.setTitle("Select resources");
+            stage.setTitle("Buy dv card");
             stage.setScene(new Scene(root, 500, 700));
             stage.show();
+
+            Resource[] deposit = new Resource[6];
+            deposit[0] = Resource.GOLD;
+            deposit[2] = Resource.SHIELD;
+            deposit[5] = Resource.SERVANT;
+
+            Map<Resource, Integer> map = new HashMap<>();
+            map.put(Resource.GOLD, 5);
+            map.put(Resource.SERVANT, 3);
+
+            Resource[][] extraDeposits = new Resource[2][2];
+
+            extraDeposits[0][0] = Resource.GOLD;
+            extraDeposits[1][1] = Resource.SERVANT;
+
+            controller.setResources(deposit, map, extraDeposits);
+
         }
         catch (IOException e) {
             e.printStackTrace();
