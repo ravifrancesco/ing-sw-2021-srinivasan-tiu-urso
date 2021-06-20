@@ -23,7 +23,7 @@ public class ServerChoiceController {
     private void handleConnectClick(InputEvent event) {
         if (!ipField.getText().equals("") && !portField.getText().equals("")) {
             try {
-                gui.setClientConnection(new ClientConnection(ipField.getText(), Integer.parseInt(portField.getText()), gui));
+                new ClientConnection(ipField.getText(), Integer.parseInt(portField.getText()), gui);
                 gui.getClientConnection().connectToServer();
                 openNicknameWindow(event);
             } catch (IllegalArgumentException e) {

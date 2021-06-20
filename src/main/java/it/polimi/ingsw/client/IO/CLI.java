@@ -56,14 +56,6 @@ public class CLI implements UI {
         return reducedModel;
     }
 
-    public void setReducedModel(ReducedModel reducedModel) {
-        this.reducedModel = reducedModel;
-    }
-
-    public void setClientConnection(ClientConnection clientConnection) {
-        this.clientConnection = clientConnection;
-    }
-
     public String readCommand() {
         System.out.println("Enter command:");
         System.out.print("> ");
@@ -230,8 +222,8 @@ public class CLI implements UI {
 
     @Override
     public void startUI(ClientConnection clientConnection, ReducedModel reducedModel) {
-        setClientConnection(clientConnection);
-        setReducedModel(reducedModel);
+        this.clientConnection = clientConnection;
+        this.reducedModel = reducedModel;
     }
 
     @Override

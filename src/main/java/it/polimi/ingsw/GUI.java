@@ -29,6 +29,8 @@ import java.util.ArrayList;
 public class GUI extends Application implements UI {
 
     private ClientConnection clientConnection;
+    private ReducedModel reducedModel;
+
     private NicknameChoiceController nicknameChoiceController;
     private ServerChoiceController serverChoiceController;
     private ClientMainLobbyController clientMainLobbyController;
@@ -51,7 +53,8 @@ public class GUI extends Application implements UI {
 
     @Override
     public void startUI(ClientConnection clientConnection, ReducedModel reducedModel) {
-        // TODO
+        this.clientConnection = clientConnection;
+        this.reducedModel = reducedModel;
     }
 
     @Override

@@ -181,4 +181,8 @@ public class GameController {
         }
     }
 
+    public void initHostAlert() {
+
+    }
+
 }
