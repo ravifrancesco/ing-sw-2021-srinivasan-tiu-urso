@@ -166,14 +166,18 @@ public class ServerController {
 
     /**
      * Starts the game.
-     * TODO
      */
     public void startGame() {
         game.reset();
-        game.startUniquePhase(TurnPhase.FIRST_TURN);
-        game.changePlayer();
-        game.setFirstPlayer(game.getCurrentPlayer());
-        game.distributeCards();
+        try {
+            game.startGame();
+            game.startUniquePhase(TurnPhase.FIRST_TURN);
+            game.changePlayer();
+            game.setFirstPlayer(game.getCurrentPlayer());
+            game.distributeCards();
+        } catch (GameNotFullException e) {
+            System.out.println("Game not full, can't start game");
+        }
     }
 
     /**

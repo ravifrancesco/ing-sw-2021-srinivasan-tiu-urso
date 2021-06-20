@@ -17,8 +17,10 @@ public class GameUpdateMessage implements ServerMessage, Serializable {
     private final String firstPlayer;
     private final String currentPlayer;
     private final ArrayList<String> players;
+    private final boolean gameStarted;
 
     public GameUpdateMessage(Game game) {
+        this.gameStarted = game.isGameStarted();
         this.firstPlayer = game.getFirstPlayer();
         this.currentPlayer = game.getCurrentPlayer();
         this.players = new ArrayList<>(game.getPlayers().keySet());
@@ -26,6 +28,6 @@ public class GameUpdateMessage implements ServerMessage, Serializable {
 
     @Override
     public void updateClient(ClientConnection clientConnection, String nickname) {
-        clientConnection.updateReducedGame(firstPlayer, currentPlayer, players);
+        clientConnection.updateReducedGame(gameStarted, firstPlayer, currentPlayer, players);
     }
 }
