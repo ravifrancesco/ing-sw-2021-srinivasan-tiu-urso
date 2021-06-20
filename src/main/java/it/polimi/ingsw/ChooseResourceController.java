@@ -51,6 +51,7 @@ public class ChooseResourceController {
     @FXML private Button btnSlot1;
     @FXML private Button btnSlot2;
     @FXML private Button btnSlot3;
+    @FXML private Button btnOk;
 
     @FXML
     public void initialize() {
@@ -231,6 +232,9 @@ public class ChooseResourceController {
 
     @FXML
     private void clickedBtnSlot1(MouseEvent event) {
+        if (btnOk.isDisabled()) {
+            btnOk.setDisable(false);
+        }
         btnSlot1.setDisable(true);
         btnSlot2.setDisable(false);
         btnSlot3.setDisable(false);
@@ -239,6 +243,9 @@ public class ChooseResourceController {
 
     @FXML
     private void clickedBtnSlot2(MouseEvent event) {
+        if (btnOk.isDisabled()) {
+            btnOk.setDisable(false);
+        }
         btnSlot1.setDisable(false);
         btnSlot2.setDisable(true);
         btnSlot3.setDisable(false);
@@ -247,6 +254,9 @@ public class ChooseResourceController {
 
     @FXML
     private void clickedBtnSlot3(MouseEvent event) {
+        if (btnOk.isDisabled()) {
+            btnOk.setDisable(false);
+        }
         btnSlot1.setDisable(false);
         btnSlot2.setDisable(false);
         btnSlot3.setDisable(true);

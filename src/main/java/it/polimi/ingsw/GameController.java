@@ -180,6 +180,8 @@ public class GameController {
             Resource[][] extraDeposits = new Resource[2][2];
 
             extraDeposits[0][0] = Resource.GOLD;
+            extraDeposits[0][1] = Resource.SHIELD;
+            extraDeposits[1][0] = Resource.STONE;
             extraDeposits[1][1] = Resource.SERVANT;
 
             chooseResourceController.setResources(deposit, map, extraDeposits);
