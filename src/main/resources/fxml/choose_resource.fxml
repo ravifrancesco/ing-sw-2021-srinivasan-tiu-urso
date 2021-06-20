@@ -34,10 +34,10 @@
     <Button layoutX="192.0" layoutY="310.0" mnemonicParsing="false" onMouseClicked="#handleSubServant" prefHeight="25.0" prefWidth="25.0" text="-" />
    <Label layoutX="12.0" layoutY="360.0" text="Select resources from extra deposits:" />
    <Label layoutX="12.0" layoutY="530.0" text="Select where to place the card:" />
-   <Button layoutX="205.0" layoutY="526.0" mnemonicParsing="false" text="Slot 1" />
-   <Button layoutX="284.0" layoutY="526.0" mnemonicParsing="false" text="Slot 2" />
-   <Button layoutX="363.0" layoutY="526.0" mnemonicParsing="false" text="Slot 3" />
-   <Button layoutX="181.0" layoutY="627.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="48.0" text="OK" />
+   <Button fx:id="btnSlot1" layoutX="205.0" layoutY="526.0" mnemonicParsing="false" onMouseClicked="#clickedBtnSlot1" text="Slot 1" />
+   <Button fx:id="btnSlot2" layoutX="284.0" layoutY="526.0" mnemonicParsing="false" onMouseClicked="#clickedBtnSlot2" text="Slot 2" />
+   <Button fx:id="btnSlot3" layoutX="363.0" layoutY="526.0" mnemonicParsing="false" onMouseClicked="#clickedBtnSlot3" text="Slot 3" />
+   <Button layoutX="181.0" layoutY="627.0" mnemonicParsing="false" onMouseClicked="#clickedOkBtn" prefHeight="25.0" prefWidth="48.0" text="OK" />
    <Button layoutX="273.0" layoutY="627.0" mnemonicParsing="false" text="CANC" />
 
 </AnchorPane>

@@ -32,6 +32,8 @@ public class GameController {
 
     private FaithMarkerController faithMarkerController;
 
+    private ChooseResourceController chooseResourceController;
+
     public static final int NUM_SHELFES = 6;
 
     public static final int NUM_FAITH_SLOTS = 25;
@@ -100,7 +102,14 @@ public class GameController {
         System.out.println(event.getX());
         System.out.println(event.getY());
         faithMarkerController.moveFaithMarker(faithMarkerController.getPosition()+1);
-        openChooseResourceWindow();
+        if (chooseResourceController == null) {
+            openChooseResourceWindow();
+        }
+        else
+        {
+            System.out.println(chooseResourceController.getResourceContainer());
+            System.out.println(chooseResourceController.getSelectedCardSlot());
+        }
     }
 
     public void initializeFaithTrack() {
@@ -153,7 +162,7 @@ public class GameController {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/choose_resource.fxml"));
             Parent root = fxmlLoader.load();
-            ChooseResourceController controller = fxmlLoader.getController();
+            chooseResourceController = fxmlLoader.getController();
             Stage stage = new Stage();
             stage.setTitle("Buy dv card");
             stage.setScene(new Scene(root, 500, 700));
@@ -173,7 +182,7 @@ public class GameController {
             extraDeposits[0][0] = Resource.GOLD;
             extraDeposits[1][1] = Resource.SERVANT;
 
-            controller.setResources(deposit, map, extraDeposits);
+            chooseResourceController.setResources(deposit, map, extraDeposits);
 
         }
         catch (IOException e) {
