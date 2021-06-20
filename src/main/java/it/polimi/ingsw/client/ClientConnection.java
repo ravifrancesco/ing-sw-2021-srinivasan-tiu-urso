@@ -137,8 +137,9 @@ public class ClientConnection implements Runnable {
         }).start();
     }
 
-    public void updateReducedGame(String firstPlayer, String currentPlayer, List<String> playersNicknames) {
+    public void updateReducedGame(boolean gameStarted, String firstPlayer, String currentPlayer, List<String> playersNicknames) {
         ReducedGame reducedGame = reducedModel.getReducedGame();
+        reducedGame.setGameStarted(gameStarted);
         reducedGame.setFirstPlayer(firstPlayer);
         reducedGame.setCurrentPlayer(currentPlayer);
         reducedGame.updatePlayers(playersNicknames);
