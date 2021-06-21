@@ -21,5 +21,5 @@ public interface UI {
     void showGameLobbies(ArrayList<GameLobbyDetails> gameLobbies);
 
     // TODO add to cli
-    void enterGamePhase();
+    void enterGamePhase(boolean isHost);
 }

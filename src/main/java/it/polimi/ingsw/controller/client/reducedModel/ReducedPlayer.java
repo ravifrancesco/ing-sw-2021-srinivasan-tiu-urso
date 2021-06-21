@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller.client.reducedModel;
 
+import it.polimi.ingsw.client.ReducedModel;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.specialAbilities.WhiteMarbleResource;
@@ -19,7 +20,9 @@ public class ReducedPlayer {
     // Dashboard
     private final ReducedDashboard dashboard;
 
-    public ReducedPlayer() {
+    private ReducedModel reducedModel;
+
+    public ReducedPlayer(ReducedModel reducedModel) {
         this.nickname = "";
         this.hand = new ArrayList<>();
         this.dashboard = new ReducedDashboard();

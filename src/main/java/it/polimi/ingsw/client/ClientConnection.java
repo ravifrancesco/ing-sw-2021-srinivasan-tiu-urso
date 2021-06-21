@@ -217,4 +217,9 @@ public class ClientConnection implements Runnable {
         reducedGame.setGameId(gameID);
         reducedGame.setNumberOfPlayers(numberOfPlayers);
     }
+
+    public ReducedModel getReducedModel() {
+        return reducedModel;
+    }
+
 }

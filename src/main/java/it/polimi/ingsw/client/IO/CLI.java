@@ -121,7 +121,7 @@ public class CLI implements UI {
     }
 
     @Override
-    public void enterGamePhase() {
+    public void enterGamePhase(boolean isHost) {
         // TODO
     }
 

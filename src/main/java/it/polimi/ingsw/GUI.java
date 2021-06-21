@@ -92,7 +92,7 @@ public class GUI extends Application implements UI {
     }
 
     @Override
-    public void enterGamePhase() {
+    public void enterGamePhase(boolean isHost) {
         Platform.runLater(
                 () -> {
                     try {
@@ -104,6 +104,11 @@ public class GUI extends Application implements UI {
                         stage.setScene(new Scene(root, 1366, 768));
                         stage.show();
                         clientMainLobbyController.getScene().getWindow().hide();
+                        if (isHost) {
+                            gameController.initHostAlert();
+                        } else {
+                            gameController.initPlayerAlert();
+                        }
                     }
                     catch (IOException e) {
                         e.printStackTrace();
@@ -134,6 +139,10 @@ public class GUI extends Application implements UI {
 
     public ClientMainLobbyController getClientMainLobbyController() {
         return clientMainLobbyController;
+    }
+
+    public ReducedModel getReducedModel() {
+        return reducedModel;
     }
 
 }

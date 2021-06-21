@@ -203,8 +203,8 @@ public class Connection implements Runnable,
         send(new GameLobbiesMessage(gameLobbies));
     }
 
-    public void sendGameLobbyEntered(String id) {
-        send(new SuccessfulConnectionToGameLobbyMessage(id));
+    public void sendGameLobbyEntered(String id, boolean isHost) {
+        send(new SuccessfulConnectionToGameLobbyMessage(id, isHost));
     }
 
     public String getNickname() {

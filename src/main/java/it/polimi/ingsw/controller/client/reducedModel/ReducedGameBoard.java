@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller.client.reducedModel;
 
+import it.polimi.ingsw.client.ReducedModel;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.cards.Card;
@@ -28,7 +29,10 @@ public class ReducedGameBoard {
     private List<DevelopmentCard> developmentCardDeck;
     private List<Card> discardDeck;
 
-    public ReducedGameBoard() {
+    private ReducedModel reducedModel;
+
+    public ReducedGameBoard(ReducedModel reducedModel) {
+        this.reducedModel = reducedModel;
         this.marblesGrid = new Marble[(gridRowLength * gridColLength) + 1];
         grid = new ArrayList<>();
         leaderCardDeck = new ArrayList<>();

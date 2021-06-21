@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client;
 
+import it.polimi.ingsw.GameController;
 import it.polimi.ingsw.controller.client.reducedModel.ReducedGame;
 import it.polimi.ingsw.controller.client.reducedModel.ReducedGameBoard;
 import it.polimi.ingsw.controller.client.reducedModel.ReducedPlayer;
@@ -10,12 +11,14 @@ public class ReducedModel {
     private ReducedPlayer reducedPlayer;
     private ReducedGameBoard reducedGameBoard;
 
+    GameController gameController;
+
 
 
     public ReducedModel() {
-        reducedGame = new ReducedGame();
-        reducedPlayer = new ReducedPlayer();
-        reducedGameBoard = new ReducedGameBoard();
+        reducedGame = new ReducedGame(this);
+        reducedPlayer = new ReducedPlayer(this);
+        reducedGameBoard = new ReducedGameBoard(this);
     }
 
     public ReducedGame getReducedGame() {
@@ -38,5 +41,13 @@ public class ReducedModel {
         reducedPlayer.setNickname(nickname);
         reducedGame.setClientPlayer(nickname);
         reducedGame.createPlayer(reducedPlayer); // TODO is there a better way to do this?
+    }
+
+    public void setGameController(GameController gameController) {
+        this.gameController = gameController;
+    }
+
+    public void hideStartGameAlert() {
+        gameController.hideAlert();
     }
 }

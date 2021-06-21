@@ -1,11 +1,15 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.model.Resource;
+import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.game.StartGameGameMessage;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -14,11 +18,14 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class GameController {
 
     private GUI gui;
     @FXML Pane pane;
+
+    private Alert mainAlert;
 
     private Slot[] slots;
 
@@ -52,6 +59,7 @@ public class GameController {
 
     public void setGui(GUI gui) {
         this.gui = gui;
+        this.gui.getReducedModel().setGameController(this);
     }
 
     @FXML
@@ -182,7 +190,32 @@ public class GameController {
     }
 
     public void initHostAlert() {
+        mainAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        mainAlert.setTitle("Start Game");
+        mainAlert.setHeaderText("Start game when you are ready!");
 
+        ButtonType buttonTypeOne = new ButtonType("Start");
+
+        mainAlert.getButtonTypes().setAll(buttonTypeOne);
+
+        Optional<ButtonType> result = mainAlert.showAndWait();
+        if (result.get() == buttonTypeOne){
+            this.gui.getClientConnection().send(new StartGameGameMessage());
+            Platform.runLater(this::initHostAlert); // TODO make it better
+        }
+    }
+
+    public void initPlayerAlert() {
+        mainAlert = new Alert(Alert.AlertType.NONE);
+        mainAlert.setTitle("Start Game");
+        mainAlert.setHeaderText("Waiting for host to start the game");
+        mainAlert.show();
+    }
+
+    public void hideAlert() {
+        if (mainAlert != null) {
+            Platform.runLater(() -> mainAlert.close());
+        }
     }
 
 }

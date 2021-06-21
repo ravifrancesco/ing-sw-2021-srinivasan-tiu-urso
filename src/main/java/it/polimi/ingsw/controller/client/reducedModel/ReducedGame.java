@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller.client.reducedModel;
 
+import it.polimi.ingsw.client.ReducedModel;
 import it.polimi.ingsw.model.TurnPhase;
 import it.polimi.ingsw.model.specialAbilities.ProductionPower;
 
@@ -25,7 +26,10 @@ public class ReducedGame {
 
     private TurnPhase turnPhase;
 
-    public ReducedGame() {
+    private ReducedModel reducedModel;
+
+    public ReducedGame(ReducedModel reducedModel) {
+        this.reducedModel = reducedModel;
         this.gameId = "";
         this.numberOfPlayers = 0;
         this.gameStarted = false;
@@ -91,11 +95,11 @@ public class ReducedGame {
 
     public void updatePlayers(List<String> playersNicknames) {
         // TODO add and remove players after disconnections
-        playersNicknames.forEach(nickname -> this.players.putIfAbsent(nickname, new ReducedPlayer()));
+        playersNicknames.forEach(nickname -> this.players.putIfAbsent(nickname, new ReducedPlayer(reducedModel)));
     }
 
     public void createPlayer(String playerNickname) {
-        players.putIfAbsent(playerNickname, new ReducedPlayer());
+        players.putIfAbsent(playerNickname, new ReducedPlayer(reducedModel));
     }
 
     public void createPlayer(ReducedPlayer reducedPlayer) {
@@ -103,6 +107,9 @@ public class ReducedGame {
     }
 
     public void setGameStarted(boolean gameStarted) {
-        this.gameStarted = gameStarted;
+        if (!this.gameStarted && gameStarted) {
+            this.gameStarted = gameStarted;
+            this.reducedModel.hideStartGameAlert();
+        }
     }
 }
