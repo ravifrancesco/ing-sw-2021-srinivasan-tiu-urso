@@ -2,8 +2,10 @@ package it.polimi.ingsw;
 
 import it.polimi.ingsw.client.ClientConnection;
 import it.polimi.ingsw.model.Resource;
+import it.polimi.ingsw.model.ResourceContainer;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
@@ -21,8 +23,11 @@ import java.util.stream.IntStream;
 
 public class ChooseResourceController {
 
+    private static final int NUM_RESOURCES = 4;
     private static final int NUM_SHELVES = 6;
     private static final int EXTRA_DEPOSITS_SIZE = 4;
+
+    private int[] maxLockerResources;
 
     private Slot[] depositSlots;
 
@@ -32,6 +37,10 @@ public class ChooseResourceController {
 
     private boolean[] selectedExtraDeposit;
 
+    private int selectedCardSlot;
+
+    private ResourceContainer resourceContainer;
+
     @FXML
     private Pane pane;
 
@@ -39,8 +48,10 @@ public class ChooseResourceController {
     @FXML private Label labelShield;
     @FXML private Label labelStone;
     @FXML private Label labelServant;
-
-    // TODO leaderCard WE
+    @FXML private Button btnSlot1;
+    @FXML private Button btnSlot2;
+    @FXML private Button btnSlot3;
+    @FXML private Button btnOk;
 
     @FXML
     public void initialize() {
@@ -48,6 +59,8 @@ public class ChooseResourceController {
         extraDepositSlots = new Slot[EXTRA_DEPOSITS_SIZE];
         selectedDeposit = new boolean[NUM_SHELVES];
         selectedExtraDeposit = new boolean[EXTRA_DEPOSITS_SIZE];
+        maxLockerResources = new int[NUM_RESOURCES];
+        selectedCardSlot = 0;
 
         depositSlots[0] = new Slot(230, 20, 40, 40);
         depositSlots[1] = new Slot(210, 60, 40, 40);
@@ -72,12 +85,15 @@ public class ChooseResourceController {
 
         Arrays.fill(selectedDeposit, false);
         Arrays.fill(selectedExtraDeposit, false);
+        Arrays.fill(maxLockerResources, 0);
+
+        resourceContainer = new ResourceContainer();
 
     }
 
     @FXML
     private void handleAddGold(InputEvent event) {
-        int number = Integer.parseInt(labelGold.getText()) + 1;
+        int number = Math.min(Integer.parseInt(labelGold.getText()) + 1, maxLockerResources[0]);
         labelGold.setText(Integer.toString(number));
     }
 
@@ -89,7 +105,7 @@ public class ChooseResourceController {
 
     @FXML
     private void handleAddShield(InputEvent event) {
-        int number = Integer.parseInt(labelShield.getText()) + 1;
+        int number = Math.min(Integer.parseInt(labelShield.getText()) + 1, maxLockerResources[1]);
         labelShield.setText(Integer.toString(number));
     }
 
@@ -101,7 +117,7 @@ public class ChooseResourceController {
 
     @FXML
     private void handleAddStone(InputEvent event) {
-        int number = Integer.parseInt(labelStone.getText()) + 1;
+        int number = Math.min(Integer.parseInt(labelStone.getText()) + 1, maxLockerResources[2]);
         labelStone.setText(Integer.toString(number));
     }
 
@@ -113,7 +129,7 @@ public class ChooseResourceController {
 
     @FXML
     private void handleAddServant(InputEvent event) {
-        int number = Integer.parseInt(labelServant.getText()) + 1;
+        int number = Math.min(Integer.parseInt(labelServant.getText()) + 1, maxLockerResources[3]);
         labelServant.setText(Integer.toString(number));
     }
 
@@ -131,10 +147,10 @@ public class ChooseResourceController {
             }
         }
 
-        //locker.forEach(this::updateLockerLabel);
+        locker.forEach(this::updateLockerMaximum);
 
-        for (int i = 0; i < EXTRA_DEPOSITS_SIZE/2; i++) {
-            for (int j = 0; j < EXTRA_DEPOSITS_SIZE/2; j++) {
+        for (int i = 0; i < EXTRA_DEPOSITS_SIZE / 2; i++) {
+            for (int j = 0; j < EXTRA_DEPOSITS_SIZE / 2; j++) {
                 if (extraDeposits[i][j] != null) {
                     ImageView imageView2 = createSelectableResourceExtraDeposit(extraDeposits[i][j], i*2+j);
                     pane.getChildren().add(imageView2);
@@ -143,13 +159,12 @@ public class ChooseResourceController {
         }
     }
 
-    private void updateLockerLabel(Resource resource, int quantity) {
-        String q = Integer.toString(quantity);
+    private void updateLockerMaximum(Resource resource, int quantity) {
         switch (resource) {
-            case GOLD -> labelGold.setText(q);
-            case SHIELD -> labelShield.setText(q);
-            case STONE -> labelStone.setText(q);
-            case SERVANT -> labelServant.setText(q);
+            case GOLD -> maxLockerResources[0] = quantity;
+            case SHIELD -> maxLockerResources[1] = quantity;
+            case STONE -> maxLockerResources[2] = quantity;
+            case SERVANT -> maxLockerResources[3] = quantity;
         }
     }
 
@@ -213,5 +228,70 @@ public class ChooseResourceController {
             imageView.setEffect(colorAdjust);
         }
         selectedExtraDeposit[pos] = !selectedExtraDeposit[pos];
+    }
+
+    @FXML
+    private void clickedBtnSlot1(MouseEvent event) {
+        if (btnOk.isDisabled()) {
+            btnOk.setDisable(false);
+        }
+        btnSlot1.setDisable(true);
+        btnSlot2.setDisable(false);
+        btnSlot3.setDisable(false);
+        selectedCardSlot = 1;
+    }
+
+    @FXML
+    private void clickedBtnSlot2(MouseEvent event) {
+        if (btnOk.isDisabled()) {
+            btnOk.setDisable(false);
+        }
+        btnSlot1.setDisable(false);
+        btnSlot2.setDisable(true);
+        btnSlot3.setDisable(false);
+        selectedCardSlot = 2;
+    }
+
+    @FXML
+    private void clickedBtnSlot3(MouseEvent event) {
+        if (btnOk.isDisabled()) {
+            btnOk.setDisable(false);
+        }
+        btnSlot1.setDisable(false);
+        btnSlot2.setDisable(false);
+        btnSlot3.setDisable(true);
+        selectedCardSlot = 3;
+    }
+
+    @FXML
+    private void clickedOkBtn(MouseEvent event) {
+        IntStream.range(0, selectedDeposit.length).filter(i -> selectedDeposit[i]).forEach(i -> resourceContainer.addDepositSelectedResource(i));
+        IntStream.range(0, selectedExtraDeposit.length).filter(i -> selectedExtraDeposit[i]).forEach(i -> resourceContainer.addExtraDepositSelectedResource(i/2,i%2));
+        if (!labelGold.getText().equals("0")) {
+            resourceContainer.addLockerSelectedResource(Resource.GOLD, Integer.parseInt(labelGold.getText()));
+        }
+        if (!labelShield.getText().equals("0")) {
+            resourceContainer.addLockerSelectedResource(Resource.SHIELD, Integer.parseInt(labelShield.getText()));
+        }
+        if (!labelStone.getText().equals("0")) {
+            resourceContainer.addLockerSelectedResource(Resource.STONE, Integer.parseInt(labelStone.getText()));
+        }
+        if (!labelServant.getText().equals("0")) {
+            resourceContainer.addLockerSelectedResource(Resource.SERVANT, Integer.parseInt(labelServant.getText()));
+        }
+        ((Node)(event.getSource())).getScene().getWindow().hide();
+    }
+
+    @FXML
+    private void clickedCancBtn(MouseEvent event) {
+        ((Node)(event.getSource())).getScene().getWindow().hide();
+    }
+
+    public int getSelectedCardSlot() {
+        return selectedCardSlot;
+    }
+
+    public ResourceContainer getResourceContainer() {
+        return resourceContainer;
     }
 }
