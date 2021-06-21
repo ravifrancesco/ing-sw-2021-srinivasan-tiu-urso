@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.controller.exceptions.GameNotFullException;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.observerPattern.observables.GameObservable;
 import it.polimi.ingsw.model.observerPattern.observers.GameObserver;
@@ -29,6 +30,7 @@ public class Game extends GameObservable {
 	private TurnPhase turnPhase;
 
 	private boolean gameEnded;
+	private boolean gameStarted;
 
 	private GameError gameError;
 
@@ -49,7 +51,8 @@ public class Game extends GameObservable {
 		gameBoard.reset(gameSettings);
 		players.values().forEach(Player::reset);
 		this.playerOrder = players.keySet().iterator();
-			this.gameEnded = false;
+		this.gameEnded = false;
+		this.gameStarted = false;
 		notify(this);
 
 	}
@@ -162,4 +165,18 @@ public class Game extends GameObservable {
 
 		gameError.setError(error);
 	}
+
+	public void startGame() throws GameNotFullException {
+		if (players.size() < numberOfPlayers) {
+			notify(this);
+			throw new GameNotFullException("Game Not Full");
+		}
+		this.gameStarted = true;
+		notify(this);
+	}
+
+	public boolean isGameStarted() {
+		return gameStarted;
+	}
+
 }

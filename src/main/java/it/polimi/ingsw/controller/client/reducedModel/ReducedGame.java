@@ -14,6 +14,8 @@ public class ReducedGame {
 
     private int numberOfPlayers;
 
+    private boolean gameStarted;
+
     private String clientPlayer;
 
     private String currentPlayer;
@@ -26,6 +28,7 @@ public class ReducedGame {
     public ReducedGame() {
         this.gameId = "";
         this.numberOfPlayers = 0;
+        this.gameStarted = false;
         this.clientPlayer = "";
         this.players = new HashMap<>();
     }
@@ -97,5 +100,9 @@ public class ReducedGame {
 
     public void createPlayer(ReducedPlayer reducedPlayer) {
         players.put(reducedPlayer.getNickname(), reducedPlayer);
+    }
+
+    public void setGameStarted(boolean gameStarted) {
+        this.gameStarted = gameStarted;
     }
 }
