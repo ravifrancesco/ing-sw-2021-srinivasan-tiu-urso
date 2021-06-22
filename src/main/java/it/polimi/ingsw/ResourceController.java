@@ -30,7 +30,7 @@ public class ResourceController {
         this.slots = slots;
     }
 
-    public void createItem(Resource resourceType) {
+    public void createItem(Resource resourceType, int pos) {
         String name = "";
         this.resourceType = resourceType;
         switch(resourceType) {
@@ -47,7 +47,10 @@ public class ResourceController {
         item.setOnMousePressed(this::pressed);
         item.setOnMouseDragged(this::dragged);
         item.setOnMouseReleased(this::released);
-        currentSlot = -1;
+        setX((slots[pos].getX() + slots[pos].getWidth()/2) - (item.getFitWidth() / 2));
+        setY((slots[pos].getY() + slots[pos].getHeight()/2) - (item.getFitWidth() / 2));
+        slots[pos].filLSlot();
+        currentSlot = pos;
     }
 
     public void setX(double x) {

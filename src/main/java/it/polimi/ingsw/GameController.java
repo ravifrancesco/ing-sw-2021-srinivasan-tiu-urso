@@ -16,9 +16,11 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.IntStream;
 
 public class GameController {
 
@@ -27,9 +29,9 @@ public class GameController {
 
     private Alert mainAlert;
 
-    private Slot[] slots;
+    private Slot[] depositSlots;
 
-    private Node[] nodes;
+    private Slot[] extraDepositSlots;
 
     private Slot[] faithSlots;
 
@@ -44,6 +46,8 @@ public class GameController {
     public static final int NUM_SHELFES = 6;
 
     public static final int NUM_FAITH_SLOTS = 25;
+
+    public static final int SIZE_EXTRA_DEPOSITS = 4;
 
     // Label for locker
 
@@ -66,28 +70,62 @@ public class GameController {
 
     @FXML
     public void initialize() {
-        slots = new Slot[NUM_SHELFES];
-        nodes = new Node[NUM_SHELFES];
-        resourceControllers = new ResourceController[NUM_SHELFES];
-        slots[0] = new Slot(327, 390, 52, 58);
-        slots[1] = new Slot(308, 448, 42, 58);
-        slots[2] = new Slot(350, 448, 42, 58);
-        slots[3] = new Slot(289, 506, 42, 52);
-        slots[4] = new Slot(331, 506, 38, 52);
-        slots[5] = new Slot(369, 506, 42, 52);
+        depositSlots = new Slot[NUM_SHELFES];
+        extraDepositSlots = new Slot[SIZE_EXTRA_DEPOSITS];
+        resourceControllers = new ResourceController[NUM_SHELFES + SIZE_EXTRA_DEPOSITS];
+        depositSlots[0] = new Slot(327, 390, 52, 58);
+        depositSlots[1] = new Slot(308, 448, 42, 58);
+        depositSlots[2] = new Slot(350, 448, 42, 58);
+        depositSlots[3] = new Slot(289, 506, 42, 52);
+        depositSlots[4] = new Slot(331, 506, 38, 52);
+        depositSlots[5] = new Slot(369, 506, 42, 52);
 
-        for (Slot slot : slots) {
+        for (Slot slot : depositSlots) {
             pane.getChildren().add(slot.getRectangle());
         }
 
+        Resource[] deposit = new Resource[6];
+        deposit[0] = Resource.GOLD;
+        deposit[2] = Resource.SHIELD;
+        deposit[5] = Resource.SERVANT;
+
+        Map<Resource, Integer> map = new HashMap<>();
+        map.put(Resource.GOLD, 5);
+        map.put(Resource.SERVANT, 3);
+
+        Resource[][] extraDeposits = new Resource[2][2];
+
+        extraDeposits[0][0] = Resource.GOLD;
+        extraDeposits[0][1] = Resource.SHIELD;
+        extraDeposits[1][0] = Resource.STONE;
+        extraDeposits[1][1] = Resource.SERVANT;
+
+        printWarehouse(deposit, map, extraDeposits, new ArrayList<>());
+
         initializeFaithTrack();
 
-        printResource(Resource.GOLD);
-        printResource(Resource.SHIELD);
-        printResource(Resource.SHIELD);
+        cleanWarehouse();
+
+        Resource[] deposit2 = new Resource[6];
+        deposit2[0] = Resource.SHIELD;
+        deposit2[2] = Resource.GOLD;
+        deposit2[4] = Resource.STONE;
+
+        Map<Resource, Integer> map2 = new HashMap<>();
+        map2.put(Resource.SHIELD, 2);
+        map2.put(Resource.STONE, 3);
+
+        Resource[][] extraDeposits2 = new Resource[2][2];
+
+        extraDeposits2[0][0] = Resource.GOLD;
+        extraDeposits2[0][1] = Resource.SHIELD;
+        extraDeposits2[1][0] = Resource.STONE;
+        extraDeposits2[1][1] = Resource.SERVANT;
+
+        printWarehouse(deposit2, map2, extraDeposits2, new ArrayList<>());
     }
 
-    public void printResource(Resource resource) {
+    public void printResource(Resource resource, int pos, Slot[] slots) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/resource_item.fxml"));
         Node node = null;
         try {
@@ -95,14 +133,53 @@ public class GameController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        ResourceController resourceController = loader.getController();
-        resourceController.assignSlots(slots);
-        resourceController.createItem(resource);
+        resourceControllers[pos] = loader.getController();
+        resourceControllers[pos].assignSlots(slots);
+        resourceControllers[pos].createItem(resource, pos);
 
-        resourceController.setX(100);
-        resourceController.setY(100);
+        pane.getChildren().add(resourceControllers[pos].getItem());
+    }
 
-        pane.getChildren().add(resourceController.getItem());
+    public void updateLockerLabel(Resource resource, int quantity) {
+        String stringQuantity = "x " + Integer.toString(quantity);
+        switch (resource) {
+            case GOLD -> coinLabel.setText(stringQuantity);
+            case SHIELD -> shieldLabel.setText(stringQuantity);
+            case STONE -> stoneLabel.setText(stringQuantity);
+            case SERVANT -> servantLabel.setText(stringQuantity);
+        }
+    }
+
+    public void printWarehouse(Resource[] deposit, Map<Resource, Integer> locker, Resource[][] extraDeposit, ArrayList<Resource> supply) {
+        IntStream.range(0, deposit.length)
+                .filter(i -> deposit[i] != null)
+                .forEach(i -> printResource(deposit[i], i, depositSlots));
+
+        locker.forEach(this::updateLockerLabel);
+
+        // TODO extra deposit and supply
+    }
+
+    public void cleanWarehouse() {
+
+        for (int i = 0; i < resourceControllers.length; i++) {
+            if (resourceControllers[i] != null) {
+                pane.getChildren().remove(resourceControllers[i].getItem());
+                if (i < NUM_SHELFES) {
+                    depositSlots[i].freeSlot();
+                } else {
+                    extraDepositSlots[i].freeSlot();
+                }
+                resourceControllers[i] = null;
+            }
+        }
+
+        updateLockerLabel(Resource.GOLD, 0);
+        updateLockerLabel(Resource.SHIELD, 0);
+        updateLockerLabel(Resource.STONE, 0);
+        updateLockerLabel(Resource.SERVANT, 0);
+
+        // TODO extra deposit and supply
     }
 
     @FXML
@@ -201,6 +278,7 @@ public class GameController {
     }
 
     public void initHostAlert() {
+        /*
         mainAlert = new Alert(Alert.AlertType.CONFIRMATION);
         mainAlert.setTitle("Start Game");
         mainAlert.setHeaderText("Start game when you are ready!");
@@ -214,6 +292,8 @@ public class GameController {
             this.gui.getClientConnection().send(new StartGameGameMessage());
             Platform.runLater(this::initHostAlert); // TODO make it better
         }
+
+         */
     }
 
     public void initPlayerAlert() {
