@@ -10,9 +10,14 @@ import it.polimi.ingsw.model.GameError;
 import java.util.*;
 import java.util.stream.IntStream;
 
-public class Game extends GameObservable {
+public class Game extends GameObservable  {
+
+
+
+	private int firstTurns;
 
 	private String gameId;
+
 
 	private final int numberOfPlayers;
 
@@ -94,11 +99,13 @@ public class Game extends GameObservable {
 		if (!playerOrder.hasNext()) {
 			this.playerOrder = players.keySet().iterator();
 		}
+		// notify(this);
 		return playerOrder.next();
 	}
 
 	public void startUniquePhase(TurnPhase turnPhase) {
 		this.turnPhase = turnPhase;
+		notify(this);
 	}
 
 	public TurnPhase getTurnPhase() {
@@ -161,5 +168,13 @@ public class Game extends GameObservable {
 		Pair<String, Exception> error = new Pair<>(nickname, exception);
 
 		gameError.setError(error);
+	}
+
+	public int getFirstTurns() {
+		return firstTurns;
+	}
+
+	public void setFirstTurns(int firstTurns) {
+		this.firstTurns = firstTurns;
 	}
 }

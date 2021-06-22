@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.controller.client.reducedModel.ReducedDashboard;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -79,6 +81,19 @@ public class ResourceContainer implements Serializable {
                 .forEach(i -> selectedExtraDepositIndexes.get(i)
                         .forEach(j -> res.put(wh.getExtraDeposits()[i][j],
                             res.get(wh.getExtraDeposits()[i][j]) + 1)));
+        return res;
+    }
+
+    public Map<Resource, Integer> getAllResources(ReducedDashboard wh) {
+        HashMap<Resource, Integer> res = new HashMap<>(selectedLockerResources);
+
+        selectedDepositIndexes.stream().filter(i -> wh.getDeposit()[i] != null).forEach(i ->
+                res.put(wh.getDeposit()[i], res.get(wh.getDeposit()[i]) + 1));
+
+        IntStream.range(0, Warehouse.MAX_EXTRA_DEPOSIT_SLOTS)
+                .forEach(i -> selectedExtraDepositIndexes.get(i)
+                        .forEach(j -> res.put(wh.getExtraDeposits()[i][j],
+                                res.get(wh.getExtraDeposits()[i][j]) + 1)));
         return res;
     }
 

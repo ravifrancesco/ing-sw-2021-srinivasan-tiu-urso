@@ -15,4 +15,10 @@ public class RedMarble implements Marble, Serializable {
         p.getDashboard().moveFaithMarker(1);
         return null;
     }
+
+    @Override
+    public String getType() {
+        return "RED";
+    }
+
 }

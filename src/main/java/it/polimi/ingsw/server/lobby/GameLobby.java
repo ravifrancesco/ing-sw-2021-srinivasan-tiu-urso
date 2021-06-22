@@ -71,6 +71,11 @@ public class GameLobby implements Lobby, Serializable {
         connectedPlayers.put(c.getNickname(), c);
 
         c.enterLobby(this);
+
+        connectedPlayers.entrySet().stream().filter(e -> !e.getKey().equals(c.getNickname())).forEach(e -> {
+            e.getValue().playerJoinedLobby(c.getNickname());
+        });
+
         serverController.addObservers(c, connectedPlayers);
     }
 

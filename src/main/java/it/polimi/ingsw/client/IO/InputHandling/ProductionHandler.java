@@ -17,6 +17,21 @@ public class ProductionHandler {
 
     public static ClientMessage activateDashboardProduction(String[] in, CLI cli) {
         try {
+            ProductionPower pp = cli.getReducedModel().getReducedPlayer().getDashboard().getProductionPower();
+            Map<Resource, Integer> reqRes = pp.getResourceRequired();
+            int getNumRequiredAny = pp.getNumRequiredAny();
+            int getNumProducedAny = pp.getNumProducedAny();
+
+            cli.printPaymentCost(reqRes.get(Resource.GOLD) != null ? reqRes.get(Resource.GOLD) : 0,
+                    reqRes.get(Resource.SERVANT) != null ? reqRes.get(Resource.SERVANT) : 0,
+                    reqRes.get(Resource.SHIELD) != null ? reqRes.get(Resource.SHIELD) : 0,
+                    reqRes.get(Resource.STONE) != null ? reqRes.get(Resource.STONE) : 0);
+
+            if (getNumRequiredAny != 0) {
+                cli.printMessage(getNumRequiredAny + " resources are selectable by you.");
+            }
+
+            // TODO fix this trash
             cli.printMessage(ANSI_GREEN + "Please choose the payment resources" + ANSI_RESET);
             ResourceContainer rc = ResourceHandler.chooseResources(cli);
             cli.printMessage("DEPOSIT INDEXES: " + rc.getSelectedDepositIndexes());
@@ -24,32 +39,16 @@ public class ProductionHandler {
             cli.printMessage("EXTRADEPOSIT INDEXES: " + rc.getSelectedExtraDepositIndexes());
             cli.printMessage("");
 
-            cli.printMessage(ANSI_GREEN + "Activating production power..." + ANSI_RESET);
-            ProductionPower pp = cli.getReducedModel().getReducedPlayer().getDashboard().getProductionPower();
-            cli.printMessage(pp.toString());
-            cli.printMessage("");
+            Map<Resource, Integer> selectedResources = rc.getAllResources(cli.getReducedModel().getReducedPlayer().getDashboard());
+            reqRes.forEach((k, v) -> {
+                if (k != Resource.ANY) selectedResources.merge(k, v, (v1, v2) -> v1 - v2); });
+            System.out.println("Remaining: " + selectedResources);
 
-            int getNumRequiredAny = pp.getNumRequiredAny();
-            int getNumProducedAny = pp.getNumProducedAny();
-
-            cli.printMessage(ANSI_GREEN + "Production has " + getNumRequiredAny +
-                    "required selectable resources and " + getNumProducedAny + " produced selectable resources..." + ANSI_RESET);
-
-            Map<Resource, Integer> requiredResources;
             Map<Resource, Integer> producedResources;
 
 
-            if (getNumRequiredAny != 0) {
-                cli.printMessage(ANSI_GREEN + "Please choose the required selectables resources" + ANSI_RESET);
-                requiredResources = ResourceHandler.chooseAnyResources(cli, getNumRequiredAny);
-                cli.printMessage(ANSI_GREEN + "You have selected: " + requiredResources + ANSI_RESET);
-            } else {
-                requiredResources = new HashMap<>();
-            }
-            cli.printMessage("");
-
             if (getNumProducedAny != 0) {
-                cli.printMessage(ANSI_GREEN + "Please choose the produced selectable resources" + ANSI_RESET);
+                cli.printMessage(ANSI_GREEN + "Please choose the resources to produce: " + ANSI_RESET);
                 producedResources = ResourceHandler.chooseAnyResources(cli, getNumProducedAny);
                 cli.printMessage(ANSI_GREEN + "You have selected: " + producedResources + ANSI_RESET);
             } else {
@@ -57,12 +56,13 @@ public class ProductionHandler {
             }
             cli.printMessage("");
 
-            cli.printMessage(ANSI_BLUE + "# DONE! Calling ActivateDashboardProductionGameMessage with:" + ANSI_RESET);
-            cli.printMessage(ANSI_BLUE + "# DEPOSIT INDEXES: " + rc.getSelectedDepositIndexes() + ANSI_RESET);
-            cli.printMessage(ANSI_BLUE + requiredResources + ANSI_RESET);
-            cli.printMessage(ANSI_BLUE + producedResources + ANSI_RESET);
+            // cli.printMessage(ANSI_BLUE + "# DONE! Calling ActivateDashboardProductionGameMessage with:" + ANSI_RESET);
+            // cli.printMessage(ANSI_BLUE + "# DEPOSIT INDEXES: " + rc.getSelectedDepositIndexes() + ANSI_RESET);
+            // cli.printMessage(ANSI_BLUE + requiredResources + ANSI_RESET);
+            // cli.printMessage(ANSI_BLUE + producedResources + ANSI_RESET);
+
             cli.printMessage("");
-            return new ActivateDashboardProductionGameMessage(rc, requiredResources, producedResources);
+            return new ActivateDashboardProductionGameMessage(rc, selectedResources, producedResources);
         } catch (Exception e) {
             cli.printErrorMessage("Error whilst activating dashboard production");
             cli.printErrorMessage(e.getMessage());

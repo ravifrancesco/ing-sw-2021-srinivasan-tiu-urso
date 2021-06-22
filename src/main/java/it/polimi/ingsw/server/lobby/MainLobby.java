@@ -78,7 +78,7 @@ public class MainLobby implements Lobby {
                 .filter(gl -> gl.getId().equals(id))
                 .findFirst();
 
-        if (gameLobby.isEmpty()) throw new IllegalArgumentException();
+        if (gameLobby.isEmpty()) throw new IllegalArgumentException("Lobby doesn't exist");
 
         gameLobby.get().enterLobby(c);
 

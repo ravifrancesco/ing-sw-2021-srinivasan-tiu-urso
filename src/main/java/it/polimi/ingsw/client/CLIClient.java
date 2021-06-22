@@ -18,6 +18,7 @@ public class CLIClient {
                 while (!clientConnection.isNameRegistered()) {
                     clientConnection.registerName();
                 }
+
                 clientConnection.run();
                 return;
             } catch (IllegalArgumentException e) {

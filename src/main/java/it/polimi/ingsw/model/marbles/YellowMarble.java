@@ -14,4 +14,11 @@ public class YellowMarble implements Marble, Serializable {
     public Resource getResource(Player p) {
         return Resource.GOLD;
     }
+
+    @Override
+    public String getType() {
+        return "YELLOW";
+    }
+
+
 }

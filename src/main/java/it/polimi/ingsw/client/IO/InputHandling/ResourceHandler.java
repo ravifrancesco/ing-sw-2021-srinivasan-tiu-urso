@@ -27,6 +27,9 @@ public class ResourceHandler {
         try {
             while (qty != 0) {
                 String input = cli.readCommand();
+                if(input.equals("DONE")) {
+                    throw new Exception();
+                }
                 r = parseResource(input);
                 if(r != null) {
                     output.put(r, output.get(r) != null ? output.get(r) + 1 : 1);

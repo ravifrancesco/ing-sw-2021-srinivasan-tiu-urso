@@ -28,7 +28,7 @@ public class WarehouseControllerTest {
         } catch (InvalidNameException | GameFullException e) {
             e.printStackTrace();
         }
-        serverController.startGame();
+        serverController.startGame("randomname");
         serverController.discardExcessLeaderCards("rbta-svg", 0);
         serverController.discardExcessLeaderCards("rbta-svg", 0);
         serverController.endTurn("rbta-svg");

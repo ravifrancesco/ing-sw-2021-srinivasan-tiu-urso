@@ -12,7 +12,6 @@ public class ViewHandler {
         switch(objectToShow) {
             // global
             case "DVGRID" -> cli.showDVGrid();
-            case "GAMEBOARD" -> cli.showGameBoard();
             case "MARKET" -> cli.showMarket();
             // player
             case "HAND" -> cli.showHand(nickname);

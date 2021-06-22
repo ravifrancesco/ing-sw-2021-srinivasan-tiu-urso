@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WhiteMarbleResourceTest {
+    // TODO fix after market change
 
     GameSettings gs;
     public void setGs () {

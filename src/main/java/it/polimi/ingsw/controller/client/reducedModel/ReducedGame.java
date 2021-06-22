@@ -17,11 +17,14 @@ public class ReducedGame {
     private String clientPlayer;
 
     private String currentPlayer;
+
     private String firstPlayer;
 
     private Map<String, ReducedPlayer> players;
 
     private TurnPhase turnPhase;
+
+    private int firstTurns;
 
     public ReducedGame() {
         this.gameId = "";
@@ -97,5 +100,13 @@ public class ReducedGame {
 
     public void createPlayer(ReducedPlayer reducedPlayer) {
         players.put(reducedPlayer.getNickname(), reducedPlayer);
+    }
+
+    public void setFirstTurns(int firstTurns) {
+        this.firstTurns = firstTurns;
+    }
+
+    public int getFirstTurns() {
+        return firstTurns;
     }
 }

@@ -14,4 +14,9 @@ public class PurpleMarble implements Marble, Serializable {
     public Resource getResource(Player p) {
         return Resource.SERVANT;
     }
+
+    @Override
+    public String getType() {
+        return "PURPLE";
+    }
 }

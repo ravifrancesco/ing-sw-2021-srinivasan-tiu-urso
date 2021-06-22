@@ -4,7 +4,6 @@ import it.polimi.ingsw.controller.exceptions.*;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
-import it.polimi.ingsw.model.specialAbilities.*;
 import it.polimi.ingsw.server.Connection;
 
 import javax.naming.InvalidNameException;
@@ -29,7 +28,6 @@ public class ServerController {
     // TODO: check that illegal actions don't change the state
     private final Game game;
 
-    private int firstTurns;
 
     GameSettings gameSettings;
 
@@ -161,19 +159,26 @@ public class ServerController {
      */
     public void reset() {
         game.reset();
-        firstTurns = 0;
+        game.setFirstTurns(0);
     }
 
     /**
      * Starts the game.
      * TODO
      */
-    public void startGame() {
-        game.reset();
-        game.startUniquePhase(TurnPhase.FIRST_TURN);
-        game.changePlayer();
-        game.setFirstPlayer(game.getCurrentPlayer());
-        game.distributeCards();
+    public int startGame(String nickname) {
+        try {
+            game.reset();
+            game.changePlayer();
+            game.startUniquePhase(TurnPhase.FIRST_TURN);
+            game.setFirstPlayer(game.getCurrentPlayer());
+            game.distributeCards();
+        } catch (Exception e) {
+            // TODO add exception if game is not started by  lobby owner
+            game.setError(e, nickname);
+            return -1;
+        }
+        return 0;
     }
 
     /**
@@ -235,7 +240,7 @@ public class ServerController {
 
     private boolean checkInitialPhaseCompletion(Dashboard d) {
         int storedResources = d.getDepositResourceQty();
-        return switch(firstTurns) {
+        return switch(game.getFirstTurns()) {
             case 0 -> storedResources >= 0;
             case 1, 2 -> storedResources >= 1;
             case 3 -> storedResources >= 2;
@@ -461,9 +466,9 @@ public class ServerController {
 
         if(player.getDashboard().checkGameEnd() && game.getTurnPhase() != TurnPhase.ENDGAME) {
             game.startUniquePhase(TurnPhase.ENDGAME);
-        } else if(firstTurns < game.getNumberOfPlayers()-1) {
-            dashboard.moveFaithMarker(firstTurns < 2 ? 0 : 1);
-            firstTurns += 1;
+        } else if(game.getFirstTurns() < game.getNumberOfPlayers()-1) {
+            dashboard.moveFaithMarker(game.getFirstTurns() < 2 ? 0 : 1);
+            game.setFirstTurns(game.getFirstTurns() + 1);
             game.startUniquePhase(TurnPhase.FIRST_TURN);
         } else {
             game.startUniquePhase(TurnPhase.COMMON);
@@ -474,6 +479,7 @@ public class ServerController {
         //return game.getTurnPhase() == TurnPhase.ENDGAME && game.getCurrentPlayer().equals(game.getFirstPlayer());
         return 0;
     }
+
 
     /**
      * Getter for the game status.
