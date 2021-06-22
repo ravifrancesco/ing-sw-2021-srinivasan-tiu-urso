@@ -7,9 +7,9 @@
 
 <BorderPane prefHeight="768.0" prefWidth="1366.0" style="-fx-background-image: url('png/dashboard_background.png')" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.GameController">
     <bottom>
-      <Pane id="pane" fx:id="pane" onMouseClicked="#testClick" BorderPane.alignment="CENTER">
+      <Pane id="pane" fx:id="pane" onMouseClicked="#testClick" prefHeight="768.0" prefWidth="1366.0" BorderPane.alignment="CENTER">
          <children>
-            <ImageView fitHeight="643.0" fitWidth="900.0" layoutX="233.0" layoutY="124.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="643.0" fitWidth="900.0" layoutX="233.0" layoutY="125.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../png/player_dashboard.png" />
                </image>

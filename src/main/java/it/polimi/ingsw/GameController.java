@@ -13,6 +13,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -35,7 +36,7 @@ public class GameController {
 
     private Slot[] faithSlots;
 
-    private Node cross;
+    private Slot[] leaderCardSlots;
 
     private ResourceController[] resourceControllers;
 
@@ -46,6 +47,8 @@ public class GameController {
     public static final int NUM_SHELFES = 6;
 
     public static final int NUM_FAITH_SLOTS = 25;
+
+    public static final int NUM_LEADER_CARDS = 2;
 
     public static final int SIZE_EXTRA_DEPOSITS = 4;
 
@@ -73,16 +76,30 @@ public class GameController {
         depositSlots = new Slot[NUM_SHELFES];
         extraDepositSlots = new Slot[SIZE_EXTRA_DEPOSITS];
         resourceControllers = new ResourceController[NUM_SHELFES + SIZE_EXTRA_DEPOSITS];
-        depositSlots[0] = new Slot(327, 390, 52, 58);
-        depositSlots[1] = new Slot(308, 448, 42, 58);
-        depositSlots[2] = new Slot(350, 448, 42, 58);
-        depositSlots[3] = new Slot(289, 506, 42, 52);
-        depositSlots[4] = new Slot(331, 506, 38, 52);
-        depositSlots[5] = new Slot(369, 506, 42, 52);
+        leaderCardSlots = new Slot[NUM_LEADER_CARDS];
+
+        depositSlots[0] = new Slot(327, 391, 52, 58);
+        depositSlots[1] = new Slot(308, 449, 42, 58);
+        depositSlots[2] = new Slot(350, 449, 42, 58);
+        depositSlots[3] = new Slot(289, 507, 42, 52);
+        depositSlots[4] = new Slot(331, 507, 38, 52);
+        depositSlots[5] = new Slot(369, 507, 42, 52);
 
         for (Slot slot : depositSlots) {
             pane.getChildren().add(slot.getRectangle());
         }
+
+        leaderCardSlots[0] = new Slot(0, 125, 233, 318);
+        leaderCardSlots[1] = new Slot(0, 450, 233, 318);
+
+        for (Slot slot : leaderCardSlots) {
+            slot.setStroke(Color.RED);
+            pane.getChildren().add(slot.getRectangle());
+        }
+
+        initializeFaithTrack();
+
+        // DEBUGGING
 
         Resource[] deposit = new Resource[6];
         deposit[0] = Resource.GOLD;
@@ -101,8 +118,6 @@ public class GameController {
         extraDeposits[1][1] = Resource.SERVANT;
 
         printWarehouse(deposit, map, extraDeposits, new ArrayList<>());
-
-        initializeFaithTrack();
 
         cleanWarehouse();
 
@@ -199,31 +214,31 @@ public class GameController {
 
     public void initializeFaithTrack() {
         faithSlots = new Slot[NUM_FAITH_SLOTS];
-        faithSlots[0] = new Slot(267, 250, 40, 40);
-        faithSlots[1] = new Slot(311, 250, 40, 40);
-        faithSlots[2] = new Slot(355, 250, 40, 40);
-        faithSlots[3] = new Slot(355, 206, 40, 40);
-        faithSlots[4] = new Slot(355, 162, 40, 40);
-        faithSlots[5] = new Slot(399, 162, 40, 40);
-        faithSlots[6] = new Slot(443, 162, 40, 40);
-        faithSlots[7] = new Slot(487, 162, 40, 40);
-        faithSlots[8] = new Slot(531, 162, 40, 40);
-        faithSlots[9] = new Slot(575, 162, 40, 40);
-        faithSlots[10] = new Slot(575, 206, 40, 40);
-        faithSlots[11] = new Slot(575, 250, 40, 40);
-        faithSlots[12] = new Slot(619, 250, 40, 40);
-        faithSlots[13] = new Slot(663, 250, 40, 40);
-        faithSlots[14] = new Slot(707, 250, 40, 40);
-        faithSlots[15] = new Slot(751, 250, 40, 40);
-        faithSlots[16] = new Slot(795, 250, 40, 40);
-        faithSlots[17] = new Slot(795, 206, 40, 40);
-        faithSlots[18] = new Slot(795, 162, 40, 40);
-        faithSlots[19] = new Slot(839, 162, 40, 40);
-        faithSlots[20] = new Slot(883, 162, 40, 40);
-        faithSlots[21] = new Slot(927, 162, 40, 40);
-        faithSlots[22] = new Slot(971, 162, 40, 40);
-        faithSlots[23] = new Slot(1015, 162, 40, 40);
-        faithSlots[24] = new Slot(1059, 162, 40, 40);
+        faithSlots[0] = new Slot(267, 251, 40, 40);
+        faithSlots[1] = new Slot(311, 251, 40, 40);
+        faithSlots[2] = new Slot(355, 251, 40, 40);
+        faithSlots[3] = new Slot(355, 207, 40, 40);
+        faithSlots[4] = new Slot(355, 163, 40, 40);
+        faithSlots[5] = new Slot(399, 163, 40, 40);
+        faithSlots[6] = new Slot(443, 163, 40, 40);
+        faithSlots[7] = new Slot(487, 163, 40, 40);
+        faithSlots[8] = new Slot(531, 163, 40, 40);
+        faithSlots[9] = new Slot(575, 163, 40, 40);
+        faithSlots[10] = new Slot(575, 207, 40, 40);
+        faithSlots[11] = new Slot(575, 251, 40, 40);
+        faithSlots[12] = new Slot(619, 251, 40, 40);
+        faithSlots[13] = new Slot(663, 251, 40, 40);
+        faithSlots[14] = new Slot(707, 251, 40, 40);
+        faithSlots[15] = new Slot(751, 251, 40, 40);
+        faithSlots[16] = new Slot(795, 251, 40, 40);
+        faithSlots[17] = new Slot(795, 207, 40, 40);
+        faithSlots[18] = new Slot(795, 163, 40, 40);
+        faithSlots[19] = new Slot(839, 163, 40, 40);
+        faithSlots[20] = new Slot(883, 163, 40, 40);
+        faithSlots[21] = new Slot(927, 163, 40, 40);
+        faithSlots[22] = new Slot(971, 163, 40, 40);
+        faithSlots[23] = new Slot(1015, 163, 40, 40);
+        faithSlots[24] = new Slot(1059, 163, 40, 40);
 
         for (int i = 0; i < NUM_FAITH_SLOTS; i++) {
             pane.getChildren().add(faithSlots[i].getRectangle());
