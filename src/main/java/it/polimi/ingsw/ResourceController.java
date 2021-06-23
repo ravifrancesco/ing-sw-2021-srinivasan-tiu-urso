@@ -2,13 +2,10 @@ package it.polimi.ingsw;
 
 import it.polimi.ingsw.model.Resource;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
-import javafx.scene.shape.Rectangle;
 
 import java.io.File;
 
@@ -24,10 +21,13 @@ public class ResourceController {
 
     Slot[] slots;
 
+    ExtraDepositSlot[] leaderSlots;
+
     int currentSlot;
 
-    public void assignSlots(Slot[] slots) {
+    public void assignSlots(Slot[] slots, ExtraDepositSlot[] leaderSlots) {
         this.slots = slots;
+        this.leaderSlots = leaderSlots;
     }
 
     public void createItem(Resource resourceType, int pos) {
@@ -96,12 +96,34 @@ public class ResourceController {
                 setY((slots[i].getY() + slots[i].getHeight()/2) - (item.getFitWidth() / 2));
                 slots[i].filLSlot();
                 if (currentSlot != -1) {
-                    slots[currentSlot].freeSlot();
+                    if (currentSlot < GameController.NUM_SHELFES) {
+                        slots[currentSlot].freeSlot();
+                    } else {
+                        leaderSlots[currentSlot - GameController.NUM_SHELFES].freeSlot();
+                    }
                 }
                 currentSlot = i;
                 return;
             }
         }
+
+        for (int i = 0; i < GameController.SIZE_EXTRA_DEPOSITS; i++) {
+            if (leaderSlots[i].isPointInSlot(x, y) && leaderSlots[i].isEmpty() && leaderSlots[i].isAvailable() && resourceType == leaderSlots[i].getSlotType()) {
+                setX((leaderSlots[i].getX() + leaderSlots[i].getWidth()/2) - (item.getFitWidth() / 2));
+                setY((leaderSlots[i].getY() + leaderSlots[i].getHeight()/2) - (item.getFitWidth() / 2));
+                leaderSlots[i].filLSlot();
+                if (currentSlot != -1) {
+                    if (currentSlot < GameController.NUM_SHELFES) {
+                        slots[currentSlot].freeSlot();
+                    } else {
+                        leaderSlots[currentSlot - GameController.NUM_SHELFES].freeSlot();
+                    }
+                }
+                currentSlot = i + GameController.NUM_SHELFES;
+                return;
+            }
+        }
+
         setX(this.x);
         setY(this.y);
     }

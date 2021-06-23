@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.specialAbilities.ProductionPower;
 import it.polimi.ingsw.model.specialAbilities.SpecialAbility;
+import it.polimi.ingsw.model.specialAbilities.SpecialAbilityType;
 import it.polimi.ingsw.model.specialAbilities.WarehouseExtraSpace;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.game.StartGameGameMessage;
 import javafx.application.Platform;
@@ -38,7 +39,7 @@ public class GameController {
 
     private Slot[] depositSlots;
 
-    private Slot[] extraDepositSlots;
+    private ExtraDepositSlot[] extraDepositSlots;
 
     private Slot[] faithSlots;
 
@@ -80,7 +81,7 @@ public class GameController {
     @FXML
     public void initialize() {
         depositSlots = new Slot[NUM_SHELFES];
-        extraDepositSlots = new Slot[SIZE_EXTRA_DEPOSITS];
+        extraDepositSlots = new ExtraDepositSlot[SIZE_EXTRA_DEPOSITS];
         resourceControllers = new ResourceController[NUM_SHELFES + SIZE_EXTRA_DEPOSITS];
         leaderCardSlots = new Slot[NUM_LEADER_CARDS];
 
@@ -94,6 +95,11 @@ public class GameController {
         for (Slot slot : depositSlots) {
             pane.getChildren().add(slot.getRectangle());
         }
+
+        extraDepositSlots[0] = new ExtraDepositSlot(55, 379, 40, 40);
+        extraDepositSlots[1] = new ExtraDepositSlot(132, 379, 40, 40);
+        extraDepositSlots[2] = new ExtraDepositSlot(400, 379, 40, 40);
+        extraDepositSlots[3] = new ExtraDepositSlot(600, 379, 40, 40);
 
         leaderCardSlots[0] = new Slot(10, 125, 205, 310);
         leaderCardSlots[1] = new Slot(10, 450, 205, 310);
@@ -159,11 +165,9 @@ public class GameController {
         Map<Resource, Integer> resourceRequired = new HashMap<>();
         resourceRequired.put(Resource.ANY, 1);
 
-        SpecialAbility sa = new ProductionPower(resourceRequired, new HashMap<>(), 1);
+        SpecialAbility sa = new WarehouseExtraSpace(Resource.SHIELD);
 
-        SpecialAbility sa2 = new WarehouseExtraSpace(Resource.GOLD);
-
-        LeaderCard leaderCard = new LeaderCard(1, 5, bannerCost, resourceCost, sa);
+        LeaderCard leaderCard = new LeaderCard(7, 5, bannerCost, resourceCost, sa);
 
 
         printLeaderCard(leaderCard, 0);
@@ -181,7 +185,7 @@ public class GameController {
             e.printStackTrace();
         }
         resourceControllers[pos] = loader.getController();
-        resourceControllers[pos].assignSlots(slots);
+        resourceControllers[pos].assignSlots(slots, extraDepositSlots);
         resourceControllers[pos].createItem(resource, pos);
 
         pane.getChildren().add(resourceControllers[pos].getItem());
@@ -201,6 +205,19 @@ public class GameController {
 
         pane.getChildren().add(leaderCardController.getItem());
         reloadWarehouseImages();
+
+        if (leaderCard.getSpecialAbility().getType() == SpecialAbilityType.WAREHOUSE_EXTRA_SPACE) {
+            WarehouseExtraSpace wes = (WarehouseExtraSpace) leaderCard.getSpecialAbility();
+            extraDepositSlots[slot*2].setStroke(Color.RED);
+            extraDepositSlots[slot*2].setAvailable(true);
+            extraDepositSlots[slot*2].setSlotType(wes.getStoredResource());
+            extraDepositSlots[slot*2+1].setStroke(Color.RED);
+            extraDepositSlots[slot*2+1].setAvailable(true);
+            extraDepositSlots[slot*2+1].setSlotType(wes.getStoredResource());
+            pane.getChildren().add(extraDepositSlots[slot*2].getRectangle());
+            pane.getChildren().add(extraDepositSlots[slot*2+1].getRectangle());
+
+        }
     }
 
     public void reloadWarehouseImages() {
