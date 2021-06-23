@@ -1,6 +1,12 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.model.Banner;
+import it.polimi.ingsw.model.BannerEnum;
 import it.polimi.ingsw.model.Resource;
+import it.polimi.ingsw.model.cards.LeaderCard;
+import it.polimi.ingsw.model.specialAbilities.ProductionPower;
+import it.polimi.ingsw.model.specialAbilities.SpecialAbility;
+import it.polimi.ingsw.model.specialAbilities.WarehouseExtraSpace;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.game.StartGameGameMessage;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -89,8 +95,8 @@ public class GameController {
             pane.getChildren().add(slot.getRectangle());
         }
 
-        leaderCardSlots[0] = new Slot(0, 125, 233, 318);
-        leaderCardSlots[1] = new Slot(0, 450, 233, 318);
+        leaderCardSlots[0] = new Slot(10, 125, 205, 310);
+        leaderCardSlots[1] = new Slot(10, 450, 205, 310);
 
         for (Slot slot : leaderCardSlots) {
             slot.setStroke(Color.RED);
@@ -138,6 +144,32 @@ public class GameController {
         extraDeposits2[1][1] = Resource.SERVANT;
 
         printWarehouse(deposit2, map2, extraDeposits2, new ArrayList<>());
+
+        // DEBUG
+
+        Map<Banner, Integer> bannerCost = new HashMap<>();
+
+        bannerCost.put(new Banner(BannerEnum.GREEN, 1), 2);
+        bannerCost.put(new Banner(BannerEnum.BLUE, 2), 1);
+
+        Map<Resource, Integer> resourceCost = new HashMap<>();
+
+        resourceCost.put(Resource.GOLD, 3);
+
+        Map<Resource, Integer> resourceRequired = new HashMap<>();
+        resourceRequired.put(Resource.ANY, 1);
+
+        SpecialAbility sa = new ProductionPower(resourceRequired, new HashMap<>(), 1);
+
+        SpecialAbility sa2 = new WarehouseExtraSpace(Resource.GOLD);
+
+        LeaderCard leaderCard = new LeaderCard(1, 5, bannerCost, resourceCost, sa);
+
+
+        printLeaderCard(leaderCard, 0);
+
+
+
     }
 
     public void printResource(Resource resource, int pos, Slot[] slots) {
@@ -153,6 +185,31 @@ public class GameController {
         resourceControllers[pos].createItem(resource, pos);
 
         pane.getChildren().add(resourceControllers[pos].getItem());
+    }
+
+    public void printLeaderCard(LeaderCard leaderCard, int slot) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/leader_card.fxml"));
+        Node node = null;
+        try {
+            node = loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        LeaderCardController leaderCardController = loader.getController();
+        leaderCardController.assignSlots(leaderCardSlots);
+        leaderCardController.createItem(leaderCard, slot);
+
+        pane.getChildren().add(leaderCardController.getItem());
+        reloadWarehouseImages();
+    }
+
+    public void reloadWarehouseImages() {
+        for (int i = 0; i < resourceControllers.length; i++) {
+            if (resourceControllers[i] != null) {
+                pane.getChildren().remove(resourceControllers[i].getItem());
+                pane.getChildren().add(resourceControllers[i].getItem());
+            }
+        }
     }
 
     public void updateLockerLabel(Resource resource, int quantity) {
@@ -204,6 +261,25 @@ public class GameController {
         faithMarkerController.moveFaithMarker(faithMarkerController.getPosition()+1);
         if (chooseResourceController == null) {
             openChooseResourceWindow();
+
+            Map<Banner, Integer> bannerCost = new HashMap<>();
+
+            bannerCost.put(new Banner(BannerEnum.GREEN, 1), 2);
+            bannerCost.put(new Banner(BannerEnum.BLUE, 2), 1);
+
+            Map<Resource, Integer> resourceCost = new HashMap<>();
+
+            resourceCost.put(Resource.GOLD, 3);
+
+            Map<Resource, Integer> resourceRequired = new HashMap<>();
+            resourceRequired.put(Resource.ANY, 1);
+
+
+            SpecialAbility sa2 = new WarehouseExtraSpace(Resource.GOLD);
+
+            LeaderCard leaderCard2 = new LeaderCard(8, 5, bannerCost, resourceCost, sa2);
+
+            printLeaderCard(leaderCard2, 1);
         }
         else
         {

@@ -42,8 +42,8 @@ public class ResourceController {
         File file = new File("src/main/resources/png/"+name+".png");
         Image image = new Image(file.toURI().toString());
         item = new ImageView(image);
-        item.setFitHeight(25);
         item.setFitWidth(25);
+        item.setFitHeight(25);
         item.setOnMousePressed(this::pressed);
         item.setOnMouseDragged(this::dragged);
         item.setOnMouseReleased(this::released);
