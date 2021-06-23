@@ -1,5 +1,6 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Resource;
 import javafx.fxml.FXML;
 import javafx.scene.effect.ColorAdjust;
@@ -32,6 +33,7 @@ public class ResourceController {
 
     public void createItem(Resource resourceType, int pos) {
         String name = "";
+        int newPos = -1;
         this.resourceType = resourceType;
         switch(resourceType) {
             case GOLD -> name = "coin";
@@ -47,9 +49,17 @@ public class ResourceController {
         item.setOnMousePressed(this::pressed);
         item.setOnMouseDragged(this::dragged);
         item.setOnMouseReleased(this::released);
-        setX((slots[pos].getX() + slots[pos].getWidth()/2) - (item.getFitWidth() / 2));
-        setY((slots[pos].getY() + slots[pos].getHeight()/2) - (item.getFitWidth() / 2));
-        slots[pos].filLSlot();
+
+        if (pos < GameController.NUM_SHELFES) {
+            setX((slots[pos].getX() + slots[pos].getWidth()/2) - (item.getFitWidth() / 2));
+            setY((slots[pos].getY() + slots[pos].getHeight()/2) - (item.getFitWidth() / 2));
+            slots[pos].filLSlot();
+        } else {
+            newPos = pos - GameController.NUM_SHELFES;
+            setX((leaderSlots[newPos].getX() + leaderSlots[newPos].getWidth()/2) - (item.getFitWidth() / 2));
+            setY((leaderSlots[newPos].getY() + leaderSlots[newPos].getHeight()/2) - (item.getFitWidth() / 2));
+            leaderSlots[newPos].filLSlot();
+        }
         currentSlot = pos;
     }
 

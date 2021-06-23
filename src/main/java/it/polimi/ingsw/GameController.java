@@ -4,10 +4,7 @@ import it.polimi.ingsw.model.Banner;
 import it.polimi.ingsw.model.BannerEnum;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.cards.LeaderCard;
-import it.polimi.ingsw.model.specialAbilities.ProductionPower;
-import it.polimi.ingsw.model.specialAbilities.SpecialAbility;
-import it.polimi.ingsw.model.specialAbilities.SpecialAbilityType;
-import it.polimi.ingsw.model.specialAbilities.WarehouseExtraSpace;
+import it.polimi.ingsw.model.specialAbilities.*;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.game.StartGameGameMessage;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -96,10 +93,10 @@ public class GameController {
             pane.getChildren().add(slot.getRectangle());
         }
 
-        extraDepositSlots[0] = new ExtraDepositSlot(55, 379, 40, 40);
-        extraDepositSlots[1] = new ExtraDepositSlot(132, 379, 40, 40);
-        extraDepositSlots[2] = new ExtraDepositSlot(400, 379, 40, 40);
-        extraDepositSlots[3] = new ExtraDepositSlot(600, 379, 40, 40);
+        extraDepositSlots[0] = new ExtraDepositSlot(55, 380, 40, 40);
+        extraDepositSlots[1] = new ExtraDepositSlot(132, 380, 40, 40);
+        extraDepositSlots[2] = new ExtraDepositSlot(55, 710, 40, 40);
+        extraDepositSlots[3] = new ExtraDepositSlot(132, 710, 40, 40);
 
         leaderCardSlots[0] = new Slot(10, 125, 205, 310);
         leaderCardSlots[1] = new Slot(10, 450, 205, 310);
@@ -110,46 +107,6 @@ public class GameController {
         }
 
         initializeFaithTrack();
-
-        // DEBUGGING
-
-        Resource[] deposit = new Resource[6];
-        deposit[0] = Resource.GOLD;
-        deposit[2] = Resource.SHIELD;
-        deposit[5] = Resource.SERVANT;
-
-        Map<Resource, Integer> map = new HashMap<>();
-        map.put(Resource.GOLD, 5);
-        map.put(Resource.SERVANT, 3);
-
-        Resource[][] extraDeposits = new Resource[2][2];
-
-        extraDeposits[0][0] = Resource.GOLD;
-        extraDeposits[0][1] = Resource.SHIELD;
-        extraDeposits[1][0] = Resource.STONE;
-        extraDeposits[1][1] = Resource.SERVANT;
-
-        printWarehouse(deposit, map, extraDeposits, new ArrayList<>());
-
-        cleanWarehouse();
-
-        Resource[] deposit2 = new Resource[6];
-        deposit2[0] = Resource.SHIELD;
-        deposit2[2] = Resource.GOLD;
-        deposit2[4] = Resource.STONE;
-
-        Map<Resource, Integer> map2 = new HashMap<>();
-        map2.put(Resource.SHIELD, 2);
-        map2.put(Resource.STONE, 3);
-
-        Resource[][] extraDeposits2 = new Resource[2][2];
-
-        extraDeposits2[0][0] = Resource.GOLD;
-        extraDeposits2[0][1] = Resource.SHIELD;
-        extraDeposits2[1][0] = Resource.STONE;
-        extraDeposits2[1][1] = Resource.SERVANT;
-
-        printWarehouse(deposit2, map2, extraDeposits2, new ArrayList<>());
 
         // DEBUG
 
@@ -172,11 +129,41 @@ public class GameController {
 
         printLeaderCard(leaderCard, 0);
 
+        // DEBUGGING
+
+        Resource[] deposit = new Resource[6];
+        deposit[0] = Resource.GOLD;
+        deposit[2] = Resource.SHIELD;
+        deposit[5] = Resource.SERVANT;
+
+        Map<Resource, Integer> map = new HashMap<>();
+        map.put(Resource.GOLD, 5);
+        map.put(Resource.SERVANT, 3);
+
+        printWarehouse(deposit, map, new Resource[2][2], new ArrayList<>());
+
+        cleanWarehouse();
+
+        Resource[] deposit2 = new Resource[6];
+        deposit2[0] = Resource.SHIELD;
+        deposit2[2] = Resource.GOLD;
+        deposit2[4] = Resource.STONE;
+
+        Map<Resource, Integer> map2 = new HashMap<>();
+        map2.put(Resource.SHIELD, 2);
+        map2.put(Resource.STONE, 3);
+
+        Resource[][] extraDeposits2 = new Resource[2][2];
+
+        extraDeposits2[0][1] = Resource.SHIELD;
+
+        printWarehouse(deposit2, map2, extraDeposits2, new ArrayList<>());
+
 
 
     }
 
-    public void printResource(Resource resource, int pos, Slot[] slots) {
+    public void printResource(Resource resource, int pos) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/resource_item.fxml"));
         Node node = null;
         try {
@@ -185,7 +172,7 @@ public class GameController {
             e.printStackTrace();
         }
         resourceControllers[pos] = loader.getController();
-        resourceControllers[pos].assignSlots(slots, extraDepositSlots);
+        resourceControllers[pos].assignSlots(depositSlots, extraDepositSlots);
         resourceControllers[pos].createItem(resource, pos);
 
         pane.getChildren().add(resourceControllers[pos].getItem());
@@ -204,7 +191,6 @@ public class GameController {
         leaderCardController.createItem(leaderCard, slot);
 
         pane.getChildren().add(leaderCardController.getItem());
-        reloadWarehouseImages();
 
         if (leaderCard.getSpecialAbility().getType() == SpecialAbilityType.WAREHOUSE_EXTRA_SPACE) {
             WarehouseExtraSpace wes = (WarehouseExtraSpace) leaderCard.getSpecialAbility();
@@ -216,8 +202,9 @@ public class GameController {
             extraDepositSlots[slot*2+1].setSlotType(wes.getStoredResource());
             pane.getChildren().add(extraDepositSlots[slot*2].getRectangle());
             pane.getChildren().add(extraDepositSlots[slot*2+1].getRectangle());
-
         }
+
+        reloadWarehouseImages();
     }
 
     public void reloadWarehouseImages() {
@@ -242,11 +229,19 @@ public class GameController {
     public void printWarehouse(Resource[] deposit, Map<Resource, Integer> locker, Resource[][] extraDeposit, ArrayList<Resource> supply) {
         IntStream.range(0, deposit.length)
                 .filter(i -> deposit[i] != null)
-                .forEach(i -> printResource(deposit[i], i, depositSlots));
+                .forEach(i -> printResource(deposit[i], i));
 
         locker.forEach(this::updateLockerLabel);
 
-        // TODO extra deposit and supply
+        for (int i = 0; i < SIZE_EXTRA_DEPOSITS / 2; i++) {
+            for (int j = 0; j < SIZE_EXTRA_DEPOSITS / 2; j++) {
+                if (extraDeposit[i][j] != null) {
+                    printResource(extraDeposit[i][j], NUM_SHELFES + i*2 + j);
+                }
+            }
+        }
+
+        // TODO supply
     }
 
     public void cleanWarehouse() {
@@ -257,7 +252,7 @@ public class GameController {
                 if (i < NUM_SHELFES) {
                     depositSlots[i].freeSlot();
                 } else {
-                    extraDepositSlots[i].freeSlot();
+                    extraDepositSlots[i - NUM_SHELFES].freeSlot();
                 }
                 resourceControllers[i] = null;
             }
@@ -268,7 +263,7 @@ public class GameController {
         updateLockerLabel(Resource.STONE, 0);
         updateLockerLabel(Resource.SERVANT, 0);
 
-        // TODO extra deposit and supply
+        // TODO supply
     }
 
     @FXML
@@ -292,9 +287,9 @@ public class GameController {
             resourceRequired.put(Resource.ANY, 1);
 
 
-            SpecialAbility sa2 = new WarehouseExtraSpace(Resource.GOLD);
+            SpecialAbility sa2 = new DevelopmentCardDiscount(Resource.SHIELD, 1);
 
-            LeaderCard leaderCard2 = new LeaderCard(8, 5, bannerCost, resourceCost, sa2);
+            LeaderCard leaderCard2 = new LeaderCard(1, 5, bannerCost, resourceCost, sa2);
 
             printLeaderCard(leaderCard2, 1);
         }
