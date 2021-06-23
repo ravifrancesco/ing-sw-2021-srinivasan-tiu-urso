@@ -9,12 +9,14 @@ import java.io.File;
 
 public class FaithMarkerController {
 
+    private GUI gui;
+
     @FXML
     private ImageView faithMarker;
 
     private int position;
 
-    private Slot faithSlots[];
+    private Slot[] faithSlots;
 
     public void assignSlots(Slot[] slots) {
         this.faithSlots = slots;
@@ -44,5 +46,9 @@ public class FaithMarkerController {
 
     public int getPosition() {
         return position;
+    }
+
+    public void setGui(GUI gui) {
+        this.gui = gui;
     }
 }

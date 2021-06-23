@@ -14,7 +14,7 @@ import java.io.IOException;
 
 public class NicknameChoiceController {
 
-    GUI gui;
+    private GUI gui;
 
     @FXML private TextField nicknameField;
 

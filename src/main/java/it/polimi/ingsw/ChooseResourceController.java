@@ -23,6 +23,8 @@ import java.util.stream.IntStream;
 
 public class ChooseResourceController {
 
+    private GUI gui;
+
     private static final int NUM_RESOURCES = 4;
     private static final int NUM_SHELVES = 6;
     private static final int EXTRA_DEPOSITS_SIZE = 4;
@@ -293,5 +295,9 @@ public class ChooseResourceController {
 
     public ResourceContainer getResourceContainer() {
         return resourceContainer;
+    }
+
+    public void setGui(GUI gui) {
+        this.gui = gui;
     }
 }

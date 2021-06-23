@@ -12,19 +12,23 @@ import java.io.File;
 
 public class ResourceController {
 
-    @FXML ImageView item;
+    private GUI gui;
 
-    double x;
+    @FXML private ImageView item;
 
-    double y;
+    private double x;
 
-    Resource resourceType;
+    private double y;
 
-    Slot[] slots;
+    private Resource resourceType;
 
-    ExtraDepositSlot[] leaderSlots;
+    private Slot[] slots;
 
-    int currentSlot;
+    private ExtraDepositSlot[] leaderSlots;
+
+    private int currentSlot;
+
+    private int supplyPos;
 
     public void assignSlots(Slot[] slots, ExtraDepositSlot[] leaderSlots) {
         this.slots = slots;
@@ -33,7 +37,7 @@ public class ResourceController {
 
     public void createItem(Resource resourceType, int pos) {
         String name = "";
-        int newPos = -1;
+        int newPos;
         this.resourceType = resourceType;
         switch(resourceType) {
             case GOLD -> name = "coin";
@@ -61,6 +65,39 @@ public class ResourceController {
             leaderSlots[newPos].filLSlot();
         }
         currentSlot = pos;
+        supplyPos = -1;
+    }
+
+    public void createSupplyItem(Resource resourceType, int pos) {
+        String name = "";
+        this.resourceType = resourceType;
+        switch(resourceType) {
+            case GOLD -> name = "coin";
+            case SHIELD -> name = "shield";
+            case STONE -> name = "stone";
+            case SERVANT -> name = "servant";
+        }
+        File file = new File("src/main/resources/png/"+name+".png");
+        Image image = new Image(file.toURI().toString());
+        item = new ImageView(image);
+        item.setFitWidth(25);
+        item.setFitHeight(25);
+        item.setOnMousePressed(this::pressed);
+        item.setOnMouseDragged(this::dragged);
+        item.setOnMouseReleased(this::released);
+
+        setX(280+70*pos - item.getFitWidth() / 2);
+        setY(90 - item.getFitHeight() / 2);
+        currentSlot = -1;
+        supplyPos = pos;
+    }
+
+    public void setGui(GUI gui) {
+        this.gui = gui;
+    }
+
+    public void setSupplyPos(int supplyPos) {
+        this.supplyPos = supplyPos;
     }
 
     public void setX(double x) {
@@ -113,6 +150,10 @@ public class ResourceController {
                     }
                 }
                 currentSlot = i;
+                if (supplyPos != -1) {
+                    gui.changeSupplyController(this, currentSlot, supplyPos);
+                    supplyPos = -1;
+                }
                 return;
             }
         }
@@ -130,6 +171,10 @@ public class ResourceController {
                     }
                 }
                 currentSlot = i + GameController.NUM_SHELFES;
+                if (supplyPos != -1) {
+                    gui.changeSupplyController(this, currentSlot, supplyPos);
+                    supplyPos = -1;
+                }
                 return;
             }
         }

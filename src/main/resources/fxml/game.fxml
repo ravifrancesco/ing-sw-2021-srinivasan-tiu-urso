@@ -28,6 +28,10 @@
             <Label id="shieldLabel" fx:id="shieldLabel" layoutX="306.0" layoutY="672.0" text="x 0" />
             <Label id="stoneLabel" fx:id="stoneLabel" layoutX="379.0" layoutY="629.0" text="x 0" />
             <Label id="servantLabel" fx:id="servantLabel" layoutX="379.0" layoutY="672.0" text="x 0" />
+            <ImageView fitHeight="74.0" fitWidth="360.0" layoutX="233.0" layoutY="51.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../png/supply.png" />
+               </image></ImageView>
          </children>
       </Pane>
    </bottom>

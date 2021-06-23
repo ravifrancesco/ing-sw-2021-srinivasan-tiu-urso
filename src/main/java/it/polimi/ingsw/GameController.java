@@ -21,15 +21,14 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.lang.reflect.Array;
+import java.util.*;
 import java.util.stream.IntStream;
 
 public class GameController {
 
     private GUI gui;
+
     @FXML Pane pane;
 
     private Alert mainAlert;
@@ -44,6 +43,10 @@ public class GameController {
 
     private ResourceController[] resourceControllers;
 
+    private LeaderCardController[] leaderCardControllers;
+
+    private ResourceController[] supplyControllers;
+
     private FaithMarkerController faithMarkerController;
 
     private ChooseResourceController chooseResourceController;
@@ -55,6 +58,10 @@ public class GameController {
     public static final int NUM_LEADER_CARDS = 2;
 
     public static final int SIZE_EXTRA_DEPOSITS = 4;
+
+    public static final int SIZE_SUPPLY = 4;
+
+    private ArrayList<LeaderCard> playedLeaderCard; // test
 
     // Label for locker
 
@@ -81,6 +88,8 @@ public class GameController {
         extraDepositSlots = new ExtraDepositSlot[SIZE_EXTRA_DEPOSITS];
         resourceControllers = new ResourceController[NUM_SHELFES + SIZE_EXTRA_DEPOSITS];
         leaderCardSlots = new Slot[NUM_LEADER_CARDS];
+        leaderCardControllers = new LeaderCardController[NUM_LEADER_CARDS];
+        supplyControllers = new ResourceController[SIZE_SUPPLY];
 
         depositSlots[0] = new Slot(327, 391, 52, 58);
         depositSlots[1] = new Slot(308, 449, 42, 58);
@@ -126,8 +135,13 @@ public class GameController {
 
         LeaderCard leaderCard = new LeaderCard(7, 5, bannerCost, resourceCost, sa);
 
+        playedLeaderCard = new ArrayList<>();
 
-        printLeaderCard(leaderCard, 0);
+        playedLeaderCard.add(leaderCard);
+
+        //printLeaderCard(leaderCard, 0);
+
+        printPlayedLeaderCards(playedLeaderCard);
 
         // DEBUGGING
 
@@ -140,7 +154,10 @@ public class GameController {
         map.put(Resource.GOLD, 5);
         map.put(Resource.SERVANT, 3);
 
-        printWarehouse(deposit, map, new Resource[2][2], new ArrayList<>());
+        ArrayList<Resource> supplyOld = new ArrayList<>();
+        supplyOld.add(Resource.GOLD);
+
+        printWarehouse(deposit, map, new Resource[2][2], supplyOld);
 
         cleanWarehouse();
 
@@ -157,7 +174,15 @@ public class GameController {
 
         extraDeposits2[0][1] = Resource.SHIELD;
 
-        printWarehouse(deposit2, map2, extraDeposits2, new ArrayList<>());
+        ArrayList<Resource> supply = new ArrayList<>();
+
+        supply.add(Resource.SHIELD);
+        supply.add(Resource.STONE);
+        supply.add(Resource.SERVANT);
+        supply.add(Resource.GOLD);
+
+
+        printWarehouse(deposit2, map2, extraDeposits2, supply);
 
 
 
@@ -165,32 +190,56 @@ public class GameController {
 
     public void printResource(Resource resource, int pos) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/resource_item.fxml"));
-        Node node = null;
         try {
-            node = loader.load();
+            loader.load();
         } catch (IOException e) {
             e.printStackTrace();
         }
         resourceControllers[pos] = loader.getController();
+        resourceControllers[pos].setGui(gui);
         resourceControllers[pos].assignSlots(depositSlots, extraDepositSlots);
         resourceControllers[pos].createItem(resource, pos);
 
         pane.getChildren().add(resourceControllers[pos].getItem());
     }
 
-    public void printLeaderCard(LeaderCard leaderCard, int slot) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/leader_card.fxml"));
-        Node node = null;
+    public void printSupplyResource(Resource resource, int pos) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/resource_item.fxml"));
         try {
-            node = loader.load();
+            loader.load();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        LeaderCardController leaderCardController = loader.getController();
-        leaderCardController.assignSlots(leaderCardSlots);
-        leaderCardController.createItem(leaderCard, slot);
+        supplyControllers[pos] = loader.getController();
+        supplyControllers[pos].setGui(gui);
+        supplyControllers[pos].assignSlots(depositSlots, extraDepositSlots);
+        supplyControllers[pos].createSupplyItem(resource, pos);
 
-        pane.getChildren().add(leaderCardController.getItem());
+        pane.getChildren().add(supplyControllers[pos].getItem());
+    }
+
+    public void printPlayedLeaderCards(List<LeaderCard> playedLeaderCards) {
+        IntStream.range(0, playedLeaderCards.size())
+                .filter(i -> leaderCardSlots[i].isEmpty())
+                .forEach(System.out::println);
+
+        IntStream.range(0, playedLeaderCards.size())
+                .filter(i -> leaderCardSlots[i].isEmpty())
+                .forEach(i -> printLeaderCard(playedLeaderCards.get(i), i));
+    }
+
+    public void printLeaderCard(LeaderCard leaderCard, int slot) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/leader_card.fxml"));
+        try {
+            loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        leaderCardControllers[slot] = loader.getController();
+        leaderCardControllers[slot].assignSlots(leaderCardSlots);
+        leaderCardControllers[slot].createItem(leaderCard, slot);
+
+        pane.getChildren().add(leaderCardControllers[slot].getItem());
 
         if (leaderCard.getSpecialAbility().getType() == SpecialAbilityType.WAREHOUSE_EXTRA_SPACE) {
             WarehouseExtraSpace wes = (WarehouseExtraSpace) leaderCard.getSpecialAbility();
@@ -208,16 +257,22 @@ public class GameController {
     }
 
     public void reloadWarehouseImages() {
-        for (int i = 0; i < resourceControllers.length; i++) {
-            if (resourceControllers[i] != null) {
-                pane.getChildren().remove(resourceControllers[i].getItem());
-                pane.getChildren().add(resourceControllers[i].getItem());
+        for (ResourceController resourceController : resourceControllers) {
+            if (resourceController != null) {
+                pane.getChildren().remove(resourceController.getItem());
+                pane.getChildren().add(resourceController.getItem());
+            }
+        }
+        for (ResourceController supplyController : supplyControllers) {
+            if (supplyController != null) {
+                pane.getChildren().remove(supplyController.getItem());
+                pane.getChildren().add(supplyController.getItem());
             }
         }
     }
 
     public void updateLockerLabel(Resource resource, int quantity) {
-        String stringQuantity = "x " + Integer.toString(quantity);
+        String stringQuantity = "x " + quantity;
         switch (resource) {
             case GOLD -> coinLabel.setText(stringQuantity);
             case SHIELD -> shieldLabel.setText(stringQuantity);
@@ -241,7 +296,9 @@ public class GameController {
             }
         }
 
-        // TODO supply
+        IntStream.range(0, supply.size())
+                .filter(i -> supply.get(i) != null)
+                .forEach(i -> printSupplyResource(supply.get(i), i));
     }
 
     public void cleanWarehouse() {
@@ -263,7 +320,17 @@ public class GameController {
         updateLockerLabel(Resource.STONE, 0);
         updateLockerLabel(Resource.SERVANT, 0);
 
-        // TODO supply
+        for (int i = 0; i < supplyControllers.length; i++) {
+            if (supplyControllers[i] != null) {
+                pane.getChildren().remove(supplyControllers[i].getItem());
+                supplyControllers[i] = null;
+            }
+        }
+    }
+
+    public void changeSupplyController(ResourceController resourceController, int pos, int supplyPos) {
+        resourceControllers[pos] = resourceController;
+        supplyControllers[supplyPos] = null;
     }
 
     @FXML
@@ -291,12 +358,11 @@ public class GameController {
 
             LeaderCard leaderCard2 = new LeaderCard(1, 5, bannerCost, resourceCost, sa2);
 
-            printLeaderCard(leaderCard2, 1);
-        }
-        else
-        {
-            System.out.println(chooseResourceController.getResourceContainer());
-            System.out.println(chooseResourceController.getSelectedCardSlot());
+            playedLeaderCard.add(leaderCard2);
+
+            //printLeaderCard(leaderCard2, 1);
+
+            printPlayedLeaderCards(playedLeaderCard);
         }
     }
 
@@ -333,9 +399,8 @@ public class GameController {
         }
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/cross_item.fxml"));
-        Node node = null;
         try {
-            node = loader.load();
+            loader.load();
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -145,4 +145,8 @@ public class GUI extends Application implements UI {
         return reducedModel;
     }
 
+    public void changeSupplyController(ResourceController resourceController, int pos, int supplyPos) {
+        gameController.changeSupplyController(resourceController, pos, supplyPos);
+    }
+
 }

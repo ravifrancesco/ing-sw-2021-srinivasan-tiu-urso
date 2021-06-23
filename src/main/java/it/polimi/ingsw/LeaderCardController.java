@@ -9,13 +9,15 @@ import java.io.File;
 
 public class LeaderCardController {
 
-    @FXML ImageView item;
+    private GUI gui;
 
-    LeaderCard leaderCard;
+    @FXML private ImageView item;
 
-    Slot[] slots;
+    private LeaderCard leaderCard;
 
-    int currentSlot;
+    private Slot[] slots;
+
+    private int currentSlot;
 
     public void assignSlots(Slot[] slots) {
         this.slots = slots;
@@ -40,9 +42,14 @@ public class LeaderCardController {
 
         slots[slot].filLSlot();
         currentSlot = slot;
+        this.leaderCard = leaderCard;
     }
 
     public ImageView getItem() {
         return this.item;
+    }
+
+    public void setGui(GUI gui) {
+        this.gui = gui;
     }
 }
