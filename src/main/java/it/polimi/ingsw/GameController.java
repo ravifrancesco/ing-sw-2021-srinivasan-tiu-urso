@@ -36,6 +36,9 @@ public class GameController {
     @FXML
     private Button btnConfirm;
 
+    @FXML
+    private Button btnCancel;
+
     private Alert mainAlert;
 
     private Slot[] depositSlots;
@@ -121,6 +124,7 @@ public class GameController {
         }
 
         initializeFaithTrack();
+
     }
 
     public void printResource(Resource resource, int pos) {
@@ -263,9 +267,14 @@ public class GameController {
         }
     }
 
-    public void changeSupplyController(ResourceController resourceController, int pos, int supplyPos) {
-        resourceControllers[pos] = resourceController;
+    public void changeSupplyController(int supplyPos, int pos) {
+        resourceControllers[pos] = supplyControllers[supplyPos];
         supplyControllers[supplyPos] = null;
+    }
+
+    public void changeResourceController(int from, int to) {
+        resourceControllers[to] = resourceControllers[from];
+        resourceControllers[from] = null;
     }
 
     @FXML
@@ -463,6 +472,8 @@ public class GameController {
     }
 
     public void btnConfirmClick(MouseEvent event) {
+        btnConfirm.setVisible(false);
+        btnCancel.setVisible(false);
         Resource[] deposit = new Resource[NUM_SHELFES];
         for (int i = 0; i < NUM_SHELFES; i++) {
             if (resourceControllers[i] != null) {
@@ -471,6 +482,12 @@ public class GameController {
         }
         gui.setEnableNoDeposit();
         gui.getClientConnection().send(new PlayerChangesDeposit(deposit));
+    }
+
+    public void btnCancelClick(MouseEvent event) {
+        btnConfirm.setVisible(false);
+        btnCancel.setVisible(false);
+        // TODO ravi
     }
 
     public void initPlayerAlert() {
@@ -499,8 +516,8 @@ public class GameController {
     public Resource[] getExtraDepositView(int lcIndex) {
         Resource[] extraDeposit = new Resource[SIZE_EXTRA_DEPOSITS/2];
         int newPos = NUM_SHELFES + lcIndex * 2;
-        extraDeposit[newPos] = resourceControllers[newPos] != null ? resourceControllers[newPos].getResourceType() : null;
-        extraDeposit[newPos+1] = resourceControllers[newPos+1] != null ? resourceControllers[newPos+1].getResourceType() : null;
+        extraDeposit[0] = resourceControllers[newPos] != null ? resourceControllers[newPos].getResourceType() : null;
+        extraDeposit[1] = resourceControllers[newPos+1] != null ? resourceControllers[newPos+1].getResourceType() : null;
         return extraDeposit;
     }
 
@@ -526,5 +543,10 @@ public class GameController {
                 .forEach(i -> supplyControllers[i].setEnable());
 
         // TODO enable productions and other buttons
+    }
+
+    public void showWarehouseButtons() {
+        btnConfirm.setVisible(true);
+        btnCancel.setVisible(true);
     }
 }

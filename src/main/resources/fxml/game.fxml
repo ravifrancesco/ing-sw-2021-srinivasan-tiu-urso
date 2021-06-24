@@ -32,7 +32,8 @@
                <image>
                   <Image url="@../png/supply.png" />
                </image></ImageView>
-            <Button layoutX="320.0" layoutY="573.0" mnemonicParsing="false" onMouseClicked="#btnConfirmClick" text="Confirm" />
+            <Button fx:id="btnConfirm" layoutX="280.0" layoutY="573.0" mnemonicParsing="false" onMouseClicked="#btnConfirmClick" text="Confirm" visible="false" />
+            <Button fx:id="btnCancel" layoutX="360.0" layoutY="573.0" mnemonicParsing="false" onMouseClicked="#btnCancelClick" text="Cancel" visible="false" />
          </children>
       </Pane>
    </bottom>

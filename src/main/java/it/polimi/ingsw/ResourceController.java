@@ -156,16 +156,23 @@ public class ResourceController {
                 if (currentSlot != -1) {
                     if (currentSlot < GameController.NUM_SHELFES) {
                         slots[currentSlot].freeSlot();
-                        gui.setDisableNoDeposit();
+                        if (supplyPos == -1) {
+                            gui.setDisableNoDeposit();
+                            gui.showWarehouseButtons();
+                            gui.changeResourceController(currentSlot, i);
+                        }
                     } else {
                         leaderSlots[currentSlot - GameController.NUM_SHELFES].freeSlot();
-                        int lcIndex = currentSlot - GameController.NUM_SHELFES / 2;
-                        gui.getClientConnection().send(new PlayerChangesExtraDeposit(gui.getDepositView(), gui.getExtraDepositView(lcIndex), lcIndex));
+                        if (supplyPos == -1) {
+                            gui.changeResourceController(currentSlot, i);
+                            int lcIndex = (currentSlot - GameController.NUM_SHELFES) / 2;
+                            gui.getClientConnection().send(new PlayerChangesExtraDeposit(gui.getDepositView(), gui.getExtraDepositView(lcIndex), lcIndex));
+                        }
                     }
                 }
                 currentSlot = i;
                 if (supplyPos != -1) {
-                    gui.changeSupplyController(this, currentSlot, supplyPos);
+                    gui.changeSupplyController(supplyPos, currentSlot);
                     gui.getClientConnection().send(new PlayerStoresFromSupply(supplyPos, currentSlot));
                     supplyPos = -1;
                 }
@@ -184,12 +191,15 @@ public class ResourceController {
                     } else {
                         leaderSlots[currentSlot - GameController.NUM_SHELFES].freeSlot();
                     }
-                    gui.getClientConnection().send(new PlayerChangesExtraDeposit(gui.getDepositView(), gui.getExtraDepositView(i/2), i/2));
+                    if (supplyPos == -1) {
+                        gui.changeResourceController(currentSlot, i + GameController.NUM_SHELFES);
+                        gui.getClientConnection().send(new PlayerChangesExtraDeposit(gui.getDepositView(), gui.getExtraDepositView(i/2), i/2));
+                    }
                 }
                 currentSlot = i + GameController.NUM_SHELFES;
                 if (supplyPos != -1) {
-                    gui.changeSupplyController(this, currentSlot, supplyPos);
-                    gui.getClientConnection().send(new PlayerStoresFromSupplyToExtraDeposit(i%2, supplyPos, i/2));
+                    gui.changeSupplyController(supplyPos, currentSlot);
+                    gui.getClientConnection().send(new PlayerStoresFromSupplyToExtraDeposit(i/2, supplyPos, i%2));
                     supplyPos = -1;
                 }
                 return;

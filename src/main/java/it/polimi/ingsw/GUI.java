@@ -147,8 +147,8 @@ public class GUI extends Application implements UI {
         return reducedModel;
     }
 
-    public void changeSupplyController(ResourceController resourceController, int pos, int supplyPos) {
-        gameController.changeSupplyController(resourceController, pos, supplyPos);
+    public void changeSupplyController(int supplyPos, int pos) {
+        gameController.changeSupplyController(supplyPos, pos);
     }
 
     public Resource[] getDepositView() {
@@ -165,5 +165,13 @@ public class GUI extends Application implements UI {
 
     public void setEnableNoDeposit() {
         gameController.setEnableNoDeposit();
+    }
+
+    public void changeResourceController(int from, int to) {
+        gameController.changeResourceController(from, to);
+    }
+
+    public void showWarehouseButtons() {
+        gameController.showWarehouseButtons();
     }
 }
