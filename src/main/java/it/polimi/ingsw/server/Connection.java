@@ -52,6 +52,7 @@ public class Connection implements Runnable,
         this.currentLobby = mainLobby;
     }
 
+
     public Lobby getCurrentLobby() {
         return currentLobby;
     }
@@ -147,6 +148,7 @@ public class Connection implements Runnable,
         while(true) {
             try {
                 RegisterName registerName = (RegisterName) receiveLobbyMessage();
+
                 registerName.handle(this, currentLobby);
                 currentLobby.enterLobby(this);
                 System.out.println("I have registered the player: " + nickname);
@@ -169,15 +171,8 @@ public class Connection implements Runnable,
                     GameLobby gameLobby = (GameLobby) currentLobby;
                     send(new GameInfoMessage(gameLobby.getId(), gameLobby.getMaxPlayers()));
                 }
-                else
-                {
-                    send(new CorrectHandlingMessage());
-                }
-
-                // } catch (ClassNotFoundException | ClassCastException | IllegalArgumentException | InvalidNameException | IllegalStateException e) {
             } catch (Exception e) {
-                System.out.println(e.getMessage());
-                //e.printStackTrace();
+                System.out.println("Error while receiving lobby message: " + e.getMessage());
                 send(new ErrorMessage());
             }
         } else {
@@ -186,10 +181,13 @@ public class Connection implements Runnable,
                 read = receiveGameMessage();
                 System.out.println("Received game lobby message by " + nickname + ": " + read.toString());
                 currentLobby.handleMessage(read, this);
-                // ClassNotFoundException | InvalidNameException
+            } catch (ClassCastException e) {
+                System.out.println("Player" + nickname + "tried to use a main lobby command inside whislt inside a game lobby");
+                sendFailedMoveMessage("Main lobby commands not available inside game lobby");
             } catch (Exception e) {
+                System.out.println("Ma perché");
+                System.out.println(e.getClass());
                 System.out.println(e.getMessage());
-                //e.printStackTrace();
                 send(new ErrorMessage());
             }
         }
@@ -215,11 +213,20 @@ public class Connection implements Runnable,
         this.nickname = nickname;
     }
 
+    public void sendCLIupdateMessage(String menuCode) {
+        send(new CLIMenuUpdate(menuCode));
+    }
+
     /**
      *  TODO all of this methods and messages should handle only the necessary information. To be defined after client.
      *  TODO, this will be done changing the messages.
      *  TODO the notifies have to be handled. (Together)
      */
+
+    public void playerJoinedLobby(String player) {
+        send(new PlayerJoinedMessage(player));
+    }
+
 
     @Override
     public void update(FaithTrack message) {

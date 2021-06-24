@@ -1,12 +1,13 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.IO.CLI;
-import it.polimi.ingsw.client.IO.ClientMessageInputParser;
+import it.polimi.ingsw.client.IO.Constants;
 import it.polimi.ingsw.controller.client.reducedModel.ReducedDashboard;
 import it.polimi.ingsw.controller.client.reducedModel.ReducedGame;
 import it.polimi.ingsw.controller.client.reducedModel.ReducedGameBoard;
 import it.polimi.ingsw.controller.client.reducedModel.ReducedPlayer;
 import it.polimi.ingsw.model.Resource;
+import it.polimi.ingsw.model.TurnPhase;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
@@ -55,7 +56,7 @@ public class ClientConnection implements Runnable {
     }
 
     public void connectToServer() throws IOException {
-        ui.printMessage("Connection at " + ip + " on port " + port);
+        ui.printColoredMessage("Connection at " + ip + " on port " + port, Constants.ANSI_YELLOW);
         try {
             socket = new Socket(ip, port);
         } catch (IOException e) {
@@ -65,6 +66,7 @@ public class ClientConnection implements Runnable {
         inputStream = new ObjectInputStream(socket.getInputStream());
         try {
             ServerMessage serverMessage = receiveServerMessage();
+            System.out.println("I have received serverMessage: " + serverMessage.toString());
             serverMessage.updateClient(this, null);
         } catch (Exception e) {
             // welcome message not received
@@ -84,6 +86,9 @@ public class ClientConnection implements Runnable {
             }
         } else {
             ui.printErrorMessage("Insert a non-empty nickname");
+        }
+        if(isNameRegistered()) {
+            if(ui.getType() == UIType.CLI) { ((CLI) ui).showMainLobbyMenu(); }
         }
     }
 
@@ -142,15 +147,70 @@ public class ClientConnection implements Runnable {
         }).start();
     }
 
-    public void updateReducedGame(boolean gameStarted, String firstPlayer, String currentPlayer, List<String> playersNicknames) {
+    public void updateReducedGame(String firstPlayer, String currentPlayer, List<String> playersNicknames, TurnPhase turnPhase, int firstTurns) {
+
         ReducedGame reducedGame = reducedModel.getReducedGame();
         reducedGame.setGameStarted(gameStarted);
+        String oldPlayer = reducedGame.getCurrentPlayer();
+        TurnPhase oldPhase = reducedGame.getTurnPhase();
         reducedGame.setFirstPlayer(firstPlayer);
         reducedGame.setCurrentPlayer(currentPlayer);
         reducedGame.updatePlayers(playersNicknames);
+        reducedGame.setTurnPhase(turnPhase);
+        reducedGame.setFirstTurns(firstTurns);
+        handleMenus(reducedGame, oldPlayer, oldPhase);
+
     }
 
-    public void updateReducedDashboard(String nickname, int playerPoints, List<LeaderCard> playedLeaderCards, List<Stack<DevelopmentCard>> playedDevelopmentCards, ArrayList<Resource> supply, ProductionPower productionPower) {
+    public boolean turnPlayerChanged(String oldPlayer, String currentPlayer) {
+        return (oldPlayer == null && currentPlayer != null) ||
+                (currentPlayer != null && !oldPlayer.equals(currentPlayer));
+    }
+
+    public boolean turnPhaseChanged(TurnPhase oldPhase, TurnPhase newPhase) {
+        return oldPhase != newPhase;
+    }
+
+
+    public void handleMenus(ReducedGame reducedGame, String oldPlayer, TurnPhase oldPhase) {
+        String currentPlayer = reducedGame.getCurrentPlayer();
+        TurnPhase currentPhase = reducedGame.getTurnPhase();
+        /*
+        if(turnPlayerChanged(oldPlayer,  currentPlayer)) {
+            if(currentPlayer.equals(reducedGame.getClientPlayer())) {
+                ui.printMessage("# It is now your turn");
+            } else {
+                ui.printMessage("# It is now " + currentPlayer + "'s turn");
+            }
+            System.out.println("# From changed player");
+            showPhaseMenu(reducedGame);
+        } else {
+            if(turnPhaseChanged(oldPhase, currentPhase)) {
+                System.out.println("# From unchanged player phase");
+                showPhaseMenu(reducedGame);
+            }
+        }
+         */
+    }
+
+    public void showPhaseMenu(ReducedGame reducedGame) {
+        if(reducedGame.getCurrentPlayer().equals(reducedGame.getClientPlayer())) {
+            ui.printMessage("# <menu for turnphase: " + reducedGame.getTurnPhase() + " > ");
+        }
+    }
+
+
+    public void handleTurnPhaseMenu(ReducedGame reducedGame) {
+        if(reducedGame.getTurnPhase() == TurnPhase.FIRST_TURN) {
+            ui.printMessage("It is now the turnphase: " + reducedGame.getTurnPhase());
+        }
+    }
+
+    public void updateReducedDashboard(String nickname, int playerPoints,
+                                       List<LeaderCard> playedLeaderCards,
+                                       List<Stack<DevelopmentCard>> playedDevelopmentCards,
+                                       ArrayList<Resource> supply, ProductionPower productionPower) {
+
         ReducedGame reducedGame = reducedModel.getReducedGame();
         if (!reducedGame.getPlayers().containsKey(nickname)) {
             reducedGame.createPlayer(nickname);

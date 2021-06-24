@@ -21,7 +21,6 @@ public class MainLobbyHandler {
     public static ClientMessage joinGame(String[] input, CLI cli) {
         try {
             String id = input[1];
-            cli.printMessage("Joining lobby " + id + "...");
             return new JoinGameLobby(id);
         } catch (Exception e) {
             cli.printErrorMessage("Something went wrong while joining a game");

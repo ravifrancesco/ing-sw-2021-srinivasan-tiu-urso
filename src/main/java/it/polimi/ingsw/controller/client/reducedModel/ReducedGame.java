@@ -20,6 +20,7 @@ public class ReducedGame {
     private String clientPlayer;
 
     private String currentPlayer;
+
     private String firstPlayer;
 
     private Map<String, ReducedPlayer> players;
@@ -27,6 +28,8 @@ public class ReducedGame {
     private TurnPhase turnPhase;
 
     private ReducedModel reducedModel;
+
+    private int firstTurns;
 
     public ReducedGame(ReducedModel reducedModel) {
         this.reducedModel = reducedModel;
@@ -111,5 +114,13 @@ public class ReducedGame {
             this.gameStarted = gameStarted;
             this.reducedModel.hideStartGameAlert();
         }
+    }
+
+    public void setFirstTurns(int firstTurns) {
+        this.firstTurns = firstTurns;
+    }
+
+    public int getFirstTurns() {
+        return firstTurns;
     }
 }

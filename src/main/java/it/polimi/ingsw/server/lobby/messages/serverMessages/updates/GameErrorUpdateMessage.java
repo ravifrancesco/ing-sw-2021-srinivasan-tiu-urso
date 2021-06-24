@@ -1,6 +1,8 @@
 package it.polimi.ingsw.server.lobby.messages.serverMessages.updates;
 
 import it.polimi.ingsw.client.ClientConnection;
+import it.polimi.ingsw.client.IO.CLI;
+import it.polimi.ingsw.client.UIType;
 import it.polimi.ingsw.model.GameError;
 import it.polimi.ingsw.server.lobby.messages.serverMessages.ServerMessage;
 import it.polimi.ingsw.utils.Pair;
@@ -21,6 +23,11 @@ public class GameErrorUpdateMessage implements ServerMessage, Serializable {
 
     @Override
     public void updateClient(ClientConnection clientConnection, String nickname) {
-        clientConnection.ui.printErrorMessage("Move failed: " + gameError.second.getMessage());
+        if(clientConnection.ui.getType() == UIType.CLI) {
+            CLI cli = (CLI) clientConnection.ui;
+            if (cli.getReducedModel().getReducedGame().getCurrentPlayer().equals(cli.getReducedModel().getReducedGame().getClientPlayer())) {
+                cli.printErrorMessage("Move failed: " + gameError.second.getMessage());
+            }
+        }
     }
 }
