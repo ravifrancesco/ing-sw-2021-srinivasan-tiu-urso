@@ -121,76 +121,6 @@ public class GameController {
         }
 
         initializeFaithTrack();
-
-        // DEBUG
-
-        Map<Banner, Integer> bannerCost = new HashMap<>();
-
-        bannerCost.put(new Banner(BannerEnum.GREEN, 1), 2);
-        bannerCost.put(new Banner(BannerEnum.BLUE, 2), 1);
-
-        Map<Resource, Integer> resourceCost = new HashMap<>();
-
-        resourceCost.put(Resource.GOLD, 3);
-
-        Map<Resource, Integer> resourceRequired = new HashMap<>();
-        resourceRequired.put(Resource.ANY, 1);
-
-        SpecialAbility sa = new WarehouseExtraSpace(Resource.SHIELD);
-
-        LeaderCard leaderCard = new LeaderCard(7, 5, bannerCost, resourceCost, sa);
-
-        playedLeaderCard = new ArrayList<>();
-
-        playedLeaderCard.add(leaderCard);
-
-        //printLeaderCard(leaderCard, 0);
-
-        printPlayedLeaderCards(playedLeaderCard);
-
-        // DEBUGGING
-
-        Resource[] deposit = new Resource[6];
-        deposit[0] = Resource.GOLD;
-        deposit[2] = Resource.SHIELD;
-        deposit[5] = Resource.SERVANT;
-
-        Map<Resource, Integer> map = new HashMap<>();
-        map.put(Resource.GOLD, 5);
-        map.put(Resource.SERVANT, 3);
-
-        ArrayList<Resource> supplyOld = new ArrayList<>();
-        supplyOld.add(Resource.GOLD);
-
-        printWarehouse(deposit, map, new Resource[2][2], supplyOld);
-
-        cleanWarehouse();
-
-        Resource[] deposit2 = new Resource[6];
-        deposit2[0] = Resource.SHIELD;
-        deposit2[2] = Resource.GOLD;
-        deposit2[4] = Resource.STONE;
-
-        Map<Resource, Integer> map2 = new HashMap<>();
-        map2.put(Resource.SHIELD, 2);
-        map2.put(Resource.STONE, 3);
-
-        Resource[][] extraDeposits2 = new Resource[2][2];
-
-        extraDeposits2[0][1] = Resource.SHIELD;
-
-        ArrayList<Resource> supply = new ArrayList<>();
-
-        supply.add(Resource.SHIELD);
-        supply.add(Resource.STONE);
-        supply.add(Resource.SERVANT);
-        supply.add(Resource.GOLD);
-
-
-        printWarehouse(deposit2, map2, extraDeposits2, supply);
-
-
-
     }
 
     public void printResource(Resource resource, int pos) {
@@ -344,7 +274,7 @@ public class GameController {
         System.out.println(event.getY());
         faithMarkerController.moveFaithMarker(faithMarkerController.getPosition()+1);
         if (chooseResourceController == null) {
-            openChooseResourceWindow();
+            // DEBUG
 
             Map<Banner, Integer> bannerCost = new HashMap<>();
 
@@ -358,10 +288,73 @@ public class GameController {
             Map<Resource, Integer> resourceRequired = new HashMap<>();
             resourceRequired.put(Resource.ANY, 1);
 
+            SpecialAbility sa = new WarehouseExtraSpace(Resource.SHIELD);
+
+            LeaderCard leaderCard = new LeaderCard(7, 5, bannerCost, resourceCost, sa);
+
+            playedLeaderCard = new ArrayList<>();
+
+            playedLeaderCard.add(leaderCard);
+
+            //printLeaderCard(leaderCard, 0);
+
+            printPlayedLeaderCards(playedLeaderCard);
+
+            // DEBUGGING
+
+            Resource[] deposit = new Resource[6];
+            deposit[0] = Resource.GOLD;
+            deposit[2] = Resource.SHIELD;
+            deposit[5] = Resource.SERVANT;
+
+            Map<Resource, Integer> map = new HashMap<>();
+            map.put(Resource.GOLD, 5);
+            map.put(Resource.SERVANT, 3);
+
+            ArrayList<Resource> supplyOld = new ArrayList<>();
+            supplyOld.add(Resource.GOLD);
+
+            printWarehouse(deposit, map, new Resource[2][2], supplyOld);
+
+            cleanWarehouse();
+
+            Resource[] deposit2 = new Resource[6];
+            deposit2[0] = Resource.SHIELD;
+            deposit2[2] = Resource.GOLD;
+            deposit2[4] = Resource.STONE;
+
+            Map<Resource, Integer> map2 = new HashMap<>();
+            map2.put(Resource.SHIELD, 2);
+            map2.put(Resource.STONE, 3);
+
+            Resource[][] extraDeposits2 = new Resource[2][2];
+
+            extraDeposits2[0][1] = Resource.SHIELD;
+
+            ArrayList<Resource> supply = new ArrayList<>();
+
+            supply.add(Resource.SHIELD);
+            supply.add(Resource.STONE);
+            supply.add(Resource.SERVANT);
+            supply.add(Resource.GOLD);
+
+
+            printWarehouse(deposit2, map2, extraDeposits2, supply);
+
+            openChooseResourceWindow();
+
+            Map<Banner, Integer> bannerCost2 = new HashMap<>();
+
+            bannerCost.put(new Banner(BannerEnum.GREEN, 1), 2);
+            bannerCost.put(new Banner(BannerEnum.BLUE, 2), 1);
+
+            Map<Resource, Integer> resourceCost2 = new HashMap<>();
+
+            resourceCost.put(Resource.GOLD, 3);
 
             SpecialAbility sa2 = new DevelopmentCardDiscount(Resource.SHIELD, 1);
 
-            LeaderCard leaderCard2 = new LeaderCard(1, 5, bannerCost, resourceCost, sa2);
+            LeaderCard leaderCard2 = new LeaderCard(1, 5, bannerCost2, resourceCost2, sa2);
 
             playedLeaderCard.add(leaderCard2);
 
@@ -476,6 +469,7 @@ public class GameController {
                 deposit[i] = resourceControllers[i].getResourceType();
             }
         }
+        gui.setEnableNoDeposit();
         gui.getClientConnection().send(new PlayerChangesDeposit(deposit));
     }
 
@@ -508,5 +502,29 @@ public class GameController {
         extraDeposit[newPos] = resourceControllers[newPos] != null ? resourceControllers[newPos].getResourceType() : null;
         extraDeposit[newPos+1] = resourceControllers[newPos+1] != null ? resourceControllers[newPos+1].getResourceType() : null;
         return extraDeposit;
+    }
+
+    public void setDisableNoDeposit() {
+        IntStream.range(NUM_SHELFES, resourceControllers.length)
+                .filter(i -> resourceControllers[i] != null)
+                .forEach(i -> resourceControllers[i].setDisable());
+
+        IntStream.range(0, SIZE_SUPPLY)
+                .filter(i -> supplyControllers[i] != null)
+                .forEach(i -> supplyControllers[i].setDisable());
+
+        // TODO disable productions and other buttons
+    }
+
+    public void setEnableNoDeposit() {
+        IntStream.range(NUM_SHELFES, resourceControllers.length)
+                .filter(i -> resourceControllers[i] != null)
+                .forEach(i -> resourceControllers[i].setEnable());
+
+        IntStream.range(0, SIZE_SUPPLY)
+                .filter(i -> supplyControllers[i] != null)
+                .forEach(i -> supplyControllers[i].setEnable());
+
+        // TODO enable producitons and other buttons
     }
 }

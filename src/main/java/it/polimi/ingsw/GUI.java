@@ -158,4 +158,12 @@ public class GUI extends Application implements UI {
     public Resource[] getExtraDepositView(int lcIndex) {
         return gameController.getExtraDepositView(lcIndex);
     }
+
+    public void setDisableNoDeposit() {
+        gameController.setDisableNoDeposit();
+    }
+
+    public void setEnableNoDeposit() {
+        gameController.setEnableNoDeposit();
+    }
 }

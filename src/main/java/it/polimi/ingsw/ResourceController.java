@@ -95,6 +95,14 @@ public class ResourceController {
         supplyPos = pos;
     }
 
+    public void setDisable() {
+        item.setDisable(true);
+    }
+
+    public void setEnable() {
+        item.setDisable(false);
+    }
+
     public void setGui(GUI gui) {
         this.gui = gui;
     }
@@ -148,6 +156,7 @@ public class ResourceController {
                 if (currentSlot != -1) {
                     if (currentSlot < GameController.NUM_SHELFES) {
                         slots[currentSlot].freeSlot();
+                        gui.setDisableNoDeposit();
                     } else {
                         leaderSlots[currentSlot - GameController.NUM_SHELFES].freeSlot();
                         int lcIndex = currentSlot - GameController.NUM_SHELFES / 2;
