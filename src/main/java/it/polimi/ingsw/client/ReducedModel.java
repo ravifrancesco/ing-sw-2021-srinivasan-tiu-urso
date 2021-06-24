@@ -14,7 +14,6 @@ public class ReducedModel {
     GameController gameController;
 
 
-
     public ReducedModel() {
         reducedGame = new ReducedGame(this);
         reducedPlayer = new ReducedPlayer(this);
@@ -48,6 +47,14 @@ public class ReducedModel {
     }
 
     public void hideStartGameAlert() {
-        gameController.hideAlert();
+        if (gameController != null) {
+            gameController.hideAlert();
+        }
+    }
+
+    public void moveFaithMarker(int position) {
+        if (gameController != null) {
+            gameController.moveFaithMarker(position);
+        }
     }
 }

@@ -23,9 +23,10 @@ public class ReducedPlayer {
     private ReducedModel reducedModel;
 
     public ReducedPlayer(ReducedModel reducedModel) {
+        this.reducedModel = reducedModel;
         this.nickname = "";
         this.hand = new ArrayList<>();
-        this.dashboard = new ReducedDashboard();
+        this.dashboard = new ReducedDashboard(reducedModel);
     }
 
     public String getNickname() {

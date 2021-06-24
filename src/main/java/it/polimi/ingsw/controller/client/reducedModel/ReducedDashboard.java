@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller.client.reducedModel;
 
+import it.polimi.ingsw.client.ReducedModel;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
@@ -32,7 +33,10 @@ public class ReducedDashboard {
     private Map<Pair<Integer, Integer>, Pair<Integer, Integer>> vaticanReports; //TODO
     private int[] faithTrackVictoryPoints;
 
-    public ReducedDashboard() {
+    private ReducedModel reducedModel;
+
+    public ReducedDashboard(ReducedModel reducedModel) {
+        this.reducedModel = reducedModel;
         this.playedLeaderCards = new ArrayList<>();
         this.playedDevelopmentCards = new ArrayList<>();
         this.locker = new HashMap<>();
@@ -100,6 +104,7 @@ public class ReducedDashboard {
 
     public void setPosition(int position) {
         this.position = position;
+        this.reducedModel.moveFaithMarker(position);
     }
 
     public Map<Pair<Integer, Integer>, Pair<Integer, Integer>> getVaticanReports() {

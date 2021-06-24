@@ -17,6 +17,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.input.InputEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -549,4 +550,25 @@ public class GameController {
         btnConfirm.setVisible(true);
         btnCancel.setVisible(true);
     }
+    public void moveFaithMarker(int position) {
+        faithMarkerController.moveFaithMarker(position);
+    }
+
+    public void displayMarket(InputEvent event) {
+
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/market_view.fxml"));
+            Parent root = fxmlLoader.load();
+            MarketViewController marketViewController = fxmlLoader.getController();
+            marketViewController.setGui(this.gui);
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root, 600, 503));
+            stage.show();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
 }
