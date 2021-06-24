@@ -17,6 +17,7 @@ import java.util.Stack;
 
 /**
  * Class used to send Dashboard updates to the clients.
+ * TODO change names with UI
  */
 public class CLIMenuUpdate implements ServerMessage, Serializable {
 

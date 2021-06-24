@@ -554,7 +554,7 @@ public class CLI implements UI {
          */
     }
     public String getMarbleColor(Marble marble) {
-        return switch(marble.getType()) {
+        return switch(marble.getMarbleColor().name()) {
             case "WHITE" -> Constants.ANSI_BG_WHITE;
             case "BLUE" -> Constants.ANSI_BG_BLUE;
             case "GREY" -> Constants.ANSI_BG_GREY;
@@ -568,7 +568,7 @@ public class CLI implements UI {
     public String[] getMarblesColours(Marble[] grid, int ind1) {
         String[] colours = new String[4];
         IntStream.range(ind1, ind1+4).forEach(i -> {
-            switch(grid[i].getType()) {
+            switch(grid[i].getMarbleColor().name()) {
                 case "WHITE" -> colours[i-ind1] = Constants.ANSI_BG_WHITE;
                 case "BLUE" -> colours[i-ind1] = Constants.ANSI_BG_BLUE;
                 case "GREY" -> colours[i-ind1] = Constants.ANSI_BG_GREY;

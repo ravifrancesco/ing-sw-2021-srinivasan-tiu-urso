@@ -33,6 +33,6 @@ public class GameUpdateMessage implements ServerMessage, Serializable {
 
     @Override
     public void updateClient(ClientConnection clientConnection, String nickname) {
-        clientConnection.updateReducedGame(firstPlayer, currentPlayer, players, turnPhase, firstTurns);
+        clientConnection.updateReducedGame(firstPlayer, currentPlayer, players, turnPhase, firstTurns, gameStarted);
     }
 }
