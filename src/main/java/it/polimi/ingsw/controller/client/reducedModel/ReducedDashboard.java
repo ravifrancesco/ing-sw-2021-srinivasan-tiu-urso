@@ -11,6 +11,8 @@ import java.util.*;
 
 public class ReducedDashboard {
 
+    private ReducedPlayer reducedPlayer;
+
     private int playerPoints;
 
     private ProductionPower productionPower;
@@ -35,7 +37,8 @@ public class ReducedDashboard {
 
     private ReducedModel reducedModel;
 
-    public ReducedDashboard(ReducedModel reducedModel) {
+    public ReducedDashboard(ReducedPlayer reducedPlayer, ReducedModel reducedModel) {
+        this.reducedPlayer = reducedPlayer;
         this.reducedModel = reducedModel;
         this.playedLeaderCards = new ArrayList<>();
         this.playedDevelopmentCards = new ArrayList<>();

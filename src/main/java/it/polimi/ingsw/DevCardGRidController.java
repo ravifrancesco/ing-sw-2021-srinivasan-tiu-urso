@@ -66,7 +66,7 @@ public class DevCardGRidController {
 
     private void openBuyDevCardController(Image image, int row, int col) {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/BuyDevCardController.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/buy_dev_card.fxml"));
             Parent root = null;
             root = fxmlLoader.load();
             ((BuyDevCardController) fxmlLoader.getController()).setParameters(gui, image, row, col);

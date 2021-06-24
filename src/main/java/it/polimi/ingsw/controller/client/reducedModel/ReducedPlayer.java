@@ -26,7 +26,7 @@ public class ReducedPlayer {
         this.reducedModel = reducedModel;
         this.nickname = "";
         this.hand = new ArrayList<>();
-        this.dashboard = new ReducedDashboard(reducedModel);
+        this.dashboard = new ReducedDashboard(this, reducedModel);
     }
 
     public String getNickname() {

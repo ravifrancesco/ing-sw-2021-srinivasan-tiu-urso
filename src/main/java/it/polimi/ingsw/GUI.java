@@ -119,25 +119,6 @@ public class GUI extends Application implements UI {
         );
     }
 
-    @Override
-    public void handleMenuCode(String menuCode) {
-        if ("after_game_start".equals(menuCode)) {
-            //showAfterGameStartMenu();
-        }
-        if ("after_end_turn".equals(menuCode)) {
-            //showAfterEndTurnMenu();
-        }
-        if ("next_card_discard".equals(menuCode)) {
-            //showNextCardDiscardMenu();
-        }
-        if ("after_initial_resources".equals(menuCode)) {
-            //showAfterInitialResources();
-        }
-        if ("after_getfrommarket".equals(menuCode)) {
-            //showAfterMarketMenu();
-        }
-    }
-
     public ClientConnection getClientConnection() {
         return clientConnection;
     }
@@ -192,5 +173,25 @@ public class GUI extends Application implements UI {
 
     public void showWarehouseButtons() {
         gameController.showWarehouseButtons();
+    }
+
+    @Override
+    public void handleMenuCode(String menuCode) {
+        System.out.println("DEBUG " + menuCode);
+        if ("after_game_start".equals(menuCode)) {
+            Platform.runLater(() -> gameController.showAfterGameStart());
+        }
+        if ("after_end_turn".equals(menuCode)) {
+            Platform.runLater(() -> gameController.showAfterEndTurn());
+        }
+        if ("next_card_discard".equals(menuCode)) {
+            Platform.runLater(() -> gameController.showDiscardExcessLeaderCardMenu());
+        }
+        if ("after_initial_resources".equals(menuCode)) {
+            //showAfterInitialResources();
+        }
+        if ("after_getfrommarket".equals(menuCode)) {
+            //showAfterMarketMenu();
+        }
     }
 }

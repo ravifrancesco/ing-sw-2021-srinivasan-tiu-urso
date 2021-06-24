@@ -1,8 +1,12 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.client.IO.Constants;
+import it.polimi.ingsw.client.ReducedModel;
+import it.polimi.ingsw.controller.client.reducedModel.ReducedGame;
 import it.polimi.ingsw.model.Banner;
 import it.polimi.ingsw.model.BannerEnum;
 import it.polimi.ingsw.model.Resource;
+import it.polimi.ingsw.model.TurnPhase;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.specialAbilities.*;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.game.PlayerChangesDeposit;
@@ -85,6 +89,8 @@ public class GameController {
 
     @FXML
     Label servantLabel;
+
+    String currentDisplayedPlayer = "ravi"; // TODO change for testing
 
     public void setGui(GUI gui) {
         this.gui = gui;
@@ -221,7 +227,11 @@ public class GameController {
         }
     }
 
-    public void printWarehouse(Resource[] deposit, Map<Resource, Integer> locker, Resource[][] extraDeposit, ArrayList<Resource> supply) {
+    public void printWarehouse(String player, Resource[] deposit, Map<Resource, Integer> locker, Resource[][] extraDeposit, ArrayList<Resource> supply) {
+        if (!player.equals(currentDisplayedPlayer)) {
+            return;
+        }
+        cleanWarehouse();
         IntStream.range(0, deposit.length)
                 .filter(i -> deposit[i] != null)
                 .forEach(i -> printResource(deposit[i], i));
@@ -324,7 +334,7 @@ public class GameController {
             ArrayList<Resource> supplyOld = new ArrayList<>();
             supplyOld.add(Resource.GOLD);
 
-            printWarehouse(deposit, map, new Resource[2][2], supplyOld);
+            printWarehouse("ravi", deposit, map, new Resource[2][2], supplyOld);
 
             cleanWarehouse();
 
@@ -349,7 +359,7 @@ public class GameController {
             supply.add(Resource.GOLD);
 
 
-            printWarehouse(deposit2, map2, extraDeposits2, supply);
+            printWarehouse("ravi", deposit2, map2, extraDeposits2, supply);
 
             openChooseResourceWindow();
 
@@ -454,7 +464,6 @@ public class GameController {
     }
 
     public void initHostAlert() {
-        /*
         mainAlert = new Alert(Alert.AlertType.CONFIRMATION);
         mainAlert.setTitle("Start Game");
         mainAlert.setHeaderText("Start game when you are ready!");
@@ -468,8 +477,6 @@ public class GameController {
             this.gui.getClientConnection().send(new StartGameGameMessage());
             Platform.runLater(this::initHostAlert); // TODO make it better
         }
-
-         */
     }
 
     public void btnConfirmClick(MouseEvent event) {
@@ -495,6 +502,7 @@ public class GameController {
         mainAlert = new Alert(Alert.AlertType.NONE);
         mainAlert.setTitle("Start Game");
         mainAlert.setHeaderText("Waiting for host to start the game");
+        mainAlert.setResult(ButtonType.CANCEL);
         mainAlert.show();
     }
 
@@ -569,6 +577,65 @@ public class GameController {
             e.printStackTrace();
         }
 
+    }
+
+    public void showAfterGameStart() {
+        mainAlert.close();
+        mainAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        mainAlert.setTitle("Game is starting");
+
+        ButtonType buttonTypeOne = new ButtonType("OK");
+
+        mainAlert.getButtonTypes().setAll(buttonTypeOne);
+
+        Optional<ButtonType> result = mainAlert.showAndWait();
+        result.get();
+        showDiscardExcessLeaderCardMenu();
+    }
+
+    public void showAfterEndTurn() {
+        mainAlert.close();
+        mainAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        mainAlert.setTitle("New turn");
+        ReducedGame rg = gui.getReducedModel().getReducedGame();
+        if(rg.getClientPlayer().equals(rg.getCurrentPlayer())) {
+            mainAlert.setHeaderText("It's your turn!");
+        } else {
+            mainAlert.setHeaderText("It is now " + rg.getCurrentPlayer()  + "'s turn!");
+        }
+        if(rg.getTurnPhase() == TurnPhase.FIRST_TURN) {
+            showDiscardExcessLeaderCardMenu();
+        }
+    }
+
+    public void showDiscardExcessLeaderCardMenu() {
+        ReducedGame rg = gui.getReducedModel().getReducedGame();
+        if(!rg.getClientPlayer().equals(rg.getCurrentPlayer())) {
+            return; // ADD ALERT BOX
+        } else if (rg.getPlayers().get(rg.getClientPlayer()).getHand().size() - 2 > 0) {
+            mainAlert.close();
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/discard_excess_leader_card.fxml"));
+                Parent root = null;
+                root = fxmlLoader.load();
+                DiscardLeaderCardController controller = fxmlLoader.getController();
+                controller.setGui(gui);
+                controller.setCards(rg.getPlayers().get(rg.getClientPlayer()).getHand());
+                Stage stage = new Stage();
+                stage.setScene(new Scene(root, 760, 462));
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private int getOwed(int firstTurns) {
+        return switch (firstTurns) {
+            case 1, 2 -> 1;
+            case 3 -> 2;
+            default -> 0;
+        };
     }
 
 }
