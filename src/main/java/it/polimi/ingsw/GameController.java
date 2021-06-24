@@ -525,6 +525,6 @@ public class GameController {
                 .filter(i -> supplyControllers[i] != null)
                 .forEach(i -> supplyControllers[i].setEnable());
 
-        // TODO enable producitons and other buttons
+        // TODO enable productions and other buttons
     }
 }
