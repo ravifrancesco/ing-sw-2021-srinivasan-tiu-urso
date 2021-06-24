@@ -5,6 +5,7 @@ import it.polimi.ingsw.client.ReducedModel;
 import it.polimi.ingsw.client.UI;
 import it.polimi.ingsw.client.UIType;
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.server.lobby.GameLobbyDetails;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -102,6 +103,7 @@ public class GUI extends Application implements UI {
                         gameController.setGui(this);
                         Stage stage = new Stage();
                         stage.setScene(new Scene(root, 1366, 768));
+                        stage.setOnCloseRequest(t -> System.exit(0));
                         stage.show();
                         clientMainLobbyController.getScene().getWindow().hide();
                         if (isHost) {
@@ -149,4 +151,11 @@ public class GUI extends Application implements UI {
         gameController.changeSupplyController(resourceController, pos, supplyPos);
     }
 
+    public Resource[] getDepositView() {
+        return gameController.getDepositView();
+    }
+
+    public Resource[] getExtraDepositView(int lcIndex) {
+        return gameController.getExtraDepositView(lcIndex);
+    }
 }

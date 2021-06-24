@@ -1,6 +1,8 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.server.lobby.messages.clientMessages.lobbyMessage.lobby.AskGameLobbies;
+import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -9,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.scene.input.InputEvent;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 
@@ -58,6 +61,7 @@ public class NicknameChoiceController {
             gui.getClientConnection().send(new AskGameLobbies());
             Stage stage = new Stage();
             stage.setScene(new Scene(root, 800, 600));
+            stage.setOnCloseRequest(t -> System.exit(0));
             stage.show();
             ((Node)(event.getSource())).getScene().getWindow().hide();
         }

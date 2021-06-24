@@ -2,6 +2,9 @@ package it.polimi.ingsw;
 
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Resource;
+import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.game.PlayerChangesExtraDeposit;
+import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.game.PlayerStoresFromSupply;
+import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.game.PlayerStoresFromSupplyToExtraDeposit;
 import javafx.fxml.FXML;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
@@ -147,11 +150,14 @@ public class ResourceController {
                         slots[currentSlot].freeSlot();
                     } else {
                         leaderSlots[currentSlot - GameController.NUM_SHELFES].freeSlot();
+                        int lcIndex = currentSlot - GameController.NUM_SHELFES / 2;
+                        gui.getClientConnection().send(new PlayerChangesExtraDeposit(gui.getDepositView(), gui.getExtraDepositView(lcIndex), lcIndex));
                     }
                 }
                 currentSlot = i;
                 if (supplyPos != -1) {
                     gui.changeSupplyController(this, currentSlot, supplyPos);
+                    gui.getClientConnection().send(new PlayerStoresFromSupply(supplyPos, currentSlot));
                     supplyPos = -1;
                 }
                 return;
@@ -169,10 +175,12 @@ public class ResourceController {
                     } else {
                         leaderSlots[currentSlot - GameController.NUM_SHELFES].freeSlot();
                     }
+                    gui.getClientConnection().send(new PlayerChangesExtraDeposit(gui.getDepositView(), gui.getExtraDepositView(i/2), i/2));
                 }
                 currentSlot = i + GameController.NUM_SHELFES;
                 if (supplyPos != -1) {
                     gui.changeSupplyController(this, currentSlot, supplyPos);
+                    gui.getClientConnection().send(new PlayerStoresFromSupplyToExtraDeposit(i%2, supplyPos, i/2));
                     supplyPos = -1;
                 }
                 return;
@@ -181,5 +189,9 @@ public class ResourceController {
 
         setX(this.x);
         setY(this.y);
+    }
+
+    public Resource getResourceType() {
+        return resourceType;
     }
 }

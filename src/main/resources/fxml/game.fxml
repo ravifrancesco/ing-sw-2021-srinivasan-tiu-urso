@@ -32,6 +32,7 @@
                <image>
                   <Image url="@../png/supply.png" />
                </image></ImageView>
+            <Button layoutX="320.0" layoutY="573.0" mnemonicParsing="false" onMouseClicked="#btnConfirmClick" text="Confirm" />
          </children>
       </Pane>
    </bottom>

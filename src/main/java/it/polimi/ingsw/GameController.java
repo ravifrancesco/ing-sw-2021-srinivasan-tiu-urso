@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.BannerEnum;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.specialAbilities.*;
+import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.game.PlayerChangesDeposit;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.game.StartGameGameMessage;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -13,6 +14,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
@@ -29,7 +31,10 @@ public class GameController {
 
     private GUI gui;
 
-    @FXML Pane pane;
+    @FXML private Pane pane;
+
+    @FXML
+    private Button btnConfirm;
 
     private Alert mainAlert;
 
@@ -464,6 +469,16 @@ public class GameController {
          */
     }
 
+    public void btnConfirmClick(MouseEvent event) {
+        Resource[] deposit = new Resource[NUM_SHELFES];
+        for (int i = 0; i < NUM_SHELFES; i++) {
+            if (resourceControllers[i] != null) {
+                deposit[i] = resourceControllers[i].getResourceType();
+            }
+        }
+        gui.getClientConnection().send(new PlayerChangesDeposit(deposit));
+    }
+
     public void initPlayerAlert() {
         mainAlert = new Alert(Alert.AlertType.NONE);
         mainAlert.setTitle("Start Game");
@@ -477,4 +492,21 @@ public class GameController {
         }
     }
 
+    public Resource[] getDepositView() {
+        Resource[] deposit = new Resource[NUM_SHELFES];
+        for (int i = 0; i < NUM_SHELFES; i++) {
+            if (resourceControllers[i] != null) {
+                deposit[i] = resourceControllers[i].getResourceType();
+            }
+        }
+        return deposit;
+    }
+
+    public Resource[] getExtraDepositView(int lcIndex) {
+        Resource[] extraDeposit = new Resource[SIZE_EXTRA_DEPOSITS/2];
+        int newPos = NUM_SHELFES + lcIndex * 2;
+        extraDeposit[newPos] = resourceControllers[newPos] != null ? resourceControllers[newPos].getResourceType() : null;
+        extraDeposit[newPos+1] = resourceControllers[newPos+1] != null ? resourceControllers[newPos+1].getResourceType() : null;
+        return extraDeposit;
+    }
 }
