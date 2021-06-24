@@ -1,5 +1,6 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.client.IO.ClientMessageInputParser;
 import it.polimi.ingsw.client.IO.Constants;
 import it.polimi.ingsw.client.ReducedModel;
 import it.polimi.ingsw.controller.client.reducedModel.ReducedGame;
@@ -9,6 +10,7 @@ import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.TurnPhase;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.specialAbilities.*;
+import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.game.EndTurnGameMessage;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.game.PlayerChangesDeposit;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.game.StartGameGameMessage;
 import javafx.application.Platform;
@@ -581,21 +583,15 @@ public class GameController {
 
     public void showAfterGameStart() {
         mainAlert.close();
-        mainAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        mainAlert = new Alert(Alert.AlertType.INFORMATION);
         mainAlert.setTitle("Game is starting");
-
-        ButtonType buttonTypeOne = new ButtonType("OK");
-
-        mainAlert.getButtonTypes().setAll(buttonTypeOne);
-
-        Optional<ButtonType> result = mainAlert.showAndWait();
-        result.get();
+        mainAlert.showAndWait();
         showDiscardExcessLeaderCardMenu();
     }
 
     public void showAfterEndTurn() {
         mainAlert.close();
-        mainAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        mainAlert = new Alert(Alert.AlertType.INFORMATION);
         mainAlert.setTitle("New turn");
         ReducedGame rg = gui.getReducedModel().getReducedGame();
         if(rg.getClientPlayer().equals(rg.getCurrentPlayer())) {
@@ -603,6 +599,7 @@ public class GameController {
         } else {
             mainAlert.setHeaderText("It is now " + rg.getCurrentPlayer()  + "'s turn!");
         }
+        mainAlert.showAndWait();
         if(rg.getTurnPhase() == TurnPhase.FIRST_TURN) {
             showDiscardExcessLeaderCardMenu();
         }
@@ -623,6 +620,30 @@ public class GameController {
                 controller.setCards(rg.getPlayers().get(rg.getClientPlayer()).getHand());
                 Stage stage = new Stage();
                 stage.setScene(new Scene(root, 760, 462));
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            getInitialResources();
+        }
+    }
+
+    public void getInitialResources() {
+        ReducedGame reducedGame = gui.getReducedModel().getReducedGame();
+        int owed = getOwed(reducedGame.getFirstTurns());
+        if(owed - Arrays.stream(reducedGame.getPlayers()
+                .get(reducedGame.getClientPlayer()).getDashboard().getDeposit()).filter(Objects::nonNull).count() == 0) {
+            gui.getClientConnection().send(new EndTurnGameMessage());
+        } else {
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/choose_bonus_resources.fxml"));
+                Parent root = null;
+                root = fxmlLoader.load();
+                ChooseBonusResourcesController controller = fxmlLoader.getController();
+                controller.setGui(gui);
+                Stage stage = new Stage();
+                stage.setScene(new Scene(root, 524, 471));
                 stage.show();
             } catch (IOException e) {
                 e.printStackTrace();

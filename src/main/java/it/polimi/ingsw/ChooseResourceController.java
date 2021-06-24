@@ -1,6 +1,5 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.client.ClientConnection;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.ResourceContainer;
 import javafx.fxml.FXML;
@@ -16,7 +15,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.IntStream;

@@ -177,7 +177,6 @@ public class GUI extends Application implements UI {
 
     @Override
     public void handleMenuCode(String menuCode) {
-        System.out.println("DEBUG " + menuCode);
         if ("after_game_start".equals(menuCode)) {
             Platform.runLater(() -> gameController.showAfterGameStart());
         }
@@ -188,7 +187,7 @@ public class GUI extends Application implements UI {
             Platform.runLater(() -> gameController.showDiscardExcessLeaderCardMenu());
         }
         if ("after_initial_resources".equals(menuCode)) {
-            //showAfterInitialResources();
+            Platform.runLater(() -> gameController.getInitialResources());
         }
         if ("after_getfrommarket".equals(menuCode)) {
             //showAfterMarketMenu();
