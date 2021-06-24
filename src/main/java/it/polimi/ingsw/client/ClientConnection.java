@@ -68,6 +68,7 @@ public class ClientConnection implements Runnable {
         inputStream = new ObjectInputStream(socket.getInputStream());
         try {
             ServerMessage serverMessage = receiveServerMessage();
+            System.out.println("I have received serverMessage: " + serverMessage.toString());
             serverMessage.updateClient(this, null);
         } catch (Exception e) {
             // welcome message not received
@@ -136,7 +137,7 @@ public class ClientConnection implements Runnable {
             while(true) {
                 try {
                     ServerMessage serverMessage = receiveServerMessage();
-                    // ui.printMessage("Received server message: " + serverMessage.toString());
+                    ui.printMessage("Received server message: " + serverMessage.toString());
                     serverMessage.updateClient(this, playerNickname);
                 } catch (ClassNotFoundException | IOException e) {
                     ui.printErrorMessage("Connection with server lost");

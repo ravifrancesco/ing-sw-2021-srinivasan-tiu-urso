@@ -148,6 +148,7 @@ public class Connection implements Runnable,
         while(true) {
             try {
                 RegisterName registerName = (RegisterName) receiveLobbyMessage();
+
                 registerName.handle(this, currentLobby);
                 currentLobby.enterLobby(this);
                 System.out.println("I have registered the player: " + nickname);

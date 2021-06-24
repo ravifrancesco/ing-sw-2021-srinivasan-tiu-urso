@@ -11,6 +11,8 @@ import it.polimi.ingsw.controller.client.reducedModel.ReducedPlayer;
 import it.polimi.ingsw.model.Hand;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.TurnPhase;
+import it.polimi.ingsw.model.cards.Card;
+import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.marbles.Marble;
 import it.polimi.ingsw.model.specialAbilities.*;
@@ -162,16 +164,16 @@ public class CLI implements UI {
                 System.out.println(reducedPlayer.getHandSize() + " cards");
             }
         } else {
-            printErrorMessage("PLAYER " + nickname + " DOESN'T EXISTS");
+            printErrorMessage("Player " + nickname + " doesn't exists");
         }
     }
 
     private void showCard(LeaderCard leaderCard) {
-        printMessage("VICTORY POINTS: " + leaderCard.getVictoryPoints());
+        printMessage("CARD VICTORY POINTS: \n" + leaderCard.getVictoryPoints());
         printMessage("");
 
         if(leaderCard.getBannerCost().size() != 0) {
-            printMessage("REQUIRED BANNERS ");
+            printMessage("REQUIRED BANNERS: ");
             leaderCard.getBannerCost().forEach((key, value) -> {
                         printMessageNoNL("Level " + value + " ");
                         String banner = handleBanner(key.toString());
@@ -180,9 +182,29 @@ public class CLI implements UI {
             printMessage("");
         }
 
-        if(leaderCard.getResourceCost().size() != 0) {
-            printMessage("RESOURCE COST");
-            leaderCard.getResourceCost().forEach((key, value) ->  {
+        showResourceCost(leaderCard.getResourceCost(), leaderCard);
+        handleSA(leaderCard.getSpecialAbility());
+
+    }
+
+    private void showCard(DevelopmentCard developmentCard) {
+        printMessage("CARD VICTORY POINTS: \n" + developmentCard.getVictoryPoints());
+        printMessage("");
+
+        printMessageNoNL("CARD WITH BANNER");
+        printColoredMessageNoNL(developmentCard.getBanner().toString(),
+                handleBannerColor(developmentCard.getBanner().toString()));
+        printMessageNoNL(" LEVEL " + developmentCard.getBanner().getLevel());
+
+        showResourceCost(developmentCard.getResourceCost(), developmentCard);
+
+        handleSA(developmentCard.getProductionPower());
+    }
+
+    private void showResourceCost(Map<Resource, Integer> resourceCost, Card developmentCard) {
+        if(resourceCost.size() != 0) {
+            printMessage("RESOURCE COST:");
+            resourceCost.forEach((key, value) ->  {
                 printColoredMessageNoNL("" + key, handleResourceColor(key.toString()));
                 printMessage(": " + value);
             });
@@ -190,8 +212,6 @@ public class CLI implements UI {
         }
 
         printMessageNoNL("SPECIAL ABILITY: ");
-        handleSA(leaderCard.getSpecialAbility());
-
     }
 
     private String handleBannerColor(String banner) {
@@ -254,7 +274,7 @@ public class CLI implements UI {
             }
             case WAREHOUSE_EXTRA_SPACE -> {
                 Resource res = ((WarehouseExtraSpace) sa).getStoredResource();
-                printMessage("[WES] Allows to add an extra deposit to deposit " + handleResourceColor(res.toString())
+                printMessage("[WES] Allows to add an extra deposit to store " + handleResourceColor(res.toString())
                         + res + Constants.ANSI_RESET);
             }
         }
@@ -281,20 +301,56 @@ public class CLI implements UI {
     public void showDashboard(String nickname) {
         ReducedPlayer reducedPlayer = reducedModel.getReducedGame().getPlayers().get(nickname);
         if (reducedPlayer != null) {
-            System.out.println(nickname + "'s DASHBOARD: ");
             ReducedDashboard reducedDashboard = reducedPlayer.getDashboard();
-            System.out.println(nickname + "'s victory points = " + reducedDashboard.getPlayerPoints());
-            System.out.println(nickname + "'s played leader cards:");
-            reducedDashboard.getPlayedLeaderCards().forEach(leaderCard -> System.out.println(leaderCard.toString()));
-            System.out.print(nickname + "'s played development cards:");
-            reducedDashboard.getPlayedDevelopmentCards().stream().map(stack -> stack.isEmpty() ? " | " : stack.peek().toString() + " | ").forEach(System.out::print);
+
+            printMessage("VICTORY POINTS: \n" + reducedDashboard.getPlayerPoints());
+
+            printMessage("PLAYED LEADER CARDS: \n");
+            reducedDashboard.getPlayedLeaderCards().forEach(this::showCard);
+
+            System.out.print("PLAYED DEVELOPMENT CARDS: ");
+            reducedDashboard.getPlayedDevelopmentCards().stream().filter(stack -> !stack.isEmpty())
+                    .map(Stack::peek).forEach(this::showCard);
             System.out.println();
-            System.out.println(nickname + "'s supply:");
-            System.out.println(reducedPlayer.getDashboard().getSupply());
+            System.out.println("SUPPLY: ");
+            ArrayList<Resource> supply = reducedPlayer.getDashboard().getSupply();
+            showSupply(supply);
         } else {
             printMessageNoNL("Player ");
-            printColoredMessage(nickname, Constants.ANSI_CYAN);
-            printErrorMessage("Player " + nickname + " DOESN'T EXISTS");
+            printColoredMessageNoNL(nickname, Constants.ANSI_CYAN);
+            printMessage("does not exist");
+
+        }
+    }
+
+    public void showSupply (ArrayList<Resource> supply) {
+        int hBarSize = (7*supply.size()) + (4*supply.size()) + 1;
+
+        IntStream.range(0, hBarSize).forEach(i -> printMessageNoNL("―"));
+        System.out.println();
+
+        IntStream.range(0, 6).forEach(column -> {
+            IntStream.range(0, supply.size()).forEach(i -> {
+                printMessageNoNL("| " + renderResourceRow(supply.get(i))[column] + " |");
+            });
+            printMessage("");
+        });
+        IntStream.range(0, hBarSize).forEach(i -> printMessageNoNL("―"));
+        System.out.println();
+
+    }
+
+    public String[] renderResourceRow(Resource r) {
+        if(r == null) {
+            return Constants.empty;
+        } else {
+            return switch (r.toString()) {
+                case "STONE" -> Constants.stone;
+                case "GOLD" -> Constants.gold;
+                case "SERVANT" -> Constants.servant;
+                case "SHIELD" -> Constants.shield;
+                default -> null;
+            };
         }
     }
 
@@ -353,6 +409,83 @@ public class CLI implements UI {
     }
 
     public void showDeposit(String nickname) {
+        int topHbar = 11;
+        int middleHbar = 26;
+        int bottomHbar = 33;
+        ReducedPlayer reducedPlayer = reducedModel.getReducedGame().getPlayers().get(nickname);
+        ReducedDashboard reducedDashboard = reducedPlayer.getDashboard();
+        Resource[] res = reducedDashboard.getDeposit();
+
+        printMessageNoNL("           ");
+
+        IntStream.range(0, topHbar).forEach(i -> {
+            if(i == 5) {
+                printMessageNoNL("" + 0);
+            } else {
+                printMessageNoNL("―");
+            }
+        }
+        );
+        System.out.println();
+
+        IntStream.range(0, 6).forEach(column -> {
+            IntStream.range(0, 1).forEach(i -> {
+                printMessageNoNL("           | " + renderResourceRow(res[i])[column] + " |");
+            });
+            printMessage("");
+        });
+        printMessageNoNL("           ");
+
+        IntStream.range(0, topHbar).forEach(i -> printMessageNoNL("―"));
+        System.out.println();
+
+
+        printMessageNoNL("    ");
+        IntStream.range(0, middleHbar).forEach(i -> {
+            if(i == 5) {
+                printMessageNoNL("" + 1);
+            } else if (i == 20) {
+                printMessageNoNL("" + 2);
+            } else {
+                printMessageNoNL("―");
+            }
+        }
+        );
+        System.out.println();
+
+        IntStream.range(0, 6).forEach(column -> {
+            IntStream.range(1, 3).forEach(i -> {
+                printMessageNoNL("    | " + renderResourceRow(res[i])[column] + " |");
+            });
+            printMessage("");
+        });
+        printMessageNoNL("    ");
+        IntStream.range(0, middleHbar).forEach(i -> printMessageNoNL("―"));
+        System.out.println();
+
+
+        IntStream.range(0, bottomHbar).forEach(i -> {
+            if(i == 5) {
+                printMessageNoNL("" + 3);
+            } else if (i == 16) {
+                printMessageNoNL("" + 4);
+            } else if (i == 27) {
+                printMessageNoNL("" + 5);
+            } else {
+                printMessageNoNL("―");
+            }});
+        System.out.println();
+
+        IntStream.range(0, 6).forEach(column -> {
+            IntStream.range(3, 6).forEach(i -> {
+                printMessageNoNL("| " + renderResourceRow(res[i])[column] + " |");
+            });
+            printMessage("");
+        });
+        IntStream.range(0, bottomHbar).forEach(i -> printMessageNoNL("―"));
+        System.out.println();
+
+        /*
         ReducedPlayer reducedPlayer = reducedModel.getReducedGame().getPlayers().get(nickname);
         ReducedDashboard reducedDashboard = reducedPlayer.getDashboard();
         for (int i=0; i < reducedDashboard.getDeposit().length; i++) {
@@ -366,6 +499,8 @@ public class CLI implements UI {
                 System.out.println();
             }
         }
+
+         */
     }
 
     public void printBoldColoredBg(String color) {
@@ -602,6 +737,22 @@ public class CLI implements UI {
         if ("after_initial_resources".equals(menuCode)) {
             showAfterInitialResources();
         }
+        if ("after_getfrommarket".equals(menuCode)) {
+            showAfterMarketMenu();
+        }
+    }
+
+    private void showAfterMarketMenu() {
+        showSupply(reducedModel.getReducedPlayer().getDashboard().getSupply());
+        printMessageNoNL("Please use");
+        printColoredMessageNoNL("STOREFROMSUPPLY <supplyPos> <depositPos>", Constants.ANSI_MAGENTA);
+        printMessage(" to store a resource from your supply to your deposit");
+        printColoredMessageNoNL("STOREFROMSUPPLYTOEXTRADEPOSIT <supplyPos> <depositIndex> <depositPos>", Constants.ANSI_MAGENTA);
+        printMessage(" to store a resource from your supply to an extra deposit");
+        printColoredMessageNoNL("CHANGEDEPOSIT", Constants.ANSI_MAGENTA);
+        printMessage(" to rearrange your deposit");
+        printMessage("");
+
     }
 
     private void showAfterInitialResources() {
@@ -712,28 +863,11 @@ public class CLI implements UI {
 
             printColoredMessageNoNL("------ PERSONAL ACTIONS -------", Constants.ANSI_YELLOW);
             printMessage("");
-            printColoredMessageNoNL("STOREFROMSUPPLY <supplyPos> <depositPos>", Constants.ANSI_MAGENTA);
-            printMessage(" to store a resource from your supply to your deposit");
-            printColoredMessageNoNL("STOREFROMSUPPLYTOEXTRADEPOSIT <supplyPos> <depositIndex> <depositPos>", Constants.ANSI_MAGENTA);
-            printMessage(" to store a resource from your supply to an extra deposit");
-            printColoredMessageNoNL("CHANGEDEPOSIT", Constants.ANSI_MAGENTA);
-            printMessage(" to rearrange your deposit");
-            printMessage("");
+            showDepositMenu();
 
             printColoredMessageNoNL("------ OTHER ACTIONS -------", Constants.ANSI_YELLOW);
             printMessage("");
-            printColoredMessageNoNL("SHOW <globalObject>", Constants.ANSI_MAGENTA);
-            printMessage(" to show a global object. Available options: ");
-            printMessage("DVGRID, GAMEBOARD, MARKET");
-            printColoredMessageNoNL("SHOW <object> <nickname>", Constants.ANSI_MAGENTA);
-            printMessage(" to show a player object. Available options: ");
-            printMessage("HAND, DASHBOARD, FAITHTRACK, WAREHOUSE");
-            printMessageNoNL("Player list: | ");
-            rg.getPlayers().keySet().forEach(p -> {
-                printMessageNoNL(p + " | ");
-            });
-            printMessage("");
-            printMessage("");
+            showViewMenu();
             printColoredMessageNoNL("ENDTURN ", Constants.ANSI_MAGENTA);
             printMessage(" to end your turn");
             printMessage("");
@@ -741,6 +875,32 @@ public class CLI implements UI {
         } else {
             printMessage(Constants.ANSI_CYAN + "It is now " + rg.getCurrentPlayer() + "'s turn, please wait..." + Constants.ANSI_RESET);
         }
+    }
+
+    public void showViewMenu() {
+        ReducedGame rg = reducedModel.getReducedGame();
+        printColoredMessageNoNL("SHOW <globalObject>", Constants.ANSI_MAGENTA);
+        printMessage(" to show a global object. Available options: ");
+        printMessage("DVGRID, MARKET");
+        printColoredMessageNoNL("SHOW <object> <nickname>", Constants.ANSI_MAGENTA);
+        printMessage(" to show a player object. Available options: ");
+        printMessage("HAND, DASHBOARD, FAITHTRACK, WAREHOUSE");
+        printMessageNoNL("Player list: | ");
+        rg.getPlayers().keySet().forEach(p -> {
+            printMessageNoNL(p + " | ");
+        });
+        printMessage("");
+        printMessage("");
+    }
+
+    public void showDepositMenu() {
+        printColoredMessageNoNL("STOREFROMSUPPLY <supplyPos> <depositPos>", Constants.ANSI_MAGENTA);
+        printMessage(" to store a resource from your supply to your deposit");
+        printColoredMessageNoNL("STOREFROMSUPPLYTOEXTRADEPOSIT <supplyPos> <depositIndex> <depositPos>", Constants.ANSI_MAGENTA);
+        printMessage(" to store a resource from your supply to an extra deposit");
+        printColoredMessageNoNL("CHANGEDEPOSIT", Constants.ANSI_MAGENTA);
+        printMessage(" to rearrange your deposit");
+        printMessage("");
     }
 
 }
