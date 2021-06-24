@@ -29,10 +29,6 @@ public class CLIMenuUpdate implements ServerMessage, Serializable {
 
     @Override
     public void updateClient(ClientConnection clientConnection, String nickname) {
-        if(clientConnection.ui.getType() == UIType.CLI) {
-            CLI cli = (CLI) clientConnection.ui;
-            cli.handleMenuCode(menuCode);
-        }
-
+        clientConnection.ui.handleMenuCode(menuCode);
     }
 }

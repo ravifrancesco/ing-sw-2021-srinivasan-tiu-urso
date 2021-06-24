@@ -22,4 +22,6 @@ public interface UI {
 
     // TODO add to cli
     void enterGamePhase(boolean isHost);
+
+    void handleMenuCode(String menuCode);
 }

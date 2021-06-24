@@ -721,6 +721,7 @@ public class CLI implements UI {
         return UIType.CLI;
     }
 
+    @Override
     public void handleMenuCode(String menuCode) {
         if ("after_game_start".equals(menuCode)) {
             showAfterGameStartMenu();
