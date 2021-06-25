@@ -12,6 +12,7 @@ import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.marbles.Marble;
+import it.polimi.ingsw.model.singlePlayer.tokens.Token;
 import it.polimi.ingsw.model.specialAbilities.ProductionPower;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.ClientMessage;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.lobbyMessage.lobby.RegisterName;
@@ -147,7 +148,7 @@ public class ClientConnection implements Runnable {
         }).start();
     }
 
-    public void updateReducedGame(String firstPlayer, String currentPlayer, List<String> playersNicknames, TurnPhase turnPhase, int firstTurns, boolean gameStarted) {
+    public void updateReducedGame(String firstPlayer, String currentPlayer, List<String> playersNicknames, TurnPhase turnPhase, int firstTurns, boolean gameStarted, Stack<Token> tokens, Token token) {
 
         ReducedGame reducedGame = reducedModel.getReducedGame();
         reducedGame.setGameStarted(gameStarted);
@@ -158,6 +159,8 @@ public class ClientConnection implements Runnable {
         reducedGame.updatePlayers(playersNicknames);
         reducedGame.setTurnPhase(turnPhase);
         reducedGame.setFirstTurns(firstTurns);
+        reducedGame.setTokens(tokens);
+        reducedGame.setToken(token);
         handleMenus(reducedGame, oldPlayer, oldPhase);
 
     }
@@ -261,13 +264,14 @@ public class ClientConnection implements Runnable {
         reducedDashboard.setLocker(locker);
     }
 
-    public void updateReducedFaithTrack(String nickname, int position, Map<Pair<Integer, Integer>, Pair<Integer, Integer>> vaticanReports, int[] faithTrackVictoryPoints) {
+    public void updateReducedFaithTrack(String nickname, int LorenzoIlMagnificoPosition, int position, Map<Pair<Integer, Integer>, Pair<Integer, Integer>> vaticanReports, int[] faithTrackVictoryPoints) {
         ReducedGame reducedGame = reducedModel.getReducedGame();
         if (!reducedGame.getPlayers().containsKey(nickname)) {
             reducedGame.createPlayer(nickname);
         }
         ReducedDashboard reducedDashboard = reducedGame.getPlayers().get(nickname).getDashboard();
         reducedDashboard.setPosition(position);
+        reducedDashboard.setLorenzoIlMagnificoPosition(LorenzoIlMagnificoPosition);
         reducedDashboard.setVaticanReports(vaticanReports);
         reducedDashboard.setFaithTrackVictoryPoints(faithTrackVictoryPoints);
     }
