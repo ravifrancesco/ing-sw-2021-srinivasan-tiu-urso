@@ -98,7 +98,7 @@ public class GameController {
     @FXML
     Label servantLabel;
 
-    String currentDisplayedPlayer = ""; // TODO change for testing
+    String currentDisplayedPlayer = "";
 
     public void setGui(GUI gui) {
         this.gui = gui;
@@ -117,7 +117,8 @@ public class GameController {
     }
 
     public void comboAction(ActionEvent event) {
-        System.out.println(nicknameCombo.getSelectionModel().getSelectedItem());
+        System.out.println(nicknameCombo.getSelectionModel().getSelectedItem()); // TODO remove just for debug
+        currentDisplayedPlayer = nicknameCombo.getSelectionModel().getSelectedItem();
     }
 
     @FXML
@@ -252,6 +253,7 @@ public class GameController {
 
     public void printWarehouse(String player, Resource[] deposit, Map<Resource, Integer> locker, Resource[][] extraDeposit, ArrayList<Resource> supply) {
         if (!player.equals(currentDisplayedPlayer)) {
+            System.out.println(player + " - " + currentDisplayedPlayer + " - >" + deposit[0]);
             return;
         }
         cleanWarehouse();
@@ -313,6 +315,7 @@ public class GameController {
 
     @FXML
     private void testClick(MouseEvent event) {
+        /*
         System.out.println(event.getX());
         System.out.println(event.getY());
         faithMarkerController.moveFaithMarker(faithMarkerController.getPosition()+1);
@@ -405,7 +408,9 @@ public class GameController {
 
             printPlayedLeaderCards(playedLeaderCard);
         }
+         */
     }
+
 
     public void initializeFaithTrack() {
         faithSlots = new Slot[NUM_FAITH_SLOTS];
