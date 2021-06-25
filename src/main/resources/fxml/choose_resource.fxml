@@ -7,7 +7,7 @@
 <AnchorPane id="pane" fx:id="pane" prefHeight="700.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.ChooseResourceController">
 
     <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="90.0" layoutY="190.0" pickOnBounds="true">
-        <Image url="@../png/coin.png" />
+        <Image url="@../png/gold.png" />
     </ImageView>
     <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="90.0" layoutY="230.0" pickOnBounds="true">
         <Image url="@../png/shield.png" /></ImageView>

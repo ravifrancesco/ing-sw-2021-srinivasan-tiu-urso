@@ -19,10 +19,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.input.InputEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -242,7 +239,7 @@ public class GameController {
 
         for (int i = 0; i < SIZE_EXTRA_DEPOSITS / 2; i++) {
             for (int j = 0; j < SIZE_EXTRA_DEPOSITS / 2; j++) {
-                if (extraDeposit[i][j] != null) {
+                if (extraDeposit[i] != null && extraDeposit[i][j] != null) {
                     printResource(extraDeposit[i][j], NUM_SHELFES + i*2 + j);
                 }
             }
@@ -510,7 +507,16 @@ public class GameController {
 
     public void hideAlert() {
         if (mainAlert != null) {
-            Platform.runLater(() -> mainAlert.close());
+            if (mainAlert.getAlertType().equals(Alert.AlertType.INFORMATION)) {
+                for ( ButtonType bt : mainAlert.getDialogPane().getButtonTypes() ) {
+                    if ( bt.getButtonData() == ButtonBar.ButtonData.OK_DONE ) {
+                        Button cancelButton = ( Button ) mainAlert.getDialogPane().lookupButton( bt );
+                        Platform.runLater(cancelButton::fire);
+                    }
+                }
+            } else {
+                Platform.runLater(() -> mainAlert.close());
+            }
         }
     }
 
@@ -560,6 +566,7 @@ public class GameController {
         btnConfirm.setVisible(true);
         btnCancel.setVisible(true);
     }
+
     public void moveFaithMarker(int position) {
         faithMarkerController.moveFaithMarker(position);
     }
@@ -582,7 +589,7 @@ public class GameController {
     }
 
     public void showAfterGameStart() {
-        mainAlert.close();
+        hideAlert();
         mainAlert = new Alert(Alert.AlertType.INFORMATION);
         mainAlert.setTitle("Game is starting");
         mainAlert.showAndWait();
@@ -590,15 +597,17 @@ public class GameController {
     }
 
     public void showAfterEndTurn() {
-        mainAlert.close();
+        hideAlert();
         mainAlert = new Alert(Alert.AlertType.INFORMATION);
         mainAlert.setTitle("New turn");
         ReducedGame rg = gui.getReducedModel().getReducedGame();
+        /*
         if(rg.getClientPlayer().equals(rg.getCurrentPlayer())) {
             mainAlert.setHeaderText("It's your turn!");
         } else {
             mainAlert.setHeaderText("It is now " + rg.getCurrentPlayer()  + "'s turn!");
         }
+         */
         mainAlert.showAndWait();
         if(rg.getTurnPhase() == TurnPhase.FIRST_TURN) {
             showDiscardExcessLeaderCardMenu();
@@ -610,7 +619,7 @@ public class GameController {
         if(!rg.getClientPlayer().equals(rg.getCurrentPlayer())) {
             return; // ADD ALERT BOX
         } else if (rg.getPlayers().get(rg.getClientPlayer()).getHand().size() - 2 > 0) {
-            mainAlert.close();
+            hideAlert();
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/discard_excess_leader_card.fxml"));
                 Parent root = null;

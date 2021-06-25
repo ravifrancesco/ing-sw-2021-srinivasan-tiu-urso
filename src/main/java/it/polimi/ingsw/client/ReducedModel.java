@@ -4,6 +4,11 @@ import it.polimi.ingsw.GameController;
 import it.polimi.ingsw.controller.client.reducedModel.ReducedGame;
 import it.polimi.ingsw.controller.client.reducedModel.ReducedGameBoard;
 import it.polimi.ingsw.controller.client.reducedModel.ReducedPlayer;
+import it.polimi.ingsw.model.Resource;
+import javafx.application.Platform;
+
+import java.util.ArrayList;
+import java.util.Map;
 
 public class ReducedModel {
 
@@ -54,7 +59,12 @@ public class ReducedModel {
 
     public void moveFaithMarker(int position) {
         if (gameController != null) {
-            gameController.moveFaithMarker(position);
+            Platform.runLater(() -> gameController.moveFaithMarker(position));
         }
+    }
+
+    public void updateWarehouse(String player, Resource[] deposit, Map<Resource, Integer> locker, Resource[][] extraDeposit, ArrayList<Resource> supply) {
+        // TODO change ravi
+        Platform.runLater(() -> gameController.printWarehouse("ravi", deposit, locker, extraDeposit, supply));
     }
 }

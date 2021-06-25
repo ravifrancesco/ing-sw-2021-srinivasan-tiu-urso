@@ -42,7 +42,10 @@ public class ReducedDashboard {
         this.reducedModel = reducedModel;
         this.playedLeaderCards = new ArrayList<>();
         this.playedDevelopmentCards = new ArrayList<>();
+        this.supply = new ArrayList<>();
+        this.deposit = new Resource[MAX_DEPOSIT_SLOTS];
         this.locker = new HashMap<>();
+        this.extraDeposits = new Resource[2][];
     }
 
     public int getPlayerPoints() {
@@ -75,6 +78,7 @@ public class ReducedDashboard {
 
     public void setSupply(ArrayList<Resource> supply) {
         this.supply = supply;
+        updateWarehouseView();
     }
 
     public Resource[] getDeposit() {
@@ -83,6 +87,7 @@ public class ReducedDashboard {
 
     public void setDeposit(Resource[] deposit) {
         this.deposit = deposit;
+        updateWarehouseView();
     }
 
     public Map<Resource, Integer> getLocker() {
@@ -91,6 +96,7 @@ public class ReducedDashboard {
 
     public void setLocker(Map<Resource, Integer> locker) {
         this.locker = locker;
+        updateWarehouseView();
     }
 
     public Resource[][] getExtraDeposits() {
@@ -99,6 +105,7 @@ public class ReducedDashboard {
 
     public void setExtraDeposits(Resource[][] extraDeposits) {
         this.extraDeposits = extraDeposits;
+        updateWarehouseView();
     }
 
     public int getPosition() {
@@ -132,5 +139,9 @@ public class ReducedDashboard {
 
     public ProductionPower getProductionPower() {
         return productionPower;
+    }
+
+    private void updateWarehouseView() {
+        this.reducedModel.updateWarehouse(reducedPlayer.getNickname(), deposit, locker, extraDeposits, supply);
     }
 }

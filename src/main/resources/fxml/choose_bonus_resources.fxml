@@ -27,7 +27,7 @@
       </Label>
       <ImageView fx:id="coinIW" fitHeight="37.0" fitWidth="37.0" layoutX="270.0" layoutY="129.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="270.0">
          <image>
-            <Image url="@../png/coin.png" />
+            <Image url="@../png/gold.png" />
          </image>
       </ImageView>
       <ImageView fx:id="servantIW" fitHeight="37.0" fitWidth="37.0" layoutX="317.0" layoutY="129.0" pickOnBounds="true" preserveRatio="true">

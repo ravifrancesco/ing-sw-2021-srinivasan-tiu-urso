@@ -75,11 +75,13 @@ public class GUI extends Application implements UI {
 
     @Override
     public void printErrorMessage(String s) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error box");
-        alert.setHeaderText("");
-        alert.setContentText(s);
-        alert.showAndWait();
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error box");
+            alert.setHeaderText("");
+            alert.setContentText(s);
+            alert.showAndWait();
+        });
     }
 
     @Override
