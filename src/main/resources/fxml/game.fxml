@@ -34,6 +34,17 @@
                </image></ImageView>
             <Button fx:id="btnConfirm" layoutX="280.0" layoutY="573.0" mnemonicParsing="false" onMouseClicked="#btnConfirmClick" text="Confirm" visible="false" />
             <Button fx:id="btnCancel" layoutX="360.0" layoutY="573.0" mnemonicParsing="false" onMouseClicked="#btnCancelClick" text="Cancel" visible="false" />
+            <ComboBox fx:id="nicknameCombo" layoutX="983.0" layoutY="76.0" onAction="#comboAction" prefWidth="150.0" />
+            <ImageView fitHeight="210.0" fitWidth="216.0" layoutX="1145.0" layoutY="174.0" onMouseClicked="#openMarketWindow" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../png/market.jpg" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="238.0" fitWidth="243.0" layoutX="1141.0" layoutY="454.0" onMouseClicked="#openDevCardGridWindow" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../png/dv_card_grid.png" />
+               </image>
+            </ImageView>
          </children>
       </Pane>
    </bottom>

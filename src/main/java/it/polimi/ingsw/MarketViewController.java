@@ -33,6 +33,8 @@ public class MarketViewController {
     public void initialize() {
 
         freeMarbleIW = new ImageView();
+        slotsIW = new ArrayList<>();
+        marblesIW = new ArrayList<>();
         marketGridPane.add(freeMarbleIW, 0, 5);
 
         for (int i = 1; i < 1 + NUM_OF_ROWS; i++) {

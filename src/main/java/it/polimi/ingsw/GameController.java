@@ -14,6 +14,9 @@ import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.game.En
 import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.game.PlayerChangesDeposit;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.game.StartGameGameMessage;
 import javafx.application.Platform;
+import javafx.beans.Observable;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -63,6 +66,12 @@ public class GameController {
 
     private ChooseResourceController chooseResourceController;
 
+    private MarketViewController marketController;
+
+    private DevCardGridController devCardGridController;
+
+    @FXML private ComboBox<String> nicknameCombo;
+
     public static final int NUM_SHELFES = 6;
 
     public static final int NUM_FAITH_SLOTS = 25;
@@ -94,6 +103,15 @@ public class GameController {
     public void setGui(GUI gui) {
         this.gui = gui;
         this.gui.getReducedModel().setGameController(this);
+    }
+
+    public void setPlayers() {
+        Set<String> players = this.gui.getReducedModel().getReducedGame().getPlayers().keySet();
+        nicknameCombo.getItems().addAll(players);
+    }
+
+    public void comboAction(ActionEvent event) {
+        System.out.println(nicknameCombo.getSelectionModel().getSelectedItem());
     }
 
     @FXML
@@ -462,6 +480,39 @@ public class GameController {
         }
     }
 
+    public void openMarketWindow(MouseEvent event) {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/market_view.fxml"));
+        Parent root = null;
+        try {
+            root = fxmlLoader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        marketController = fxmlLoader.getController();
+        marketController.setGui(this.gui);
+        Stage stage = new Stage();
+        stage.setTitle("Market");
+        stage.setScene(new Scene(root, 465, 600));
+        stage.show();
+    }
+
+    public void openDevCardGridWindow(MouseEvent event) {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/dev_card_grid.fxml"));
+        Parent root = null;
+        try {
+            root = fxmlLoader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        devCardGridController = fxmlLoader.getController();
+        devCardGridController.setGui(this.gui);
+        devCardGridController.update(gui.getReducedModel().getReducedGameBoard().getGrid());
+        Stage stage = new Stage();
+        stage.setTitle("Development card grid");
+        stage.setScene(new Scene(root, 555, 422));
+        stage.show();
+    }
+
     public void initHostAlert() {
         mainAlert = new Alert(Alert.AlertType.CONFIRMATION);
         mainAlert.setTitle("Start Game");
@@ -571,25 +622,9 @@ public class GameController {
         faithMarkerController.moveFaithMarker(position);
     }
 
-    public void displayMarket(InputEvent event) {
-
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/market_view.fxml"));
-            Parent root = fxmlLoader.load();
-            MarketViewController marketViewController = fxmlLoader.getController();
-            marketViewController.setGui(this.gui);
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root, 600, 503));
-            stage.show();
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
-
     public void showAfterGameStart() {
         hideAlert();
+        setPlayers();
         mainAlert = new Alert(Alert.AlertType.INFORMATION);
         mainAlert.setTitle("Game is starting");
         mainAlert.showAndWait();

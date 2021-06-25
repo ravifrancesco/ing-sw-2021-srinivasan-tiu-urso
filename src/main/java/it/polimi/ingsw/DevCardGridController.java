@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-public class DevCardGRidController {
+public class DevCardGridController {
 
     private final static int NUM_OF_ROWS = 3;
     private final static int NUM_OF_COLUMNS = 4;
@@ -38,6 +38,8 @@ public class DevCardGRidController {
 
     public void initialize() {
 
+        cardImageViews = new ArrayList<>();
+
         for (int i = 0; i < NUM_OF_ROWS; i++) {
             for (int j = 0; j < NUM_OF_COLUMNS; j++) {
                 ImageView cardImageView = new ImageView();
@@ -57,7 +59,7 @@ public class DevCardGRidController {
 
     private void loadImage(ImageView imageView, DevelopmentCard developmentCard) {
         String id = String.valueOf(developmentCard.getId());
-        File file = new File("src/main/resources/png/cards/devCards/dev_card_" + id + " .png");
+        File file = new File("src/main/resources/png/cards/devCards/dev_card_" + id + ".png");
         Image image = new Image(file.toURI().toString());
         imageView.setImage(image);
         imageView.setFitHeight(140);
