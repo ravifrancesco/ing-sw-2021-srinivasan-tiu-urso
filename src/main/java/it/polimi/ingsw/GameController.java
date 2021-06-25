@@ -98,7 +98,7 @@ public class GameController {
     @FXML
     Label servantLabel;
 
-    String currentDisplayedPlayer = "ravi"; // TODO change for testing
+    String currentDisplayedPlayer = ""; // TODO change for testing
 
     public void setGui(GUI gui) {
         this.gui = gui;
@@ -108,6 +108,12 @@ public class GameController {
     public void setPlayers() {
         Set<String> players = this.gui.getReducedModel().getReducedGame().getPlayers().keySet();
         nicknameCombo.getItems().addAll(players);
+        setSelectedPlayer(this.gui.getReducedModel().getReducedPlayer().getNickname());
+    }
+
+    public void setSelectedPlayer(String nickname) {
+        nicknameCombo.getSelectionModel().select(nickname);
+        currentDisplayedPlayer = nickname;
     }
 
     public void comboAction(ActionEvent event) {
@@ -509,7 +515,7 @@ public class GameController {
         devCardGridController.update(gui.getReducedModel().getReducedGameBoard().getGrid());
         Stage stage = new Stage();
         stage.setTitle("Development card grid");
-        stage.setScene(new Scene(root, 555, 422));
+        stage.setScene(new Scene(root, 422, 555));
         stage.show();
     }
 
@@ -523,7 +529,7 @@ public class GameController {
         mainAlert.getButtonTypes().setAll(buttonTypeOne);
 
         Optional<ButtonType> result = mainAlert.showAndWait();
-        if (result.get() == buttonTypeOne){
+        if (result.isPresent() && result.get() == buttonTypeOne){
             this.gui.getClientConnection().send(new StartGameGameMessage());
             Platform.runLater(this::initHostAlert); // TODO make it better
         }

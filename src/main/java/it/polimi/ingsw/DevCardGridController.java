@@ -43,7 +43,7 @@ public class DevCardGridController {
         for (int i = 0; i < NUM_OF_ROWS; i++) {
             for (int j = 0; j < NUM_OF_COLUMNS; j++) {
                 ImageView cardImageView = new ImageView();
-                cardsGridPane.add(cardImageView, i, j);
+                cardsGridPane.add(cardImageView, j, i);
                 cardImageViews.add(cardImageView);
                 int finalI = i;
                 int finalJ = j;
