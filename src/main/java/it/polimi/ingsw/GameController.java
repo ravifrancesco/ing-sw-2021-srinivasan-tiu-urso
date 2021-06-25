@@ -515,7 +515,7 @@ public class GameController {
         devCardGridController.update(gui.getReducedModel().getReducedGameBoard().getGrid());
         Stage stage = new Stage();
         stage.setTitle("Development card grid");
-        stage.setScene(new Scene(root, 422, 555));
+        stage.setScene(new Scene(root, 700, 800));
         stage.show();
     }
 

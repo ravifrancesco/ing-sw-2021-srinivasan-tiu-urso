@@ -62,8 +62,8 @@ public class DevCardGridController {
         File file = new File("src/main/resources/png/cards/devCards/dev_card_" + id + ".png");
         Image image = new Image(file.toURI().toString());
         imageView.setImage(image);
-        imageView.setFitHeight(140);
-        imageView.setFitWidth(98);
+        imageView.setFitWidth(130);
+        imageView.setFitHeight(200);
     }
 
     private void openBuyDevCardController(Image image, int row, int col) {
