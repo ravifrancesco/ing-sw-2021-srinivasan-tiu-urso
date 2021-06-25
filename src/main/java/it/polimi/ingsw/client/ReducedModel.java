@@ -65,6 +65,6 @@ public class ReducedModel {
 
     public void updateWarehouse(String player, Resource[] deposit, Map<Resource, Integer> locker, Resource[][] extraDeposit, ArrayList<Resource> supply) {
         // TODO change ravi
-        Platform.runLater(() -> gameController.printWarehouse("ravi", deposit, locker, extraDeposit, supply));
+        Platform.runLater(() -> gameController.printWarehouse(player, deposit, locker, extraDeposit, supply));
     }
 }
