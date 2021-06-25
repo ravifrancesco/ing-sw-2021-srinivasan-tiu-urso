@@ -43,7 +43,7 @@ public class ResourceController {
         int newPos;
         this.resourceType = resourceType;
         switch(resourceType) {
-            case GOLD -> name = "coin";
+            case GOLD -> name = "gold";
             case SHIELD -> name = "shield";
             case STONE -> name = "stone";
             case SERVANT -> name = "servant";
@@ -75,7 +75,7 @@ public class ResourceController {
         String name = "";
         this.resourceType = resourceType;
         switch(resourceType) {
-            case GOLD -> name = "coin";
+            case GOLD -> name = "gold";
             case SHIELD -> name = "shield";
             case STONE -> name = "stone";
             case SERVANT -> name = "servant";

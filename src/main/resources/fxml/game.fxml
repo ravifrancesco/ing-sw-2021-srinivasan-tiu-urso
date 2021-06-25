@@ -24,7 +24,7 @@
                  <Image url="@../png/stone.png" /></ImageView>
              <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="345.0" layoutY="668.0" pickOnBounds="true">
                  <Image url="@../png/servant.png" /></ImageView>
-            <Label id="coinLabel" fx:id="coinLabel" layoutX="306.0" layoutY="629.0" text="x 0" />
+            <Label id="goldLabel" fx:id="goldLabel" layoutX="306.0" layoutY="629.0" text="x 0" />
             <Label id="shieldLabel" fx:id="shieldLabel" layoutX="306.0" layoutY="672.0" text="x 0" />
             <Label id="stoneLabel" fx:id="stoneLabel" layoutX="379.0" layoutY="629.0" text="x 0" />
             <Label id="servantLabel" fx:id="servantLabel" layoutX="379.0" layoutY="672.0" text="x 0" />

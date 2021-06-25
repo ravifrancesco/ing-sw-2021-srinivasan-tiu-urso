@@ -87,7 +87,7 @@ public class GameController {
     // Label for locker
 
     @FXML
-    Label coinLabel;
+    Label goldLabel;
 
     @FXML
     Label shieldLabel;
@@ -244,7 +244,7 @@ public class GameController {
     public void updateLockerLabel(Resource resource, int quantity) {
         String stringQuantity = "x " + quantity;
         switch (resource) {
-            case GOLD -> coinLabel.setText(stringQuantity);
+            case GOLD -> goldLabel.setText(stringQuantity);
             case SHIELD -> shieldLabel.setText(stringQuantity);
             case STONE -> stoneLabel.setText(stringQuantity);
             case SERVANT -> servantLabel.setText(stringQuantity);
@@ -668,7 +668,7 @@ public class GameController {
             hideAlert();
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/discard_excess_leader_card.fxml"));
-                Parent root = null;
+                Parent root;
                 root = fxmlLoader.load();
                 DiscardLeaderCardController controller = fxmlLoader.getController();
                 controller.setGui(gui);
@@ -693,7 +693,7 @@ public class GameController {
         } else {
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/choose_bonus_resources.fxml"));
-                Parent root = null;
+                Parent root;
                 root = fxmlLoader.load();
                 ChooseBonusResourcesController controller = fxmlLoader.getController();
                 controller.setGui(gui);

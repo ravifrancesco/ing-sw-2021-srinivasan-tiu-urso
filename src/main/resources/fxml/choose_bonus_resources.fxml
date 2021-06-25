@@ -25,7 +25,7 @@
             <Font size="17.0" />
          </font>
       </Label>
-      <ImageView fx:id="coinIW" fitHeight="37.0" fitWidth="37.0" layoutX="270.0" layoutY="129.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="270.0">
+      <ImageView fx:id="goldIW" fitHeight="37.0" fitWidth="37.0" layoutX="270.0" layoutY="129.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="270.0">
          <image>
             <Image url="@../png/gold.png" />
          </image>
@@ -51,7 +51,7 @@
       <ImageView fx:id="slot4IW" fitHeight="37.0" fitWidth="37.0" layoutX="338.0" layoutY="298.0" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="slot3IW" fitHeight="37.0" fitWidth="37.0" layoutX="292.0" layoutY="298.0" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="slot5IW" fitHeight="37.0" fitWidth="37.0" layoutX="383.0" layoutY="298.0" pickOnBounds="true" preserveRatio="true" />
-      <Button fx:id="confirmButton" layoutX="211.0" layoutY="376.0" mnemonicParsing="false" onMouseClicked="#handleConfirmClick" prefHeight="62.0" prefWidth="119.0" style="-fx-background-color: #323232;" text="CONFIRM" textFill="WHITE">
+      <Button layoutX="211.0" layoutY="376.0" mnemonicParsing="false" onMouseClicked="#handleConfirmClick" prefHeight="62.0" prefWidth="119.0" style="-fx-background-color: #323232;" text="CONFIRM" textFill="WHITE">
          <font>
             <Font name="Garamond" size="14.0" />
          </font>
