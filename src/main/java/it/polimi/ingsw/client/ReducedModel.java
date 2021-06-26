@@ -127,4 +127,14 @@ public class ReducedModel {
         Platform.runLater(() -> gameController.setPointsText(player, "Points: " + reducedDashboard.getPlayerPoints()));
     }
 
+    public void updateHand(String player, List<LeaderCard> leaderCards) {
+        if (gameController == null) return;
+        Platform.runLater(() -> gameController.updateHand(player, leaderCards));
+    }
+
+    public void askHandUpdate(String player) {
+        ReducedPlayer reducedPlayer = reducedGame.getPlayers().get(player);
+        Platform.runLater(() -> gameController.updateHand(player, reducedPlayer.getHand()));
+    }
+
 }

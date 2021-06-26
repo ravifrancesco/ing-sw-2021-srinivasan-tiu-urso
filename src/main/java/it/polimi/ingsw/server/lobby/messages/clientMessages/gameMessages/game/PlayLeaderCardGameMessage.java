@@ -10,15 +10,13 @@ import java.io.Serializable;
 public class PlayLeaderCardGameMessage extends ClientGameMessage implements Serializable {
 
     int cardToPlay;
-    ResourceContainer resourceContainer;
 
-    public PlayLeaderCardGameMessage(int cardToPlay, ResourceContainer resourceContainer) {
+    public PlayLeaderCardGameMessage(int cardToPlay) {
         this.cardToPlay = cardToPlay;
-        this.resourceContainer = resourceContainer;
     }
 
     @Override
     public void handle(Connection c, ServerController serverController) {
-        serverController.playLeaderCard(c.getNickname(), cardToPlay, resourceContainer);
+        serverController.playLeaderCard(c.getNickname(), cardToPlay);
     }
 }

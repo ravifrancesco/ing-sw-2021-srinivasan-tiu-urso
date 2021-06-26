@@ -51,7 +51,7 @@
                   <Image url="@../png/dv_card_grid.png" />
                </image>
             </ImageView>
-            <Button fx:id="endTurnButton" layoutX="1191.0" layoutY="641.0" mnemonicParsing="false" onMouseClicked="#onEndTurnPressed" prefHeight="62.0" prefWidth="119.0" style="-fx-background-color: #323232;" text="END TURN" textFill="WHITE">
+            <Button fx:id="endTurnButton" layoutX="1191.0" layoutY="681.0" mnemonicParsing="false" onMouseClicked="#onEndTurnPressed" prefHeight="62.0" prefWidth="119.0" style="-fx-background-color: #323232;" text="END TURN" textFill="WHITE">
                <font>
                   <Font name="Garamond" size="14.0" />
                </font>
@@ -66,6 +66,11 @@
                   <Font size="36.0" />
                </font>
             </Text>
+            <Button fx:id="handButton" layoutX="1191.0" layoutY="608.0" mnemonicParsing="false" onMouseClicked="#onHandPressed" prefHeight="62.0" prefWidth="119.0" style="-fx-background-color: #323232;" text="HAND" textFill="WHITE">
+               <font>
+                  <Font name="Garamond" size="14.0" />
+               </font>
+            </Button>
          </children>
       </Pane>
    </bottom>

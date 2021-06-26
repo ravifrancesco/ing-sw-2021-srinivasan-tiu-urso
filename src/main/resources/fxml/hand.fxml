@@ -9,7 +9,7 @@
 <AnchorPane prefHeight="508.0" prefWidth="510.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.HandController">
    <children>
       <HBox fx:id="leaderCardContainerHBox" alignment="CENTER" layoutX="32.0" layoutY="104.0" prefHeight="300.0" prefWidth="447.0" />
-      <Label layoutX="203.0" layoutY="55.0" text="Your Hand" textAlignment="CENTER">
+      <Label layoutX="195.0" layoutY="54.0" text="Your Hand" textAlignment="CENTER">
          <font>
             <Font size="27.0" />
          </font>

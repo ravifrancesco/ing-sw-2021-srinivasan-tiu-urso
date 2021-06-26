@@ -47,7 +47,7 @@ public class LeaderCardController {
     }
 
 
-    public void playLeaderCard(String nickname, int cardToPlay, ResourceContainer resourceContainer) throws WrongTurnException, CardNotPlayableException, WrongMoveException {
+    public void playLeaderCard(String nickname, int cardToPlay) throws WrongTurnException, CardNotPlayableException, WrongMoveException {
 
         if (!game.getCurrentPlayer().equals(nickname)) {
             throw new WrongTurnException("Not " + nickname + " turn");
@@ -73,18 +73,6 @@ public class LeaderCardController {
         }
         catch (IllegalStateException e) { throw new CardNotPlayableException("Leader Card places are full"); }
         catch (IllegalArgumentException e) { throw new CardNotPlayableException("Position given is already full"); }
-
-
-        if(lc.getResourceCost().size() != 0) {
-            System.out.println("SERVER: leadercard resource cost is not null");
-            try {
-                player.getDashboard().payPrice(resourceContainer, lc.getResourceCost());
-            } catch (IllegalArgumentException e) {
-                throw new WrongMoveException("Resources do not match the cost");
-            }
-        } else {
-            System.out.println("LeaderCard resource cost is null, no price to pay");
-        }
     }
 
     /**

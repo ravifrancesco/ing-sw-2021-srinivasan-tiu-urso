@@ -103,9 +103,7 @@ public class LeaderCardHandler {
     public static ClientMessage playLeaderCard(String[] in, CLI cli) {
         try {
             int cardIndex = Integer.parseInt(in[1]);
-            Map<Resource, Integer> resourceCost = cli.getReducedModel().getReducedPlayer().getHand().get(cardIndex).getResourceCost();
-            return new PlayLeaderCardGameMessage(cardIndex,
-                    resourceCost.size() == 0 ? new ResourceContainer() : ResourceHandler.chooseResources(cli));
+            return new PlayLeaderCardGameMessage(cardIndex);
         } catch (NumberFormatException | IndexOutOfBoundsException e) {
             cli.printErrorMessage("Failed parsing leader card hand index");
             return null;

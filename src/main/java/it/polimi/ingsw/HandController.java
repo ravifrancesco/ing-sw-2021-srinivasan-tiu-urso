@@ -3,6 +3,7 @@ package it.polimi.ingsw;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.game.PlayLeaderCardGameMessage;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.game.PlayerDiscardsExcessLeaderCards;
+import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.game.PlayerDiscardsLeaderCard;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -90,7 +91,7 @@ public class HandController {
 
     @FXML
     private void onCloseClicked(InputEvent event) {
-
+        ((Node)(event.getSource())).getScene().getWindow().hide();
     }
 
     @FXML
@@ -99,7 +100,7 @@ public class HandController {
             this.gui.printErrorMessage("Select a card first!");
             return;
         }
-        gui.getClientConnection().send(new PlayLeaderCardGameMessage());
+        gui.getClientConnection().send(new PlayLeaderCardGameMessage(selectedCard));
         ((Node)(event.getSource())).getScene().getWindow().hide();
     }
 
@@ -108,7 +109,13 @@ public class HandController {
         if (selectedCard == null) {
             this.gui.printErrorMessage("Select a card first!");
         }
+        gui.getClientConnection().send(new PlayerDiscardsLeaderCard(selectedCard));
+        ((Node)(event.getSource())).getScene().getWindow().hide();
     }
 
+    public void update(List<LeaderCard> leaderCards) {
+        leaderCardContainerHBox.getChildren().clear();
+        setCards(leaderCards);
+    }
 
 }

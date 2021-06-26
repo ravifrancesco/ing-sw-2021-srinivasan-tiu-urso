@@ -20,6 +20,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.InputEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -69,6 +70,8 @@ public class GameController {
     private MarketViewController marketController;
 
     private DevCardGridController devCardGridController;
+
+    private HandController handController;
 
     @FXML private ComboBox<String> nicknameCombo;
 
@@ -799,6 +802,34 @@ public class GameController {
             return;
         }
         pointsText.setText(text);
+    }
+
+    public void onHandPressed(InputEvent event) {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/hand.fxml"));
+        Parent root = null;
+        try {
+            root = fxmlLoader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        handController = fxmlLoader.getController();
+        handController.setGui(this.gui);
+        ReducedGame rg = gui.getReducedModel().getReducedGame();
+        gui.getReducedModel().askHandUpdate(rg.getClientPlayer());
+        Stage stage = new Stage();
+        stage.setTitle("Hand");
+        stage.setScene(new Scene(root, 508, 510));
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner(
+                ((Node)event.getSource()).getScene().getWindow() );
+        stage.show();
+    }
+
+    public void updateHand(String player, List<LeaderCard> leaderCards) {
+        ReducedGame rg = gui.getReducedModel().getReducedGame();
+        if (handController != null && player.equals(rg.getClientPlayer())) {
+            handController.update(leaderCards);
+        }
     }
 
 }

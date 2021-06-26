@@ -43,6 +43,7 @@ public class ReducedPlayer {
 
     public void setHand(List<LeaderCard> hand) {
         this.hand = hand;
+        updateHand();
     }
 
     public int getHandSize() {
@@ -63,6 +64,10 @@ public class ReducedPlayer {
 
     public void setActivatedWMR(Resource[] activatedWMR) {
         this.activatedWMR = activatedWMR;
+    }
+
+    private void updateHand() {
+        reducedModel.updateHand(nickname, hand);
     }
 
 }
