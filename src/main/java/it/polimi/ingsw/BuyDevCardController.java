@@ -1,6 +1,10 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.model.Dashboard;
 import it.polimi.ingsw.model.Resource;
+import it.polimi.ingsw.model.cards.LeaderCard;
+import it.polimi.ingsw.model.specialAbilities.DevelopmentCardDiscount;
+import it.polimi.ingsw.model.specialAbilities.SpecialAbilityType;
 import it.polimi.ingsw.utils.Pair;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,21 +18,38 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.InputEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import javax.swing.text.LabelView;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class BuyDevCardController {
 
     @FXML
     ImageView cardImageView;
+
+    @FXML
+    HBox discountHbox;
+
+    @FXML
+    ImageView resourceOneIW;
+    @FXML
+    Label resourceOneLabel;
+
+    @FXML
+    ImageView resourceTwoIW;
+    @FXML
+    Label resourceTwoLabel;
 
     private GUI gui;
 
@@ -36,10 +57,23 @@ public class BuyDevCardController {
 
     @FXML private Button cancelButton;
 
+    public void initialize() {
+        hideDiscounts();
+    }
+
+    private void hideDiscounts() {
+        discountHbox.setVisible(false);
+        resourceOneIW.setVisible(false);
+        resourceOneLabel.setVisible(false);
+        resourceTwoIW.setVisible(false);
+        resourceTwoLabel.setVisible(false);
+    }
+
     public void setParameters(GUI gui, Image image, int row, int col) {
         this.gui = gui;
         loadCardImage(image);
         this.position = new Pair<>(row, col);
+        displayDiscounts();
     }
 
     public void onBuyPressed(MouseEvent event) {
@@ -76,5 +110,30 @@ public class BuyDevCardController {
 
     public Pair<Integer, Integer> getPosition() {
         return position;
+    }
+
+    private void displayDiscounts() {
+        List<LeaderCard> leaderCards = gui.getReducedModel().getReducedGame()
+                .getReducedPlayer(gui.getReducedModel().getReducedPlayer().getNickname())
+                .getDashboard().getPlayedLeaderCards().stream()
+                .filter(l-> l.getSpecialAbility().getType().equals(SpecialAbilityType.DEVELOPMENT_CARD_DISCOUNT))
+                .collect(Collectors.toList());
+        if (leaderCards.size() == 1) {
+            Resource r = ((DevelopmentCardDiscount) leaderCards.get(0).getSpecialAbility()).getResource();
+            displayResource(resourceOneIW, resourceOneLabel, r);
+        }
+        if (leaderCards.size() == 2) {
+            Resource r = ((DevelopmentCardDiscount) leaderCards.get(1).getSpecialAbility()).getResource();
+            displayResource(resourceTwoIW, resourceTwoLabel, r);
+        }
+    }
+
+    private void displayResource(ImageView iw, Label lb, Resource r) {
+        File file = new File("src/main/resources/png/"+r.name().toLowerCase()+".png");
+        Image image = new Image(file.toURI().toString());
+        iw.setImage(image);
+        discountHbox.setVisible(true);
+        iw.setVisible(true);
+        lb.setVisible(true);
     }
 }

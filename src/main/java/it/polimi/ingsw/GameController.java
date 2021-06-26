@@ -921,7 +921,6 @@ public class GameController {
             case 1 -> {
                 File file = new File("src/main/resources/png/vaticanReport/pope_favor_" + i + "_missed.png");
                 image = new Image(file.toURI().toString());
-                break;
             }
             case 2 -> {
                 File file = new File("src/main/resources/png/vaticanReport/pope_favor_" + i + "_achieved.png");

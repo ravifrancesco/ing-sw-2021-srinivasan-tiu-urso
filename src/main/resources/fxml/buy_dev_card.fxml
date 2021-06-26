@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="555.0" prefWidth="422.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.BuyDevCardController">
+<AnchorPane prefHeight="623.0" prefWidth="422.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.BuyDevCardController">
    <children>
-      <ImageView fx:id="cardImageView" fitHeight="466.0" fitWidth="309.0" layoutX="57.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="cardImageView" fitHeight="466.0" fitWidth="309.0" layoutX="57.0" layoutY="79.0" pickOnBounds="true" preserveRatio="true">
       </ImageView>
-      <GridPane layoutX="68.0" layoutY="480.0" prefHeight="71.0" prefWidth="309.0">
+      <GridPane layoutX="68.0" layoutY="538.0" prefHeight="71.0" prefWidth="309.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -31,5 +37,34 @@
             </Button>
          </children>
       </GridPane>
+      <HBox fx:id="discountHbox" alignment="CENTER" layoutX="57.0" layoutY="14.0" prefHeight="53.0" prefWidth="309.0">
+         <children>
+            <Label text="Discounts:">
+               <font>
+                  <Font size="19.0" />
+               </font>
+            </Label>
+            <ImageView fx:id="resourceOneIW" fitHeight="36.0" fitWidth="76.0" pickOnBounds="true" preserveRatio="true">
+               <HBox.margin>
+                  <Insets left="20.0" />
+               </HBox.margin>
+            </ImageView>
+            <Label fx:id="resourceOneLabel" text="-1" textFill="RED">
+               <font>
+                  <Font size="25.0" />
+               </font>
+            </Label>
+            <ImageView fx:id="resourceTwoIW" fitHeight="36.0" fitWidth="76.0" pickOnBounds="true" preserveRatio="true">
+               <HBox.margin>
+                  <Insets left="20.0" />
+               </HBox.margin>
+            </ImageView>
+            <Label fx:id="resourceTwoIW" text="-1" textFill="RED">
+               <font>
+                  <Font size="25.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
    </children>
 </AnchorPane>
