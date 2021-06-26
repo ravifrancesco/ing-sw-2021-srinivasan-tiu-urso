@@ -83,10 +83,7 @@ public class ChooseBonusResourcesController {
 
     private void initializeSlots() {
         slots = Arrays.asList(slot0IW, slot1IW, slot2IW, slot3IW, slot4IW, slot5IW);
-        slots.forEach(iw -> {
-            iw.setStyle("-fx-background-color: A9A9A9");
-            iw.setOnMouseClicked(event -> clickSlot(slots.indexOf(iw)));
-        });
+        slots.forEach(iw -> iw.setOnMouseClicked(event -> clickSlot(slots.indexOf(iw))));
     }
 
     private void clickSlot(int index) {

@@ -5,7 +5,6 @@ import it.polimi.ingsw.controller.client.reducedModel.ReducedDashboard;
 import it.polimi.ingsw.controller.client.reducedModel.ReducedGame;
 import it.polimi.ingsw.controller.client.reducedModel.ReducedGameBoard;
 import it.polimi.ingsw.controller.client.reducedModel.ReducedPlayer;
-import it.polimi.ingsw.model.GameBoard;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
@@ -76,7 +75,7 @@ public class ReducedModel {
         Platform.runLater(() -> gameController.printWarehouse(player, deposit, locker, extraDeposit, supply));
     }
 
-    public void updateWarehouse(String player) {
+    public void askWarehouseUpdate(String player) {
         ReducedDashboard reducedDashboard = reducedGame.getReducedPlayer(player).getDashboard();
         Resource[] deposit = reducedDashboard.getDeposit();
         Map<Resource, Integer> locker = reducedDashboard.getLocker();
@@ -90,7 +89,7 @@ public class ReducedModel {
         Platform.runLater(() -> gameController.printPlayedLeaderCards(player, leaderCardList));
     }
 
-    public void updateLeaderCards(String player) {
+    public void askLeaderCardsUpdate(String player) {
         ReducedDashboard reducedDashboard = reducedGame.getReducedPlayer(player).getDashboard();
         List<LeaderCard> leaderCards = reducedDashboard.getPlayedLeaderCards();
         Platform.runLater(() -> gameController.printPlayedLeaderCards(player, leaderCards));
@@ -116,6 +115,16 @@ public class ReducedModel {
     public void askDevCardGridUpdate() {
         List<Stack<DevelopmentCard>> grid = reducedGameBoard.getGrid();
         Platform.runLater(() -> gameController.updateDevCardGrid(grid));
+    }
+
+    public void updatePoints(String player, int points) {
+        if (gameController == null) return;
+        Platform.runLater(() -> gameController.setPointsText(player, "Points: " + points));
+    }
+
+    public void askPointsUpdate(String player) {
+        ReducedDashboard reducedDashboard = reducedGame.getReducedPlayer(player).getDashboard();
+        Platform.runLater(() -> gameController.setPointsText(player, "Points: " + reducedDashboard.getPlayerPoints()));
     }
 
 }

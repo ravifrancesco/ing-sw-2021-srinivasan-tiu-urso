@@ -1,11 +1,7 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.client.IO.ClientMessageInputParser;
-import it.polimi.ingsw.client.IO.Constants;
 import it.polimi.ingsw.client.ReducedModel;
 import it.polimi.ingsw.controller.client.reducedModel.ReducedGame;
-import it.polimi.ingsw.model.Banner;
-import it.polimi.ingsw.model.BannerEnum;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.TurnPhase;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
@@ -16,8 +12,6 @@ import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.game.En
 import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.game.PlayerChangesDeposit;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.game.StartGameGameMessage;
 import javafx.application.Platform;
-import javafx.beans.Observable;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -26,15 +20,14 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.InputEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.*;
 import java.util.stream.IntStream;
 
@@ -49,6 +42,9 @@ public class GameController {
 
     @FXML
     private Button btnCancel;
+
+    @FXML
+    private Text pointsText;
 
     private Alert mainAlert;
 
@@ -124,9 +120,18 @@ public class GameController {
 
     public void comboAction(ActionEvent event) {
         currentDisplayedPlayer = nicknameCombo.getSelectionModel().getSelectedItem();
-        gui.getReducedModel().updateWarehouse(currentDisplayedPlayer);
-        gui.getReducedModel().updateLeaderCards(currentDisplayedPlayer);
-        gui.getReducedModel().askFaithMarkerPosition(currentDisplayedPlayer);
+        ReducedModel reducedModel = gui.getReducedModel();
+        reducedModel.askWarehouseUpdate(currentDisplayedPlayer);
+        reducedModel.askLeaderCardsUpdate(currentDisplayedPlayer);
+        reducedModel.askFaithMarkerPosition(currentDisplayedPlayer);
+        reducedModel.askPointsUpdate(currentDisplayedPlayer);
+        ReducedGame rg = gui.getReducedModel().getReducedGame();
+        if (currentDisplayedPlayer.equals(rg.getClientPlayer()) && currentDisplayedPlayer.equals(rg.getCurrentPlayer())) {
+            setEnable();
+        } else {
+            setDisable();
+        }
+        hideWarehouseButtons();
     }
 
     @FXML
@@ -574,7 +579,7 @@ public class GameController {
     public void btnCancelClick(MouseEvent event) {
         btnConfirm.setVisible(false);
         btnCancel.setVisible(false);
-        // TODO ravi
+        gui.getReducedModel().askWarehouseUpdate(currentDisplayedPlayer);
     }
 
     public void initPlayerAlert() {
@@ -679,6 +684,11 @@ public class GameController {
         btnCancel.setVisible(true);
     }
 
+    public void hideWarehouseButtons() {
+        btnConfirm.setVisible(false);
+        btnCancel.setVisible(false);
+    }
+
     public void moveFaithMarker(String player, int position) {
         if (!player.equals(currentDisplayedPlayer)) {
             return;
@@ -700,13 +710,14 @@ public class GameController {
         mainAlert = new Alert(Alert.AlertType.INFORMATION);
         mainAlert.setTitle("New turn");
         ReducedGame rg = gui.getReducedModel().getReducedGame();
-        /*
         if(rg.getClientPlayer().equals(rg.getCurrentPlayer())) {
             mainAlert.setHeaderText("It's your turn!");
+            setSelectedPlayer(rg.getClientPlayer());
+            setEnable(); // TODO understand y not working
         } else {
             mainAlert.setHeaderText("It is now " + rg.getCurrentPlayer()  + "'s turn!");
+            setDisable();
         }
-         */
         mainAlert.showAndWait();
         if(rg.getTurnPhase() == TurnPhase.FIRST_TURN) {
             showDiscardExcessLeaderCardMenu();
@@ -777,6 +788,17 @@ public class GameController {
         if (marketController != null) {
             devCardGridController.update(grid);
         }
+    }
+
+    public void onEndTurnPressed() {
+        gui.getClientConnection().send(new EndTurnGameMessage());
+    }
+
+    public void setPointsText(String player, String text) {
+        if (!player.equals(currentDisplayedPlayer)) {
+            return;
+        }
+        pointsText.setText(text);
     }
 
 }

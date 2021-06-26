@@ -54,6 +54,7 @@ public class ReducedDashboard {
 
     public void setPlayerPoints(int playerPoints) {
         this.playerPoints = playerPoints;
+        updatePlayerPoints();
     }
 
     public List<LeaderCard> getPlayedLeaderCards() {
@@ -148,5 +149,9 @@ public class ReducedDashboard {
 
     private void updateLeaderCards() {
         this.reducedModel.updateLeaderCards(reducedPlayer.getNickname(), playedLeaderCards);
+    }
+
+    private void updatePlayerPoints() {
+        this.reducedModel.updatePoints(reducedPlayer.getNickname(), playerPoints);
     }
 }
