@@ -20,10 +20,6 @@ public class DevelopmentCardHandler {
             int card = Integer.parseInt(in[1]);
             cli.printMessage(ANSI_GREEN + "Please choose the payment resources" + ANSI_RESET);
             ResourceContainer rc = ResourceHandler.chooseResources(cli);
-            cli.printMessage("DEPOSIT INDEXES: " + rc.getSelectedDepositIndexes());
-            cli.printMessage("LOCKER RESOURCES: " + rc.getSelectedLockerResources());
-            cli.printMessage("EXTRADEPOSIT INDEXES: " + rc.getSelectedExtraDepositIndexes());
-            cli.printMessage("");
 
             cli.printMessage(ANSI_GREEN + "Activating production power..." + ANSI_RESET);
 
@@ -35,18 +31,16 @@ public class DevelopmentCardHandler {
                     .peek()
                     .getProductionPower();
 
-            cli.printMessage(pp.toString());
-            cli.printMessage("");
-
             int getNumRequiredAny = pp.getNumRequiredAny();
             int getNumProducedAny = pp.getNumProducedAny();
 
-            cli.printMessage(ANSI_GREEN + "Production has " + getNumRequiredAny +
-                    "required selectable resources and " + getNumProducedAny + " produced selectable resources..." + ANSI_RESET);
+            if(getNumProducedAny != 0 || getNumRequiredAny != 0) {
+                cli.printMessage(ANSI_GREEN + "Production has " + getNumRequiredAny +
+                        "required selectable resources and " + getNumProducedAny + " produced selectable resources..." + ANSI_RESET);
+            }
 
-            Map<Resource, Integer> requiredResources;
+                Map<Resource, Integer> requiredResources;
             Map<Resource, Integer> producedResources;
-
 
             if (getNumRequiredAny != 0) {
                 cli.printMessage(ANSI_GREEN + "Please choose the required selectables resources" + ANSI_RESET);
@@ -66,11 +60,6 @@ public class DevelopmentCardHandler {
             }
             cli.printMessage("");
 
-            cli.printMessage(ANSI_BLUE + "# DONE! Calling ActivateDashboardProductionGameMessage with:" + ANSI_RESET);
-            cli.printMessage(ANSI_BLUE + "# DEPOSIT INDEXES: " + rc.getSelectedDepositIndexes() + ANSI_RESET);
-            cli.printMessage(ANSI_BLUE + requiredResources + ANSI_RESET);
-            cli.printMessage(ANSI_BLUE + producedResources + ANSI_RESET);
-            cli.printMessage("");
             return new ActivateDevelopmentProductionGameMessage(card, rc, requiredResources, producedResources);
         } catch (Exception e) {
             cli.printErrorMessage("Error whilst activating dashboard production");

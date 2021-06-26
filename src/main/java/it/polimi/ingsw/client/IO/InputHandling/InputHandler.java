@@ -99,4 +99,9 @@ public class InputHandler {
             return null;
         }
     }
+
+    public static ClientMessage sendHelp(CLI cli) {
+        cli.showGeneralMenu();
+        return null;
+    }
 }

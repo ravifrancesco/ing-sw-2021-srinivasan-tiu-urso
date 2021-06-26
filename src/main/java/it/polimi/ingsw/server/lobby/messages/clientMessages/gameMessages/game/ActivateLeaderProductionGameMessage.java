@@ -25,10 +25,10 @@ public class ActivateLeaderProductionGameMessage extends ClientGameMessage imple
 
     @Override
     public void handle(Connection c, ServerController serverController) {
-        try {
-            serverController.activateLeaderCardProductionPower(c.getNickname(), cardToActivate, resourceToPayCost, resourceRequiredOptional, resourceProducedOptional);
-        } catch (Exception e) {
-            // TODO
+        int output;
+        output = serverController.activateLeaderCardProductionPower(c.getNickname(), cardToActivate, resourceToPayCost, resourceRequiredOptional, resourceProducedOptional);
+        if (output == 0) {
+            c.sendSuccessfulMoveMessage("Leader card production activated successfully!");
         }
     }
 }

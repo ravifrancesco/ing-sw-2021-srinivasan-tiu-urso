@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client.IO.InputHandling;
 
 import it.polimi.ingsw.client.IO.CLI;
+import it.polimi.ingsw.client.IO.Constants;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.ClientMessage;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.game.PlayerChangesDeposit;
@@ -43,9 +44,16 @@ public class WarehouseHandler {
     }
 
     private static Resource[] swapDeposit(CLI cli) {
-        cli.printMessage("Please insert the pair of indexes to swap, input DONE when finished.");
+        cli.printMessage("Current deposit: ");
         Resource[] newDeposit = new Resource[6];
         IntStream.range(0, 6).forEach(i -> newDeposit[i] = cli.getReducedModel().getReducedPlayer().getDashboard().getDeposit()[i]);
+        cli.showDeposit(newDeposit);
+        cli.printMessage("Please insert");
+        cli.printColoredMessageNoNL("<index1> <index2> ", Constants.SERVANT_COLOR);
+        cli.printMessage("to swap resources");
+        cli.printColoredMessageNoNL("DONE", Constants.SERVANT_COLOR);
+        cli.printMessage("to finish swapping resources");
+
         String[] input;
         int firstIndex;
         int secondIndex;
@@ -62,6 +70,13 @@ public class WarehouseHandler {
                 temp = newDeposit[firstIndex];
                 newDeposit[firstIndex] = newDeposit[secondIndex];
                 newDeposit[secondIndex] = temp;
+                cli.printMessage("CURRENT DEPOSIT \n");
+                cli.showDeposit(newDeposit);
+                cli.printMessage("\nPlease insert");
+                cli.printColoredMessageNoNL("<index1> <index2> ", Constants.SERVANT_COLOR);
+                cli.printMessage("to swap resources");
+                cli.printColoredMessageNoNL("DONE ", Constants.SERVANT_COLOR);
+                cli.printMessage("to finish swapping resources\n");
             }
         } while (true);
         return newDeposit;

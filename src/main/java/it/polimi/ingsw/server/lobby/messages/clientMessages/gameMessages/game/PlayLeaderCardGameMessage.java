@@ -19,7 +19,10 @@ public class PlayLeaderCardGameMessage extends ClientGameMessage implements Seri
 
     @Override
     public void handle(Connection c, ServerController serverController) {
-        System.out.println("TESTEESTETS");
-        serverController.playLeaderCard(c.getNickname(), cardToPlay, resourceContainer);
+        int output;
+        output = serverController.playLeaderCard(c.getNickname(), cardToPlay, resourceContainer);
+        if (output == 0) {
+            c.sendSuccessfulMoveMessage("Card with index " + cardToPlay + " has been placed correctly!");
+        }
     }
 }

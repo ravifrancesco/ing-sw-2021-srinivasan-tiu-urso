@@ -23,12 +23,10 @@ public class ActivateDashboardProductionGameMessage extends ClientGameMessage im
 
     @Override
     public void handle(Connection c, ServerController serverController) {
-        try {
-            serverController.activateDashboardProductionPower(c.getNickname(), resourceToPayCost, resourceRequiredOptional, resourceProducedOptional);
-        } catch (Exception e) {
-            System.err.println("Error while activating dashboard production");
-            System.err.println(e.getMessage());
-            e.printStackTrace();
+        int output;
+        output = serverController.activateDashboardProductionPower(c.getNickname(), resourceToPayCost, resourceRequiredOptional, resourceProducedOptional);
+        if(output == 0) {
+            c.sendSuccessfulMoveMessage("Dashboard production activated successfully!");
         }
     }
 }

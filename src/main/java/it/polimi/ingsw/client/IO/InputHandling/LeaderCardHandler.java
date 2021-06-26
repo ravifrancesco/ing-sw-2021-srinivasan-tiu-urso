@@ -41,10 +41,6 @@ public class LeaderCardHandler {
             int card = Integer.parseInt(in[1]);
             cli.printMessage(ANSI_GREEN + "Please choose the payment resources" + ANSI_RESET);
             ResourceContainer rc = ResourceHandler.chooseResources(cli);
-            cli.printMessage("DEPOSIT INDEXES: " + rc.getSelectedDepositIndexes());
-            cli.printMessage("LOCKER RESOURCES: " + rc.getSelectedLockerResources());
-            cli.printMessage("EXTRA DEPOSIT INDEXES: " + rc.getSelectedExtraDepositIndexes());
-            cli.printMessage("");
 
             cli.printMessage(ANSI_GREEN + "Activating production power..." + ANSI_RESET);
 
@@ -55,14 +51,14 @@ public class LeaderCardHandler {
                     .get(card)
                     .getSpecialAbility();
 
-            cli.printMessage(pp.toString());
-            cli.printMessage("");
 
             int getNumRequiredAny = pp.getNumRequiredAny();
             int getNumProducedAny = pp.getNumProducedAny();
 
-            cli.printMessage(ANSI_GREEN + "Production has " + getNumRequiredAny +
-                    "required selectable resources and " + getNumProducedAny + " produced selectable resources..." + ANSI_RESET);
+            if(getNumProducedAny != 0 || getNumRequiredAny != 0) {
+                cli.printMessage(ANSI_GREEN + "Production has " + getNumRequiredAny +
+                        " required selectable resources and " + getNumProducedAny + " produced selectable resources..." + ANSI_RESET);
+            }
 
             Map<Resource, Integer> requiredResources;
             Map<Resource, Integer> producedResources;
@@ -86,11 +82,6 @@ public class LeaderCardHandler {
             }
             cli.printMessage("");
 
-            cli.printMessage(ANSI_BLUE + "# DONE! Calling ActivateDashboardProductionGameMessage with:" + ANSI_RESET);
-            cli.printMessage(ANSI_BLUE + "# DEPOSIT INDEXES: " + rc.getSelectedDepositIndexes() + ANSI_RESET);
-            cli.printMessage(ANSI_BLUE + requiredResources + ANSI_RESET);
-            cli.printMessage(ANSI_BLUE + producedResources + ANSI_RESET);
-            cli.printMessage("");
 
             return new ActivateLeaderProductionGameMessage(card, rc, requiredResources, producedResources);
         } catch (Exception e) {

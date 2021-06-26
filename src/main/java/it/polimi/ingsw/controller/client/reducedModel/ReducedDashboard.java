@@ -15,8 +15,8 @@ public class ReducedDashboard {
     private ProductionPower productionPower;
 
     // Cards
-    static final int NUM_DEVELOPMENT_CARD_STACKS = 3;
-    static final int NUM_LEADER_CARDS = 2;
+    public static final int NUM_DEVELOPMENT_CARD_STACKS = 3;
+    public static final int NUM_LEADER_CARDS = 2;
     private List<LeaderCard> playedLeaderCards;
     private List<Stack<DevelopmentCard>> playedDevelopmentCards;
 

@@ -34,32 +34,23 @@ public class ProductionHandler {
             // TODO fix this trash
             cli.printMessage(ANSI_GREEN + "Please choose the payment resources" + ANSI_RESET);
             ResourceContainer rc = ResourceHandler.chooseResources(cli);
-            cli.printMessage("DEPOSIT INDEXES: " + rc.getSelectedDepositIndexes());
-            cli.printMessage("LOCKER RESOURCES: " + rc.getSelectedLockerResources());
-            cli.printMessage("EXTRADEPOSIT INDEXES: " + rc.getSelectedExtraDepositIndexes());
             cli.printMessage("");
 
             Map<Resource, Integer> selectedResources = rc.getAllResources(cli.getReducedModel().getReducedPlayer().getDashboard());
             reqRes.forEach((k, v) -> {
                 if (k != Resource.ANY) selectedResources.merge(k, v, (v1, v2) -> v1 - v2); });
-            System.out.println("Remaining: " + selectedResources);
 
             Map<Resource, Integer> producedResources;
 
 
             if (getNumProducedAny != 0) {
-                cli.printMessage(ANSI_GREEN + "Please choose the resources to produce: " + ANSI_RESET);
+                cli.printMessage(ANSI_GREEN + "Produced Resources " + ANSI_RESET);
                 producedResources = ResourceHandler.chooseAnyResources(cli, getNumProducedAny);
-                cli.printMessage(ANSI_GREEN + "You have selected: " + producedResources + ANSI_RESET);
+                cli.printMessage("\nYou have selected to produce: ");
+                ResourceHandler.showCurrSelected(cli, producedResources);
             } else {
                 producedResources = new HashMap<>();
             }
-            cli.printMessage("");
-
-            // cli.printMessage(ANSI_BLUE + "# DONE! Calling ActivateDashboardProductionGameMessage with:" + ANSI_RESET);
-            // cli.printMessage(ANSI_BLUE + "# DEPOSIT INDEXES: " + rc.getSelectedDepositIndexes() + ANSI_RESET);
-            // cli.printMessage(ANSI_BLUE + requiredResources + ANSI_RESET);
-            // cli.printMessage(ANSI_BLUE + producedResources + ANSI_RESET);
 
             cli.printMessage("");
             return new ActivateDashboardProductionGameMessage(rc, selectedResources, producedResources);

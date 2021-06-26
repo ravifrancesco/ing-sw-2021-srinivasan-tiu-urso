@@ -9,7 +9,6 @@ import it.polimi.ingsw.server.lobby.messages.clientMessages.ClientMessage;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.game.PlayerGetsFromMarket;
 
 import java.util.ArrayList;
-import java.util.stream.IntStream;
 
 public class MarketHandler {
     public static ClientMessage getFromMarket(String[] in, CLI cli) {
@@ -42,10 +41,10 @@ public class MarketHandler {
     public static ArrayList<Resource> handleWMR(int whiteMarblesCount, CLI cli) {
         ArrayList<Resource> resources = new ArrayList<>();
         Resource res;
-        cli.printColoredMessage("" + whiteMarblesCount + " white marbles detected.", Constants.ANSI_BLUE);
+        cli.printColoredMessage("" + whiteMarblesCount + " white marbles detected.", Constants.SHIELD_COLOR);
         int i = whiteMarblesCount;
         while(i > 0) {
-            cli.printColoredMessage("Please insert resource to obtain for white marble number " + (whiteMarblesCount-i), Constants.ANSI_BLUE);
+            cli.printColoredMessage("Please insert resource to obtain for white marble number " + (whiteMarblesCount-i), Constants.SHIELD_COLOR);
             res = ResourceHandler.parseResource(cli.readLine().split(" ")[0]);
             if(res == null) {
                 cli.printErrorMessage("Resource parsing error, try again");

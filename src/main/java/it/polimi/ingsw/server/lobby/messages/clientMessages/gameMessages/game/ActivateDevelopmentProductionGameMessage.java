@@ -25,11 +25,10 @@ public class ActivateDevelopmentProductionGameMessage extends ClientGameMessage 
 
     @Override
     public void handle(Connection c, ServerController serverController) {
-        try {
-            serverController.activateDevelopmentCardProductionPower(c.getNickname(), cardToActivate, resourceToPayCost, resourceRequiredOptional, resourceProducedOptional);
-        } catch (Exception e) {
-            System.out.println("TODO in activateDevlop");
-            // TODO
+        int output;
+        output = serverController.activateDevelopmentCardProductionPower(c.getNickname(), cardToActivate, resourceToPayCost, resourceRequiredOptional, resourceProducedOptional);
+        if (output == 0) {
+            c.sendSuccessfulMoveMessage("Development card production activated successfully");
         }
     }
 }

@@ -26,7 +26,7 @@ public class BuyDevelopmentCardGameMessage extends ClientGameMessage implements 
         int output = serverController.buyDevelopmentCard(c.getNickname(), row, column, resourceToPayCost, position);
         if(output == 0) {
             c.sendSuccessfulMoveMessage("Development card (" + row + "," + column + ")" +
-                    "has been fsuccesfully bought and placed in position " + position);
+                    " has been succesfully bought and placed in position " + position);
         }
     }
 }

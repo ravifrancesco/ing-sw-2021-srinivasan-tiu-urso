@@ -41,8 +41,9 @@ public class ServerController {
 
     /**
      * Constructor for a Server Controller object. It creates the game and initializes all attributes.
-     * @param gameId                        the unique id of the game.
-     * @param numberOfPlayers               the number of players of the game.
+     *
+     * @param gameId          the unique id of the game.
+     * @param numberOfPlayers the number of players of the game.
      */
 
     public ServerController(String gameId, int numberOfPlayers) throws IllegalArgumentException {
@@ -57,6 +58,7 @@ public class ServerController {
 
     /**
      * Method to load the game settings.
+     *
      * @param gameSettings the game settings to load.
      */
     public void loadGameSettings(GameSettings gameSettings) {
@@ -66,9 +68,10 @@ public class ServerController {
 
     /**
      * Method to allow a player to join the game.
-     * @param nickname                      the nickname of the player who wants to join.
-     * @throws GameFullException            if the game is already full.
-     * @throws InvalidNameException         if the game contains an other player with the same nickname.
+     *
+     * @param nickname the nickname of the player who wants to join.
+     * @throws GameFullException    if the game is already full.
+     * @throws InvalidNameException if the game contains an other player with the same nickname.
      */
     public void joinGame(String nickname) throws GameFullException, InvalidNameException {
         if (game.getPlayers().size() >= game.getNumberOfPlayers()) {
@@ -117,9 +120,12 @@ public class ServerController {
 
         Player currentPlayer = game.getPlayers().get(c.getNickname());
         connectedPlayers.values().stream().filter(connection -> !connection.getNickname().equals(currentPlayer.getNickname()))
-                .forEach(connection -> { currentPlayer.addObserver(connection); currentPlayer.getDashboard().addObserver(connection);
-                currentPlayer.getDashboard().getFaithTrack().addObserver(connection);
-                currentPlayer.getDashboard().getWarehouse().addObserver(connection);} );
+                .forEach(connection -> {
+                    currentPlayer.addObserver(connection);
+                    currentPlayer.getDashboard().addObserver(connection);
+                    currentPlayer.getDashboard().getFaithTrack().addObserver(connection);
+                    currentPlayer.getDashboard().getWarehouse().addObserver(connection);
+                });
     }
 
     /**
@@ -149,9 +155,12 @@ public class ServerController {
 
         Player currentPlayer = game.getPlayers().get(c.getNickname());
         connectedPlayers.values().stream().filter(connection -> !connection.getNickname().equals(currentPlayer.getNickname()))
-                .forEach(connection -> { currentPlayer.removeObserver(connection); currentPlayer.getDashboard().removeObserver(connection);
+                .forEach(connection -> {
+                    currentPlayer.removeObserver(connection);
+                    currentPlayer.getDashboard().removeObserver(connection);
                     currentPlayer.getDashboard().getFaithTrack().removeObserver(connection);
-                    currentPlayer.getDashboard().getWarehouse().removeObserver(connection);} );
+                    currentPlayer.getDashboard().getWarehouse().removeObserver(connection);
+                });
     }
 
     /**
@@ -183,8 +192,9 @@ public class ServerController {
 
     /**
      * It allows to discard the first three leader cards.
-     * @param nickname                      the nickname of the player who made the move.
-     * @param cardToDiscard                 the index of the card to be discarded.
+     *
+     * @param nickname      the nickname of the player who made the move.
+     * @param cardToDiscard the index of the card to be discarded.
      */
     public int discardExcessLeaderCards(String nickname, int cardToDiscard) {
         try {
@@ -198,9 +208,10 @@ public class ServerController {
 
     /**
      * It allows to get the initial resources of the game.
-     * @param nickname                      the nickname of the player who made the move.
-     * @param resource                      the resource chosen by the player.
-     * @param position                      the position where to store the resource.
+     *
+     * @param nickname the nickname of the player who made the move.
+     * @param resource the resource chosen by the player.
+     * @param position the position where to store the resource.
      */
     public int getInitialResources(String nickname, Resource resource, int position) {
         String currentPlayer = game.getCurrentPlayer();
@@ -234,13 +245,14 @@ public class ServerController {
 
     /**
      * Checks if the initial phase of the game is completed or not for the player.
-     * @param d                             the dashboard of the player.
-     * @return                              true if the initial phase is completed, false otherwise.
+     *
+     * @param d the dashboard of the player.
+     * @return true if the initial phase is completed, false otherwise.
      */
 
     private boolean checkInitialPhaseCompletion(Dashboard d) {
         int storedResources = d.getDepositResourceQty();
-        return switch(game.getFirstTurns()) {
+        return switch (game.getFirstTurns()) {
             case 0 -> storedResources >= 0;
             case 1, 2 -> storedResources >= 1;
             case 3 -> storedResources >= 2;
@@ -250,39 +262,46 @@ public class ServerController {
 
     /**
      * It allows to play a leader card.
-     * @param nickname                      the nickname of the player who made the move.
-     * @param cardToPlay                    the index of the card to be played.
+     *
+     * @param nickname   the nickname of the player who made the move.
+     * @param cardToPlay the index of the card to be played.
      */
-    public void playLeaderCard(String nickname, int cardToPlay, ResourceContainer resourceContainer) {
+    public int playLeaderCard(String nickname, int cardToPlay, ResourceContainer resourceContainer) {
         try {
             leaderCardController.playLeaderCard(nickname, cardToPlay, resourceContainer);
+            return 0;
         } catch (WrongTurnException | CardNotPlayableException | WrongMoveException e) {
             game.setError(e, nickname);
         }
+        return 1;
     }
 
     /**
      * It allows to activate the production of a leader card.
-     * @param nickname                      the nickname of the player who made the move.
-     * @param cardToActivate                the index of the card whose production power is to be activated.
-     * @param resourcesToPayCost            the resources to pay for the resources required by the production power.
-     * @param resourceRequiredOptional      the resources required that replace the selectable resources (if present).
-     * @param resourceProducedOptional      the resources produced that replace the selectable resources (if present).
+     *
+     * @param nickname                 the nickname of the player who made the move.
+     * @param cardToActivate           the index of the card whose production power is to be activated.
+     * @param resourcesToPayCost       the resources to pay for the resources required by the production power.
+     * @param resourceRequiredOptional the resources required that replace the selectable resources (if present).
+     * @param resourceProducedOptional the resources produced that replace the selectable resources (if present).
      */
-    public void activateLeaderCardProductionPower(String nickname, int cardToActivate, ResourceContainer resourcesToPayCost,
-                                             Map<Resource, Integer> resourceRequiredOptional, Map<Resource, Integer> resourceProducedOptional) {
+    public int activateLeaderCardProductionPower(String nickname, int cardToActivate, ResourceContainer resourcesToPayCost,
+                                                  Map<Resource, Integer> resourceRequiredOptional, Map<Resource, Integer> resourceProducedOptional) {
 
         try {
             productionController.activateLeaderCardProduction(nickname, cardToActivate, resourcesToPayCost, resourceRequiredOptional, resourceProducedOptional);
+            return 0;
         } catch (WrongTurnException | PowerNotActivatableException | WrongMoveException e) {
             game.setError(e, nickname);
         }
+        return -1;
     }
 
     /**
      * It allows to discard a leader card.
-     * @param nickname                      the nickname of the player who made the move.
-     * @param cardToDiscard                 the index of the card to be discarded.
+     *
+     * @param nickname      the nickname of the player who made the move.
+     * @param cardToDiscard the index of the card to be discarded.
      */
     public int discardLeaderCard(String nickname, int cardToDiscard) {
         try {
@@ -296,19 +315,22 @@ public class ServerController {
 
     /**
      * It allows to activate the production power of the dashboard.
-     * @param nickname                      the nickname of the player who made the move.
-     * @param resourcesToPayCost            the resources to pay for the resources required by the production power.
-     * @param resourceRequiredOptional      the resources required that replace the selectable resources (if present).
-     * @param resourceProducedOptional      the resources produced that replace the selectable resources (if present).
+     *
+     * @param nickname                 the nickname of the player who made the move.
+     * @param resourcesToPayCost       the resources to pay for the resources required by the production power.
+     * @param resourceRequiredOptional the resources required that replace the selectable resources (if present).
+     * @param resourceProducedOptional the resources produced that replace the selectable resources (if present).
      */
-    public void activateDashboardProductionPower(String nickname, ResourceContainer resourcesToPayCost,
-                                            Map<Resource, Integer> resourceRequiredOptional, Map<Resource, Integer> resourceProducedOptional) {
+    public int activateDashboardProductionPower(String nickname, ResourceContainer resourcesToPayCost,
+                                                Map<Resource, Integer> resourceRequiredOptional, Map<Resource, Integer> resourceProducedOptional) {
 
         try {
             productionController.activateDashboardProduction(nickname, resourcesToPayCost, resourceRequiredOptional, resourceProducedOptional);
+            return 0;
         } catch (WrongTurnException | PowerNotActivatableException | WrongMoveException e) {
             game.setError(e, nickname);
         }
+        return -1;
     }
 
     /**
@@ -353,14 +375,16 @@ public class ServerController {
      * @param resourceRequiredOptional      the resources required that replace the selectable resources (if present).
      * @param resourceProducedOptional      the resources produced that replace the selectable resources (if present).
      */
-    public void activateDevelopmentCardProductionPower(String nickname, int cardToActivate, ResourceContainer resourcesToPayCost,
+    public int activateDevelopmentCardProductionPower(String nickname, int cardToActivate, ResourceContainer resourcesToPayCost,
                                                        Map<Resource, Integer> resourceRequiredOptional, Map<Resource, Integer> resourceProducedOptional) {
 
         try {
             productionController.activateDevelopmentCardProductionPower(nickname, cardToActivate, resourcesToPayCost, resourceRequiredOptional, resourceProducedOptional);
+            return 0;
         } catch (WrongTurnException | PowerNotActivatableException | WrongMoveException e) {
             game.setError(e, nickname);
         }
+        return -1;
     }
 
     /**

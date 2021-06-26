@@ -3,7 +3,6 @@ package it.polimi.ingsw.server.lobby.messages.serverMessages.commons;
 import it.polimi.ingsw.client.ClientConnection;
 import it.polimi.ingsw.client.IO.CLI;
 import it.polimi.ingsw.client.IO.Constants;
-import it.polimi.ingsw.client.UI;
 import it.polimi.ingsw.client.UIType;
 import it.polimi.ingsw.server.lobby.messages.serverMessages.ServerMessage;
 
@@ -28,11 +27,11 @@ public class GameInfoMessage implements ServerMessage, Serializable {
             cli = (CLI) clientConnection.ui;
 
             if(numberOfPlayers == 1) {
-                cli.printColoredMessage("Creating lobby...", Constants.ANSI_YELLOW);
+                cli.printColoredMessage("Creating lobby...", Constants.GOLD_COLOR);
                 cli.printColoredMessage("Created successfully! Lobby details: ", Constants.ANSI_GREEN);
             } else {
                 // System.out.println("Creating lobby for " + numberOfPlayers + " players...");
-                cli.printColoredMessage("\nJoining lobby...", Constants.ANSI_YELLOW);
+                cli.printColoredMessage("\nJoining lobby...", Constants.GOLD_COLOR);
                 cli.printColoredMessage("Joined successfully! Lobby details: ", Constants.ANSI_GREEN);
             }
             cli.printMessage("ID: " + gameID + "          Number of players: " + numberOfPlayers);

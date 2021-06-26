@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client.IO.InputHandling;
 
 import it.polimi.ingsw.client.IO.CLI;
+import it.polimi.ingsw.client.IO.Constants;
 import it.polimi.ingsw.controller.client.reducedModel.ReducedPlayer;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.ResourceContainer;
@@ -23,7 +24,9 @@ public class ResourceHandler {
     public static Map<Resource, Integer> chooseAnyResources(CLI cli, int qty) {
         HashMap<Resource, Integer> output = new HashMap<>();
         Resource r;
-        System.out.println("Please choose the resources you wish to use");
+        System.out.println("Please choose the resource(s)");
+        System.out.println("Options: STONE, GOLD, SHIELD, SERVANT");
+
         try {
             while (qty != 0) {
                 String input = cli.readCommand();
@@ -38,7 +41,7 @@ public class ResourceHandler {
                     System.out.println("Resourced not parsed correctly.");
                 }
             }
-            System.out.println("Read all the necessary resources.");
+            cli.printColoredMessage("Selection complete", Constants.ANSI_GREEN);
             return output;
         } catch (Exception e) {
             System.out.println("Error whilst reading produced resources. ");
@@ -49,7 +52,25 @@ public class ResourceHandler {
 
     public static ResourceContainer chooseResources(CLI cli) {
         ResourceContainer rc = new ResourceContainer();
-        System.out.println("Please choose with which resources you wish to pay the price: ");
+        cli.showWarehouse(cli.getReducedModel().getReducedPlayer().getNickname());
+        System.out.println("Insert payment resources by typing:");
+        cli.printColoredMessageNoNL("DEPOSIT <index> ", Constants.SERVANT_COLOR);
+        cli.printMessage(" to select a resource index from the deposit");
+        cli.printColoredMessageNoNL("LOCKER <resource> <qty>", Constants.SERVANT_COLOR);
+        cli.printMessage(" to select resources from the locker");
+        cli.printColoredMessageNoNL("EXTRADEPOSIT <lcPos> <lcIndex> ", Constants.SERVANT_COLOR);
+        cli.printMessage(" to select an index from an extradeposit");
+        cli.printColoredMessageNoNL("DONE", Constants.SERVANT_COLOR);
+        cli.printMessage(" to conclude the selection");
+
+        System.out.println("");
+
+        System.out.println();
+        System.out.println("Resources selected until now: ");
+        Map<Resource, Integer> currentRes = rc.getAllResources(cli.getReducedModel().getReducedPlayer().getDashboard());
+        showCurrSelected(cli, currentRes);
+
+
         String[] input;
         String command;
         do {
@@ -60,12 +81,21 @@ public class ResourceHandler {
                 case "LOCKER" -> handleLockerSelection(input, cli.getReducedModel().getReducedPlayer(), rc);
                 case "EXTRADEPOSIT" -> handleExtraDepositSelection(input, cli.getReducedModel().getReducedPlayer(), rc);
             }
-            System.out.println("Resource Container at the moment has:");
-            System.out.println("DEPOSIT INDEXES: " + rc.getSelectedDepositIndexes());
-            System.out.println("LOCKER RESOURCES: " + rc.getSelectedLockerResources());
-            System.out.println("EXTRADEPOSIT INDEXES: " + rc.getSelectedExtraDepositIndexes());
+            currentRes = rc.getAllResources(cli.getReducedModel().getReducedPlayer().getDashboard());
+            showCurrSelected(cli, currentRes);
         } while (!command.equals("DONE"));
         return rc;
+    }
+
+    public static void showCurrSelected(CLI cli, Map<Resource, Integer> currentRes) {
+        cli.printColoredMessageNoNL("STONE: ", Constants.STONE_COLOR);
+        cli.printMessage("" + currentRes.get(Resource.STONE) != null ? currentRes.get(Resource.STONE) + "" : "0" );
+        cli.printColoredMessageNoNL("GOLD: ", Constants.GOLD_COLOR);
+        cli.printMessage("" + currentRes.get(Resource.GOLD) != null ? currentRes.get(Resource.GOLD) + "" : "0");
+        cli.printColoredMessageNoNL("SERVANT: ", Constants.SERVANT_COLOR);
+        cli.printMessage("" + currentRes.get(Resource.SERVANT) != null ? currentRes.get(Resource.SERVANT) + "" : "0");
+        cli.printColoredMessageNoNL("SHIELD: ", Constants.SHIELD_COLOR);
+        cli.printMessage("" + currentRes.get(Resource.SHIELD) != null ? currentRes.get(Resource.SHIELD) + "" : "0");
     }
 
     public static void handleDepositSelection(String[] input, ReducedPlayer player, ResourceContainer rc) {
@@ -96,4 +126,5 @@ public class ResourceHandler {
             System.out.println("Error while adding from locker to resource container");
         }
     }
+
 }

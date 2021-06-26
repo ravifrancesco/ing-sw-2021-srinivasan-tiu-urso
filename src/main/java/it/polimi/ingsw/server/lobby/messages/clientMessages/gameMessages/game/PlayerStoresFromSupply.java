@@ -20,6 +20,7 @@ public class PlayerStoresFromSupply extends ClientGameMessage implements Seriali
         int output = serverController.storeFromSupply(c.getNickname(), from, to);
         if (output == 0) {
             c.sendSuccessfulMoveMessage("Store from supply successfull, added resource to deposit index " + to);
+            c.sendCLIupdateMessage("after_store_supply");
         }
     }
 }

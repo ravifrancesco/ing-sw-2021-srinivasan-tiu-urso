@@ -8,25 +8,23 @@ import it.polimi.ingsw.controller.client.reducedModel.ReducedDashboard;
 import it.polimi.ingsw.controller.client.reducedModel.ReducedGame;
 import it.polimi.ingsw.controller.client.reducedModel.ReducedGameBoard;
 import it.polimi.ingsw.controller.client.reducedModel.ReducedPlayer;
-import it.polimi.ingsw.model.Hand;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.TurnPhase;
-import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.marbles.Marble;
 import it.polimi.ingsw.model.specialAbilities.*;
 import it.polimi.ingsw.server.lobby.GameLobbyDetails;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.ClientMessage;
+import it.polimi.ingsw.utils.Pair;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class CLI implements UI {
 
-    private Scanner input;
+    private final Scanner input;
 
     private ReducedModel reducedModel;
 
@@ -91,16 +89,16 @@ public class CLI implements UI {
     public void showMainLobbyMenu() {
         printMessage("Please insert:");
 
-        printColoredMessageNoNL("CREATEGAME <numberofplayers>", Constants.ANSI_MAGENTA);
+        printColoredMessageNoNL("CREATEGAME <numberofplayers>", Constants.SERVANT_COLOR);
         printMessage(" to create a game lobby");
 
-        printColoredMessageNoNL("SHOWGAMES", Constants.ANSI_MAGENTA);
+        printColoredMessageNoNL("SHOWGAMES", Constants.SERVANT_COLOR);
         printMessage(" to see list of available game lobbies");
 
-        printColoredMessageNoNL("JOINGAME <game_id>", Constants.ANSI_MAGENTA);
+        printColoredMessageNoNL("JOINGAME <game_id>", Constants.SERVANT_COLOR);
         printMessage(" to join a game lobby");
 
-        printColoredMessageNoNL("QUIT", Constants.ANSI_MAGENTA);
+        printColoredMessageNoNL("QUIT", Constants.SERVANT_COLOR);
         printMessage(" to quit the game");
         printMessage("");
     }
@@ -156,7 +154,7 @@ public class CLI implements UI {
             if (leaderCardList.size() != 0) {
                 IntStream.range(0, leaderCardList.size()).forEach(i -> {
                     printMessage("");
-                    printColoredMessage("------- CARD #" + i + " -------", Constants.BOLD+Constants.ANSI_BLUE);
+                    printColoredMessage("------- CARD #" + i + " -------", Constants.BOLD+Constants.SHIELD_COLOR);
                     showCard(leaderCardList.get(i));
                     System.out.println();
                 });
@@ -169,39 +167,45 @@ public class CLI implements UI {
     }
 
     private void showCard(LeaderCard leaderCard) {
-        printMessage("CARD VICTORY POINTS: \n" + leaderCard.getVictoryPoints());
-        printMessage("");
-
-        if(leaderCard.getBannerCost().size() != 0) {
-            printMessage("REQUIRED BANNERS: ");
-            leaderCard.getBannerCost().forEach((key, value) -> {
-                        printMessageNoNL("Level " + value + " ");
-                        String banner = handleBanner(key.toString());
-                        printColoredMessage(banner, handleBannerColor(banner));
-                    });
+        if(leaderCard != null) {
+            printMessage("CARD VICTORY POINTS: \n" + leaderCard.getVictoryPoints());
             printMessage("");
+
+            if(leaderCard.getBannerCost().size() != 0) {
+                printMessage("REQUIRED BANNERS: ");
+                leaderCard.getBannerCost().forEach((key, value) -> {
+                    printMessageNoNL("Level " + value + " ");
+                    String banner = handleBanner(key.toString());
+                    printColoredMessage(banner, handleBannerColor(banner));
+                });
+                printMessage("");
+            }
+
+            showResourceCost(leaderCard.getResourceCost());
+            handleSA(leaderCard.getSpecialAbility());
+        } else {
+            printColoredMessage("EMPTY", Constants.ANSI_RED);
         }
 
-        showResourceCost(leaderCard.getResourceCost(), leaderCard);
-        handleSA(leaderCard.getSpecialAbility());
 
     }
 
     private void showCard(DevelopmentCard developmentCard) {
+
         printMessage("CARD VICTORY POINTS: \n" + developmentCard.getVictoryPoints());
         printMessage("");
 
-        printMessageNoNL("CARD WITH BANNER");
-        printColoredMessageNoNL(developmentCard.getBanner().toString(),
-                handleBannerColor(developmentCard.getBanner().toString()));
-        printMessageNoNL(" LEVEL " + developmentCard.getBanner().getLevel());
+        printMessageNoNL("CARD WITH BANNER ");
+        printColoredMessage(developmentCard.getBanner().toString().split("=")[1].split(":")[0],
+                handleBannerColor(developmentCard.getBanner().toString().split("=")[1].split(":")[0]));
 
-        showResourceCost(developmentCard.getResourceCost(), developmentCard);
+        printMessage("LEVEL " + developmentCard.getBanner().getLevel());
+        showResourceCost(developmentCard.getResourceCost());
 
         handleSA(developmentCard.getProductionPower());
     }
 
-    private void showResourceCost(Map<Resource, Integer> resourceCost, Card developmentCard) {
+    private void showResourceCost(Map<Resource, Integer> resourceCost) {
         if(resourceCost.size() != 0) {
             printMessage("RESOURCE COST:");
             resourceCost.forEach((key, value) ->  {
@@ -216,32 +220,32 @@ public class CLI implements UI {
 
     private String handleBannerColor(String banner) {
         return switch(banner) {
-            case "YELLOW" -> Constants.ANSI_YELLOW;
-            case "BLUE" -> Constants.ANSI_BLUE;
-            case "PURPLE" -> Constants.ANSI_MAGENTA;
+            case "YELLOW" -> Constants.GOLD_COLOR;
+            case "BLUE" -> Constants.SHIELD_COLOR;
+            case "PURPLE" -> Constants.SERVANT_COLOR;
             case "GREEN" -> Constants.ANSI_GREEN;
-            default -> Constants.ANSI_WHITE;
+            default -> Constants.STONE_COLOR;
         };
     }
 
     private String handleResourceColor(String resource) {
         return switch(resource) {
-            case "GOLD" -> Constants.ANSI_YELLOW;
-            case "SHIELD" -> Constants.ANSI_BLUE;
-            case "SERVANT" -> Constants.ANSI_MAGENTA;
-            case "STONE" -> Constants.ANSI_WHITE;
+            case "GOLD" -> Constants.GOLD_COLOR;
+            case "SHIELD" -> Constants.SHIELD_COLOR;
+            case "SERVANT" -> Constants.SERVANT_COLOR;
+            case "STONE" -> Constants.STONE_COLOR;
             default -> Constants.ANSI_GENERIC_WHITE;
         };
     }
 
     private void handleSA(SpecialAbility sa) {
         switch(sa.getType()) {
-            case DEVELOPMENT_CARD_DISCOUNT -> {
+            case DEVELOPMENT_CARD_DISCOUNT ->
                 printMessage("[DVD] Discounts " + ((DevelopmentCardDiscount) sa).getQuantity() + " " +
                         handleResourceColor(((DevelopmentCardDiscount) sa).getResource().toString()) +
                         ((DevelopmentCardDiscount) sa).getResource() + Constants.ANSI_RESET +
                         " when buying a development card");
-            }
+
             case PRODUCTION_POWER -> {
                 ProductionPower pp = (ProductionPower) sa;
                 Map<Resource, Integer> required = pp.getResourceRequired();
@@ -250,21 +254,23 @@ public class CLI implements UI {
                 produced.remove(Resource.ANY);
                 printMessage("[PP] Allows to transform");
                 if(required.size() > 0) {
-                    required.forEach((resource, qty) -> {
-                        printMessage(qty + " " + handleResourceColor(resource.toString()) + resource.toString() + Constants.ANSI_RESET);
-                    });
+                    required.forEach((resource, qty) ->
+                        printMessage(qty + " " + handleResourceColor(resource.toString()) + resource + Constants.ANSI_RESET)
+                    );
                 }
                 if(pp.getNumRequiredAny() > 0) {
-                    printMessage(pp.getNumRequiredAny() + Constants.ANSI_WHITE + " ANY RESOURCE" + Constants.ANSI_RESET);
+                    printMessage(pp.getNumRequiredAny() + Constants.STONE_COLOR + " ANY RESOURCE" + Constants.ANSI_RESET);
                 }
                 printMessage("Into");
+                // TODO qualcosa non va qua, non funziona bene se ha i faith track
+
                 if(produced.size() > 0) {
-                    produced.forEach((resource, qty) -> {
-                        printMessage(qty + " " + handleResourceColor(resource.toString()) + resource.toString() + Constants.ANSI_RESET);
-                    });
+                    produced.forEach((resource, qty) ->
+                        printMessage(qty + " " + handleResourceColor(resource.toString()) + resource + Constants.ANSI_RESET)
+                    );
                 }
                 if(pp.getNumProducedAny() > 0) {
-                    printMessage(pp.getNumProducedAny() + Constants.ANSI_WHITE + " ANY RESOURCE" + Constants.ANSI_RESET);
+                    printMessage(pp.getNumProducedAny() + Constants.STONE_COLOR + " ANY RESOURCE" + Constants.ANSI_RESET);
                 }
             }
             case WHITE_MARBLE_RESOURCES -> {
@@ -281,13 +287,14 @@ public class CLI implements UI {
     }
 
     private String handlePp(ProductionPower pp) {
-        String output = "";
+
         Map<Resource, Integer> required = pp.getResourceRequired();
         Map<Resource, Integer> produced = pp.getResourceProduced();
         printMessage("REQUIRES: ");
-        required.forEach((resource, qty) -> {
-            printMessage(handleResourceColor(resource.toString()) + qty);
-        });
+        required.forEach((resource, qty) ->
+            printMessage(handleResourceColor(resource.toString()) + qty)
+        );
+        // TODO finire
         return "";
     }
 
@@ -305,12 +312,36 @@ public class CLI implements UI {
 
             printMessage("VICTORY POINTS: \n" + reducedDashboard.getPlayerPoints());
 
-            printMessage("PLAYED LEADER CARDS: \n");
-            reducedDashboard.getPlayedLeaderCards().forEach(this::showCard);
+            printMessage("DASHBOARD PRODUCTION: ");
+            printMessage("Transforms 2 of any resources into a single resource of your choice");
+            printMessage("");
 
-            System.out.print("PLAYED DEVELOPMENT CARDS: ");
-            reducedDashboard.getPlayedDevelopmentCards().stream().filter(stack -> !stack.isEmpty())
-                    .map(Stack::peek).forEach(this::showCard);
+            printMessage("PLAYED LEADER CARDS: \n");
+            IntStream.range(0, ReducedDashboard.NUM_LEADER_CARDS).forEach(i -> {
+                printColoredMessage("LEADER CARD #" + i, Constants.BOLD);
+                if(i < reducedDashboard.getPlayedLeaderCards().size()) {
+                    System.out.println("*****************************************");
+                    showCard(reducedDashboard.getPlayedLeaderCards().get(i));
+                    System.out.println("*****************************************");
+                } else {
+                    printColoredMessage("EMPTY", Constants.ANSI_RED);
+                }
+            });
+
+            System.out.println("PLAYED DEVELOPMENT CARDS: ");
+            System.out.println();
+            IntStream.range(0, ReducedDashboard.NUM_DEVELOPMENT_CARD_STACKS).forEach(i -> {
+                printColoredMessage("DEVELOPMENT CARD #" + i, Constants.BOLD);
+                if(reducedDashboard.getPlayedDevelopmentCards().get(i).isEmpty()) {
+                    printColoredMessage("EMPTY", Constants.ANSI_RED);
+                } else {
+                    System.out.println("*****************************************");
+                    showCard(reducedDashboard.getPlayedDevelopmentCards().get(i).peek());
+                    System.out.println("*****************************************");
+                    System.out.println();
+                }
+            });
+
             System.out.println();
             System.out.println("SUPPLY: ");
             ArrayList<Resource> supply = reducedPlayer.getDashboard().getSupply();
@@ -318,26 +349,37 @@ public class CLI implements UI {
         } else {
             printMessageNoNL("Player ");
             printColoredMessageNoNL(nickname, Constants.ANSI_CYAN);
-            printMessage("does not exist");
+            printMessage(" does not exist");
 
         }
     }
 
     public void showSupply (ArrayList<Resource> supply) {
         int hBarSize = (7*supply.size()) + (4*supply.size()) + 1;
-
-        IntStream.range(0, hBarSize).forEach(i -> printMessageNoNL("―"));
-        System.out.println();
-
-        IntStream.range(0, 6).forEach(column -> {
-            IntStream.range(0, supply.size()).forEach(i -> {
-                printMessageNoNL("| " + renderResourceRow(supply.get(i))[column] + " |");
+        if(supply.size() > 0) {
+            IntStream.range(0, hBarSize).forEach(i -> {
+                // printing indexes
+                switch(i) {
+                    case(5) -> printMessageNoNL("0");
+                    case(16) -> printMessageNoNL("1");
+                    case(27) -> printMessageNoNL("2");
+                    case(38) -> printMessageNoNL("3");
+                    default -> printMessageNoNL("―");
+                }
             });
-            printMessage("");
-        });
-        IntStream.range(0, hBarSize).forEach(i -> printMessageNoNL("―"));
-        System.out.println();
+            System.out.println();
 
+            IntStream.range(0, 6).forEach(column -> {
+                IntStream.range(0, supply.size()).forEach(i ->
+                    printMessageNoNL("| " + renderResourceRow(supply.get(i))[column] + " |")
+                );
+                printMessage("");
+            });
+            IntStream.range(0, hBarSize).forEach(i -> printMessageNoNL("―"));
+            System.out.println();
+        } else {
+            printColoredMessage("EMPTY", Constants.ANSI_RED);
+        }
     }
 
     public String[] renderResourceRow(Resource r) {
@@ -377,7 +419,7 @@ public class CLI implements UI {
         if (reducedPlayer != null) {
             ReducedDashboard reducedDashboard = reducedPlayer.getDashboard();
             System.out.println("\nDEPOSIT\n");
-            showDeposit(nickname);
+            showDeposit(reducedPlayer.getDashboard().getDeposit());
             System.out.println("\n\nLOCKER:\n");
             reducedDashboard.getLocker().forEach((key, value) -> {
                 printColoredMessageNoNL(key.toString(), handleResourceColor(key.toString()));
@@ -393,7 +435,7 @@ public class CLI implements UI {
                         System.out.println("INDEX " + i);
                         IntStream.range(0, extraDeposits[i].length).forEach(j -> {
                             if (extraDeposits[i][j] == null) {
-                                printColoredMessage("    EMPTY", Constants.ANSI_WHITE);
+                                printColoredMessage("    EMPTY", Constants.STONE_COLOR);
                             } else {
                                 printColoredMessage("    ", handleResourceColor(extraDeposits[i][j].toString()));
                             }
@@ -408,13 +450,10 @@ public class CLI implements UI {
         }
     }
 
-    public void showDeposit(String nickname) {
+    public void showDeposit(Resource[] deposit) {
         int topHbar = 11;
         int middleHbar = 26;
         int bottomHbar = 33;
-        ReducedPlayer reducedPlayer = reducedModel.getReducedGame().getPlayers().get(nickname);
-        ReducedDashboard reducedDashboard = reducedPlayer.getDashboard();
-        Resource[] res = reducedDashboard.getDeposit();
 
         printMessageNoNL("           ");
 
@@ -429,9 +468,9 @@ public class CLI implements UI {
         System.out.println();
 
         IntStream.range(0, 6).forEach(column -> {
-            IntStream.range(0, 1).forEach(i -> {
-                printMessageNoNL("           | " + renderResourceRow(res[i])[column] + " |");
-            });
+            IntStream.range(0, 1).forEach(i ->
+                printMessageNoNL("           | " + renderResourceRow(deposit[i])[column] + " |")
+            );
             printMessage("");
         });
         printMessageNoNL("           ");
@@ -455,7 +494,7 @@ public class CLI implements UI {
 
         IntStream.range(0, 6).forEach(column -> {
             IntStream.range(1, 3).forEach(i -> {
-                printMessageNoNL("    | " + renderResourceRow(res[i])[column] + " |");
+                printMessageNoNL("    | " + renderResourceRow(deposit[i])[column] + " |");
             });
             printMessage("");
         });
@@ -478,46 +517,133 @@ public class CLI implements UI {
 
         IntStream.range(0, 6).forEach(column -> {
             IntStream.range(3, 6).forEach(i -> {
-                printMessageNoNL("| " + renderResourceRow(res[i])[column] + " |");
+                printMessageNoNL("| " + renderResourceRow(deposit[i])[column] + " |");
             });
             printMessage("");
         });
         IntStream.range(0, bottomHbar).forEach(i -> printMessageNoNL("―"));
         System.out.println();
 
-        /*
-        ReducedPlayer reducedPlayer = reducedModel.getReducedGame().getPlayers().get(nickname);
-        ReducedDashboard reducedDashboard = reducedPlayer.getDashboard();
-        for (int i=0; i < reducedDashboard.getDeposit().length; i++) {
-            Resource[] deposit = reducedDashboard.getDeposit();
-            if(deposit[i] != null) {
-                printColoredMessageNoNL(i + ": " + deposit[i].toString() + " ", handleResourceColor(deposit[i].toString()));
-            } else {
-                printColoredMessageNoNL(i + ": " + "EMPTY" + " ", Constants.ANSI_WHITE);
-            }
-            if (i == 0 || i == 2) {
-                System.out.println();
-            }
-        }
-
-         */
     }
 
-    public void printBoldColoredBg(String color) {
 
-
-    }
 
 
 
     public void showDVGrid() {
-        ReducedGameBoard reducedGameBoard = reducedModel.getReducedGameBoard();
+        printMessage("");
+        printMessage("Insert a color or level to see the corresponding column or row");
+        printMessage("Options: ");
+        printMessageNoNL("Color: ");
+        printColoredMessageNoNL("GREEN", handleBannerColor("GREEN"));
+        printMessageNoNL(", ");
+        printColoredMessageNoNL("BLUE", handleBannerColor("BLUE"));
+        printMessageNoNL(", ");
+        printColoredMessageNoNL("YELLOW", handleBannerColor("YELLOW"));
+        printMessageNoNL(", ");
+        printColoredMessageNoNL("PURPLE", handleBannerColor("PURPLE"));
+        System.out.println();
+        printMessage("Levels: 1, 2, 3");
+        System.out.println();
+        System.out.print("> ");
+        String choice = readLine();
+        switch(choice.toUpperCase()) {
+            case "1", "2", "3" -> showDvRow(Integer.parseInt(choice));
+            case "GREEN", "BLUE", "YELLOW", "PURPLE" -> showDvColumn(choice);
+            default -> printColoredMessage("Wrong input", Constants.ANSI_RED);
+        };
+        /*
+               ReducedGameBoard reducedGameBoard = reducedModel.getReducedGameBoard();
         for (int i = 0; i < reducedGameBoard.getGrid().size(); i++) {
             System.out.print(reducedGameBoard.getGrid().get(i).isEmpty() ? " | " : reducedGameBoard.getGrid().get(i).peek().toString() + " | ");
             if ((i+1) % 4 == 0) {
                 System.out.println();
             }
         }
+         */
+    }
+
+    public Pair<Integer, Integer> invertIndex(int position) {
+        return switch(position) {
+            case(1) -> new Pair<>(1, 2);
+            case(2) -> new Pair<>(1, 3);
+            case(3) -> new Pair<>(1, 4);
+            case(4) -> new Pair<>(2, 1);
+            case(5) -> new Pair<>(2, 2);
+            case(6) -> new Pair<>(2, 3);
+            case(7) -> new Pair<>(2, 4);
+            case(8) -> new Pair<>(3, 1);
+            case(9) -> new Pair<>(3, 2);
+            case(10) -> new Pair<>(3, 3);
+            case(11) -> new Pair<>(3, 4);
+            default -> new Pair<>(1, 1);
+        };
+    }
+
+    public void showDvRow(int level) {
+        // se 1 allora 0, 1, 2, 3
+        // se 2 allora 4, 5, 6, 7
+        // se 3 allora 8, 9, 10, 11
+        int startIndex = 4 * (level-1);
+        IntStream.range(0, 4).forEach(i -> {
+            if (!reducedModel.getReducedGameBoard().getGrid().get(startIndex + i).isEmpty()) {
+
+                printColoredMessage("------- CARD ROW/COL ("
+                        + invertIndex(startIndex+i).first + "," + invertIndex(startIndex+i).second + ")" +
+                        " -------" , Constants.SHIELD_COLOR);
+                showCard(reducedModel.getReducedGameBoard().getGrid().get(startIndex + i).peek());
+            }
+        });
+
+        printMessage("\nPlease use");
+        printColoredMessageNoNL("BUYDEVELOPMENTCARD <row> <column> <position>", Constants.SERVANT_COLOR);
+        printMessage(" to buy a development card");
+        printMessageNoNL("\nAvailable empty slots: \n");
+        IntStream.range(0, ReducedDashboard.NUM_DEVELOPMENT_CARD_STACKS).forEach(i -> {
+            if(reducedModel.getReducedPlayer().getDashboard().getPlayedDevelopmentCards().get(i).isEmpty()) {
+                printMessageNoNL("" + i + " ");
+            }
+        });
+        printMessage("");
+
+
+    }
+
+    public void showDvColumn(String color) {
+        int index = getShift(color);
+        // se green allora 0, 4, 8
+        // se blue allora 1, 5, 9
+        // se yellow allora 2, 6, 10
+        // se purple allora 3, 7, 11
+        IntStream.range(0, 3).forEach(i -> {
+            if (!reducedModel.getReducedGameBoard().getGrid().get(index + (i*4)).isEmpty()) {
+                printColoredMessage("------- CARD ROW/COL ("
+                        + invertIndex(index + (i*4)).first + "," + invertIndex(index + (i*4)).second + ")" +
+                        " -------", Constants.SHIELD_COLOR);
+                showCard(reducedModel.getReducedGameBoard().getGrid().get(index + (i*4)).peek());
+            }
+        });
+
+        printMessage("Please use");
+        printColoredMessageNoNL("BUYDEVELOPMENTCARD <row> <column> <position>", Constants.SERVANT_COLOR);
+        printMessage(" to buy a development card");
+        printMessageNoNL("Available empty slots: ");
+        IntStream.range(0, ReducedDashboard.NUM_DEVELOPMENT_CARD_STACKS).forEach(i -> {
+                if(reducedModel.getReducedPlayer().getDashboard().getPlayedDevelopmentCards().get(i).isEmpty()) {
+                    printMessageNoNL("" + i + " ");
+                }
+        });
+        printMessage("");
+    }
+
+    public int getShift(String color)  {
+        return switch(color) {
+            case "GREEN" -> 0;
+            case "BLUE" -> 1;
+            case "YELLOW" -> 2;
+            case "PURPLE" -> 3;
+            default -> 0;
+        };
     }
 
     public void showMarket() {
@@ -540,7 +666,7 @@ public class CLI implements UI {
 
         printMessage("Move indexes can be found next to the respective row or column. ");
         printMessage("Please insert:");
-        printColoredMessageNoNL("GETFROMMARKET <moveIndex>", Constants.ANSI_MAGENTA);
+        printColoredMessageNoNL("GETFROMMARKET <moveIndex>", Constants.SERVANT_COLOR);
         printMessage(" to get resources from market.");
         printMessage("");
 
@@ -559,11 +685,11 @@ public class CLI implements UI {
     public String getMarbleColor(Marble marble) {
         return switch(marble.getType()) {
             case "WHITE" -> Constants.ANSI_BG_WHITE;
-            case "BLUE" -> Constants.ANSI_BG_BLUE;
-            case "GREY" -> Constants.ANSI_BG_GREY;
-            case "PURPLE" -> Constants.ANSI_BG_PURPLE;
+            case "BLUE" -> Constants.SHIELD_COLOR_BG;
+            case "GREY" -> Constants.STONE_COLOR_BG;
+            case "PURPLE" -> Constants.SERVANT_COLOR_BG;
             case "RED" -> Constants.ANSI_BG_RED;
-            case "YELLOW" -> Constants.ANSI_BG_YELLOW;
+            case "YELLOW" -> Constants.GOLD_COLOR_BG;
             default -> Constants.ANSI_BG_WHITE;
         };
     }
@@ -573,11 +699,11 @@ public class CLI implements UI {
         IntStream.range(ind1, ind1+4).forEach(i -> {
             switch(grid[i].getType()) {
                 case "WHITE" -> colours[i-ind1] = Constants.ANSI_BG_WHITE;
-                case "BLUE" -> colours[i-ind1] = Constants.ANSI_BG_BLUE;
-                case "GREY" -> colours[i-ind1] = Constants.ANSI_BG_GREY;
-                case "PURPLE" -> colours[i-ind1] = Constants.ANSI_BG_PURPLE;
+                case "BLUE" -> colours[i-ind1] = Constants.SHIELD_COLOR_BG;
+                case "GREY" -> colours[i-ind1] = Constants.STONE_COLOR_BG;
+                case "PURPLE" -> colours[i-ind1] = Constants.SERVANT_COLOR_BG;
                 case "RED" -> colours[i-ind1] = Constants.ANSI_BG_RED;
-                case "YELLOW" -> colours[i-ind1] = Constants.ANSI_BG_YELLOW;
+                case "YELLOW" -> colours[i-ind1] = Constants.GOLD_COLOR_BG;
             }
         });
         return colours;
@@ -706,13 +832,13 @@ public class CLI implements UI {
     public void showGameLobbyMenu() {
         printMessage("Please insert:");
 
-        printColoredMessageNoNL("LEAVELOBBY", Constants.ANSI_MAGENTA);
+        printColoredMessageNoNL("LEAVELOBBY", Constants.SERVANT_COLOR);
         printMessage(" to leave the lobby");
 
-        printColoredMessageNoNL("STARTGAME", Constants.ANSI_MAGENTA);
+        printColoredMessageNoNL("STARTGAME", Constants.SERVANT_COLOR);
         printMessage(" to start the game");
 
-        printColoredMessageNoNL("QUIT", Constants.ANSI_MAGENTA);
+        printColoredMessageNoNL("QUIT", Constants.SERVANT_COLOR);
         printMessage(" to to quit the game");
 
         printMessage("");
@@ -740,16 +866,38 @@ public class CLI implements UI {
         if ("after_getfrommarket".equals(menuCode)) {
             showAfterMarketMenu();
         }
+        if ("after_store_supply".equals(menuCode)) {
+            showAfterSupply();
+        }
     }
 
+    private void showAfterSupply() {
+        ArrayList<Resource> supply = reducedModel.getReducedPlayer().getDashboard().getSupply();
+        if(!supply.isEmpty()) {
+            System.out.println("DEPOSIT: ");
+            showDeposit(reducedModel.getReducedPlayer().getDashboard().getDeposit());
+            System.out.println("SUPPLY: ");
+            showSupply(reducedModel.getReducedPlayer().getDashboard().getSupply());
+            System.out.println();
+            System.out.println("Unstored resources at the end of the turn will give faith points to other players.");
+        } else {
+            System.out.println("Supply is empty, insert HELP to see full command or list or insert one");
+        }
+
+    }
+
+
     private void showAfterMarketMenu() {
+        System.out.println("DEPOSIT: ");
+        showDeposit(reducedModel.getReducedPlayer().getDashboard().getDeposit());
+        System.out.println("SUPPLY: ");
         showSupply(reducedModel.getReducedPlayer().getDashboard().getSupply());
-        printMessageNoNL("Please use");
-        printColoredMessageNoNL("STOREFROMSUPPLY <supplyPos> <depositPos>", Constants.ANSI_MAGENTA);
+        printMessage("Please use");
+        printColoredMessageNoNL("STOREFROMSUPPLY <supplyPos> <depositPos>", Constants.SERVANT_COLOR);
         printMessage(" to store a resource from your supply to your deposit");
-        printColoredMessageNoNL("STOREFROMSUPPLYTOEXTRADEPOSIT <supplyPos> <depositIndex> <depositPos>", Constants.ANSI_MAGENTA);
+        printColoredMessageNoNL("STOREFROMSUPPLYTOEXTRADEPOSIT <supplyPos> <depositIndex> <depositPos>", Constants.SERVANT_COLOR);
         printMessage(" to store a resource from your supply to an extra deposit");
-        printColoredMessageNoNL("CHANGEDEPOSIT", Constants.ANSI_MAGENTA);
+        printColoredMessageNoNL("CHANGEDEPOSIT", Constants.SERVANT_COLOR);
         printMessage(" to rearrange your deposit");
         printMessage("");
 
@@ -758,7 +906,7 @@ public class CLI implements UI {
     private void showAfterInitialResources() {
         ReducedGame reducedGame = reducedModel.getReducedGame();
         printMessage("");
-        showDeposit(reducedGame.getClientPlayer());
+        showDeposit(reducedModel.getReducedPlayer().getDashboard().getDeposit());
         printMessage("");
         int owed = getOwed(reducedGame.getFirstTurns());
         if(owed - Arrays.stream(reducedGame.getPlayers()
@@ -776,17 +924,17 @@ public class CLI implements UI {
         if(toDiscard > 0) {
             printMessage("");
             printMessage("Please discard " + toDiscard + " more cards with the command ");
-            printColoredMessage("DISCARDEXCESSCARD <cardIndex>", Constants.ANSI_MAGENTA);
+            printColoredMessage("DISCARDEXCESSCARD <cardIndex>", Constants.SERVANT_COLOR);
             showHand(rg.getClientPlayer());
         } else {
             int owed = getOwed(rg.getFirstTurns());
             if(owed > 0) {
                 printMessage("");
                 printMessage("You are owed " + owed + " resources. Please use the command");
-                printColoredMessageNoNL("GETINITIALRESOURCES <resource> <depositindex>", Constants.ANSI_MAGENTA);
+                printColoredMessageNoNL("GETINITIALRESOURCES <resource> <depositindex>", Constants.SERVANT_COLOR);
                 printMessage(" to acquire them. ");
-                printMessage("");
-                showDeposit(rg.getClientPlayer());
+                printMessage("Here is your deposit currently: ");
+                showDeposit(reducedModel.getReducedPlayer().getDashboard().getDeposit());
                 printMessage("");
             } else {
                 clientConnection.send(ClientMessageInputParser.parseInput("ENDTURN", this));
@@ -804,7 +952,7 @@ public class CLI implements UI {
 
     private void showAfterGameStartMenu() {
         ReducedGame rg = reducedModel.getReducedGame();
-        printColoredMessage("\nGame is starting", Constants.ANSI_YELLOW);
+        printColoredMessage("\nGame is starting", Constants.GOLD_COLOR);
         firstPhaseMenu(rg);
 
     }
@@ -827,7 +975,7 @@ public class CLI implements UI {
             int toDiscard = rg.getPlayers().get(rg.getClientPlayer()).getHand().size() - 2;
             if(toDiscard > 0) {
                 printMessage("Here is your hand. Please discard " + toDiscard + " more cards with the command ");
-                printColoredMessage("DISCARDEXCESSCARD <cardIndex>", Constants.ANSI_MAGENTA);
+                printColoredMessage("DISCARDEXCESSCARD <cardIndex>", Constants.SERVANT_COLOR);
                 showHand(rg.getClientPlayer());
             }
         } else {
@@ -838,40 +986,9 @@ public class CLI implements UI {
     private void commonPhaseMenu(ReducedGame rg) {
         if (rg.getClientPlayer().equals(rg.getCurrentPlayer())) {
             printMessage(Constants.ANSI_CYAN + "It is now your turn" + Constants.ANSI_RESET);
-            printMessage("");
-            printMessage("Please choose from the following commands: ");
-            printColoredMessage("------ GAME ACTIONS -------", Constants.ANSI_YELLOW);
-            printColoredMessageNoNL("GETFROMMARKET <move>", Constants.ANSI_MAGENTA);
-            printMessage(" to get from market");
-            printColoredMessageNoNL("BUYDEVELOPMENTCARD <row> <column> <placement>", Constants.ANSI_MAGENTA);
-            printMessage(" to buy a development card");
-            printColoredMessageNoNL("ACTIVATEDASHBOARDPRODUCTION ", Constants.ANSI_MAGENTA);
-            printMessage(" to activate a dashboard production");
-            printColoredMessageNoNL("ACTIVATEDEVELOPMENTPRODUCTION <cardIndex>", Constants.ANSI_MAGENTA);
-            printMessage(" to activate a development card production");
-            printColoredMessageNoNL("ACTIVATELEADERPRODUCTION <cardIndex>", Constants.ANSI_MAGENTA);
-            printMessage(" to activate a leader card production");
-            printMessage("");
+            showGeneralMenu();
+            printMessageNoNL("> ");
 
-            printColoredMessageNoNL("------ LEADER ACTIONS -------", Constants.ANSI_YELLOW);
-            printMessage("");
-            printColoredMessageNoNL("DISCARDCARD <cardIndex>", Constants.ANSI_MAGENTA);
-            printMessage(" to discard a leader card");
-            printColoredMessageNoNL("PLAYLEADERCARD <cardIndex>", Constants.ANSI_MAGENTA);
-            printMessage(" to play a leader card");
-            printMessage("");
-
-            printColoredMessageNoNL("------ PERSONAL ACTIONS -------", Constants.ANSI_YELLOW);
-            printMessage("");
-            showDepositMenu();
-
-            printColoredMessageNoNL("------ OTHER ACTIONS -------", Constants.ANSI_YELLOW);
-            printMessage("");
-            showViewMenu();
-            printColoredMessageNoNL("ENDTURN ", Constants.ANSI_MAGENTA);
-            printMessage(" to end your turn");
-            printMessage("");
-            printMessage("> ");
         } else {
             printMessage(Constants.ANSI_CYAN + "It is now " + rg.getCurrentPlayer() + "'s turn, please wait..." + Constants.ANSI_RESET);
         }
@@ -879,28 +996,67 @@ public class CLI implements UI {
 
     public void showViewMenu() {
         ReducedGame rg = reducedModel.getReducedGame();
-        printColoredMessageNoNL("SHOW <globalObject>", Constants.ANSI_MAGENTA);
+        printColoredMessageNoNL("SHOW <globalObject>", Constants.SERVANT_COLOR);
         printMessage(" to show a global object. Available options: ");
         printMessage("DVGRID, MARKET");
-        printColoredMessageNoNL("SHOW <object> <nickname>", Constants.ANSI_MAGENTA);
+        printColoredMessageNoNL("SHOW <object> <nickname>", Constants.SERVANT_COLOR);
         printMessage(" to show a player object. Available options: ");
         printMessage("HAND, DASHBOARD, FAITHTRACK, WAREHOUSE");
         printMessageNoNL("Player list: | ");
-        rg.getPlayers().keySet().forEach(p -> {
-            printMessageNoNL(p + " | ");
-        });
-        printMessage("");
+        rg.getPlayers().keySet().forEach(p ->
+            printMessageNoNL(p + " | ")
+        );
         printMessage("");
     }
 
     public void showDepositMenu() {
-        printColoredMessageNoNL("STOREFROMSUPPLY <supplyPos> <depositPos>", Constants.ANSI_MAGENTA);
+        printColoredMessageNoNL("STOREFROMSUPPLY <supplyPos> <depositPos>", Constants.SERVANT_COLOR);
         printMessage(" to store a resource from your supply to your deposit");
-        printColoredMessageNoNL("STOREFROMSUPPLYTOEXTRADEPOSIT <supplyPos> <depositIndex> <depositPos>", Constants.ANSI_MAGENTA);
+        printColoredMessageNoNL("STOREFROMSUPPLYTOEXTRADEPOSIT <supplyPos> <depositIndex> <depositPos>", Constants.SERVANT_COLOR);
         printMessage(" to store a resource from your supply to an extra deposit");
-        printColoredMessageNoNL("CHANGEDEPOSIT", Constants.ANSI_MAGENTA);
+        printColoredMessageNoNL("CHANGEDEPOSIT", Constants.SERVANT_COLOR);
         printMessage(" to rearrange your deposit");
         printMessage("");
+    }
+
+    public void showGeneralMenu() {
+        printMessage("");
+        printMessage("Please choose from the following commands: ");
+        printColoredMessage("------ GAME ACTIONS -------", Constants.GOLD_COLOR);
+        printColoredMessageNoNL("GETFROMMARKET <move>", Constants.SERVANT_COLOR);
+        printMessage(" to get from market");
+        printColoredMessageNoNL("BUYDEVELOPMENTCARD <index> <position>", Constants.SERVANT_COLOR);
+        printMessage(" to buy a development card");
+        printColoredMessageNoNL("ACTIVATEDASHBOARDPRODUCTION ", Constants.SERVANT_COLOR);
+        printMessage(" to activate a dashboard production");
+        printColoredMessageNoNL("ACTIVATEDEVELOPMENTPRODUCTION <cardIndex>", Constants.SERVANT_COLOR);
+        printMessage(" to activate a development card production");
+        printColoredMessageNoNL("ACTIVATELEADERPRODUCTION <cardIndex>", Constants.SERVANT_COLOR);
+        printMessage(" to activate a leader card production");
+        printMessage("");
+
+        printColoredMessageNoNL("------ LEADER ACTIONS -------", Constants.GOLD_COLOR);
+        printMessage("");
+        printColoredMessageNoNL("DISCARDCARD <cardIndex>", Constants.SERVANT_COLOR);
+        printMessage(" to discard a leader card");
+        printColoredMessageNoNL("PLAYLEADERCARD <cardIndex>", Constants.SERVANT_COLOR);
+        printMessage(" to play a leader card");
+        printMessage("");
+
+        printColoredMessageNoNL("------ PERSONAL ACTIONS -------", Constants.GOLD_COLOR);
+        printMessage("");
+        showDepositMenu();
+
+        printColoredMessageNoNL("------ OTHER ACTIONS -------", Constants.GOLD_COLOR);
+        printMessage("");
+        showViewMenu();
+
+        printColoredMessageNoNL("ENDTURN ", Constants.SERVANT_COLOR);
+        printMessage(" to end your turn");
+        printMessage("");
+
+        printColoredMessageNoNL("HELP ", Constants.SERVANT_COLOR);
+        printMessage(" to show the full list of commands again");
     }
 
 }
