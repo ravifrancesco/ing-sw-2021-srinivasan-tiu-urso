@@ -57,7 +57,7 @@ public class BuyDevCardController {
 
     @FXML private Button cancelButton;
 
-    public void init() {
+    public void initialize() {
         hideDiscounts();
     }
 
