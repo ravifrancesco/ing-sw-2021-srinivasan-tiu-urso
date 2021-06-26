@@ -107,7 +107,7 @@ public class FaithTrack extends FaithTrackObservable {
 	 */
 	public void checkVaticanVictoryPoints(int vaticanReportEnd) {
 		VaticanReport currentVaticanReport;
-		for (int i = 0; i < vaticanReportEnd; i++) {
+		for (int i = 0; i <= vaticanReportEnd; i++) {
 			currentVaticanReport = vaticanReports.get(i);
 			if (currentVaticanReport != null) {
 				if (position < currentVaticanReport.start) {
