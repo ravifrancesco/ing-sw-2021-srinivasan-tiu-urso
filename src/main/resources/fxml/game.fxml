@@ -71,6 +71,9 @@
                   <Font name="Garamond" size="14.0" />
                </font>
             </Button>
+            <ImageView fx:id="vaticanReport0IW" fitHeight="63.0" fitWidth="66.0" layoutX="453.0" layoutY="219.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="vaticanReport1IW" fitHeight="63.0" fitWidth="66.0" layoutX="674.0" layoutY="174.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="vaticanReport2IW" fitHeight="63.0" fitWidth="66.0" layoutX="938.0" layoutY="219.0" pickOnBounds="true" preserveRatio="true" />
          </children>
       </Pane>
    </bottom>

@@ -2,10 +2,7 @@ package it.polimi.ingsw;
 
 import it.polimi.ingsw.client.ReducedModel;
 import it.polimi.ingsw.controller.client.reducedModel.ReducedGame;
-import it.polimi.ingsw.model.Banner;
-import it.polimi.ingsw.model.BannerEnum;
-import it.polimi.ingsw.model.Resource;
-import it.polimi.ingsw.model.TurnPhase;
+import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.marbles.Marble;
@@ -13,6 +10,7 @@ import it.polimi.ingsw.model.specialAbilities.*;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.game.EndTurnGameMessage;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.game.PlayerChangesDeposit;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.game.StartGameGameMessage;
+import it.polimi.ingsw.utils.Pair;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -21,6 +19,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.InputEvent;
 import javafx.scene.input.MouseEvent;
@@ -30,6 +29,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.IntStream;
@@ -97,6 +97,11 @@ public class GameController {
 
     @FXML private ImageView dvGridImage;
 
+    @FXML private ImageView vaticanReport0IW;
+    @FXML private ImageView vaticanReport1IW;
+    @FXML private ImageView vaticanReport2IW;
+    private List<ImageView> vaticanReportTokens;
+
     // Label for locker
 
     @FXML
@@ -137,6 +142,7 @@ public class GameController {
         reducedModel.askDevelopmentCardsUpdate(currentDisplayedPlayer);
         reducedModel.askFaithMarkerPosition(currentDisplayedPlayer);
         reducedModel.askPointsUpdate(currentDisplayedPlayer);
+        reducedModel.askVaticanReportsUpdate(currentDisplayedPlayer);
         hideWarehouseButtons();
     }
 
@@ -537,6 +543,8 @@ public class GameController {
         faithMarkerController.createItem();
 
         pane.getChildren().add(faithMarkerController.getItem());
+
+        vaticanReportTokens = Arrays.asList(vaticanReport0IW, vaticanReport1IW, vaticanReport2IW);
     }
 
     public void openChooseResourceWindow() {
@@ -894,6 +902,35 @@ public class GameController {
         if (handController != null && player.equals(rg.getClientPlayer())) {
             handController.update(leaderCards);
         }
+    }
+
+    public void updateVaticanReports(String player, List<Pair<Integer, Integer>> vaticanReports) {
+        if (!player.equals(currentDisplayedPlayer)) {
+            return;
+        }
+        vaticanReports.forEach(p -> loadVaticanReportImage(vaticanReports.indexOf(p), p.second));
+    }
+
+    private void loadVaticanReportImage(int i, int state) {
+        ImageView vaticanReportIW = vaticanReportTokens.get(i);
+        vaticanReportIW.setImage(null);
+        Image image;
+        switch (state) {
+            case 1 -> {
+                File file = new File("src/main/resources/png/vaticanReport/pope_favor_" + i + "_missed.png");
+                image = new Image(file.toURI().toString());
+                break;
+            }
+            case 2 -> {
+                File file = new File("src/main/resources/png/vaticanReport/pope_favor_" + i + "_achieved.png");
+                image = new Image(file.toURI().toString());
+            }
+            default -> image = null;
+
+        }
+        vaticanReportIW.setImage(image);
+        vaticanReportIW.setFitHeight(63);
+        vaticanReportIW.setFitWidth(66);
     }
 
 }

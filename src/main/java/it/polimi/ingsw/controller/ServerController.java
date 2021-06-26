@@ -274,6 +274,7 @@ public class ServerController {
 
         try {
             productionController.activateLeaderCardProduction(nickname, cardToActivate, resourcesToPayCost, resourceRequiredOptional, resourceProducedOptional);
+            checkVaticanReports();
         } catch (WrongTurnException | PowerNotActivatableException | WrongMoveException e) {
             game.setError(e, nickname);
         }
@@ -287,6 +288,7 @@ public class ServerController {
     public int discardLeaderCard(String nickname, int cardToDiscard) {
         try {
             leaderCardController.discardLeaderCard(nickname, cardToDiscard);
+            checkVaticanReports();
             return 0;
         } catch (WrongTurnException | CardNotPlayableException e) {
             game.setError(e, nickname);
@@ -320,6 +322,7 @@ public class ServerController {
     public int getFromMarket(String nickname, int move, ArrayList<Resource> wmrs) {
         try {
             marketController.getFromMarket(nickname, move, wmrs);
+            checkVaticanReports();
             return 0;
         } catch (WrongTurnException | WrongMoveException e) {
             game.setError(e, nickname);
@@ -358,6 +361,7 @@ public class ServerController {
 
         try {
             productionController.activateDevelopmentCardProductionPower(nickname, cardToActivate, resourcesToPayCost, resourceRequiredOptional, resourceProducedOptional);
+            checkVaticanReports();
         } catch (WrongTurnException | PowerNotActivatableException | WrongMoveException e) {
             game.setError(e, nickname);
         }
@@ -474,6 +478,8 @@ public class ServerController {
             game.startUniquePhase(TurnPhase.COMMON);
         }
 
+        checkVaticanReports();
+
         game.changePlayer();
 
         //return game.getTurnPhase() == TurnPhase.ENDGAME && game.getCurrentPlayer().equals(game.getFirstPlayer());
@@ -515,5 +521,11 @@ public class ServerController {
         LeaderCard lc = player.getHand().get(index);
 
         player.playLeaderCard(index);
+    }
+
+    private void checkVaticanReports() {
+        game.getPlayers().values()
+                .stream().map(p -> p.getDashboard().getFaithTrack())
+                .forEach(f -> f.checkVaticanVictoryPoints(FaithTrack.maxReached));
     }
 }

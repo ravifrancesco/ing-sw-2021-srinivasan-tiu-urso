@@ -32,7 +32,7 @@ public class ReducedDashboard {
 
     // FaithTrack
     private int position;
-    private Map<Pair<Integer, Integer>, Pair<Integer, Integer>> vaticanReports; //TODO
+    private Map<Pair<Integer, Integer>, Pair<Integer, Integer>> vaticanReports;
     private int[] faithTrackVictoryPoints;
 
     private ReducedModel reducedModel;
@@ -126,6 +126,7 @@ public class ReducedDashboard {
 
     public void setVaticanReports(Map<Pair<Integer, Integer>, Pair<Integer, Integer>> vaticanReports) {
         this.vaticanReports = vaticanReports;
+        updateVaticanReports();
     }
 
     public int[] getFaithTrackVictoryPoints() {
@@ -158,5 +159,9 @@ public class ReducedDashboard {
 
     private void updateDevelopmentCards() {
         this.reducedModel.updateDevelopmentCards(reducedPlayer.getNickname(), playedDevelopmentCards);
+    }
+
+    private void updateVaticanReports() {
+        this.reducedModel.updateVaticanReports(reducedPlayer.getNickname(), vaticanReports);
     }
 }
