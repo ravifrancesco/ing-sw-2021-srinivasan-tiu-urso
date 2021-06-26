@@ -57,6 +57,7 @@ public class ReducedGameBoard {
 
     public void setGrid(List<Stack<DevelopmentCard>> grid) {
         this.grid = grid;
+        updateDecCardGrid();
     }
 
     public List<LeaderCard> getLeaderCardDeck() {
@@ -113,6 +114,10 @@ public class ReducedGameBoard {
         Marble[] marbles = Arrays.copyOfRange(marblesGrid, 0, marblesGrid.length - 1);
         Marble freeMarble = marblesGrid[marblesGrid.length - 1];
         this.reducedModel.updateMarket(marbles, freeMarble);
+    }
+
+    private void updateDecCardGrid() {
+        reducedModel.updateDevelopmentCardGrid(this.grid);
     }
 
 }

@@ -7,14 +7,12 @@ import it.polimi.ingsw.controller.client.reducedModel.ReducedGameBoard;
 import it.polimi.ingsw.controller.client.reducedModel.ReducedPlayer;
 import it.polimi.ingsw.model.GameBoard;
 import it.polimi.ingsw.model.Resource;
+import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.marbles.Marble;
 import javafx.application.Platform;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ReducedModel {
 
@@ -108,6 +106,16 @@ public class ReducedModel {
         Marble[] marbles = Arrays.copyOfRange(marblesGrid, 0, marblesGrid.length - 1);
         Marble freeMarble = marblesGrid[marblesGrid.length - 1];
         Platform.runLater(() -> gameController.updateMarket(marbles, freeMarble));
+    }
+
+    public void updateDevelopmentCardGrid(List<Stack<DevelopmentCard>> grid) {
+        if (gameController == null) return;
+        Platform.runLater(() -> gameController.updateDevCardGrid(grid));
+    }
+
+    public void askDevCardGridUpdate() {
+        List<Stack<DevelopmentCard>> grid = reducedGameBoard.getGrid();
+        Platform.runLater(() -> gameController.updateDevCardGrid(grid));
     }
 
 }

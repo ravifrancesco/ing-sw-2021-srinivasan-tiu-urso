@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.Banner;
 import it.polimi.ingsw.model.BannerEnum;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.TurnPhase;
+import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.marbles.Marble;
 import it.polimi.ingsw.model.specialAbilities.*;
@@ -530,7 +531,7 @@ public class GameController {
         }
         devCardGridController = fxmlLoader.getController();
         devCardGridController.setGui(this.gui);
-        devCardGridController.update(gui.getReducedModel().getReducedGameBoard().getGrid());
+        gui.getReducedModel().askDevCardGridUpdate();
         Stage stage = new Stage();
         stage.setTitle("Development card grid");
         stage.setScene(new Scene(root, 700, 800));
@@ -769,6 +770,12 @@ public class GameController {
     public void updateMarket(Marble[] marblesGrid, Marble freeMarble) {
         if (marketController != null) {
             marketController.update(marblesGrid, freeMarble);
+        }
+    }
+
+    public void updateDevCardGrid(List<Stack<DevelopmentCard>> grid) {
+        if (marketController != null) {
+            devCardGridController.update(grid);
         }
     }
 
