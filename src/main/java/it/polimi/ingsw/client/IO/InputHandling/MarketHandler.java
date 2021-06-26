@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client.IO.InputHandling;
 
 import it.polimi.ingsw.client.IO.CLI;
+import it.polimi.ingsw.client.IO.Constants;
 import it.polimi.ingsw.controller.client.reducedModel.ReducedPlayer;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.marbles.WhiteMarble;
@@ -41,10 +42,10 @@ public class MarketHandler {
     public static ArrayList<Resource> handleWMR(int whiteMarblesCount, CLI cli) {
         ArrayList<Resource> resources = new ArrayList<>();
         Resource res;
-        cli.printColoredMessage("" + whiteMarblesCount + " white marbles detected.", CLI.ANSI_BLUE);
+        cli.printColoredMessage("" + whiteMarblesCount + " white marbles detected.", Constants.ANSI_BLUE);
         int i = whiteMarblesCount;
         while(i > 0) {
-            cli.printColoredMessage("Please insert resource to obtain for white marble number " + (whiteMarblesCount-i), CLI.ANSI_BLUE);
+            cli.printColoredMessage("Please insert resource to obtain for white marble number " + (whiteMarblesCount-i), Constants.ANSI_BLUE);
             res = ResourceHandler.parseResource(cli.readLine().split(" ")[0]);
             if(res == null) {
                 cli.printErrorMessage("Resource parsing error, try again");

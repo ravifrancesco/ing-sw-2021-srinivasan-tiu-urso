@@ -1,8 +1,14 @@
 package it.polimi.ingsw.client;
 
+import it.polimi.ingsw.GameController;
 import it.polimi.ingsw.controller.client.reducedModel.ReducedGame;
 import it.polimi.ingsw.controller.client.reducedModel.ReducedGameBoard;
 import it.polimi.ingsw.controller.client.reducedModel.ReducedPlayer;
+import it.polimi.ingsw.model.Resource;
+import javafx.application.Platform;
+
+import java.util.ArrayList;
+import java.util.Map;
 
 public class ReducedModel {
 
@@ -10,12 +16,13 @@ public class ReducedModel {
     private ReducedPlayer reducedPlayer;
     private ReducedGameBoard reducedGameBoard;
 
+    GameController gameController;
 
 
     public ReducedModel() {
-        reducedGame = new ReducedGame();
-        reducedPlayer = new ReducedPlayer();
-        reducedGameBoard = new ReducedGameBoard();
+        reducedGame = new ReducedGame(this);
+        reducedPlayer = new ReducedPlayer(this);
+        reducedGameBoard = new ReducedGameBoard(this);
     }
 
     public ReducedGame getReducedGame() {
@@ -38,5 +45,26 @@ public class ReducedModel {
         reducedPlayer.setNickname(nickname);
         reducedGame.setClientPlayer(nickname);
         reducedGame.createPlayer(reducedPlayer); // TODO is there a better way to do this?
+    }
+
+    public void setGameController(GameController gameController) {
+        this.gameController = gameController;
+    }
+
+    public void hideStartGameAlert() {
+        if (gameController != null) {
+            gameController.hideAlert();
+        }
+    }
+
+    public void moveFaithMarker(int position) {
+        if (gameController != null) {
+            Platform.runLater(() -> gameController.moveFaithMarker(position));
+        }
+    }
+
+    public void updateWarehouse(String player, Resource[] deposit, Map<Resource, Integer> locker, Resource[][] extraDeposit, ArrayList<Resource> supply) {
+        // TODO change ravi
+        Platform.runLater(() -> gameController.printWarehouse("ravi", deposit, locker, extraDeposit, supply));
     }
 }

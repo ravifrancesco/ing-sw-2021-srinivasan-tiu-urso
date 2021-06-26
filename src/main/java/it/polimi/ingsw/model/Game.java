@@ -4,6 +4,7 @@ import it.polimi.ingsw.controller.exceptions.GameNotFullException;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.observerPattern.observables.GameObservable;
 import it.polimi.ingsw.model.observerPattern.observers.GameObserver;
+import it.polimi.ingsw.model.singlePlayer.tokens.*;
 import it.polimi.ingsw.server.Connection;
 import it.polimi.ingsw.utils.Pair;
 import it.polimi.ingsw.model.GameError;
@@ -11,9 +12,14 @@ import it.polimi.ingsw.model.GameError;
 import java.util.*;
 import java.util.stream.IntStream;
 
-public class Game extends GameObservable {
+public class Game extends GameObservable  {
+
+
+
+	private int firstTurns;
 
 	private String gameId;
+
 
 	private final int numberOfPlayers;
 
@@ -34,6 +40,9 @@ public class Game extends GameObservable {
 
 	private GameError gameError;
 
+	private Stack<Token> tokens;
+	private Token lastToken;
+
 	public Game(String gameId, int numberOfPlayers) {
 		this.gameId = gameId;
 		this.numberOfPlayers = numberOfPlayers;
@@ -41,6 +50,7 @@ public class Game extends GameObservable {
 		this.playerOrder = players.keySet().iterator();
 		this.gameBoard = new GameBoard();
 		this.gameError = new GameError();
+		this.tokens = new Stack<>();
 	}
 
 	public void loadGameSettings(GameSettings gameSettings) {
@@ -53,6 +63,7 @@ public class Game extends GameObservable {
 		this.playerOrder = players.keySet().iterator();
 		this.gameEnded = false;
 		this.gameStarted = false;
+		resetTokens();
 		notify(this);
 
 	}
@@ -97,11 +108,13 @@ public class Game extends GameObservable {
 		if (!playerOrder.hasNext()) {
 			this.playerOrder = players.keySet().iterator();
 		}
+		// notify(this);
 		return playerOrder.next();
 	}
 
 	public void startUniquePhase(TurnPhase turnPhase) {
 		this.turnPhase = turnPhase;
+		notify(this);
 	}
 
 	public TurnPhase getTurnPhase() {
@@ -179,4 +192,34 @@ public class Game extends GameObservable {
 		return gameStarted;
 	}
 
+
+	public int getFirstTurns() {
+		return firstTurns;
+	}
+
+	public void setFirstTurns(int firstTurns) {
+		this.firstTurns = firstTurns;
+	}
+
+	public void resetTokens() {
+		this.tokens = new Stack<>();
+		this.tokens.addAll(Arrays
+				.asList(new DiscardDevCardBlue(), new DiscardDevCardGreen(), new DiscardDevCardYellow(), new DiscardDevCardPurple(),
+						new DoubleBlackCrossMoveToken(), new SingleBlackCrossMoveToken()));
+		Collections.shuffle(this.tokens);
+	}
+
+	public void drawToken() {
+		lastToken = this.tokens.peek();
+		gameEnded = lastToken.useToken(this);
+		notify(this);
+	}
+
+	public Stack<Token> getTokens() {
+		return tokens;
+	}
+
+	public Token getLastToken() {
+		return lastToken;
+	}
 }

@@ -5,7 +5,6 @@ import it.polimi.ingsw.client.IO.CLI;
 import java.io.IOException;
 
 public class CLIClient {
-    private CLI cli;
 
     public void run() {
         CLI cli = new CLI();
@@ -15,7 +14,10 @@ public class CLIClient {
                 int port = cli.getPort();
                 ClientConnection clientConnection = new ClientConnection(ip, port, cli);
                 clientConnection.connectToServer();
-                clientConnection.registerName();
+                while (!clientConnection.isNameRegistered()) {
+                    clientConnection.registerName();
+                }
+
                 clientConnection.run();
                 return;
             } catch (IllegalArgumentException e) {

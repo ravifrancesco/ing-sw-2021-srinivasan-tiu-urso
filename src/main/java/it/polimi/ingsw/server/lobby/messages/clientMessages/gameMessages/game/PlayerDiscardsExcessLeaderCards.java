@@ -19,6 +19,7 @@ public class PlayerDiscardsExcessLeaderCards extends ClientGameMessage implement
         int output = serverController.discardExcessLeaderCards(c.getNickname(), cardToDiscard);
         if (output == 0) {
             c.sendSuccessfulMoveMessage("Card with index " + cardToDiscard + " has been discarded successfully");
+            c.sendCLIupdateMessage("next_card_discard");
         }
     }
 }

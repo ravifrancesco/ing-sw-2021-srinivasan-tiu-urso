@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.controller.client.reducedModel.ReducedDashboard;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,6 +43,10 @@ public class ResourceContainer implements Serializable {
         }
     }
 
+    public void addDepositSelectedResource(int pos) {
+        selectedDepositIndexes.add(pos);
+    }
+
     public void addExtraDepositSelectedResource(int leaderCardPos, int pos, Resource[][] whExtraDeposits) {
         if (whExtraDeposits[leaderCardPos] != null && whExtraDeposits[leaderCardPos][pos] != null) {
             selectedExtraDepositIndexes.get(leaderCardPos).add(pos);
@@ -49,12 +55,20 @@ public class ResourceContainer implements Serializable {
         }
     }
 
+    public void addExtraDepositSelectedResource(int leaderCardPos, int pos) {
+        selectedExtraDepositIndexes.get(leaderCardPos).add(pos);
+    }
+
     public void addLockerSelectedResource(Resource r, int qty, Map<Resource, Integer> whLocker) {
         if (whLocker.get(r) >= qty) {
             selectedLockerResources.put(r, qty);
         } else {
             throw new IllegalArgumentException();
         }
+    }
+
+    public void addLockerSelectedResource(Resource r, int qty) {
+        selectedLockerResources.put(r, qty);
     }
 
     public ArrayList<Integer> getSelectedDepositIndexes() {
@@ -79,6 +93,19 @@ public class ResourceContainer implements Serializable {
                 .forEach(i -> selectedExtraDepositIndexes.get(i)
                         .forEach(j -> res.put(wh.getExtraDeposits()[i][j],
                             res.get(wh.getExtraDeposits()[i][j]) + 1)));
+        return res;
+    }
+
+    public Map<Resource, Integer> getAllResources(ReducedDashboard wh) {
+        HashMap<Resource, Integer> res = new HashMap<>(selectedLockerResources);
+
+        selectedDepositIndexes.stream().filter(i -> wh.getDeposit()[i] != null).forEach(i ->
+                res.put(wh.getDeposit()[i], res.get(wh.getDeposit()[i]) + 1));
+
+        IntStream.range(0, Warehouse.MAX_EXTRA_DEPOSIT_SLOTS)
+                .forEach(i -> selectedExtraDepositIndexes.get(i)
+                        .forEach(j -> res.put(wh.getExtraDeposits()[i][j],
+                                res.get(wh.getExtraDeposits()[i][j]) + 1)));
         return res;
     }
 

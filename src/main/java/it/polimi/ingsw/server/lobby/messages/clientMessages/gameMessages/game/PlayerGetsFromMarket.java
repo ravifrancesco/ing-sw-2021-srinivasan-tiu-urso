@@ -23,6 +23,7 @@ public class PlayerGetsFromMarket extends ClientGameMessage implements Serializa
         int output = serverController.getFromMarket(c.getNickname(), move, wmrs);
         if (output == 0) {
             c.sendSuccessfulMoveMessage("Market move completed, adding resources to your supply...");
+            c.sendCLIupdateMessage("after_getfrommarket");
         }
     }
 }

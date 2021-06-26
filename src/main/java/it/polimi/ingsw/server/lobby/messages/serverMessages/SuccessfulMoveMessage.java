@@ -1,7 +1,7 @@
 package it.polimi.ingsw.server.lobby.messages.serverMessages;
 
 import it.polimi.ingsw.client.ClientConnection;
-import it.polimi.ingsw.client.IO.CLI;
+import it.polimi.ingsw.client.IO.Constants;
 
 import java.io.Serializable;
 
@@ -14,6 +14,6 @@ public class SuccessfulMoveMessage implements ServerMessage, Serializable {
 
     @Override
     public void updateClient(ClientConnection clientConnection, String nickname) {
-        clientConnection.ui.printColoredMessage(message, CLI.ANSI_GREEN);
+        clientConnection.ui.printColoredMessage(message, Constants.ANSI_GREEN);
     }
 }
