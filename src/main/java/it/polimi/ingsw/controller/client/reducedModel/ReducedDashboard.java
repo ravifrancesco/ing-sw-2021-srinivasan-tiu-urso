@@ -115,7 +115,7 @@ public class ReducedDashboard {
 
     public void setPosition(int position) {
         this.position = position;
-        this.reducedModel.moveFaithMarker(position);
+        this.reducedModel.moveFaithMarker(reducedPlayer.getNickname(), position);
     }
 
     public Map<Pair<Integer, Integer>, Pair<Integer, Integer>> getVaticanReports() {

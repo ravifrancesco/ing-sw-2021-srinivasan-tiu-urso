@@ -125,6 +125,7 @@ public class GameController {
         currentDisplayedPlayer = nicknameCombo.getSelectionModel().getSelectedItem();
         gui.getReducedModel().updateWarehouse(currentDisplayedPlayer);
         gui.getReducedModel().updateLeaderCards(currentDisplayedPlayer);
+        gui.getReducedModel().askFaithMarkerPosition(currentDisplayedPlayer);
     }
 
     @FXML
@@ -677,7 +678,10 @@ public class GameController {
         btnCancel.setVisible(true);
     }
 
-    public void moveFaithMarker(int position) {
+    public void moveFaithMarker(String player, int position) {
+        if (!player.equals(currentDisplayedPlayer)) {
+            return;
+        }
         faithMarkerController.moveFaithMarker(position);
     }
 

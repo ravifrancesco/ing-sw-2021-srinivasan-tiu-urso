@@ -62,13 +62,19 @@ public class ReducedModel {
         }
     }
 
-    public void moveFaithMarker(int position) {
+    public void moveFaithMarker(String player, int position) {
         if (gameController != null) {
-            Platform.runLater(() -> gameController.moveFaithMarker(position));
+            Platform.runLater(() -> gameController.moveFaithMarker(player, position));
         }
     }
 
+    public void askFaithMarkerPosition(String player) {
+        ReducedDashboard reducedDashboard = reducedGame.getReducedPlayer(player).getDashboard();
+        Platform.runLater(() -> gameController.moveFaithMarker(player, reducedDashboard.getPosition()));
+    }
+
     public void updateWarehouse(String player, Resource[] deposit, Map<Resource, Integer> locker, Resource[][] extraDeposit, ArrayList<Resource> supply) {
+        if (gameController == null) return;
         Platform.runLater(() -> gameController.printWarehouse(player, deposit, locker, extraDeposit, supply));
     }
 
@@ -82,6 +88,7 @@ public class ReducedModel {
     }
 
     public void updateLeaderCards(String player, List<LeaderCard> leaderCardList) {
+        if (gameController == null) return;
         Platform.runLater(() -> gameController.printPlayedLeaderCards(player, leaderCardList));
     }
 
@@ -92,6 +99,7 @@ public class ReducedModel {
     }
 
     public void updateMarket(Marble[] marblesGrid, Marble freeMarble) {
+        if (gameController == null) return;
         Platform.runLater(() -> gameController.updateMarket(marblesGrid, freeMarble));
     }
 

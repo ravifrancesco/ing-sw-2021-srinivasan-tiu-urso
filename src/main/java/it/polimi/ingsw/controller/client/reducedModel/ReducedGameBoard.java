@@ -48,6 +48,7 @@ public class ReducedGameBoard {
 
     public void setMarblesGrid(Marble[] marblesGrid) {
         this.marblesGrid = marblesGrid;
+        updateMarket();
     }
 
     public List<Stack<DevelopmentCard>> getGrid() {
