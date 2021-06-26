@@ -252,9 +252,9 @@ public class ServerController {
      * @param nickname                      the nickname of the player who made the move.
      * @param cardToPlay                    the index of the card to be played.
      */
-    public void playLeaderCard(String nickname, int cardToPlay, ResourceContainer resourceContainer) {
+    public void playLeaderCard(String nickname, int cardToPlay) {
         try {
-            leaderCardController.playLeaderCard(nickname, cardToPlay, resourceContainer);
+            leaderCardController.playLeaderCard(nickname, cardToPlay);
         } catch (WrongTurnException | CardNotPlayableException | WrongMoveException e) {
             game.setError(e, nickname);
         }
