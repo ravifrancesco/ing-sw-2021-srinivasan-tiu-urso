@@ -76,7 +76,7 @@ public class DevCardGridController {
             root = fxmlLoader.load();
             ((BuyDevCardController) fxmlLoader.getController()).setParameters(gui, image, row, col);
             Stage stage = new Stage();
-            stage.setScene(new Scene(root, 422, 555));
+            stage.setScene(new Scene(root, 422, 623));
             stage.initModality(Modality.WINDOW_MODAL);
             stage.initOwner(
                     ((Node)event.getSource()).getScene().getWindow() );
