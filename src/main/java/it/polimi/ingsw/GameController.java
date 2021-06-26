@@ -247,8 +247,6 @@ public class GameController {
         leaderCardControllers[slot].assignSlots(leaderCardSlots);
         leaderCardControllers[slot].createItem(leaderCard, slot);
 
-        pane.getChildren().add(leaderCardControllers[slot].getItem());
-
         if (leaderCard.getSpecialAbility().getType() == SpecialAbilityType.WAREHOUSE_EXTRA_SPACE) {
             WarehouseExtraSpace wes = (WarehouseExtraSpace) leaderCard.getSpecialAbility();
             extraDepositSlots[slot*2].setStroke(Color.RED);
@@ -259,9 +257,19 @@ public class GameController {
             extraDepositSlots[slot*2+1].setSlotType(wes.getStoredResource());
             pane.getChildren().add(extraDepositSlots[slot*2].getRectangle());
             pane.getChildren().add(extraDepositSlots[slot*2+1].getRectangle());
+        } else if (leaderCard.getSpecialAbility().getType() == SpecialAbilityType.PRODUCTION_POWER) {
+            if (!((ProductionPower)leaderCard.getSpecialAbility()).isActivatable()) {
+                leaderCardControllers[slot].setDarker();
+            } else {
+                leaderCardControllers[slot].getItem().setOnMouseClicked(mouseEvent -> {
+                    leaderCardControllers[slot].openProductionPowerView(mouseEvent);
+                });
+            }
         }
 
         reloadWarehouseImages();
+
+        pane.getChildren().add(leaderCardControllers[slot].getItem());
     }
 
     public void printPlayedDevelopmentCards(String player, List<Stack<DevelopmentCard>> playedDevelopmentCards) {
@@ -283,8 +291,17 @@ public class GameController {
             e.printStackTrace();
         }
         developmentCardControllers[pos] = loader.getController();
+        developmentCardControllers[pos].setGui(this.gui);
         developmentCardControllers[pos].assignSlots(developmentCardSlots);
         developmentCardControllers[pos].createItem(developmentCard, pos);
+
+        if (!developmentCard.getProductionPower().isActivatable()) {
+            developmentCardControllers[pos].setDarker();
+        } else {
+            developmentCardControllers[pos].getItem().setOnMouseClicked(mouseEvent -> {
+                developmentCardControllers[pos].openProductionPowerView(mouseEvent);
+            });
+        }
 
         pane.getChildren().add(developmentCardControllers[pos].getItem());
     }
