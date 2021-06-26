@@ -3,8 +3,7 @@ package it.polimi.ingsw;
 import it.polimi.ingsw.controller.client.reducedModel.ReducedDashboard;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.ResourceContainer;
-import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.game.ActivateDashboardProductionGameMessage;
-import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.game.ActivateDevelopmentProductionGameMessage;
+import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.game.ActivateLeaderProductionGameMessage;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.game.BuyDevelopmentCardGameMessage;
 import it.polimi.ingsw.utils.Pair;
 import javafx.fxml.FXML;
@@ -25,7 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.IntStream;
 
-public class ProductionPowerController {
+public class LeaderProductionController {
 
     private GUI gui;
 
@@ -45,8 +44,6 @@ public class ProductionPowerController {
 
     private ResourceContainer resourceContainer;
 
-    private int cardIndex;
-
     @FXML
     private Pane pane;
 
@@ -56,6 +53,19 @@ public class ProductionPowerController {
     @FXML private Label labelServant;
     @FXML private Button btnOk;
     @FXML private Button btnCanc;
+
+    @FXML
+    private ImageView goldIW;
+    @FXML
+    private ImageView servantIW;
+    @FXML
+    private ImageView shieldIW;
+    @FXML
+    private ImageView stoneIW;
+
+    private Resource selectedResource;
+
+    private int cardIndex;
 
     @FXML
     public void initialize() {
@@ -91,6 +101,35 @@ public class ProductionPowerController {
         Arrays.fill(maxLockerResources, 0);
 
         resourceContainer = new ResourceContainer();
+
+        goldIW.setOnMouseClicked(mouseEvent -> {
+            setBrightnessHigh(goldIW);
+            setBrightnessLow(servantIW);
+            setBrightnessLow(shieldIW);
+            setBrightnessLow(stoneIW);
+            selectedResource = Resource.GOLD;
+        });
+        servantIW.setOnMouseClicked(mouseEvent -> {
+            setBrightnessLow(goldIW);
+            setBrightnessHigh(servantIW);
+            setBrightnessLow(shieldIW);
+            setBrightnessLow(stoneIW);
+            selectedResource = Resource.SERVANT;
+        });
+        shieldIW.setOnMouseClicked(mouseEvent -> {
+            setBrightnessLow(goldIW);
+            setBrightnessLow(servantIW);
+            setBrightnessHigh(shieldIW);
+            setBrightnessLow(stoneIW);
+            selectedResource = Resource.SHIELD;
+        });
+        stoneIW.setOnMouseClicked(mouseEvent -> {
+            setBrightnessLow(goldIW);
+            setBrightnessLow(servantIW);
+            setBrightnessLow(shieldIW);
+            setBrightnessHigh(stoneIW);
+            selectedResource = Resource.STONE;
+        });
 
     }
 
@@ -255,7 +294,10 @@ public class ProductionPowerController {
             resourceContainer.addLockerSelectedResource(Resource.SERVANT, Integer.parseInt(labelServant.getText()));
         }
 
-        gui.getClientConnection().send(new ActivateDevelopmentProductionGameMessage(cardIndex, resourceContainer, new HashMap<>(), new HashMap<>()));
+        HashMap<Resource, Integer> resourceProductionOptional = new HashMap<>();
+        resourceProductionOptional.put(selectedResource, 1);
+
+        gui.getClientConnection().send(new ActivateLeaderProductionGameMessage(cardIndex, resourceContainer, new HashMap<>(), resourceProductionOptional));
 
         Stage stage = (Stage) btnOk.getScene().getWindow();
         stage.close();
@@ -273,5 +315,17 @@ public class ProductionPowerController {
 
     public void setCardIndex(int cardIndex) {
         this.cardIndex = cardIndex;
+    }
+
+    private void setBrightnessLow(ImageView imageView) {
+        ColorAdjust colorAdjust = new ColorAdjust();
+        colorAdjust.setBrightness(-0.5);
+        imageView.setEffect(colorAdjust);
+    }
+
+    private void setBrightnessHigh(ImageView imageView) {
+        ColorAdjust colorAdjust = new ColorAdjust();
+        colorAdjust.setBrightness(0);
+        imageView.setEffect(colorAdjust);
     }
 }

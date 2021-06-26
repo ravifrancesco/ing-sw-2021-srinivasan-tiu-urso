@@ -2,10 +2,19 @@ package it.polimi.ingsw;
 
 import it.polimi.ingsw.model.cards.LeaderCard;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.IOException;
 
 public class LeaderCardController {
 
@@ -51,5 +60,32 @@ public class LeaderCardController {
 
     public void setGui(GUI gui) {
         this.gui = gui;
+    }
+
+    public void setDarker() {
+        ColorAdjust colorAdjust = new ColorAdjust();
+        colorAdjust.setBrightness(-0.5);
+        item.setEffect(colorAdjust);
+    }
+
+    public void openProductionPowerView(MouseEvent event) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/leader_production.fxml"));
+            Parent root = fxmlLoader.load();
+            LeaderProductionController leaderProductionController = fxmlLoader.getController();
+            leaderProductionController.setGui(this.gui);
+            leaderProductionController.setResources();
+            leaderProductionController.setCardIndex(currentSlot);
+            Stage stage = new Stage();
+            stage.setTitle("Select resources");
+            stage.setScene(new Scene(root, 500, 700));
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(
+                    ((Node)event.getSource()).getScene().getWindow() );
+            stage.show();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

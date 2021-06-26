@@ -73,10 +73,10 @@ public class DevelopmentCardController {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/production_power.fxml"));
             Parent root = fxmlLoader.load();
-            ProductionPowerController productionPowerController = fxmlLoader.getController();
-            productionPowerController.setGui(this.gui);
-            productionPowerController.setResources();
-            productionPowerController.setCardIndex(currentSlot);
+            DevelopmentProductionController developmentProductionController = fxmlLoader.getController();
+            developmentProductionController.setGui(this.gui);
+            developmentProductionController.setResources();
+            developmentProductionController.setCardIndex(currentSlot);
             Stage stage = new Stage();
             stage.setTitle("Select resources");
             stage.setScene(new Scene(root, 500, 600));
