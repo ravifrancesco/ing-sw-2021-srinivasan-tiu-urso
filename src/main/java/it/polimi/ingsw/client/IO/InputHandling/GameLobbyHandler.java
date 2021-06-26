@@ -17,7 +17,6 @@ public class GameLobbyHandler {
     }
 
     public static ClientMessage startGame(String[] in, CLI cli) {
-        cli.printMessage("Game is starting...");
         return new StartGameGameMessage();
     }
 

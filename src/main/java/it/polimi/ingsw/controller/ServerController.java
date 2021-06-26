@@ -4,7 +4,6 @@ import it.polimi.ingsw.controller.exceptions.*;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
-import it.polimi.ingsw.model.specialAbilities.*;
 import it.polimi.ingsw.server.Connection;
 
 import javax.naming.InvalidNameException;
@@ -29,7 +28,6 @@ public class ServerController {
     // TODO: check that illegal actions don't change the state
     private final Game game;
 
-    private int firstTurns;
 
     GameSettings gameSettings;
 
@@ -48,7 +46,7 @@ public class ServerController {
      */
 
     public ServerController(String gameId, int numberOfPlayers) throws IllegalArgumentException {
-        if (numberOfPlayers < 2 || numberOfPlayers > 4) throw new IllegalArgumentException();
+        if (numberOfPlayers < 1 || numberOfPlayers > 4) throw new IllegalArgumentException();
         this.game = new Game(gameId, numberOfPlayers);
         this.productionController = new ProductionController(this.game);
         this.warehouseController = new WarehouseController(this.game);
@@ -161,23 +159,26 @@ public class ServerController {
      */
     public void reset() {
         game.reset();
-        firstTurns = 0;
+        game.setFirstTurns(0);
     }
 
     /**
      * Starts the game.
      */
-    public void startGame() {
-        game.reset();
+    public int startGame(String nickname) {
         try {
+            game.reset();
             game.startGame();
-            game.startUniquePhase(TurnPhase.FIRST_TURN);
             game.changePlayer();
+            game.startUniquePhase(TurnPhase.FIRST_TURN);
             game.setFirstPlayer(game.getCurrentPlayer());
             game.distributeCards();
-        } catch (GameNotFullException e) {
-            System.out.println("Game not full, can't start game");
+        } catch (Exception e) {
+            // TODO add exception if game is not started by  lobby owner
+            game.setError(e, nickname);
+            return -1;
         }
+        return 0;
     }
 
     /**
@@ -239,7 +240,7 @@ public class ServerController {
 
     private boolean checkInitialPhaseCompletion(Dashboard d) {
         int storedResources = d.getDepositResourceQty();
-        return switch(firstTurns) {
+        return switch(game.getFirstTurns()) {
             case 0 -> storedResources >= 0;
             case 1, 2 -> storedResources >= 1;
             case 3 -> storedResources >= 2;
@@ -465,9 +466,65 @@ public class ServerController {
 
         if(player.getDashboard().checkGameEnd() && game.getTurnPhase() != TurnPhase.ENDGAME) {
             game.startUniquePhase(TurnPhase.ENDGAME);
-        } else if(firstTurns < game.getNumberOfPlayers()-1) {
-            dashboard.moveFaithMarker(firstTurns < 2 ? 0 : 1);
-            firstTurns += 1;
+        } else if(game.getFirstTurns() < game.getNumberOfPlayers()-1) {
+            dashboard.moveFaithMarker(game.getFirstTurns() < 2 ? 0 : 1);
+            game.setFirstTurns(game.getFirstTurns() + 1);
+            game.startUniquePhase(TurnPhase.FIRST_TURN);
+        } else {
+            game.startUniquePhase(TurnPhase.COMMON);
+        }
+
+        // TODO check if works
+        game.getPlayers().values()
+                .stream().map(p -> p.getDashboard().getFaithTrack())
+                .forEach(f -> f.checkVaticanVictoryPoints(FaithTrack.maxReached));
+
+        game.changePlayer();
+
+        //return game.getTurnPhase() == TurnPhase.ENDGAME && game.getCurrentPlayer().equals(game.getFirstPlayer());
+        return 0;
+    }
+
+    // TODO doc
+    public int endTurnSinglePlayer(String nickname) {
+        String currentPlayer = game.getCurrentPlayer();
+        if (!currentPlayer.equals(nickname)) {
+            game.setError(new WrongTurnException("Not " + nickname + " turn"), nickname);
+            return -1;
+        }
+        // no turn phase check needed: player may stupidly pass the turn whilst having done nothing.
+
+        Player player = game.getPlayers().get(nickname);
+        Dashboard dashboard = player.getDashboard();
+
+        if (player.getHandSize() > 2) {
+            game.setError(new LeaderCardInExcessException(currentPlayer + " hasn't discarded enough cards"), nickname);
+            return -1;
+        }
+
+        int faithPoints = dashboard.discardResources();
+
+        game.getPlayers()
+                .entrySet()
+                .stream()
+                .filter(p -> !p.getKey().equals(currentPlayer))
+                .forEach(p -> p.getValue().getDashboard().moveFaithMarker(faithPoints));
+
+        dashboard.resetProductionPowers();
+
+        if(game.getTurnPhase().equals(TurnPhase.FIRST_TURN) && !checkInitialPhaseCompletion(dashboard)) {
+            game.setError(new WrongMoveException(currentPlayer + " has not acquired all due resources."), nickname);
+            return -1;
+        }
+
+        game.drawToken();
+        // TODO signal end game
+
+        if(player.getDashboard().checkGameEnd() || game.checkEnd()) {
+            // SIGNAL END GAME
+        } else if(game.getFirstTurns() < game.getNumberOfPlayers()-1) {
+            dashboard.moveFaithMarker(game.getFirstTurns() < 2 ? 0 : 1);
+            game.setFirstTurns(game.getFirstTurns() + 1);
             game.startUniquePhase(TurnPhase.FIRST_TURN);
         } else {
             game.startUniquePhase(TurnPhase.COMMON);
@@ -478,6 +535,7 @@ public class ServerController {
         //return game.getTurnPhase() == TurnPhase.ENDGAME && game.getCurrentPlayer().equals(game.getFirstPlayer());
         return 0;
     }
+
 
     /**
      * Getter for the game status.
@@ -514,4 +572,9 @@ public class ServerController {
 
         player.playLeaderCard(index);
     }
+
+    public int getNumberOfPlayers() {
+        return this.game.getNumberOfPlayers();
+    }
+
 }

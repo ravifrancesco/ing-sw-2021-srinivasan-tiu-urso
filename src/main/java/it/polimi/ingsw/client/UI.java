@@ -19,4 +19,9 @@ public interface UI {
     void printColoredMessage(String message, String ansiGreen);
 
     void showGameLobbies(ArrayList<GameLobbyDetails> gameLobbies);
+
+    // TODO add to cli
+    void enterGamePhase(boolean isHost);
+
+    void handleMenuCode(String menuCode);
 }

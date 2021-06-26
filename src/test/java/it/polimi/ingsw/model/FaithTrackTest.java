@@ -70,7 +70,7 @@ public class FaithTrackTest {
         List<VaticanReport> vaticanReports = new ArrayList<>();
 
         vaticanReports.add(new VaticanReport(5,8,2));
-        vaticanReports.add(new VaticanReport(12,15,2));
+        vaticanReports.add(new VaticanReport(12,16,3));
         vaticanReports.add(new VaticanReport(19,24,4));
 
 
@@ -86,7 +86,7 @@ public class FaithTrackTest {
 
         faithTrack.moveFaithMarker(11);
 
-        Assert.assertEquals(22, faithTrack.getVictoryPoints());
+        Assert.assertEquals(24, faithTrack.getVictoryPoints());
 
     }
 

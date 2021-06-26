@@ -18,4 +18,13 @@ public class WhiteMarble implements Marble, Serializable {
         have to be changed with the player's choice.
          */
     }
+
+    /**
+     * @see Marble#getMarbleColor()
+     */
+    @Override
+    public MarbleColor getMarbleColor() {
+        return MarbleColor.WHITE;
+    }
+
 }

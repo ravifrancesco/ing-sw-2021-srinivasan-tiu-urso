@@ -15,4 +15,12 @@ public class RedMarble implements Marble, Serializable {
         p.getDashboard().moveFaithMarker(1);
         return null;
     }
+
+    /**
+     * @see Marble#getMarbleColor()
+     */
+    @Override
+    public MarbleColor getMarbleColor() {
+        return MarbleColor.RED;
+    }
 }

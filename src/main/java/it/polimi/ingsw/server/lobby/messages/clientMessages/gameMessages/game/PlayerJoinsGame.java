@@ -13,7 +13,7 @@ public class PlayerJoinsGame extends ClientGameMessage implements Serializable {
         try {
             serverController.joinGame(c.getNickname());
         } catch (Exception e) {
-            e.printStackTrace();
+            c.sendFailedMoveMessage("Failed connectiong to the lobby: " + e.getMessage());
         }
     }
 }

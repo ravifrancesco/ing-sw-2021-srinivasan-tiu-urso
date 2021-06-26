@@ -23,6 +23,7 @@ public class GetInitialResourcesGameMessage extends ClientGameMessage implements
         if (output == 0) {
             c.sendSuccessfulMoveMessage("Initial resources obtained successfully, adding "
                     + resource + " to your deposition on position " + position);
+            c.sendCLIupdateMessage("after_initial_resources");
         }
     }
 }

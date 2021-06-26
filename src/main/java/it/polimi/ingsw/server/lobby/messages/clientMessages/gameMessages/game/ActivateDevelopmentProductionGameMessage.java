@@ -28,6 +28,7 @@ public class ActivateDevelopmentProductionGameMessage extends ClientGameMessage 
         try {
             serverController.activateDevelopmentCardProductionPower(c.getNickname(), cardToActivate, resourceToPayCost, resourceRequiredOptional, resourceProducedOptional);
         } catch (Exception e) {
+            System.out.println("TODO in activateDevlop");
             // TODO
         }
     }
