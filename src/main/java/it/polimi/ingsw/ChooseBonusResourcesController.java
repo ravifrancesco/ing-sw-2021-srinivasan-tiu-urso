@@ -1,6 +1,6 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.controller.client.reducedModel.ReducedDashboard;
+import it.polimi.ingsw.controller.ReducedDashboard;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.game.GetInitialResourcesGameMessage;
 import javafx.fxml.FXML;

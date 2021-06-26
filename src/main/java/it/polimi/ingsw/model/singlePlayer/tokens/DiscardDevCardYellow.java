@@ -3,10 +3,11 @@ package it.polimi.ingsw.model.singlePlayer.tokens;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Stack;
 
-public class DiscardDevCardYellow implements Token {
+public class DiscardDevCardYellow implements Token, Serializable {
 
     public static int COLOR_INDEX = 2;
 

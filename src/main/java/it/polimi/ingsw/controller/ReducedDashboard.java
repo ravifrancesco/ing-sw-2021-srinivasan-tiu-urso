@@ -1,11 +1,10 @@
-package it.polimi.ingsw.controller.client.reducedModel;
+package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.client.ReducedModel;
+import it.polimi.ingsw.controller.client.reducedModel.ReducedPlayer;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.specialAbilities.ProductionPower;
-import it.polimi.ingsw.server.lobby.LobbyType;
 import it.polimi.ingsw.utils.Pair;
 
 import java.util.*;
@@ -137,6 +136,10 @@ public class ReducedDashboard {
 
     public void setFaithTrackVictoryPoints(int[] faithTrackVictoryPoints) {
         this.faithTrackVictoryPoints = faithTrackVictoryPoints;
+    }
+
+    public int getLorenzoIlMagnificoPosition() {
+        return LorenzoIlMagnificoPosition;
     }
 
     public void setLorenzoIlMagnificoPosition(int LorenzoIlMagnificoPosition) {

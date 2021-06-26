@@ -12,8 +12,8 @@ public class StartGameGameMessage extends ClientGameMessage implements Serializa
     @Override
     public void handle(Connection c, ServerController serverController) {
         int output = serverController.startGame(c.getNickname());
+        System.out.println("output is " + output);
         if(output == 0) {
-            // ((GameLobby) c.getCurrentLobby()).getConnectedPlayers().forEach((name, connection) -> connection.sendSuccessfulMoveMessage("Game is starting"));
             ((GameLobby) c.getCurrentLobby()).getConnectedPlayers().forEach((name, connection) -> connection.sendCLIupdateMessage("after_game_start"));
         }
     }

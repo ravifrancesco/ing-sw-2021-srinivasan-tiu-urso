@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.controller.client.reducedModel.ReducedDashboard;
+import it.polimi.ingsw.controller.ReducedDashboard;
 
 import java.io.Serializable;
 import java.util.ArrayList;

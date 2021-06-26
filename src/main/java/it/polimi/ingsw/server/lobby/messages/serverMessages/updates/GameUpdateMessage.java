@@ -1,16 +1,13 @@
 package it.polimi.ingsw.server.lobby.messages.serverMessages.updates;
 
 import it.polimi.ingsw.client.ClientConnection;
-import it.polimi.ingsw.controller.client.reducedModel.ReducedGame;
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.TurnPhase;
 import it.polimi.ingsw.model.singlePlayer.tokens.Token;
 import it.polimi.ingsw.server.lobby.messages.serverMessages.ServerMessage;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.Stack;
 
 /**
@@ -36,6 +33,7 @@ public class GameUpdateMessage implements ServerMessage, Serializable {
         this.firstTurns = game.getFirstTurns();
         this.tokens = game.getTokens();
         this.lastToken = game.getLastToken();
+        System.out.println("Ci arrivo? ");
     }
 
     @Override

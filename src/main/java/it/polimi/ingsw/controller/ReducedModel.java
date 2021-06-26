@@ -1,9 +1,6 @@
-package it.polimi.ingsw.client;
+package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.GameController;
-import it.polimi.ingsw.controller.client.reducedModel.ReducedDashboard;
-import it.polimi.ingsw.controller.client.reducedModel.ReducedGame;
-import it.polimi.ingsw.controller.client.reducedModel.ReducedGameBoard;
 import it.polimi.ingsw.controller.client.reducedModel.ReducedPlayer;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.cards.DevelopmentCard;

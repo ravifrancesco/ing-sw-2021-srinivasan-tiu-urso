@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client;
 
+import it.polimi.ingsw.controller.ReducedModel;
 import it.polimi.ingsw.server.lobby.GameLobbyDetails;
 
 import java.util.ArrayList;
@@ -24,4 +25,6 @@ public interface UI {
     void enterGamePhase(boolean isHost);
 
     void handleMenuCode(String menuCode);
+
+    ReducedModel getReducedModel();
 }

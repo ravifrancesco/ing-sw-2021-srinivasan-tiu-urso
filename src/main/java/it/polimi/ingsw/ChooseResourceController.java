@@ -1,12 +1,11 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.controller.client.reducedModel.ReducedDashboard;
+import it.polimi.ingsw.controller.ReducedDashboard;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.ResourceContainer;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.game.BuyDevelopmentCardGameMessage;
 import it.polimi.ingsw.utils.Pair;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.ColorAdjust;

@@ -1,29 +1,19 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.client.ClientConnection;
-import it.polimi.ingsw.client.ReducedModel;
+import it.polimi.ingsw.controller.ReducedModel;
 import it.polimi.ingsw.client.UI;
 import it.polimi.ingsw.client.UIType;
-import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.server.lobby.GameLobbyDetails;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundSize;
 import javafx.stage.Stage;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -145,6 +135,7 @@ public class GUI extends Application implements UI {
         return clientMainLobbyController;
     }
 
+    @Override
     public ReducedModel getReducedModel() {
         return reducedModel;
     }

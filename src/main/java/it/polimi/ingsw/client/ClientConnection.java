@@ -2,9 +2,10 @@ package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.IO.CLI;
 import it.polimi.ingsw.client.IO.Constants;
-import it.polimi.ingsw.controller.client.reducedModel.ReducedDashboard;
-import it.polimi.ingsw.controller.client.reducedModel.ReducedGame;
-import it.polimi.ingsw.controller.client.reducedModel.ReducedGameBoard;
+import it.polimi.ingsw.controller.ReducedModel;
+import it.polimi.ingsw.controller.ReducedDashboard;
+import it.polimi.ingsw.controller.ReducedGame;
+import it.polimi.ingsw.controller.ReducedGameBoard;
 import it.polimi.ingsw.controller.client.reducedModel.ReducedPlayer;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.TurnPhase;
@@ -136,9 +137,7 @@ public class ClientConnection implements Runnable {
             while(true) {
                 try {
                     ServerMessage serverMessage = receiveServerMessage();
-                    // ui.printMessage("Received server message: " + serverMessage.toString());
                     serverMessage.updateClient(this, playerNickname);
-
                 } catch (ClassNotFoundException | IOException e) {
                     ui.printErrorMessage("Connection with server lost");
                     System.exit(-1);
@@ -149,7 +148,6 @@ public class ClientConnection implements Runnable {
     }
 
     public void updateReducedGame(String firstPlayer, String currentPlayer, List<String> playersNicknames, TurnPhase turnPhase, int firstTurns, boolean gameStarted, Stack<Token> tokens, Token token) {
-
         ReducedGame reducedGame = reducedModel.getReducedGame();
         reducedGame.setGameStarted(gameStarted);
         String oldPlayer = reducedGame.getCurrentPlayer();

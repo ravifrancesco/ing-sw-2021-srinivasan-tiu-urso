@@ -1,9 +1,8 @@
-package it.polimi.ingsw.controller.client.reducedModel;
+package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.client.ReducedModel;
+import it.polimi.ingsw.controller.client.reducedModel.ReducedPlayer;
 import it.polimi.ingsw.model.TurnPhase;
 import it.polimi.ingsw.model.singlePlayer.tokens.Token;
-import it.polimi.ingsw.model.specialAbilities.ProductionPower;
 
 import java.util.*;
 

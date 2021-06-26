@@ -196,7 +196,7 @@ public class Game extends GameObservable  {
 	public void startGame() throws GameNotFullException {
 		if (players.size() < numberOfPlayers) {
 			notify(this);
-			throw new GameNotFullException("Game Not Full");
+			throw new GameNotFullException("Game not Full");
 		}
 		this.gameStarted = true;
 		notify(this);
@@ -216,10 +216,15 @@ public class Game extends GameObservable  {
 	}
 
 	public void resetTokens() {
+
 		this.tokens = new Stack<>();
-		this.tokens.addAll(Arrays
-				.asList(new DiscardDevCardBlue(), new DiscardDevCardGreen(), new DiscardDevCardYellow(), new DiscardDevCardPurple(),
-						new DoubleBlackCrossMoveToken(), new SingleBlackCrossMoveToken()));
+
+		this.tokens.push(new DiscardDevCardBlue());
+		this.tokens.push(new DiscardDevCardGreen());
+		this.tokens.push(new DiscardDevCardPurple());
+		this.tokens.push(new DiscardDevCardYellow());
+		this.tokens.push(new DoubleBlackCrossMoveToken());
+		this.tokens.push(new SingleBlackCrossMoveToken());
 		Collections.shuffle(this.tokens);
 	}
 

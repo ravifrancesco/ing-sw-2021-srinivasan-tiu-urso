@@ -87,6 +87,13 @@ public class FaithTrackCLI {
         }
     }
 
+    public void handleVr(int i, int state) {
+        switch(state) {
+            case(1) -> missVR(i);
+            case(2) -> activateVR(i);
+        }
+    }
+
     public void showFTCLI() {
         for(int i = 0; i < gridRows; i++) {
             for(int j = 0; j < gridCols; j++) {

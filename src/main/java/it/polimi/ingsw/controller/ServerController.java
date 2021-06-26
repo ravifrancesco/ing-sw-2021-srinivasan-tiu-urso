@@ -183,7 +183,6 @@ public class ServerController {
             game.setFirstPlayer(game.getCurrentPlayer());
             game.distributeCards();
         } catch (Exception e) {
-            // TODO add exception if game is not started by  lobby owner
             game.setError(e, nickname);
             return -1;
         }
@@ -266,7 +265,7 @@ public class ServerController {
      * @param nickname   the nickname of the player who made the move.
      * @param cardToPlay the index of the card to be played.
      */
-    public void playLeaderCard(String nickname, int cardToPlay) {
+    public int playLeaderCard(String nickname, int cardToPlay) {
         try {
             leaderCardController.playLeaderCard(nickname, cardToPlay);
             return 0;
@@ -492,13 +491,6 @@ public class ServerController {
             return -1;
         }
 
-        /*
-                if(player.getDashboard().checkGameEnd() && game.getTurnPhase() != TurnPhase.ENDGAME) {
-            System.out.println("PARTE STO ENDGAME O NO CAZZO");
-            game.startUniquePhase(TurnPhase.ENDGAME);
-        } else
-         */
-
 
         if(game.getFirstTurns() < game.getNumberOfPlayers()-1) {
             dashboard.moveFaithMarker(game.getFirstTurns() < 2 ? 0 : 1);
@@ -632,4 +624,3 @@ public class ServerController {
     }
 }
 
-}

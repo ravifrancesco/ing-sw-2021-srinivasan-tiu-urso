@@ -1,9 +1,9 @@
 package it.polimi.ingsw.controller.client.reducedModel;
 
-import it.polimi.ingsw.client.ReducedModel;
+import it.polimi.ingsw.controller.ReducedDashboard;
+import it.polimi.ingsw.controller.ReducedModel;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.cards.LeaderCard;
-import it.polimi.ingsw.model.specialAbilities.WhiteMarbleResource;
 
 import java.util.ArrayList;
 import java.util.List;

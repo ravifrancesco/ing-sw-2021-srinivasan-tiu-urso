@@ -4,7 +4,9 @@ import it.polimi.ingsw.model.Dashboard;
 import it.polimi.ingsw.model.FaithTrack;
 import it.polimi.ingsw.model.Game;
 
-public class DoubleBlackCrossMoveToken implements Token {
+import java.io.Serializable;
+
+public class DoubleBlackCrossMoveToken implements Token, Serializable {
 
     @Override
     public boolean useToken(Game game) {

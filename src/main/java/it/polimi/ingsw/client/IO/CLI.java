@@ -1,13 +1,9 @@
 package it.polimi.ingsw.client.IO;
 
 import it.polimi.ingsw.client.ClientConnection;
-import it.polimi.ingsw.client.ReducedModel;
+import it.polimi.ingsw.controller.*;
 import it.polimi.ingsw.client.UI;
 import it.polimi.ingsw.client.UIType;
-import it.polimi.ingsw.controller.client.reducedModel.ReducedDashboard;
-import it.polimi.ingsw.controller.client.reducedModel.ReducedGame;
-import it.polimi.ingsw.controller.client.reducedModel.ReducedGameBoard;
-import it.polimi.ingsw.controller.client.reducedModel.ReducedPlayer;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.TurnPhase;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
@@ -17,9 +13,11 @@ import it.polimi.ingsw.model.specialAbilities.*;
 import it.polimi.ingsw.server.lobby.GameLobbyDetails;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.ClientMessage;
 import it.polimi.ingsw.utils.Pair;
+import it.polimi.ingsw.controller.client.reducedModel.ReducedPlayer;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class CLI implements UI {
@@ -400,11 +398,22 @@ public class CLI implements UI {
         ReducedPlayer reducedPlayer = reducedModel.getReducedGame().getPlayers().get(nickname);
         if (reducedPlayer != null) {
             int position = reducedPlayer.getDashboard().getPosition();
+            System.out.println("position is: " + position);
             ftcli.setPos(position);
+            List<Pair<Integer, Integer>> vc = getPassedVaticanReports();
+            IntStream.range(0, 3).forEach(i -> ftcli.handleVr(i+1, vc.get(i).second));
             ftcli.showFTCLI();
         } else {
             printErrorMessage("PLAYER " + nickname + " DOESN'T EXISTS");
         }
+    }
+
+    public List<Pair<Integer, Integer>> getPassedVaticanReports () {
+        ReducedDashboard reducedDashboard = reducedModel.getReducedPlayer().getDashboard();
+        return  reducedDashboard.getVaticanReports().entrySet().stream()
+                .sorted(Comparator.comparingInt(e -> e.getKey().second))
+                .map(Map.Entry::getValue)
+                .collect(Collectors.toList());
     }
 
 

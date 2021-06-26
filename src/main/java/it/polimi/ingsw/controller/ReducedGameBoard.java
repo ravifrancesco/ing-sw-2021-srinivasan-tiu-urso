@@ -1,13 +1,10 @@
-package it.polimi.ingsw.controller.client.reducedModel;
+package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.client.ReducedModel;
-import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.Resource;
+import it.polimi.ingsw.controller.ReducedModel;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.marbles.Marble;
-import javafx.application.Platform;
 
 import java.util.ArrayList;
 import java.util.Arrays;

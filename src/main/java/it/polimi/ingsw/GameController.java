@@ -1,7 +1,7 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.client.ReducedModel;
-import it.polimi.ingsw.controller.client.reducedModel.ReducedGame;
+import it.polimi.ingsw.controller.ReducedModel;
+import it.polimi.ingsw.controller.ReducedGame;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
