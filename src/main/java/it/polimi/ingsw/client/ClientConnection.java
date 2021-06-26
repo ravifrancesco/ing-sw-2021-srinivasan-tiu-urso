@@ -160,52 +160,16 @@ public class ClientConnection implements Runnable {
         reducedGame.setTurnPhase(turnPhase);
         reducedGame.setFirstTurns(firstTurns);
         handleMenus(reducedGame, oldPlayer, oldPhase);
-
     }
 
-    public boolean turnPlayerChanged(String oldPlayer, String currentPlayer) {
-        return (oldPlayer == null && currentPlayer != null) ||
-                (currentPlayer != null && !oldPlayer.equals(currentPlayer));
-    }
-
-    public boolean turnPhaseChanged(TurnPhase oldPhase, TurnPhase newPhase) {
-        return oldPhase != newPhase;
-    }
 
 
     public void handleMenus(ReducedGame reducedGame, String oldPlayer, TurnPhase oldPhase) {
         String currentPlayer = reducedGame.getCurrentPlayer();
         TurnPhase currentPhase = reducedGame.getTurnPhase();
-        /*
-        if(turnPlayerChanged(oldPlayer,  currentPlayer)) {
-            if(currentPlayer.equals(reducedGame.getClientPlayer())) {
-                ui.printMessage("# It is now your turn");
-            } else {
-                ui.printMessage("# It is now " + currentPlayer + "'s turn");
-            }
-            System.out.println("# From changed player");
-            showPhaseMenu(reducedGame);
-        } else {
-            if(turnPhaseChanged(oldPhase, currentPhase)) {
-                System.out.println("# From unchanged player phase");
-                showPhaseMenu(reducedGame);
-            }
-        }
-         */
-    }
-
-    public void showPhaseMenu(ReducedGame reducedGame) {
-        if(reducedGame.getCurrentPlayer().equals(reducedGame.getClientPlayer())) {
-            ui.printMessage("# <menu for turnphase: " + reducedGame.getTurnPhase() + " > ");
-        }
     }
 
 
-    public void handleTurnPhaseMenu(ReducedGame reducedGame) {
-        if(reducedGame.getTurnPhase() == TurnPhase.FIRST_TURN) {
-            ui.printMessage("It is now the turnphase: " + reducedGame.getTurnPhase());
-        }
-    }
 
     public void updateReducedDashboard(String nickname, int playerPoints,
                                        List<LeaderCard> playedLeaderCards,

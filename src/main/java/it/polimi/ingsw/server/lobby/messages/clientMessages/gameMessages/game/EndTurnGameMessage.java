@@ -18,5 +18,14 @@ public class EndTurnGameMessage extends ClientGameMessage implements Serializabl
                 connection.sendCLIupdateMessage("after_end_turn");
             });
         }
+        if (output == 1) {
+            GameLobby gl = (GameLobby) c.getCurrentLobby();
+            gl.getConnectedPlayers().forEach((nick, player) -> {
+                player.enterLobby(player.getMainLobby());
+                player.sendCLIupdateMessage("back_in_lobby");
+            });
+            c.getMainLobby().removeGameLobby(gl);
+
+        }
     }
 }

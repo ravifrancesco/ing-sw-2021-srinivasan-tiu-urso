@@ -35,6 +35,8 @@ public class Game extends GameObservable  {
 
 	private boolean gameEnded;
 
+	private boolean endGamePhase;
+
 	private GameError gameError;
 
 	public Game(String gameId, int numberOfPlayers) {
@@ -50,16 +52,25 @@ public class Game extends GameObservable  {
 		this.gameSettings = gameSettings;
 	}
 
+
 	public void reset() {
 		gameBoard.reset(gameSettings);
 		players.values().forEach(Player::reset);
 		this.playerOrder = players.keySet().iterator();
-			this.gameEnded = false;
+		this.gameEnded = false;
+		this.endGamePhase = false;
 		notify(this);
-
 	}
 
-	public boolean checkEnd() {
+	public void setEndGamePhase(boolean endGamePhase) {
+		this.endGamePhase = endGamePhase;
+	}
+
+	public boolean isEndGamePhase() {
+		return endGamePhase;
+	}
+
+	public boolean getGameEnded() {
 		return gameEnded;
 	}
 
@@ -99,7 +110,6 @@ public class Game extends GameObservable  {
 		if (!playerOrder.hasNext()) {
 			this.playerOrder = players.keySet().iterator();
 		}
-		// notify(this);
 		return playerOrder.next();
 	}
 
@@ -128,13 +138,15 @@ public class Game extends GameObservable  {
 
 	public void endGame() {
 		gameEnded = true;
-		// TODO
+		notify(this);
 	}
 
 	public Game getGameStatus() {
 		players.values().forEach(Player::updateVictoryPoints);
 		return this;
 	}
+
+
 
 	public GameError getGameError() {
 		return gameError;

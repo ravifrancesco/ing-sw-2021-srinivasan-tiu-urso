@@ -5,7 +5,6 @@ import it.polimi.ingsw.controller.exceptions.*;
 import it.polimi.ingsw.model.GameSettings;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.ResourceContainer;
-import it.polimi.ingsw.model.specialAbilities.WhiteMarbleResource;
 import it.polimi.ingsw.server.Connection;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.ClientMessage;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.ClientGameMessage;
@@ -22,6 +21,32 @@ public class GameLobby implements Lobby, Serializable {
     private final String id;
 
     private final int maxPlayers;
+
+    public boolean isEndGamePhase() {
+        return endGamePhase;
+    }
+
+    public void startEndGamePhase() {
+        this.endGamePhase = true;
+        getConnectedPlayers().forEach((nickname, player) -> {
+            player.sendCLIupdateMessage("end_game_has_started");
+        });
+    }
+
+    private boolean endGamePhase = false;
+
+    private boolean gameOver = false;
+
+    public boolean isGameOver() {
+        return gameOver;
+    }
+
+    public void gameOver() {
+        this.gameOver = true;
+        getConnectedPlayers().forEach((nickname, player) -> {
+            player.sendCLIupdateMessage("game_has_ended");
+        });
+    }
 
     private String creator;
 
@@ -47,6 +72,7 @@ public class GameLobby implements Lobby, Serializable {
         this.maxPlayers = maxPlayers;
         this.connectedPlayers = new HashMap<>();
         this.serverController = new ServerController(id, maxPlayers);
+        this.endGamePhase = false;
     }
 
     @Override

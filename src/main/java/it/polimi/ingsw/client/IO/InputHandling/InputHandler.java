@@ -2,6 +2,7 @@ package it.polimi.ingsw.client.IO.InputHandling;
 
 import it.polimi.ingsw.client.IO.CLI;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.ClientMessage;
+import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.game.EndMessage;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.game.GimmeMessage;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.game.PlayMessage;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.game.UnlimitedResourcesMessage;
@@ -95,7 +96,6 @@ public class InputHandler {
             return new PlayMessage(index);
         }
         catch (Exception e) {
-            System.out.println("AOOOOO");
             return null;
         }
     }
@@ -103,5 +103,9 @@ public class InputHandler {
     public static ClientMessage sendHelp(CLI cli) {
         cli.showGeneralMenu();
         return null;
+    }
+
+    public static ClientMessage end(String[] in) {
+        return new EndMessage();
     }
 }

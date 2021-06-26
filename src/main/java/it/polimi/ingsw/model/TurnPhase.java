@@ -10,8 +10,5 @@ public enum TurnPhase {
 
     PRODUCTION,
 
-    BUY,
-
-    ENDGAME
-
+    BUY
 }

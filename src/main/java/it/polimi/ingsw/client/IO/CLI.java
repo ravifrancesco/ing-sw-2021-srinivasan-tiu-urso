@@ -30,9 +30,12 @@ public class CLI implements UI {
 
     private ClientConnection clientConnection;
 
+    private FaithTrackCLI ftcli;
+
 
     public CLI() {
         this.input = new Scanner(System.in);
+        this.ftcli = new FaithTrackCLI();
     }
 
     public void printColoredMessage(String message, String color) {
@@ -399,13 +402,9 @@ public class CLI implements UI {
     public void showFaithTrack(String nickname) {
         ReducedPlayer reducedPlayer = reducedModel.getReducedGame().getPlayers().get(nickname);
         if (reducedPlayer != null) {
-            System.out.println(nickname + "'s FAITHTRACK: ");
-            ReducedDashboard reducedDashboard = reducedPlayer.getDashboard();
-            int position = reducedDashboard.getPosition();
-            IntStream.range(0, reducedDashboard.getFaithTrackVictoryPoints().length)
-                    .forEach(pos -> System.out.print(pos==position ? " x " : " o "));
-            System.out.println();
-            // TODO print victory points and vatican reports
+            int position = reducedPlayer.getDashboard().getPosition();
+            ftcli.setPos(position);
+            ftcli.showFTCLI();
         } else {
             printErrorMessage("PLAYER " + nickname + " DOESN'T EXISTS");
         }
@@ -869,6 +868,32 @@ public class CLI implements UI {
         if ("after_store_supply".equals(menuCode)) {
             showAfterSupply();
         }
+        if ("end_game_has_started".equals(menuCode)) {
+            endGameHasStarted();
+
+        }
+        if("game_has_ended".equals(menuCode)) {
+            gameHasEnded();
+        }
+        if("back_in_lobby". equals(menuCode)) {
+            System.out.println("\n\n\n\nYou are being redirected to the main lobby...\n");
+            System.out.println("Back to the main lobby!\n");
+            showMainLobbyMenu();
+        }
+    }
+
+    private void endGameHasStarted() {
+        printColoredMessage("END GAME PHASE HAS STARTED! " +
+                "Game will end once it is the first player's turn.", Constants.BOLD + Constants.ANSI_RED);
+    }
+
+    private void gameHasEnded() {
+        System.out.println("GAME HAS ENDED!");
+
+        System.out.println("PLAYER POINTS: ");
+        reducedModel.getReducedGame().getPlayers().forEach((nickname, reducedPlayer) -> {
+            System.out.println(nickname + ": " + reducedPlayer.getDashboard().getPlayerPoints());
+        });
     }
 
     private void showAfterSupply() {

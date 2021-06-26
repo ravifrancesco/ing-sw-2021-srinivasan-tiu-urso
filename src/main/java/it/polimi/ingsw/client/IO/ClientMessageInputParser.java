@@ -46,6 +46,7 @@ public class ClientMessageInputParser {
             case "HACK" -> InputHandler.hack(); // used to give pretty much unlimited resources, testing purposes
             case "GIMME" -> InputHandler.gimme(in); // gives a developmentcard without paying, testing purposes
             case "PLAY" -> InputHandler.play(in); // plays a developmentcard without paying, testing purposes
+            case "END" -> InputHandler.end(in);
             default -> {
                 cli.printErrorMessage("Invalid Command");
                 yield null;

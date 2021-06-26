@@ -202,9 +202,7 @@ public class Player extends PlayerObservable {
 	 */
 	public boolean checkWMR(ArrayList<Resource> wmrs) {
 		ArrayList<Resource> copyWmr = new ArrayList<>(wmrs);
-		System.out.println("# Asked WMRS are: " + copyWmr);
 		copyWmr.removeAll(activatedWMR);
-		System.out.println("# After removal WMRS are: " + copyWmr);
 		return copyWmr.size() == 0;
 	}
 

@@ -14,11 +14,13 @@ import java.util.concurrent.Executors;
 
 public class MainLobby implements Lobby {
 
+
+    private boolean endGamePhase = false;
+    private boolean gameEnded = false;
+
     private final List<Connection> connections;
     private final Map<String, Connection> waitingConnection;
     private final Map<String, Connection> playingConnection;
-
-
 
     private final List<GameLobby> activeGameLobbies;
 
@@ -30,6 +32,8 @@ public class MainLobby implements Lobby {
         this.playingConnection = new HashMap<>();
         this.activeGameLobbies = new ArrayList<>();
     }
+
+
 
     public synchronized void enterLobby(Connection c) throws InvalidNameException {
         String nickname = c.getNickname();
@@ -93,5 +97,21 @@ public class MainLobby implements Lobby {
     }
 
     public void removeGameLobby(GameLobby gameLobby) { activeGameLobbies.remove(gameLobby); }
+    public boolean isEndGamePhase() {
+        return endGamePhase;
+    }
+
+    public boolean isGameEnded() {
+        return gameEnded;
+    }
+
+    public void setEndGamePhase(boolean endGamePhase) {
+        this.endGamePhase = endGamePhase;
+    }
+
+    public void setGameEnded(boolean gameEnded) {
+        this.gameEnded = gameEnded;
+    }
+
 
 }

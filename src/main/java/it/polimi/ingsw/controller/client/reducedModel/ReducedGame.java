@@ -26,6 +26,18 @@ public class ReducedGame {
 
     private int firstTurns;
 
+    public boolean isGameEnded() {
+        return gameEnded;
+    }
+
+    public boolean isEndGamePhase() {
+        return endGamePhase;
+    }
+
+    private boolean gameEnded;
+
+    private boolean endGamePhase;
+
     public ReducedGame() {
         this.gameId = "";
         this.numberOfPlayers = 0;
@@ -108,5 +120,11 @@ public class ReducedGame {
 
     public int getFirstTurns() {
         return firstTurns;
+    }
+
+    public void setEndGamePhase(boolean endGamePhase) {
+    }
+
+    public void setGameEnded(boolean gameEnded) {
     }
 }

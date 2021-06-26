@@ -488,9 +488,15 @@ public class ServerController {
             return -1;
         }
 
-        if(player.getDashboard().checkGameEnd() && game.getTurnPhase() != TurnPhase.ENDGAME) {
+        /*
+                if(player.getDashboard().checkGameEnd() && game.getTurnPhase() != TurnPhase.ENDGAME) {
+            System.out.println("PARTE STO ENDGAME O NO CAZZO");
             game.startUniquePhase(TurnPhase.ENDGAME);
-        } else if(game.getFirstTurns() < game.getNumberOfPlayers()-1) {
+        } else
+         */
+
+
+        if(game.getFirstTurns() < game.getNumberOfPlayers()-1) {
             dashboard.moveFaithMarker(game.getFirstTurns() < 2 ? 0 : 1);
             game.setFirstTurns(game.getFirstTurns() + 1);
             game.startUniquePhase(TurnPhase.FIRST_TURN);
@@ -498,10 +504,18 @@ public class ServerController {
             game.startUniquePhase(TurnPhase.COMMON);
         }
 
+        if(player.getDashboard().checkGameEnd() && !game.isEndGamePhase()) {
+            game.setEndGamePhase(true);
+        }
+
         game.changePlayer();
 
-        //return game.getTurnPhase() == TurnPhase.ENDGAME && game.getCurrentPlayer().equals(game.getFirstPlayer());
+        if(game.isEndGamePhase() && game.getCurrentPlayer().equals(game.getFirstPlayer())) {
+            game.endGame();
+            return 1;
+        }
         return 0;
+
     }
 
 
@@ -539,5 +553,10 @@ public class ServerController {
         LeaderCard lc = player.getHand().get(index);
 
         player.playLeaderCard(index);
+    }
+
+    public void end(String nickname, int index) {
+        Player player = game.getPlayers().get(nickname);
+        player.getDashboard().moveFaithMarker(23);
     }
 }

@@ -17,10 +17,19 @@ public class Constants {
     public static final String ANSI_BG_WHITE = "\u001b[48;5;231m";
     public static final String GOLD_COLOR_BG = "\u001b[48;5;226m";
 
+    public static final String BLACK = "\u001b[38;5;0m";
+
+
 
     public static final String FT_EMPTY = "\u001b[48;5;229m";
-    public static final String FT_POS = "\u001b[48;5;226m";
-    public static final String FT_SPACE = "\u001b[48;5;229m";
+    public static final String FT_POS = "\u001b[48;5;160m";
+    public static final String FT_SPACE_UNACTIVATED = "\u001b[48;5;9m";
+    public static final String FT_SPACE_MISSED = "\u001b[48;5;124m";
+    public static final String FT_SPACE_ACTIVATED = "\u001b[48;5;46m";
+
+
+    public static final String FT_SEP = "\u001b[48;5;229m";
+
 
 
 
@@ -76,7 +85,7 @@ public class Constants {
                                                ▓██▒▀█▀ ██▒   ▒████▄       ▓█   ▀    ▒██    ▒    ▓  ██▒ ▓▒   ▓██ ▒ ██▒   ▓██▒                               \s
                                                ▓██    ▓██░   ▒██  ▀█▄     ▒███      ░ ▓██▄      ▒ ▓██░ ▒░   ▓██ ░▄█ ▒   ▒██▒                               \s
                                                ▒██    ▒██    ░██▄▄▄▄██    ▒▓█  ▄      ▒   ██▒   ░ ▓██▓ ░    ▒██▀▀█▄     ░██░                               \s
-                                               ▒██▒   ░██▒    ▓█   ▓██▒   ░▒████▒   ▒██████▒▒     ▒██▒ ░    ░██▓ ▒██▒   ░██░                               \s
+                                               ▒██▒   ░██▒  4 ▓█   ▓██▒   ░▒████▒   ▒██████▒▒     ▒██▒ ░    ░██▓ ▒██▒   ░██░                               \s
                                                ░ ▒░   ░  ░    ▒▒   ▓▒█░   ░░ ▒░ ░   ▒ ▒▓▒ ▒ ░     ▒ ░░      ░ ▒▓ ░▒▓░   ░▓                                 \s
                                                ░  ░      ░     ▒   ▒▒ ░    ░ ░  ░   ░ ░▒  ░ ░       ░         ░▒ ░ ▒░    ▒ ░                               \s
                                                ░      ░        ░   ▒         ░      ░  ░  ░       ░           ░░   ░     ▒ ░                               \s

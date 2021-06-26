@@ -32,7 +32,6 @@ public class Connection implements Runnable,
     private ObjectInputStream in;
     private ObjectOutputStream out;
 
-    private final Server server;
     private String nickname;
 
     private final MainLobby mainLobby;
@@ -45,9 +44,8 @@ public class Connection implements Runnable,
 
     private boolean active = true;
 
-    public Connection(Socket socket, Server server, MainLobby mainLobby){
+    public Connection(Socket socket, Server server, MainLobby mainLobby) {
         this.socket = socket;
-        this.server = server;
         this.mainLobby = mainLobby;
         this.currentLobby = mainLobby;
     }
@@ -61,7 +59,7 @@ public class Connection implements Runnable,
         this.currentLobby = lobby;
     }
 
-    private synchronized boolean isActive(){
+    private synchronized boolean isActive() {
         return active;
     }
 
@@ -94,9 +92,9 @@ public class Connection implements Runnable,
     }
 
     private void closeConnection() {
-        try{
+        try {
             socket.close();
-        } catch (IOException e){
+        } catch (IOException e) {
             System.err.println(e.getMessage());
         }
         active = false;
@@ -124,14 +122,13 @@ public class Connection implements Runnable,
 
     @Override
     public void run() {
-        try{
+        try {
             out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(socket.getInputStream());
             send(new WelcomeMessage());
             registerName();
-            while(isActive()){
+            while (isActive()) {
                 handleMessage();
-                System.out.println(isActive());
             }
         } catch (Exception e) {
             //System.out.println("solo questo");
@@ -145,7 +142,7 @@ public class Connection implements Runnable,
     }
 
     public void registerName() throws IOException {
-        while(true) {
+        while (true) {
             try {
                 RegisterName registerName = (RegisterName) receiveLobbyMessage();
 
@@ -182,12 +179,13 @@ public class Connection implements Runnable,
                 System.out.println("Received game lobby message by " + nickname + ": " + read.toString());
                 currentLobby.handleMessage(read, this);
             } catch (ClassCastException e) {
-                System.out.println("Player" + nickname + "tried to use a main lobby command inside whislt inside a game lobby");
+                System.out.println("Player " + nickname + " tried to use a main lobby command inside whislt inside a game lobby");
                 sendFailedMoveMessage("Main lobby commands not available inside game lobby");
             } catch (Exception e) {
-                System.out.println("Ma perché");
+                System.out.println("\nException occured: \n");
                 System.out.println(e.getClass());
                 System.out.println(e.getMessage());
+                System.out.println("\n");
                 send(new ErrorMessage());
             }
         }
@@ -196,8 +194,8 @@ public class Connection implements Runnable,
     public void sendGameLobbiesDetails() {
         ArrayList<GameLobbyDetails> gameLobbies = new ArrayList<>();
         mainLobby.getActiveGameLobbies().forEach(gameLobby -> gameLobbies.add(new GameLobbyDetails(gameLobby.getId(),
-                        gameLobby.getCreator(), gameLobby.getConnectedPlayers().size(), gameLobby.getMaxPlayers()))
-                );
+                gameLobby.getCreator(), gameLobby.getConnectedPlayers().size(), gameLobby.getMaxPlayers()))
+        );
         send(new GameLobbiesMessage(gameLobbies));
     }
 
@@ -214,9 +212,9 @@ public class Connection implements Runnable,
     }
 
     /**
-     *  TODO all of this methods and messages should handle only the necessary information. To be defined after client.
-     *  TODO, this will be done changing the messages.
-     *  TODO the notifies have to be handled. (Together)
+     * TODO all of this methods and messages should handle only the necessary information. To be defined after client.
+     * TODO, this will be done changing the messages.
+     * TODO the notifies have to be handled. (Together)
      */
 
     public void playerJoinedLobby(String player) {
@@ -247,10 +245,25 @@ public class Connection implements Runnable,
     @Override
     public void update(Game message) {
         send(new GameUpdateMessage(message));
+
+        if(message.isEndGamePhase()) {
+            GameLobby gl = (GameLobby) currentLobby;
+            if(!gl.isEndGamePhase()) {
+                gl.startEndGamePhase();
+            };
+        }
+        if(message.getGameEnded()) {
+            GameLobby gl = (GameLobby) currentLobby;
+            if(!gl.isGameOver()) {
+                gl.gameOver();
+            }
+        }
+
     }
 
     @Override
-    public void update(GameBoard message) { send(new GameBoardUpdateMessage(message));
+    public void update(GameBoard message) {
+        send(new GameBoardUpdateMessage(message));
     }
 
     @Override
@@ -264,7 +277,8 @@ public class Connection implements Runnable,
     }
 
     @Override
-    public void update(GameError message) { send(new GameErrorUpdateMessage(message));
+    public void update(GameError message) {
+        send(new GameErrorUpdateMessage(message));
     }
 }
 

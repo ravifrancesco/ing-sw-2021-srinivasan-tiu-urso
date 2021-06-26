@@ -32,11 +32,11 @@ public class GameTest {
         GameSettingsBuilder gameSettingsBuilder = new GameSettingsBuilder();
         GameSettings gameSettings = gameSettingsBuilder.build();
         game.loadGameSettings(gameSettings);
-        Assert.assertFalse(game.checkEnd());
+        Assert.assertFalse(game.getGameEnded());
         game.endGame();
-        Assert.assertTrue(game.checkEnd());
+        Assert.assertTrue(game.getGameEnded());
         game.reset();
-        Assert.assertFalse(game.checkEnd());
+        Assert.assertFalse(game.getGameEnded());
     }
 
     @Test
