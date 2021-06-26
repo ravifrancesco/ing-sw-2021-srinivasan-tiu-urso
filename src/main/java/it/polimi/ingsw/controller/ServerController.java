@@ -173,7 +173,6 @@ public class ServerController {
 
     /**
      * Starts the game.
-     * TODO
      */
     public int startGame(String nickname) {
         try {
@@ -266,9 +265,9 @@ public class ServerController {
      * @param nickname   the nickname of the player who made the move.
      * @param cardToPlay the index of the card to be played.
      */
-    public int playLeaderCard(String nickname, int cardToPlay, ResourceContainer resourceContainer) {
+    public int playLeaderCard(String nickname, int cardToPlay) {
         try {
-            leaderCardController.playLeaderCard(nickname, cardToPlay, resourceContainer);
+            leaderCardController.playLeaderCard(nickname, cardToPlay);
             return 0;
         } catch (WrongTurnException | CardNotPlayableException | WrongMoveException e) {
             game.setError(e, nickname);
@@ -560,3 +559,4 @@ public class ServerController {
         player.getDashboard().moveFaithMarker(23);
     }
 }
+

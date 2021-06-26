@@ -129,8 +129,8 @@ public class GameLobby implements Lobby, Serializable {
         serverController.getInitialResources(nickname, resource, position);
     }
 
-    public void playLeaderCard(String nickname, int cardToPlay, ResourceContainer resourceContainer) {
-        serverController.playLeaderCard(nickname, cardToPlay, resourceContainer);
+    public void playLeaderCard(String nickname, int cardToPlay) {
+        serverController.playLeaderCard(nickname, cardToPlay);
     }
 
     public void activateLeaderCardProductionPower(String nickname, int cardToActivate, ResourceContainer resourcesToPayCost,
