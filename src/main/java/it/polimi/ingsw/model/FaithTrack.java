@@ -29,6 +29,8 @@ public class FaithTrack extends FaithTrackObservable {
 
 	private Dashboard dashboard;
 
+	public static int maxReached;
+
 	/**
 	 * The constructor for a FaithTrack object.
 	 * It initializes the winning points and the user position
@@ -53,6 +55,7 @@ public class FaithTrack extends FaithTrackObservable {
 		this.victoryPoints = 0;
 		this.position = 0;
 		vaticanReports.values().forEach(VaticanReport::reset);
+		FaithTrack.maxReached = 0;
 		notify(this);
 	}
 
@@ -70,9 +73,25 @@ public class FaithTrack extends FaithTrackObservable {
 				return;
 			}
 			position++;
+			updateMaxReached(position);
+			updateVaticanReports();
 			victoryPoints += faithTrackVictoryPoints[position];
 		}
 		notify(this);
+	}
+
+	private void updateMaxReached(int newPosition) {
+		if (newPosition > FaithTrack.maxReached) {
+			FaithTrack.maxReached = newPosition;
+		}
+	}
+
+	private void updateVaticanReports() {
+		vaticanReports.forEach((k,v) -> {
+			if (FaithTrack.maxReached == k) {
+				checkVaticanVictoryPoints(k);
+			}
+		});
 	}
 
 	/**
@@ -88,11 +107,14 @@ public class FaithTrack extends FaithTrackObservable {
 	 */
 	public void checkVaticanVictoryPoints(int vaticanReportEnd) {
 		VaticanReport currentVaticanReport = vaticanReports.get(vaticanReportEnd);
-		if (position < currentVaticanReport.start) { currentVaticanReport.miss(); }
-		else {
+		if (currentVaticanReport == null) return;
+		if (position < currentVaticanReport.start) {
+			currentVaticanReport.miss();
+		} else {
 			currentVaticanReport.achieve();
 			victoryPoints += currentVaticanReport.victoryPoints;
 		}
+		notify(this);
 	}
 
 	/**

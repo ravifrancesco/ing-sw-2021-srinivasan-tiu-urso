@@ -9,9 +9,11 @@ import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.marbles.Marble;
+import it.polimi.ingsw.utils.Pair;
 import javafx.application.Platform;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ReducedModel {
 
@@ -146,6 +148,24 @@ public class ReducedModel {
         ReducedDashboard reducedDashboard = reducedGame.getReducedPlayer(player).getDashboard();
         List<Stack<DevelopmentCard>> playedDevelopmentCards = reducedDashboard.getPlayedDevelopmentCards();
         Platform.runLater(() -> gameController.printPlayedDevelopmentCards(player, playedDevelopmentCards));
+    }
+
+    public void updateVaticanReports(String player, Map<Pair<Integer, Integer>, Pair<Integer, Integer>> vaticanReports) {
+        if (gameController == null) return;
+        List<Pair<Integer, Integer>> vaticanReportPairs = vaticanReports.entrySet().stream()
+                .sorted(Comparator.comparingInt(e -> e.getKey().second))
+                .map(Map.Entry::getValue)
+                .collect(Collectors.toList());
+        Platform.runLater(() -> gameController.updateVaticanReports(player, vaticanReportPairs));
+    }
+
+    public void askVaticanReportsUpdate(String player) {
+        ReducedDashboard reducedDashboard = reducedGame.getReducedPlayer(player).getDashboard();
+        List<Pair<Integer, Integer>> vaticanReportPairs = reducedDashboard.getVaticanReports().entrySet().stream()
+                .sorted(Comparator.comparingInt(e -> e.getKey().second))
+                .map(Map.Entry::getValue)
+                .collect(Collectors.toList());
+        Platform.runLater(() -> gameController.updateVaticanReports(player, vaticanReportPairs));
     }
 
 }
