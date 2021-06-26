@@ -125,12 +125,6 @@ public class GameController {
         reducedModel.askLeaderCardsUpdate(currentDisplayedPlayer);
         reducedModel.askFaithMarkerPosition(currentDisplayedPlayer);
         reducedModel.askPointsUpdate(currentDisplayedPlayer);
-        ReducedGame rg = gui.getReducedModel().getReducedGame();
-        if (currentDisplayedPlayer.equals(rg.getClientPlayer()) && currentDisplayedPlayer.equals(rg.getCurrentPlayer())) {
-            setEnable();
-        } else {
-            setDisable();
-        }
         hideWarehouseButtons();
     }
 
@@ -289,6 +283,13 @@ public class GameController {
         IntStream.range(0, supply.size())
                 .filter(i -> supply.get(i) != null)
                 .forEach(i -> printSupplyResource(supply.get(i), i));
+
+        ReducedGame rg = gui.getReducedModel().getReducedGame();
+        if (currentDisplayedPlayer.equals(rg.getClientPlayer()) && currentDisplayedPlayer.equals(rg.getCurrentPlayer())) {
+            setEnable();
+        } else {
+            setDisable();
+        }
     }
 
     public void cleanWarehouse() {
