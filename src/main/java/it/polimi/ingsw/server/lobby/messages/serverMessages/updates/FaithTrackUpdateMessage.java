@@ -2,6 +2,7 @@ package it.polimi.ingsw.server.lobby.messages.serverMessages.updates;
 
 import it.polimi.ingsw.client.ClientConnection;
 import it.polimi.ingsw.model.FaithTrack;
+import it.polimi.ingsw.model.VaticanReport;
 import it.polimi.ingsw.server.lobby.messages.serverMessages.ServerMessage;
 import it.polimi.ingsw.utils.Pair;
 
@@ -29,7 +30,7 @@ public class FaithTrackUpdateMessage implements ServerMessage, Serializable {
         this.position = faithTrack.getPosition();
         this.LorenzoIlMagnificoPosition = faithTrack.getLorenzoIlMagnificoPosition();
         this.vaticanReports = new HashMap<>();
-        faithTrack.getVaticanReports().forEach((key, value) -> vaticanReports.put(new Pair<>(key, value.getVictoryPoints()), new Pair<>(value.getStart(), value.getEnd())));
+        faithTrack.getVaticanReports().forEach((key, value) -> vaticanReports.put(new Pair<>(value.getStart(), value.getEnd()), new Pair<>(value.getVictoryPoints(), vaticanReportState(value))));
         this.faithTrackVictoryPoints = faithTrack.getFaithTrackVictoryPoints();
     }
 
@@ -37,4 +38,14 @@ public class FaithTrackUpdateMessage implements ServerMessage, Serializable {
     public void updateClient(ClientConnection clientConnection, String nickname) {
         clientConnection.updateReducedFaithTrack(playerNickname, position, LorenzoIlMagnificoPosition, vaticanReports, faithTrackVictoryPoints);
     }
+
+    private int vaticanReportState(VaticanReport v) {
+        if (!v.isMissed() && !v.isAchieved()) {
+            return 0;
+        } else if (v.isMissed()) {
+            return 1;
+        } else {
+            return 2;
+        }
+     }
 }
