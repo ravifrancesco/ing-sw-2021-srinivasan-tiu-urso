@@ -38,6 +38,6 @@
    <Button fx:id="btnSlot2" layoutX="284.0" layoutY="526.0" mnemonicParsing="false" onMouseClicked="#clickedBtnSlot2" text="Slot 2" />
    <Button fx:id="btnSlot3" layoutX="363.0" layoutY="526.0" mnemonicParsing="false" onMouseClicked="#clickedBtnSlot3" text="Slot 3" />
    <Button fx:id="btnOk" disable="true" layoutX="181.0" layoutY="627.0" mnemonicParsing="false" onMouseClicked="#clickedOkBtn" prefHeight="25.0" prefWidth="48.0" text="OK" />
-   <Button layoutX="273.0" layoutY="627.0" mnemonicParsing="false" text="CANC" />
+   <Button fx:id="btnCanc" layoutX="273.0" layoutY="627.0" mnemonicParsing="false" onMouseClicked="#clickedCancBtn" text="CANC" />
 
 </AnchorPane>

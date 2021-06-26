@@ -3,12 +3,15 @@ package it.polimi.ingsw;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -47,7 +50,7 @@ public class DevCardGridController {
                 cardImageViews.add(cardImageView);
                 int finalI = i;
                 int finalJ = j;
-                cardImageView.setOnMouseClicked(mouseEvent -> openBuyDevCardController(cardImageView.getImage(), finalI, finalJ));
+                cardImageView.setOnMouseClicked(mouseEvent -> openBuyDevCardController(mouseEvent, cardImageView.getImage(), finalI, finalJ));
             }
         }
     }
@@ -66,7 +69,7 @@ public class DevCardGridController {
         imageView.setFitHeight(200);
     }
 
-    private void openBuyDevCardController(Image image, int row, int col) {
+    private void openBuyDevCardController(MouseEvent event, Image image, int row, int col) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/buy_dev_card.fxml"));
             Parent root = null;
@@ -74,6 +77,9 @@ public class DevCardGridController {
             ((BuyDevCardController) fxmlLoader.getController()).setParameters(gui, image, row, col);
             Stage stage = new Stage();
             stage.setScene(new Scene(root, 422, 555));
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(
+                    ((Node)event.getSource()).getScene().getWindow() );
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

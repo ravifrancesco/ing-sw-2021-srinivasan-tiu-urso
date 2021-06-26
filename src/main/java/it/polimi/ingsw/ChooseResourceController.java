@@ -1,7 +1,10 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.controller.client.reducedModel.ReducedDashboard;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.ResourceContainer;
+import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.game.BuyDevelopmentCardGameMessage;
+import it.polimi.ingsw.utils.Pair;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -13,6 +16,7 @@ import javafx.scene.input.InputEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 
 import java.io.File;
 import java.util.Arrays;
@@ -41,6 +45,8 @@ public class ChooseResourceController {
 
     private ResourceContainer resourceContainer;
 
+    private BuyDevCardController buyDevCardController;
+
     @FXML
     private Pane pane;
 
@@ -52,6 +58,7 @@ public class ChooseResourceController {
     @FXML private Button btnSlot2;
     @FXML private Button btnSlot3;
     @FXML private Button btnOk;
+    @FXML private Button btnCanc;
 
     @FXML
     public void initialize() {
@@ -60,7 +67,7 @@ public class ChooseResourceController {
         selectedDeposit = new boolean[NUM_SHELVES];
         selectedExtraDeposit = new boolean[EXTRA_DEPOSITS_SIZE];
         maxLockerResources = new int[NUM_RESOURCES];
-        selectedCardSlot = 0;
+        selectedCardSlot = -1;
 
         depositSlots[0] = new Slot(230, 20, 40, 40);
         depositSlots[1] = new Slot(210, 60, 40, 40);
@@ -139,6 +146,11 @@ public class ChooseResourceController {
         labelServant.setText(Integer.toString(number));
     }
 
+    public void setBuyDevCardController(BuyDevCardController buyDevCardController) {
+        this.buyDevCardController = buyDevCardController;
+    }
+
+    /* TODO could be cancelled, use setResources without parameters */
     public void setResources(Resource[] deposit, Map<Resource, Integer> locker, Resource[][] extraDeposits) {
         for (int i = 0; i < deposit.length; i++) {
             if (deposit[i] != null) {
@@ -153,6 +165,31 @@ public class ChooseResourceController {
             for (int j = 0; j < EXTRA_DEPOSITS_SIZE / 2; j++) {
                 if (extraDeposits[i][j] != null) {
                     ImageView imageView2 = createSelectableResourceExtraDeposit(extraDeposits[i][j], i*2+j);
+                    pane.getChildren().add(imageView2);
+                }
+            }
+        }
+    }
+
+    public void setResources() {
+        ReducedDashboard reducedDashboard = gui.getReducedModel().getReducedPlayer().getDashboard();
+        Resource[] deposit = reducedDashboard.getDeposit();
+        Map<Resource, Integer> locker = reducedDashboard.getLocker();
+        Resource[][] extraDeposits = reducedDashboard.getExtraDeposits();
+
+        for (int i = 0; i < deposit.length; i++) {
+            if (deposit[i] != null) {
+                ImageView imageView = createSelectableResourceDeposit(deposit[i], i);
+                pane.getChildren().add(imageView);
+            }
+        }
+
+        locker.forEach(this::updateLockerMaximum);
+
+        for (int i = 0; i < EXTRA_DEPOSITS_SIZE / 2; i++) {
+            for (int j = 0; j < EXTRA_DEPOSITS_SIZE / 2; j++) {
+                if (extraDeposits[i] != null && extraDeposits[i][j] != null) {
+                    ImageView imageView2 = createSelectableResourceExtraDeposit(extraDeposits[i][j], i * 2 + j);
                     pane.getChildren().add(imageView2);
                 }
             }
@@ -238,7 +275,7 @@ public class ChooseResourceController {
         btnSlot1.setDisable(true);
         btnSlot2.setDisable(false);
         btnSlot3.setDisable(false);
-        selectedCardSlot = 1;
+        selectedCardSlot = 0;
     }
 
     @FXML
@@ -249,7 +286,7 @@ public class ChooseResourceController {
         btnSlot1.setDisable(false);
         btnSlot2.setDisable(true);
         btnSlot3.setDisable(false);
-        selectedCardSlot = 2;
+        selectedCardSlot = 1;
     }
 
     @FXML
@@ -260,7 +297,7 @@ public class ChooseResourceController {
         btnSlot1.setDisable(false);
         btnSlot2.setDisable(false);
         btnSlot3.setDisable(true);
-        selectedCardSlot = 3;
+        selectedCardSlot = 2;
     }
 
     @FXML
@@ -279,20 +316,20 @@ public class ChooseResourceController {
         if (!labelServant.getText().equals("0")) {
             resourceContainer.addLockerSelectedResource(Resource.SERVANT, Integer.parseInt(labelServant.getText()));
         }
-        ((Node)(event.getSource())).getScene().getWindow().hide();
+
+        Pair<Integer, Integer> position = buyDevCardController.getPosition();
+
+        gui.getClientConnection().send(new BuyDevelopmentCardGameMessage(position.first, position.second, resourceContainer, selectedCardSlot));
+
+        Stage stage = (Stage) btnOk.getScene().getWindow();
+        stage.close();
+        buyDevCardController.closeWindow();
     }
 
     @FXML
     private void clickedCancBtn(MouseEvent event) {
-        ((Node)(event.getSource())).getScene().getWindow().hide();
-    }
-
-    public int getSelectedCardSlot() {
-        return selectedCardSlot;
-    }
-
-    public ResourceContainer getResourceContainer() {
-        return resourceContainer;
+        Stage stage = (Stage) btnCanc.getScene().getWindow();
+        stage.close();
     }
 
     public void setGui(GUI gui) {
