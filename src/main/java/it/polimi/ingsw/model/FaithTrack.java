@@ -111,7 +111,7 @@ public class FaithTrack extends FaithTrackObservable {
 		VaticanReport currentVaticanReport = vaticanReports.get(vaticanReportEnd);
 		if (currentVaticanReport == null) return;
 		if (position < currentVaticanReport.start) { currentVaticanReport.miss(); }
-		else {
+		else if (!currentVaticanReport.isAchieved()) {
 			currentVaticanReport.achieve();
 			victoryPoints += currentVaticanReport.victoryPoints;
 		}
