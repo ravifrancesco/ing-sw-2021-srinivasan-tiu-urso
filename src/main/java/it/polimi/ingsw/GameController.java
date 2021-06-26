@@ -28,6 +28,7 @@ import javafx.scene.input.InputEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -506,7 +507,10 @@ public class GameController {
         marketController.setGui(this.gui);
         Stage stage = new Stage();
         stage.setTitle("Market");
-        stage.setScene(new Scene(root, 465, 600));
+        stage.setScene(new Scene(root, 465, 700));
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner(
+                ((Node)event.getSource()).getScene().getWindow() );
         stage.show();
     }
 
@@ -524,6 +528,9 @@ public class GameController {
         Stage stage = new Stage();
         stage.setTitle("Development card grid");
         stage.setScene(new Scene(root, 700, 800));
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner(
+                ((Node)event.getSource()).getScene().getWindow() );
         stage.show();
     }
 
