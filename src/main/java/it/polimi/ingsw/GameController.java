@@ -102,6 +102,8 @@ public class GameController {
     @FXML private ImageView vaticanReport2IW;
     private List<ImageView> vaticanReportTokens;
 
+    @FXML private Pane dashboardProductionPane;
+
     // Label for locker
 
     @FXML
@@ -930,6 +932,26 @@ public class GameController {
         vaticanReportIW.setImage(image);
         vaticanReportIW.setFitHeight(63);
         vaticanReportIW.setFitWidth(66);
+    }
+
+    @FXML private void dashboardProductionClick(MouseEvent event) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/dashboard_production.fxml"));
+            Parent root = fxmlLoader.load();
+            DashboardProductionController dashboardProductionController = fxmlLoader.getController();
+            dashboardProductionController.setGui(this.gui);
+            dashboardProductionController.setResources();
+            Stage stage = new Stage();
+            stage.setTitle("Select resources");
+            stage.setScene(new Scene(root, 500, 700));
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(
+                    ((Node)event.getSource()).getScene().getWindow() );
+            stage.show();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

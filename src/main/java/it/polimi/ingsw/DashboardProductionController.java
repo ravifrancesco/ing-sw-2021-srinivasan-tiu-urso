@@ -3,9 +3,8 @@ package it.polimi.ingsw;
 import it.polimi.ingsw.controller.client.reducedModel.ReducedDashboard;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.ResourceContainer;
+import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.game.ActivateDashboardProductionGameMessage;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.game.ActivateLeaderProductionGameMessage;
-import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.game.BuyDevelopmentCardGameMessage;
-import it.polimi.ingsw.utils.Pair;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -24,7 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.IntStream;
 
-public class LeaderProductionController {
+public class DashboardProductionController {
 
     private GUI gui;
 
@@ -64,8 +63,6 @@ public class LeaderProductionController {
     private ImageView stoneIW;
 
     private Resource selectedResource;
-
-    private int cardIndex;
 
     @FXML
     public void initialize() {
@@ -294,10 +291,13 @@ public class LeaderProductionController {
             resourceContainer.addLockerSelectedResource(Resource.SERVANT, Integer.parseInt(labelServant.getText()));
         }
 
+        Map<Resource, Integer> resourceRequiredOptional = new HashMap<>();
+        resourceRequiredOptional = resourceContainer.getAllResources(gui.getReducedModel().getReducedPlayer().getDashboard());
+
         HashMap<Resource, Integer> resourceProducedOptional = new HashMap<>();
         resourceProducedOptional.put(selectedResource, 1);
 
-        gui.getClientConnection().send(new ActivateLeaderProductionGameMessage(cardIndex, resourceContainer, new HashMap<>(), resourceProducedOptional));
+        gui.getClientConnection().send(new ActivateDashboardProductionGameMessage(resourceContainer, resourceRequiredOptional ,resourceProducedOptional));
 
         Stage stage = (Stage) btnOk.getScene().getWindow();
         stage.close();
@@ -311,10 +311,6 @@ public class LeaderProductionController {
 
     public void setGui(GUI gui) {
         this.gui = gui;
-    }
-
-    public void setCardIndex(int cardIndex) {
-        this.cardIndex = cardIndex;
     }
 
     private void setBrightnessLow(ImageView imageView) {
