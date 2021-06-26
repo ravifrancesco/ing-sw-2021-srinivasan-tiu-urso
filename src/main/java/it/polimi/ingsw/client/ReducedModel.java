@@ -1,13 +1,19 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.GameController;
+import it.polimi.ingsw.controller.client.reducedModel.ReducedDashboard;
 import it.polimi.ingsw.controller.client.reducedModel.ReducedGame;
 import it.polimi.ingsw.controller.client.reducedModel.ReducedGameBoard;
 import it.polimi.ingsw.controller.client.reducedModel.ReducedPlayer;
+import it.polimi.ingsw.model.GameBoard;
 import it.polimi.ingsw.model.Resource;
+import it.polimi.ingsw.model.cards.LeaderCard;
+import it.polimi.ingsw.model.marbles.Marble;
 import javafx.application.Platform;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 public class ReducedModel {
@@ -17,7 +23,6 @@ public class ReducedModel {
     private ReducedGameBoard reducedGameBoard;
 
     GameController gameController;
-
 
     public ReducedModel() {
         reducedGame = new ReducedGame(this);
@@ -64,7 +69,37 @@ public class ReducedModel {
     }
 
     public void updateWarehouse(String player, Resource[] deposit, Map<Resource, Integer> locker, Resource[][] extraDeposit, ArrayList<Resource> supply) {
-        // TODO change ravi
         Platform.runLater(() -> gameController.printWarehouse(player, deposit, locker, extraDeposit, supply));
     }
+
+    public void updateWarehouse(String player) {
+        ReducedDashboard reducedDashboard = reducedGame.getReducedPlayer(player).getDashboard();
+        Resource[] deposit = reducedDashboard.getDeposit();
+        Map<Resource, Integer> locker = reducedDashboard.getLocker();
+        Resource[][] extraDeposit = reducedDashboard.getExtraDeposits();
+        ArrayList<Resource> supply = reducedDashboard.getSupply();
+        Platform.runLater(() -> gameController.printWarehouse(player, deposit, locker, extraDeposit, supply));
+    }
+
+    public void updateLeaderCards(String player, List<LeaderCard> leaderCardList) {
+        Platform.runLater(() -> gameController.printPlayedLeaderCards(player, leaderCardList));
+    }
+
+    public void updateLeaderCards(String player) {
+        ReducedDashboard reducedDashboard = reducedGame.getReducedPlayer(player).getDashboard();
+        List<LeaderCard> leaderCards = reducedDashboard.getPlayedLeaderCards();
+        Platform.runLater(() -> gameController.printPlayedLeaderCards(player, leaderCards));
+    }
+
+    public void updateMarket(Marble[] marblesGrid, Marble freeMarble) {
+        Platform.runLater(() -> gameController.updateMarket(marblesGrid, freeMarble));
+    }
+
+    public void askMarketUpdate() {
+        Marble[] marblesGrid = reducedGameBoard.getMarblesGrid();
+        Marble[] marbles = Arrays.copyOfRange(marblesGrid, 0, marblesGrid.length - 1);
+        Marble freeMarble = marblesGrid[marblesGrid.length - 1];
+        Platform.runLater(() -> gameController.updateMarket(marbles, freeMarble));
+    }
+
 }

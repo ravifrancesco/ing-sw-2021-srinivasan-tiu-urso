@@ -7,8 +7,10 @@ import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.marbles.Marble;
+import javafx.application.Platform;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Stack;
 
@@ -104,6 +106,12 @@ public class ReducedGameBoard {
             marbles.add(getMarble(i, move));
         }
         return marbles;
+    }
+
+    private void updateMarket() {
+        Marble[] marbles = Arrays.copyOfRange(marblesGrid, 0, marblesGrid.length - 1);
+        Marble freeMarble = marblesGrid[marblesGrid.length - 1];
+        this.reducedModel.updateMarket(marbles, freeMarble);
     }
 
 }

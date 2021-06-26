@@ -123,4 +123,8 @@ public class ReducedGame {
     public int getFirstTurns() {
         return firstTurns;
     }
+
+    public ReducedPlayer getReducedPlayer(String nickname) {
+        return this.players.get(nickname);
+    }
 }

@@ -62,13 +62,11 @@ public class MarketViewController {
         setDraggableFreeMarble();
     }
 
-    public void update(Marble[][] marblesGrid, Marble freeMarble) {
+    public void update(Marble[] marblesGrid, Marble freeMarble) {
         loadImage(freeMarbleIW, freeMarble);
         slotsIW.forEach(iw -> iw.setImage(null));
-        for (int i = 0; i < NUM_OF_ROWS; i++) {
-            for (int j = 0; j < NUM_OF_COLUMNS; j++) {
-                loadImage(marblesIW.get(i * NUM_OF_COLUMNS + j), marblesGrid[i][j]);
-            }
+        for (int i = 0; i < marblesGrid.length; i++) {
+            loadImage(marblesIW.get(i), marblesGrid[i]);
         }
     }
 

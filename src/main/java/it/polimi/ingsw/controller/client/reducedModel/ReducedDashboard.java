@@ -62,6 +62,7 @@ public class ReducedDashboard {
 
     public void setPlayedLeaderCards(List<LeaderCard> playedLeaderCards) {
         this.playedLeaderCards = playedLeaderCards;
+        updateLeaderCards();
     }
 
     public List<Stack<DevelopmentCard>> getPlayedDevelopmentCards() {
@@ -143,5 +144,9 @@ public class ReducedDashboard {
 
     private void updateWarehouseView() {
         this.reducedModel.updateWarehouse(reducedPlayer.getNickname(), deposit, locker, extraDeposits, supply);
+    }
+
+    private void updateLeaderCards() {
+        this.reducedModel.updateLeaderCards(reducedPlayer.getNickname(), playedLeaderCards);
     }
 }

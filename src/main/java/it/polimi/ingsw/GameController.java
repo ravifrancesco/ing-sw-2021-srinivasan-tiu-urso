@@ -9,6 +9,7 @@ import it.polimi.ingsw.model.BannerEnum;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.TurnPhase;
 import it.polimi.ingsw.model.cards.LeaderCard;
+import it.polimi.ingsw.model.marbles.Marble;
 import it.polimi.ingsw.model.specialAbilities.*;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.game.EndTurnGameMessage;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.game.PlayerChangesDeposit;
@@ -117,8 +118,9 @@ public class GameController {
     }
 
     public void comboAction(ActionEvent event) {
-        System.out.println(nicknameCombo.getSelectionModel().getSelectedItem()); // TODO remove just for debug
         currentDisplayedPlayer = nicknameCombo.getSelectionModel().getSelectedItem();
+        gui.getReducedModel().updateWarehouse(currentDisplayedPlayer);
+        gui.getReducedModel().updateLeaderCards(currentDisplayedPlayer);
     }
 
     @FXML
@@ -188,7 +190,10 @@ public class GameController {
         pane.getChildren().add(supplyControllers[pos].getItem());
     }
 
-    public void printPlayedLeaderCards(List<LeaderCard> playedLeaderCards) {
+    public void printPlayedLeaderCards(String player, List<LeaderCard> playedLeaderCards) {
+        if (!player.equals(currentDisplayedPlayer)) {
+            return;
+        }
         IntStream.range(0, playedLeaderCards.size())
                 .filter(i -> leaderCardSlots[i].isEmpty())
                 .forEach(System.out::println);
@@ -253,7 +258,6 @@ public class GameController {
 
     public void printWarehouse(String player, Resource[] deposit, Map<Resource, Integer> locker, Resource[][] extraDeposit, ArrayList<Resource> supply) {
         if (!player.equals(currentDisplayedPlayer)) {
-            System.out.println(player + " - " + currentDisplayedPlayer + " - >" + deposit[0]);
             return;
         }
         cleanWarehouse();
@@ -501,6 +505,7 @@ public class GameController {
         }
         marketController = fxmlLoader.getController();
         marketController.setGui(this.gui);
+        gui.getReducedModel().askMarketUpdate();
         Stage stage = new Stage();
         stage.setTitle("Market");
         stage.setScene(new Scene(root, 465, 600));
@@ -712,6 +717,12 @@ public class GameController {
             case 3 -> 2;
             default -> 0;
         };
+    }
+
+    public void updateMarket(Marble[] marblesGrid, Marble freeMarble) {
+        if (marketController != null) {
+            marketController.update(marblesGrid, freeMarble);
+        }
     }
 
 }
