@@ -244,6 +244,7 @@ public class GameController {
             e.printStackTrace();
         }
         leaderCardControllers[slot] = loader.getController();
+        leaderCardControllers[slot].setGui(this.gui);
         leaderCardControllers[slot].assignSlots(leaderCardSlots);
         leaderCardControllers[slot].createItem(leaderCard, slot);
 
