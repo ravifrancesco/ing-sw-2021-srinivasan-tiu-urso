@@ -185,13 +185,6 @@ public class GameController {
         }
 
         initializeFaithTrack();
-
-        // DEBUG
-
-        DevelopmentCard dvCard = new DevelopmentCard(1, 2, new HashMap<>(), new ProductionPower(new HashMap<>(), new HashMap<>(), 2), new Banner(BannerEnum.YELLOW, 2));
-
-        printDevelopmentCard(dvCard, 1);
-
     }
 
     public void printResource(Resource resource, int pos) {
