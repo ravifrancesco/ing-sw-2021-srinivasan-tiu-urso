@@ -15,10 +15,11 @@ public class YellowMarble implements Marble, Serializable {
         return Resource.GOLD;
     }
 
+    /**
+     * @see Marble#getMarbleColor()
+     */
     @Override
-    public String getType() {
-        return "YELLOW";
+    public MarbleColor getMarbleColor() {
+        return MarbleColor.YELLOW;
     }
-
-
 }

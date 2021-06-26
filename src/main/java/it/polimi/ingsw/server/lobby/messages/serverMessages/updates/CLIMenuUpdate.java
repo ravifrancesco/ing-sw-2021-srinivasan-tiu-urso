@@ -17,6 +17,7 @@ import java.util.Stack;
 
 /**
  * Class used to send Dashboard updates to the clients.
+ * TODO change names with UI
  */
 public class CLIMenuUpdate implements ServerMessage, Serializable {
 
@@ -28,10 +29,6 @@ public class CLIMenuUpdate implements ServerMessage, Serializable {
 
     @Override
     public void updateClient(ClientConnection clientConnection, String nickname) {
-        if(clientConnection.ui.getType() == UIType.CLI) {
-            CLI cli = (CLI) clientConnection.ui;
-            cli.handleMenuCode(menuCode);
-        }
-
+        clientConnection.ui.handleMenuCode(menuCode);
     }
 }

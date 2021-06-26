@@ -103,6 +103,7 @@ public class GameLobby implements Lobby, Serializable {
         });
 
         serverController.addObservers(c, connectedPlayers);
+        c.sendGameLobbyEntered(id, c.getNickname().equals(creator));
     }
 
     public synchronized void leaveLobby(Connection c) {
@@ -129,8 +130,8 @@ public class GameLobby implements Lobby, Serializable {
         serverController.getInitialResources(nickname, resource, position);
     }
 
-    public void playLeaderCard(String nickname, int cardToPlay, ResourceContainer resourceContainer) {
-        serverController.playLeaderCard(nickname, cardToPlay, resourceContainer);
+    public void playLeaderCard(String nickname, int cardToPlay) {
+        serverController.playLeaderCard(nickname, cardToPlay);
     }
 
     public void activateLeaderCardProductionPower(String nickname, int cardToActivate, ResourceContainer resourcesToPayCost,

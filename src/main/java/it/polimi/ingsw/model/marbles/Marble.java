@@ -12,6 +12,11 @@ public interface Marble {
      */
     Resource getResource(Player p);
 
-    String getType();
+    /**
+     * Returns the color of the marble.
+     *
+     * @return the color of the marble
+     */
+    MarbleColor getMarbleColor();
 }
 

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.ClientMainLobbyController">
+   <children>
+      <SplitPane dividerPositions="0.2157190635451505, 0.7341137123745819" orientation="VERTICAL" prefHeight="600.0" prefWidth="800.0">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+               <children>
+                  <HBox alignment="BOTTOM_LEFT" layoutX="160.0" layoutY="26.0" prefHeight="100.0" prefWidth="200.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="20.0">
+                     <children>
+                        <Label prefHeight="40.0" prefWidth="433.0" text="Select a game to join or create one!">
+                           <font>
+                              <Font size="26.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+               </children></AnchorPane>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+               <children>
+                  <ScrollPane fitToWidth="true" layoutX="273.0" layoutY="66.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="20.0">
+                     <content>
+                        <VBox fx:id="listOfServersVBox" alignment="CENTER" prefHeight="260.0" prefWidth="598.0" />
+                     </content>
+                  </ScrollPane>
+               </children>
+            </AnchorPane>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="101.0" prefWidth="798.0">
+               <children>
+                  <GridPane alignment="CENTER" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="20.0">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <Button fx:id="joinGameButton" alignment="CENTER" contentDisplay="CENTER" layoutX="4.0" layoutY="5.0" mnemonicParsing="false" onMouseClicked="#handleJoinClick" prefHeight="50.0" prefWidth="191.0" style="-fx-background-color: #323232;" text="JOIN GAME" textFill="WHITE">
+                                 <font>
+                                    <Font name="Garamond" size="14.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
+                           <children>
+                              <Button fx:id="createGameButton" alignment="CENTER" contentDisplay="CENTER" layoutX="4.0" layoutY="5.0" mnemonicParsing="false" onMouseClicked="#handleCreateGameClick" prefHeight="50.0" prefWidth="191.0" style="-fx-background-color: #323232;" text="CREATE GAME" textFill="WHITE">
+                                 <font>
+                                    <Font name="Garamond" size="14.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
+                           <children>
+                              <Button fx:id="refreshButton" alignment="CENTER" contentDisplay="CENTER" layoutX="4.0" layoutY="5.0" mnemonicParsing="false" onMouseClicked="#handleRefreshClick" prefHeight="50.0" prefWidth="191.0" style="-fx-background-color: #323232;" text="REFRESH" textFill="WHITE">
+                                 <font>
+                                    <Font name="Garamond" size="14.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                           <children>
+                              <Button fx:id="quitButton" alignment="CENTER" contentDisplay="CENTER" layoutX="4.0" layoutY="5.0" mnemonicParsing="false" onMouseClicked="#handleQuitClick" prefHeight="50.0" prefWidth="191.0" style="-fx-background-color: #323232;" text="QUIT" textFill="WHITE">
+                                 <font>
+                                    <Font name="Garamond" size="14.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </GridPane>
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
+   </children>
+</AnchorPane>

@@ -10,17 +10,15 @@ import java.io.Serializable;
 public class PlayLeaderCardGameMessage extends ClientGameMessage implements Serializable {
 
     int cardToPlay;
-    ResourceContainer resourceContainer;
 
-    public PlayLeaderCardGameMessage(int cardToPlay, ResourceContainer resourceContainer) {
+    public PlayLeaderCardGameMessage(int cardToPlay) {
         this.cardToPlay = cardToPlay;
-        this.resourceContainer = resourceContainer;
     }
 
     @Override
     public void handle(Connection c, ServerController serverController) {
         int output;
-        output = serverController.playLeaderCard(c.getNickname(), cardToPlay, resourceContainer);
+        output = serverController.playLeaderCard(c.getNickname(), cardToPlay);
         if (output == 0) {
             c.sendSuccessfulMoveMessage("Card with index " + cardToPlay + " has been placed correctly!");
         }

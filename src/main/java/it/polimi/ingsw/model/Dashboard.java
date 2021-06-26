@@ -104,6 +104,8 @@ public class Dashboard extends DashboardObservable {
 	 */
 	public int getFaithMarkerPosition() { return faithTrack.getPosition(); }
 
+	public int getLorenzoIlMagnificoPosition() { return faithTrack.getLorenzoIlMagnificoPosition(); }
+
 	/**
 	 * Getter for the number of victory points of the player.
 	 *
@@ -530,7 +532,9 @@ public class Dashboard extends DashboardObservable {
 		return 	(getFaithMarkerPosition() == GameSettings.FAITH_TRACK_LENGTH - 1) ||
 				playedDevelopmentCards.stream().
 						mapToInt(Vector::size).
-						reduce(0, Integer::sum) == NUM_DEVELOPMENT_CARDS_TO_WIN;
+						reduce(0, Integer::sum) == NUM_DEVELOPMENT_CARDS_TO_WIN ||
+				(getLorenzoIlMagnificoPosition() == GameSettings.FAITH_TRACK_LENGTH - 1);
+
 	}
 
 	/**

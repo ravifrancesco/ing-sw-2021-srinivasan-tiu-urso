@@ -1,14 +1,18 @@
 package it.polimi.ingsw.controller.client.reducedModel;
 
+import it.polimi.ingsw.client.ReducedModel;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.specialAbilities.ProductionPower;
+import it.polimi.ingsw.server.lobby.LobbyType;
 import it.polimi.ingsw.utils.Pair;
 
 import java.util.*;
 
 public class ReducedDashboard {
+
+    private ReducedPlayer reducedPlayer;
 
     private int playerPoints;
 
@@ -29,13 +33,21 @@ public class ReducedDashboard {
 
     // FaithTrack
     private int position;
+    private int LorenzoIlMagnificoPosition;
     private Map<Pair<Integer, Integer>, Pair<Integer, Integer>> vaticanReports;
     private int[] faithTrackVictoryPoints;
 
-    public ReducedDashboard() {
+    private ReducedModel reducedModel;
+
+    public ReducedDashboard(ReducedPlayer reducedPlayer, ReducedModel reducedModel) {
+        this.reducedPlayer = reducedPlayer;
+        this.reducedModel = reducedModel;
         this.playedLeaderCards = new ArrayList<>();
         this.playedDevelopmentCards = new ArrayList<>();
+        this.supply = new ArrayList<>();
+        this.deposit = new Resource[MAX_DEPOSIT_SLOTS];
         this.locker = new HashMap<>();
+        this.extraDeposits = new Resource[2][];
     }
 
     public int getPlayerPoints() {
@@ -44,6 +56,7 @@ public class ReducedDashboard {
 
     public void setPlayerPoints(int playerPoints) {
         this.playerPoints = playerPoints;
+        updatePlayerPoints();
     }
 
     public List<LeaderCard> getPlayedLeaderCards() {
@@ -52,6 +65,7 @@ public class ReducedDashboard {
 
     public void setPlayedLeaderCards(List<LeaderCard> playedLeaderCards) {
         this.playedLeaderCards = playedLeaderCards;
+        updateLeaderCards();
     }
 
     public List<Stack<DevelopmentCard>> getPlayedDevelopmentCards() {
@@ -60,6 +74,7 @@ public class ReducedDashboard {
 
     public void setPlayedDevelopmentCards(List<Stack<DevelopmentCard>> playedDevelopmentCards) {
         this.playedDevelopmentCards = playedDevelopmentCards;
+        updateDevelopmentCards();
     }
 
     public ArrayList<Resource> getSupply() {
@@ -68,6 +83,7 @@ public class ReducedDashboard {
 
     public void setSupply(ArrayList<Resource> supply) {
         this.supply = supply;
+        updateWarehouseView();
     }
 
     public Resource[] getDeposit() {
@@ -76,6 +92,7 @@ public class ReducedDashboard {
 
     public void setDeposit(Resource[] deposit) {
         this.deposit = deposit;
+        updateWarehouseView();
     }
 
     public Map<Resource, Integer> getLocker() {
@@ -84,6 +101,7 @@ public class ReducedDashboard {
 
     public void setLocker(Map<Resource, Integer> locker) {
         this.locker = locker;
+        updateWarehouseView();
     }
 
     public Resource[][] getExtraDeposits() {
@@ -92,6 +110,7 @@ public class ReducedDashboard {
 
     public void setExtraDeposits(Resource[][] extraDeposits) {
         this.extraDeposits = extraDeposits;
+        updateWarehouseView();
     }
 
     public int getPosition() {
@@ -100,6 +119,7 @@ public class ReducedDashboard {
 
     public void setPosition(int position) {
         this.position = position;
+        this.reducedModel.moveFaithMarker(reducedPlayer.getNickname(), position);
     }
 
     public Map<Pair<Integer, Integer>, Pair<Integer, Integer>> getVaticanReports() {
@@ -108,6 +128,7 @@ public class ReducedDashboard {
 
     public void setVaticanReports(Map<Pair<Integer, Integer>, Pair<Integer, Integer>> vaticanReports) {
         this.vaticanReports = vaticanReports;
+        updateVaticanReports();
     }
 
     public int[] getFaithTrackVictoryPoints() {
@@ -118,11 +139,35 @@ public class ReducedDashboard {
         this.faithTrackVictoryPoints = faithTrackVictoryPoints;
     }
 
+    public void setLorenzoIlMagnificoPosition(int LorenzoIlMagnificoPosition) {
+        this.LorenzoIlMagnificoPosition = LorenzoIlMagnificoPosition;
+    }
+
     public void setProductionPower(ProductionPower productionPower) {
         this.productionPower = productionPower;
     }
 
     public ProductionPower getProductionPower() {
         return productionPower;
+    }
+
+    private void updateWarehouseView() {
+        this.reducedModel.updateWarehouse(reducedPlayer.getNickname(), deposit, locker, extraDeposits, supply);
+    }
+
+    private void updateLeaderCards() {
+        this.reducedModel.updateLeaderCards(reducedPlayer.getNickname(), playedLeaderCards);
+    }
+
+    private void updatePlayerPoints() {
+        this.reducedModel.updatePoints(reducedPlayer.getNickname(), playerPoints);
+    }
+
+    private void updateDevelopmentCards() {
+        this.reducedModel.updateDevelopmentCards(reducedPlayer.getNickname(), playedDevelopmentCards);
+    }
+
+    private void updateVaticanReports() {
+        this.reducedModel.updateVaticanReports(reducedPlayer.getNickname(), vaticanReports);
     }
 }

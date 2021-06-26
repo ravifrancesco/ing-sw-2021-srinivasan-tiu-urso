@@ -62,14 +62,6 @@ public class CLI implements UI {
         return reducedModel;
     }
 
-    public void setReducedModel(ReducedModel reducedModel) {
-        this.reducedModel = reducedModel;
-    }
-
-    public void setClientConnection(ClientConnection clientConnection) {
-        this.clientConnection = clientConnection;
-    }
-
     public String readCommand() {
         System.out.print("> ");
         return input.nextLine();
@@ -148,6 +140,11 @@ public class CLI implements UI {
         } else {
             printErrorMessage("No game lobbies found");
         }
+    }
+
+    @Override
+    public void enterGamePhase(boolean isHost) {
+        // TODO
     }
 
     public void showHand(String nickname) {
@@ -682,7 +679,7 @@ public class CLI implements UI {
          */
     }
     public String getMarbleColor(Marble marble) {
-        return switch(marble.getType()) {
+        return switch(marble.getMarbleColor().name()) {
             case "WHITE" -> Constants.ANSI_BG_WHITE;
             case "BLUE" -> Constants.SHIELD_COLOR_BG;
             case "GREY" -> Constants.STONE_COLOR_BG;
@@ -696,7 +693,7 @@ public class CLI implements UI {
     public String[] getMarblesColours(Marble[] grid, int ind1) {
         String[] colours = new String[4];
         IntStream.range(ind1, ind1+4).forEach(i -> {
-            switch(grid[i].getType()) {
+            switch(grid[i].getMarbleColor().name()) {
                 case "WHITE" -> colours[i-ind1] = Constants.ANSI_BG_WHITE;
                 case "BLUE" -> colours[i-ind1] = Constants.SHIELD_COLOR_BG;
                 case "GREY" -> colours[i-ind1] = Constants.STONE_COLOR_BG;
@@ -805,8 +802,8 @@ public class CLI implements UI {
 
     @Override
     public void startUI(ClientConnection clientConnection, ReducedModel reducedModel) {
-        setClientConnection(clientConnection);
-        setReducedModel(reducedModel);
+        this.clientConnection = clientConnection;
+        this.reducedModel = reducedModel;
     }
 
     public void printPaymentCost(int golds, int servants, int shields, int stones) {
@@ -849,6 +846,7 @@ public class CLI implements UI {
         return UIType.CLI;
     }
 
+    @Override
     public void handleMenuCode(String menuCode) {
         if ("after_game_start".equals(menuCode)) {
             showAfterGameStartMenu();

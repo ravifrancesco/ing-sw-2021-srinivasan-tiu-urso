@@ -15,9 +15,12 @@ public class BlueMarble implements Marble, Serializable {
         return Resource.SHIELD;
     }
 
+    /**
+     * @see Marble#getMarbleColor()
+     */
     @Override
-    public String getType() {
-        return "BLUE";
+    public MarbleColor getMarbleColor() {
+        return MarbleColor.BLUE;
     }
 
 }

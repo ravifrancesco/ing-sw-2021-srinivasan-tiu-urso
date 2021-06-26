@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane prefHeight="768.0" prefWidth="1366.0" style="-fx-background-image: url('png/dashboard_background.png')" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.GameController">
+    <bottom>
+      <Pane id="pane" fx:id="pane" onMouseClicked="#testClick" prefHeight="768.0" prefWidth="1366.0" BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fitHeight="643.0" fitWidth="900.0" layoutX="233.0" layoutY="125.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../png/player_dashboard.png" />
+               </image>
+            </ImageView>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="81.0" layoutX="261.0" layoutY="620.0" stroke="BLACK" strokeType="INSIDE" width="146.0" />
+             <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="270.0" layoutY="625.0" pickOnBounds="true">
+                 <Image url="@../png/gold.png" />
+             </ImageView>
+             <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="270.0" layoutY="668.0" pickOnBounds="true">
+                 <Image url="@../png/shield.png" /></ImageView>
+             <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="345.0" layoutY="625.0" pickOnBounds="true">
+                 <Image url="@../png/stone.png" /></ImageView>
+             <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="345.0" layoutY="668.0" pickOnBounds="true">
+                 <Image url="@../png/servant.png" /></ImageView>
+            <Label id="goldLabel" fx:id="goldLabel" layoutX="306.0" layoutY="629.0" text="x 0" />
+            <Label id="shieldLabel" fx:id="shieldLabel" layoutX="306.0" layoutY="672.0" text="x 0" />
+            <Label id="stoneLabel" fx:id="stoneLabel" layoutX="379.0" layoutY="629.0" text="x 0" />
+            <Label id="servantLabel" fx:id="servantLabel" layoutX="379.0" layoutY="672.0" text="x 0" />
+            <ImageView fitHeight="74.0" fitWidth="360.0" layoutX="233.0" layoutY="51.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../png/supply.png" />
+               </image></ImageView>
+            <Button fx:id="btnConfirm" layoutX="280.0" layoutY="573.0" mnemonicParsing="false" onMouseClicked="#btnConfirmClick" text="Confirm" visible="false" />
+            <Button fx:id="btnCancel" layoutX="360.0" layoutY="573.0" mnemonicParsing="false" onMouseClicked="#btnCancelClick" text="Cancel" visible="false" />
+            <ComboBox fx:id="nicknameCombo" layoutX="983.0" layoutY="76.0" onAction="#comboAction" prefWidth="150.0" />
+            <ImageView fx:id="marketImage" fitHeight="210.0" fitWidth="216.0" layoutX="1144.0" layoutY="125.0" onMouseClicked="#openMarketWindow" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../png/market.jpg" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="dvGridImage" fitHeight="238.0" fitWidth="243.0" layoutX="1144.0" layoutY="360.0" onMouseClicked="#openDevCardGridWindow" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../png/dv_card_grid.png" />
+               </image>
+            </ImageView>
+            <Button fx:id="endTurnButton" layoutX="1191.0" layoutY="681.0" mnemonicParsing="false" onMouseClicked="#onEndTurnPressed" prefHeight="62.0" prefWidth="119.0" style="-fx-background-color: #323232;" text="END TURN" textFill="WHITE">
+               <font>
+                  <Font name="Garamond" size="14.0" />
+               </font>
+            </Button>
+            <ImageView fitHeight="86.0" fitWidth="249.0" layoutX="595.0" layoutY="44.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../png/points_banner.png" />
+               </image>
+            </ImageView>
+            <Text fx:id="pointsText" layoutX="629.0" layoutY="97.0" strokeType="OUTSIDE" strokeWidth="0.0">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Text>
+            <Button fx:id="handButton" layoutX="1191.0" layoutY="608.0" mnemonicParsing="false" onMouseClicked="#onHandPressed" prefHeight="62.0" prefWidth="119.0" style="-fx-background-color: #323232;" text="HAND" textFill="WHITE">
+               <font>
+                  <Font name="Garamond" size="14.0" />
+               </font>
+            </Button>
+            <ImageView fx:id="vaticanReport0IW" fitHeight="63.0" fitWidth="66.0" layoutX="453.0" layoutY="219.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="vaticanReport1IW" fitHeight="63.0" fitWidth="66.0" layoutX="674.0" layoutY="174.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="vaticanReport2IW" fitHeight="63.0" fitWidth="66.0" layoutX="938.0" layoutY="219.0" pickOnBounds="true" preserveRatio="true" />
+            <Pane fx:id="dashboardProductionPane" layoutX="446.0" layoutY="553.0" onMouseClicked="#dashboardProductionClick" prefHeight="113.0" prefWidth="120.0" />
+         </children>
+      </Pane>
+   </bottom>
+</BorderPane>

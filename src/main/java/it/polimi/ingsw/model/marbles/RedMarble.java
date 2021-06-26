@@ -16,9 +16,11 @@ public class RedMarble implements Marble, Serializable {
         return null;
     }
 
+    /**
+     * @see Marble#getMarbleColor()
+     */
     @Override
-    public String getType() {
-        return "RED";
+    public MarbleColor getMarbleColor() {
+        return MarbleColor.RED;
     }
-
 }

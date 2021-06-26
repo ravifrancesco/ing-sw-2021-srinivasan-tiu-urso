@@ -47,7 +47,7 @@ public class ServerController {
      */
 
     public ServerController(String gameId, int numberOfPlayers) throws IllegalArgumentException {
-        if (numberOfPlayers < 2 || numberOfPlayers > 4) throw new IllegalArgumentException();
+        if (numberOfPlayers < 1 || numberOfPlayers > 4) throw new IllegalArgumentException();
         this.game = new Game(gameId, numberOfPlayers);
         this.productionController = new ProductionController(this.game);
         this.warehouseController = new WarehouseController(this.game);
@@ -173,11 +173,11 @@ public class ServerController {
 
     /**
      * Starts the game.
-     * TODO
      */
     public int startGame(String nickname) {
         try {
             game.reset();
+            game.startGame();
             game.changePlayer();
             game.startUniquePhase(TurnPhase.FIRST_TURN);
             game.setFirstPlayer(game.getCurrentPlayer());
@@ -266,9 +266,9 @@ public class ServerController {
      * @param nickname   the nickname of the player who made the move.
      * @param cardToPlay the index of the card to be played.
      */
-    public int playLeaderCard(String nickname, int cardToPlay, ResourceContainer resourceContainer) {
+    public void playLeaderCard(String nickname, int cardToPlay) {
         try {
-            leaderCardController.playLeaderCard(nickname, cardToPlay, resourceContainer);
+            leaderCardController.playLeaderCard(nickname, cardToPlay);
             return 0;
         } catch (WrongTurnException | CardNotPlayableException | WrongMoveException e) {
             game.setError(e, nickname);
@@ -290,6 +290,7 @@ public class ServerController {
 
         try {
             productionController.activateLeaderCardProduction(nickname, cardToActivate, resourcesToPayCost, resourceRequiredOptional, resourceProducedOptional);
+            checkVaticanReports();
             return 0;
         } catch (WrongTurnException | PowerNotActivatableException | WrongMoveException e) {
             game.setError(e, nickname);
@@ -306,6 +307,7 @@ public class ServerController {
     public int discardLeaderCard(String nickname, int cardToDiscard) {
         try {
             leaderCardController.discardLeaderCard(nickname, cardToDiscard);
+            checkVaticanReports();
             return 0;
         } catch (WrongTurnException | CardNotPlayableException e) {
             game.setError(e, nickname);
@@ -342,6 +344,7 @@ public class ServerController {
     public int getFromMarket(String nickname, int move, ArrayList<Resource> wmrs) {
         try {
             marketController.getFromMarket(nickname, move, wmrs);
+            checkVaticanReports();
             return 0;
         } catch (WrongTurnException | WrongMoveException e) {
             game.setError(e, nickname);
@@ -380,6 +383,7 @@ public class ServerController {
 
         try {
             productionController.activateDevelopmentCardProductionPower(nickname, cardToActivate, resourcesToPayCost, resourceRequiredOptional, resourceProducedOptional);
+            checkVaticanReports();
             return 0;
         } catch (WrongTurnException | PowerNotActivatableException | WrongMoveException e) {
             game.setError(e, nickname);
@@ -504,6 +508,9 @@ public class ServerController {
             game.startUniquePhase(TurnPhase.COMMON);
         }
 
+        checkVaticanReports();
+
+
         if(player.getDashboard().checkGameEnd() && !game.isEndGamePhase()) {
             game.setEndGamePhase(true);
         }
@@ -516,6 +523,59 @@ public class ServerController {
         }
         return 0;
 
+    }
+
+    // TODO doc
+    public int endTurnSinglePlayer(String nickname) {
+        String currentPlayer = game.getCurrentPlayer();
+        if (!currentPlayer.equals(nickname)) {
+            game.setError(new WrongTurnException("Not " + nickname + " turn"), nickname);
+            return -1;
+        }
+        // no turn phase check needed: player may stupidly pass the turn whilst having done nothing.
+
+        Player player = game.getPlayers().get(nickname);
+        Dashboard dashboard = player.getDashboard();
+
+        if (player.getHandSize() > 2) {
+            game.setError(new LeaderCardInExcessException(currentPlayer + " hasn't discarded enough cards"), nickname);
+            return -1;
+        }
+
+        int faithPoints = dashboard.discardResources();
+
+        game.getPlayers()
+                .entrySet()
+                .stream()
+                .filter(p -> !p.getKey().equals(currentPlayer))
+                .forEach(p -> p.getValue().getDashboard().moveFaithMarker(faithPoints));
+
+        dashboard.resetProductionPowers();
+
+        if(game.getTurnPhase().equals(TurnPhase.FIRST_TURN) && !checkInitialPhaseCompletion(dashboard)) {
+            game.setError(new WrongMoveException(currentPlayer + " has not acquired all due resources."), nickname);
+            return -1;
+        }
+
+        game.drawToken();
+        // TODO signal end game
+
+        if(player.getDashboard().checkGameEnd() || game.checkEnd()) {
+            // SIGNAL END GAME
+        } else if(game.getFirstTurns() < game.getNumberOfPlayers()-1) {
+            dashboard.moveFaithMarker(game.getFirstTurns() < 2 ? 0 : 1);
+            game.setFirstTurns(game.getFirstTurns() + 1);
+            game.startUniquePhase(TurnPhase.FIRST_TURN);
+        } else {
+            game.startUniquePhase(TurnPhase.COMMON);
+        }
+
+        checkVaticanReports();
+
+        game.changePlayer();
+
+        //return game.getTurnPhase() == TurnPhase.ENDGAME && game.getCurrentPlayer().equals(game.getFirstPlayer());
+        return 0;
     }
 
 
@@ -555,8 +615,21 @@ public class ServerController {
         player.playLeaderCard(index);
     }
 
+    private void checkVaticanReports() {
+        game.getPlayers().values()
+                .stream().map(p -> p.getDashboard().getFaithTrack())
+                .forEach(f -> f.checkVaticanVictoryPoints(FaithTrack.maxReached));
+    }
+
+    public int getNumberOfPlayers() {
+        return this.game.getNumberOfPlayers();
+    }
+
+
     public void end(String nickname, int index) {
         Player player = game.getPlayers().get(nickname);
         player.getDashboard().moveFaithMarker(23);
     }
+}
+
 }

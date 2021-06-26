@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="pane" fx:id="pane" prefHeight="700.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.ChooseResourceController">
+
+    <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="90.0" layoutY="190.0" pickOnBounds="true">
+        <Image url="@../png/gold.png" />
+    </ImageView>
+    <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="90.0" layoutY="230.0" pickOnBounds="true">
+        <Image url="@../png/shield.png" /></ImageView>
+    <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="90.0" layoutY="270.0" pickOnBounds="true">
+        <Image url="@../png/stone.png" /></ImageView>
+    <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="90.0" layoutY="310.0" pickOnBounds="true">
+        <Image url="@../png/servant.png" /></ImageView>
+   <Label layoutX="12.0" layoutY="20.0" text="Select resources from deposit:" />
+   <Label layoutX="12.0" layoutY="165.0" text="Select resources from locker:" />
+   <Label fx:id="labelGold" layoutX="247.0" layoutY="194.0" text="0" />
+   <Label fx:id="labelShield" layoutX="247.0" layoutY="234.0" text="0" />
+   <Label fx:id="labelStone" layoutX="247.0" layoutY="274.0" text="0" />
+   <Label fx:id="labelServant" layoutX="247.0" layoutY="314.0" text="0" />
+   <Button layoutX="284.0" layoutY="190.0" mnemonicParsing="false" onMouseClicked="#handleAddGold" text="+" />
+   <Button layoutX="192.0" layoutY="190.0" mnemonicParsing="false" onMouseClicked="#handleSubGold" prefHeight="25.0" prefWidth="25.0" text="-" />
+
+    <Button layoutX="284.0" layoutY="230.0" mnemonicParsing="false" onMouseClicked="#handleAddShield" text="+" />
+    <Button layoutX="192.0" layoutY="230.0" mnemonicParsing="false" onMouseClicked="#handleSubShield" prefHeight="25.0" prefWidth="25.0" text="-" />
+
+    <Button layoutX="284.0" layoutY="270.0" mnemonicParsing="false" onMouseClicked="#handleAddStone" text="+" />
+    <Button layoutX="192.0" layoutY="270.0" mnemonicParsing="false" onMouseClicked="#handleSubStone" prefHeight="25.0" prefWidth="25.0" text="-" />
+
+    <Button layoutX="284.0" layoutY="310.0" mnemonicParsing="false" onMouseClicked="#handleAddServant" text="+" />
+    <Button layoutX="192.0" layoutY="310.0" mnemonicParsing="false" onMouseClicked="#handleSubServant" prefHeight="25.0" prefWidth="25.0" text="-" />
+   <Label layoutX="12.0" layoutY="360.0" text="Select resources from extra deposits:" />
+   <Label layoutX="12.0" layoutY="530.0" text="Select where to place the card:" />
+   <Button fx:id="btnSlot1" layoutX="205.0" layoutY="526.0" mnemonicParsing="false" onMouseClicked="#clickedBtnSlot1" text="Slot 1" />
+   <Button fx:id="btnSlot2" layoutX="284.0" layoutY="526.0" mnemonicParsing="false" onMouseClicked="#clickedBtnSlot2" text="Slot 2" />
+   <Button fx:id="btnSlot3" layoutX="363.0" layoutY="526.0" mnemonicParsing="false" onMouseClicked="#clickedBtnSlot3" text="Slot 3" />
+   <Button fx:id="btnOk" disable="true" layoutX="181.0" layoutY="627.0" mnemonicParsing="false" onMouseClicked="#clickedOkBtn" prefHeight="25.0" prefWidth="48.0" text="OK" />
+   <Button fx:id="btnCanc" layoutX="273.0" layoutY="627.0" mnemonicParsing="false" onMouseClicked="#clickedCancBtn" text="CANC" />
+
+</AnchorPane>

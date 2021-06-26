@@ -19,8 +19,12 @@ public class WhiteMarble implements Marble, Serializable {
          */
     }
 
+    /**
+     * @see Marble#getMarbleColor()
+     */
     @Override
-    public String getType() {
-        return "WHITE";
+    public MarbleColor getMarbleColor() {
+        return MarbleColor.WHITE;
     }
+
 }

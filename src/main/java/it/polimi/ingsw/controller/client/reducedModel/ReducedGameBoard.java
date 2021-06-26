@@ -1,13 +1,16 @@
 package it.polimi.ingsw.controller.client.reducedModel;
 
+import it.polimi.ingsw.client.ReducedModel;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.marbles.Marble;
+import javafx.application.Platform;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Stack;
 
@@ -28,7 +31,10 @@ public class ReducedGameBoard {
     private List<DevelopmentCard> developmentCardDeck;
     private List<Card> discardDeck;
 
-    public ReducedGameBoard() {
+    private ReducedModel reducedModel;
+
+    public ReducedGameBoard(ReducedModel reducedModel) {
+        this.reducedModel = reducedModel;
         this.marblesGrid = new Marble[(gridRowLength * gridColLength) + 1];
         grid = new ArrayList<>();
         leaderCardDeck = new ArrayList<>();
@@ -42,6 +48,7 @@ public class ReducedGameBoard {
 
     public void setMarblesGrid(Marble[] marblesGrid) {
         this.marblesGrid = marblesGrid;
+        updateMarket();
     }
 
     public List<Stack<DevelopmentCard>> getGrid() {
@@ -50,6 +57,7 @@ public class ReducedGameBoard {
 
     public void setGrid(List<Stack<DevelopmentCard>> grid) {
         this.grid = grid;
+        updateDecCardGrid();
     }
 
     public List<LeaderCard> getLeaderCardDeck() {
@@ -100,6 +108,16 @@ public class ReducedGameBoard {
             marbles.add(getMarble(i, move));
         }
         return marbles;
+    }
+
+    private void updateMarket() {
+        Marble[] marbles = Arrays.copyOfRange(marblesGrid, 0, marblesGrid.length - 1);
+        Marble freeMarble = marblesGrid[marblesGrid.length - 1];
+        this.reducedModel.updateMarket(marbles, freeMarble);
+    }
+
+    private void updateDecCardGrid() {
+        reducedModel.updateDevelopmentCardGrid(this.grid);
     }
 
 }

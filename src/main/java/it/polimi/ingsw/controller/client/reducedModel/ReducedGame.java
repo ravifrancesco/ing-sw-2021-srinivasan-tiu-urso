@@ -1,18 +1,19 @@
 package it.polimi.ingsw.controller.client.reducedModel;
 
+import it.polimi.ingsw.client.ReducedModel;
 import it.polimi.ingsw.model.TurnPhase;
+import it.polimi.ingsw.model.singlePlayer.tokens.Token;
 import it.polimi.ingsw.model.specialAbilities.ProductionPower;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ReducedGame {
 
     private String gameId;
 
     private int numberOfPlayers;
+
+    private boolean gameStarted;
 
     private String clientPlayer;
 
@@ -24,7 +25,13 @@ public class ReducedGame {
 
     private TurnPhase turnPhase;
 
+    private ReducedModel reducedModel;
+
     private int firstTurns;
+
+    private Stack<Token> tokens;
+    private Token token;
+
 
     public boolean isGameEnded() {
         return gameEnded;
@@ -38,9 +45,11 @@ public class ReducedGame {
 
     private boolean endGamePhase;
 
-    public ReducedGame() {
+    public ReducedGame(ReducedModel reducedModel) {
+        this.reducedModel = reducedModel;
         this.gameId = "";
         this.numberOfPlayers = 0;
+        this.gameStarted = false;
         this.clientPlayer = "";
         this.players = new HashMap<>();
     }
@@ -103,15 +112,22 @@ public class ReducedGame {
 
     public void updatePlayers(List<String> playersNicknames) {
         // TODO add and remove players after disconnections
-        playersNicknames.forEach(nickname -> this.players.putIfAbsent(nickname, new ReducedPlayer()));
+        playersNicknames.forEach(nickname -> this.players.putIfAbsent(nickname, new ReducedPlayer(reducedModel)));
     }
 
     public void createPlayer(String playerNickname) {
-        players.putIfAbsent(playerNickname, new ReducedPlayer());
+        players.putIfAbsent(playerNickname, new ReducedPlayer(reducedModel));
     }
 
     public void createPlayer(ReducedPlayer reducedPlayer) {
         players.put(reducedPlayer.getNickname(), reducedPlayer);
+    }
+
+    public void setGameStarted(boolean gameStarted) {
+        if (!this.gameStarted && gameStarted) {
+            this.gameStarted = gameStarted;
+            this.reducedModel.hideStartGameAlert();
+        }
     }
 
     public void setFirstTurns(int firstTurns) {
@@ -120,6 +136,18 @@ public class ReducedGame {
 
     public int getFirstTurns() {
         return firstTurns;
+    }
+
+    public ReducedPlayer getReducedPlayer(String nickname) {
+        return this.players.get(nickname);
+    }
+
+    public void setTokens(Stack<Token> tokens) {
+        this.tokens = tokens;
+    }
+
+    public void setToken(Token token) {
+        this.token = token;
     }
 
     public void setEndGamePhase(boolean endGamePhase) {

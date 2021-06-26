@@ -12,6 +12,7 @@ import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.marbles.Marble;
+import it.polimi.ingsw.model.singlePlayer.tokens.Token;
 import it.polimi.ingsw.model.specialAbilities.ProductionPower;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.ClientMessage;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.lobbyMessage.lobby.RegisterName;
@@ -41,7 +42,6 @@ public class ClientConnection implements Runnable {
 
     ReducedModel reducedModel;
 
-
     public ClientConnection(String ip, int port, UI ui) {
         this.ip = ip;
         this.port = port;
@@ -49,7 +49,6 @@ public class ClientConnection implements Runnable {
         this.nameRegistered = false;
         this.reducedModel = new ReducedModel();
         this.ui.startUI(this, reducedModel);
-
     }
 
     public void setPlayerNickname(String playerNickname) {
@@ -116,7 +115,7 @@ public class ClientConnection implements Runnable {
         }
     }
 
-    private void close() {
+    public void close() {
         try {
             socket.close();
         } catch (IOException e){
@@ -139,6 +138,7 @@ public class ClientConnection implements Runnable {
                     ServerMessage serverMessage = receiveServerMessage();
                     // ui.printMessage("Received server message: " + serverMessage.toString());
                     serverMessage.updateClient(this, playerNickname);
+
                 } catch (ClassNotFoundException | IOException e) {
                     ui.printErrorMessage("Connection with server lost");
                     System.exit(-1);
@@ -148,17 +148,20 @@ public class ClientConnection implements Runnable {
         }).start();
     }
 
-    public void updateReducedGame(String firstPlayer, String currentPlayer, List<String> playersNicknames, TurnPhase turnPhase, int firstTurns) {
+    public void updateReducedGame(String firstPlayer, String currentPlayer, List<String> playersNicknames, TurnPhase turnPhase, int firstTurns, boolean gameStarted, Stack<Token> tokens, Token token) {
 
         ReducedGame reducedGame = reducedModel.getReducedGame();
-
+        reducedGame.setGameStarted(gameStarted);
         String oldPlayer = reducedGame.getCurrentPlayer();
         TurnPhase oldPhase = reducedGame.getTurnPhase();
+        reducedGame.setGameStarted(gameStarted);
         reducedGame.setFirstPlayer(firstPlayer);
         reducedGame.setCurrentPlayer(currentPlayer);
         reducedGame.updatePlayers(playersNicknames);
         reducedGame.setTurnPhase(turnPhase);
         reducedGame.setFirstTurns(firstTurns);
+        reducedGame.setTokens(tokens);
+        reducedGame.setToken(token);
         handleMenus(reducedGame, oldPlayer, oldPhase);
     }
 
@@ -226,13 +229,14 @@ public class ClientConnection implements Runnable {
         reducedDashboard.setLocker(locker);
     }
 
-    public void updateReducedFaithTrack(String nickname, int position, Map<Pair<Integer, Integer>, Pair<Integer, Integer>> vaticanReports, int[] faithTrackVictoryPoints) {
+    public void updateReducedFaithTrack(String nickname, int LorenzoIlMagnificoPosition, int position, Map<Pair<Integer, Integer>, Pair<Integer, Integer>> vaticanReports, int[] faithTrackVictoryPoints) {
         ReducedGame reducedGame = reducedModel.getReducedGame();
         if (!reducedGame.getPlayers().containsKey(nickname)) {
             reducedGame.createPlayer(nickname);
         }
         ReducedDashboard reducedDashboard = reducedGame.getPlayers().get(nickname).getDashboard();
         reducedDashboard.setPosition(position);
+        reducedDashboard.setLorenzoIlMagnificoPosition(LorenzoIlMagnificoPosition);
         reducedDashboard.setVaticanReports(vaticanReports);
         reducedDashboard.setFaithTrackVictoryPoints(faithTrackVictoryPoints);
     }
@@ -242,4 +246,9 @@ public class ClientConnection implements Runnable {
         reducedGame.setGameId(gameID);
         reducedGame.setNumberOfPlayers(numberOfPlayers);
     }
+
+    public ReducedModel getReducedModel() {
+        return reducedModel;
+    }
+
 }
