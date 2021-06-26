@@ -158,6 +158,7 @@ public class ResourceController {
                         slots[currentSlot].freeSlot();
                         if (supplyPos == -1) {
                             gui.setDisableNoDeposit();
+                            gui.setDisableImageViews();
                             gui.showWarehouseButtons();
                             gui.changeResourceController(currentSlot, i);
                         }

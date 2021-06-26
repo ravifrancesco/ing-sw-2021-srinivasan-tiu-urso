@@ -23,6 +23,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.InputEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -82,7 +83,9 @@ public class GameController {
 
     public static final int SIZE_SUPPLY = 4;
 
-    private ArrayList<LeaderCard> playedLeaderCard; // test
+    @FXML private ImageView marketImage;
+
+    @FXML private ImageView dvGridImage;
 
     // Label for locker
 
@@ -550,6 +553,7 @@ public class GameController {
             }
         }
         gui.setEnableNoDeposit();
+        gui.setEnableImageViews();
         gui.getClientConnection().send(new PlayerChangesDeposit(deposit));
     }
 
@@ -608,8 +612,24 @@ public class GameController {
         IntStream.range(0, SIZE_SUPPLY)
                 .filter(i -> supplyControllers[i] != null)
                 .forEach(i -> supplyControllers[i].setDisable());
+    }
 
-        // TODO disable productions and other buttons
+    public void setDisableDeposit() {
+        IntStream.range(0, NUM_SHELFES)
+                .filter(i -> resourceControllers[i] != null)
+                .forEach(i -> resourceControllers[i].setDisable());
+    }
+
+    public void setDisableImageViews() {
+        marketImage.setDisable(true);
+        dvGridImage.setDisable(true);
+    }
+
+    public void setDisable() {
+        setDisableNoDeposit();
+        setDisableDeposit();
+
+        // TODO disable productions
     }
 
     public void setEnableNoDeposit() {
@@ -620,8 +640,24 @@ public class GameController {
         IntStream.range(0, SIZE_SUPPLY)
                 .filter(i -> supplyControllers[i] != null)
                 .forEach(i -> supplyControllers[i].setEnable());
+    }
 
-        // TODO enable productions and other buttons
+    public void setEnableDeposit() {
+        IntStream.range(0, NUM_SHELFES)
+                .filter(i -> resourceControllers[i] != null)
+                .forEach(i -> resourceControllers[i].setEnable());
+    }
+
+    public void setEnableImageViews() {
+        marketImage.setDisable(false);
+        dvGridImage.setDisable(false);
+    }
+
+    public void setEnable() {
+        setEnableNoDeposit();
+        setEnableDeposit();
+
+        // TODO enable productions
     }
 
     public void showWarehouseButtons() {

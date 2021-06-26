@@ -195,4 +195,12 @@ public class GUI extends Application implements UI {
             //showAfterMarketMenu();
         }
     }
+
+    public void setDisableImageViews() {
+        gameController.setDisableImageViews();
+    }
+
+    public void setEnableImageViews() {
+        gameController.setEnableImageViews();
+    }
 }
