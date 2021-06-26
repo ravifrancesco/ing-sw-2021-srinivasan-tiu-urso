@@ -277,8 +277,17 @@ public class GameController {
             e.printStackTrace();
         }
         developmentCardControllers[pos] = loader.getController();
+        developmentCardControllers[pos].setGui(this.gui);
         developmentCardControllers[pos].assignSlots(developmentCardSlots);
         developmentCardControllers[pos].createItem(developmentCard, pos);
+
+        if (!developmentCard.getProductionPower().isActivatable()) {
+            developmentCardControllers[pos].setDarker();
+        } else {
+            developmentCardControllers[pos].getItem().setOnMouseClicked(mouseEvent -> {
+                developmentCardControllers[pos].openProductionPowerView(mouseEvent);
+            });
+        }
 
         pane.getChildren().add(developmentCardControllers[pos].getItem());
     }
