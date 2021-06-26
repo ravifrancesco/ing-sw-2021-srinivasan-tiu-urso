@@ -24,10 +24,12 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.InputEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -83,12 +85,14 @@ public class GameController {
 
     public static final int SIZE_SUPPLY = 4;
 
-    private ArrayList<LeaderCard> playedLeaderCard; // test
+    @FXML private ImageView marketImage;
+
+    @FXML private ImageView dvGridImage;
 
     // Label for locker
 
     @FXML
-    Label coinLabel;
+    Label goldLabel;
 
     @FXML
     Label shieldLabel;
@@ -249,7 +253,7 @@ public class GameController {
     public void updateLockerLabel(Resource resource, int quantity) {
         String stringQuantity = "x " + quantity;
         switch (resource) {
-            case GOLD -> coinLabel.setText(stringQuantity);
+            case GOLD -> goldLabel.setText(stringQuantity);
             case SHIELD -> shieldLabel.setText(stringQuantity);
             case STONE -> stoneLabel.setText(stringQuantity);
             case SERVANT -> servantLabel.setText(stringQuantity);
@@ -508,7 +512,10 @@ public class GameController {
         gui.getReducedModel().askMarketUpdate();
         Stage stage = new Stage();
         stage.setTitle("Market");
-        stage.setScene(new Scene(root, 465, 600));
+        stage.setScene(new Scene(root, 465, 700));
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner(
+                ((Node)event.getSource()).getScene().getWindow() );
         stage.show();
     }
 
@@ -526,6 +533,9 @@ public class GameController {
         Stage stage = new Stage();
         stage.setTitle("Development card grid");
         stage.setScene(new Scene(root, 700, 800));
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner(
+                ((Node)event.getSource()).getScene().getWindow() );
         stage.show();
     }
 
@@ -555,6 +565,7 @@ public class GameController {
             }
         }
         gui.setEnableNoDeposit();
+        gui.setEnableImageViews();
         gui.getClientConnection().send(new PlayerChangesDeposit(deposit));
     }
 
@@ -613,8 +624,24 @@ public class GameController {
         IntStream.range(0, SIZE_SUPPLY)
                 .filter(i -> supplyControllers[i] != null)
                 .forEach(i -> supplyControllers[i].setDisable());
+    }
 
-        // TODO disable productions and other buttons
+    public void setDisableDeposit() {
+        IntStream.range(0, NUM_SHELFES)
+                .filter(i -> resourceControllers[i] != null)
+                .forEach(i -> resourceControllers[i].setDisable());
+    }
+
+    public void setDisableImageViews() {
+        marketImage.setDisable(true);
+        dvGridImage.setDisable(true);
+    }
+
+    public void setDisable() {
+        setDisableNoDeposit();
+        setDisableDeposit();
+
+        // TODO disable productions
     }
 
     public void setEnableNoDeposit() {
@@ -625,8 +652,24 @@ public class GameController {
         IntStream.range(0, SIZE_SUPPLY)
                 .filter(i -> supplyControllers[i] != null)
                 .forEach(i -> supplyControllers[i].setEnable());
+    }
 
-        // TODO enable productions and other buttons
+    public void setEnableDeposit() {
+        IntStream.range(0, NUM_SHELFES)
+                .filter(i -> resourceControllers[i] != null)
+                .forEach(i -> resourceControllers[i].setEnable());
+    }
+
+    public void setEnableImageViews() {
+        marketImage.setDisable(false);
+        dvGridImage.setDisable(false);
+    }
+
+    public void setEnable() {
+        setEnableNoDeposit();
+        setEnableDeposit();
+
+        // TODO enable productions
     }
 
     public void showWarehouseButtons() {
@@ -673,7 +716,7 @@ public class GameController {
             hideAlert();
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/discard_excess_leader_card.fxml"));
-                Parent root = null;
+                Parent root;
                 root = fxmlLoader.load();
                 DiscardLeaderCardController controller = fxmlLoader.getController();
                 controller.setGui(gui);
@@ -698,7 +741,7 @@ public class GameController {
         } else {
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/choose_bonus_resources.fxml"));
-                Parent root = null;
+                Parent root;
                 root = fxmlLoader.load();
                 ChooseBonusResourcesController controller = fxmlLoader.getController();
                 controller.setGui(gui);

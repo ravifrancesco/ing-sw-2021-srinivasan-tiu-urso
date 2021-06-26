@@ -205,7 +205,7 @@ public class BuyDevCardController {
     private ImageView createSelectableResourceDeposit(Resource resource, int pos) {
         String resourceName = "";
         switch (resource) {
-            case GOLD -> resourceName = "coin";
+            case GOLD -> resourceName = "gold";
             case SHIELD -> resourceName = "shield";
             case STONE -> resourceName = "stone";
             case SERVANT -> resourceName = "servant";
@@ -236,7 +236,7 @@ public class BuyDevCardController {
     private ImageView createSelectableResourceExtraDeposit(Resource resource, int pos) {
         String resourceName = "";
         switch (resource) {
-            case GOLD -> resourceName = "coin";
+            case GOLD -> resourceName = "gold";
             case SHIELD -> resourceName = "shield";
             case STONE -> resourceName = "stone";
             case SERVANT -> resourceName = "servant";

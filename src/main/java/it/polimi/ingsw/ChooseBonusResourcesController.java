@@ -17,7 +17,7 @@ import java.util.List;
 public class ChooseBonusResourcesController {
 
     @FXML
-    private ImageView coinIW;
+    private ImageView goldIW;
     @FXML
     private ImageView servantIW;
     @FXML
@@ -57,10 +57,10 @@ public class ChooseBonusResourcesController {
     }
 
     private void initializeResources() {
-        resources = Arrays.asList(coinIW, servantIW, shieldIW, stoneIW);
-        coinIW.setOnMouseClicked(mouseEvent -> {
+        resources = Arrays.asList(goldIW, servantIW, shieldIW, stoneIW);
+        goldIW.setOnMouseClicked(mouseEvent -> {
             resources.forEach(this::setBrightnessLow);
-            setBrightnessHigh(coinIW);
+            setBrightnessHigh(goldIW);
             selectedResource = Resource.GOLD;
         });
         servantIW.setOnMouseClicked(mouseEvent -> {

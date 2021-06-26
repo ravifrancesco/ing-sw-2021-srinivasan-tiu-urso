@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.MarketViewController">
+<AnchorPane prefHeight="700.0" prefWidth="465.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.MarketViewController">
    <children>
       <ImageView fitHeight="600.0" fitWidth="503.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -31,5 +29,9 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
       </GridPane>
-   </children>
+       <Button fx:id="backButton" layoutX="173.0" layoutY="618.0" mnemonicParsing="false" onMouseClicked="#onBackPressed" prefHeight="62.0" prefWidth="119.0" style="-fx-background-color: #323232;" text="BACK" textFill="WHITE">
+           <font>
+               <Font name="Garamond" size="14.0" />
+           </font>
+       </Button>   </children>
 </AnchorPane>

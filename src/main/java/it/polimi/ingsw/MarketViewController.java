@@ -4,10 +4,12 @@ import it.polimi.ingsw.model.marbles.Marble;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.game.PlayerGetsFromMarket;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -25,6 +27,9 @@ public class MarketViewController {
     ImageView freeMarbleIW;
     ArrayList<ImageView> slotsIW;
     ArrayList<ImageView> marblesIW;
+
+    @FXML
+    Button backButton;
 
     public void setGui(GUI gui) {
         this.gui = gui;
@@ -164,6 +169,11 @@ public class MarketViewController {
             }
         });
 
+    }
+
+    public void onBackPressed() {
+        Stage stage = (Stage) backButton.getScene().getWindow();
+        stage.close();
     }
     
 }

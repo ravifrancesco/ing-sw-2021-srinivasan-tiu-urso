@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="462.0" prefWidth="760.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.DiscardLeaderCardController">
+<AnchorPane prefHeight="462.0" prefWidth="760.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.DiscardLeaderCardController">
    <children>
       <HBox fx:id="leaderCardContainerHBox" alignment="CENTER" layoutX="25.0" layoutY="107.0" prefHeight="300.0" prefWidth="711.0" />
       <Label layoutX="204.0" layoutY="56.0" text="Select a Leader Card to discard">
