@@ -137,4 +137,15 @@ public class ReducedModel {
         Platform.runLater(() -> gameController.updateHand(player, reducedPlayer.getHand()));
     }
 
+    public void updateDevelopmentCards(String player, List<Stack<DevelopmentCard>> playedDevelopmentCards) {
+        if (gameController == null) return;
+        Platform.runLater(() -> gameController.printPlayedDevelopmentCards(player, playedDevelopmentCards));
+    }
+
+    public void askDevelopmentCardsUpdate(String player) {
+        ReducedDashboard reducedDashboard = reducedGame.getReducedPlayer(player).getDashboard();
+        List<Stack<DevelopmentCard>> playedDevelopmentCards = reducedDashboard.getPlayedDevelopmentCards();
+        Platform.runLater(() -> gameController.printPlayedDevelopmentCards(player, playedDevelopmentCards));
+    }
+
 }

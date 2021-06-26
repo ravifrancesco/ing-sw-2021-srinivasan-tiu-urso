@@ -72,6 +72,7 @@ public class ReducedDashboard {
 
     public void setPlayedDevelopmentCards(List<Stack<DevelopmentCard>> playedDevelopmentCards) {
         this.playedDevelopmentCards = playedDevelopmentCards;
+        updateDevelopmentCards();
     }
 
     public ArrayList<Resource> getSupply() {
@@ -153,5 +154,9 @@ public class ReducedDashboard {
 
     private void updatePlayerPoints() {
         this.reducedModel.updatePoints(reducedPlayer.getNickname(), playerPoints);
+    }
+
+    private void updateDevelopmentCards() {
+        this.reducedModel.updateDevelopmentCards(reducedPlayer.getNickname(), playedDevelopmentCards);
     }
 }

@@ -134,6 +134,7 @@ public class GameController {
         ReducedModel reducedModel = gui.getReducedModel();
         reducedModel.askWarehouseUpdate(currentDisplayedPlayer);
         reducedModel.askLeaderCardsUpdate(currentDisplayedPlayer);
+        reducedModel.askDevelopmentCardsUpdate(currentDisplayedPlayer);
         reducedModel.askFaithMarkerPosition(currentDisplayedPlayer);
         reducedModel.askPointsUpdate(currentDisplayedPlayer);
         hideWarehouseButtons();
@@ -264,7 +265,10 @@ public class GameController {
         reloadWarehouseImages();
     }
 
-    public void printDevelopmentCards(List<Stack<DevelopmentCard>> playedDevelopmentCards) {
+    public void printPlayedDevelopmentCards(String player, List<Stack<DevelopmentCard>> playedDevelopmentCards) {
+        if (!player.equals(currentDisplayedPlayer)) {
+            return;
+        }
         for (int i = 0; i < NUM_DEVELOPMENT_CARDS; i++) {
             if (playedDevelopmentCards != null && !playedDevelopmentCards.get(i).empty()) {
                 printDevelopmentCard(playedDevelopmentCards.get(i).peek(), i);
