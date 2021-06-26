@@ -2,12 +2,10 @@ package it.polimi.ingsw.controller.client.reducedModel;
 
 import it.polimi.ingsw.client.ReducedModel;
 import it.polimi.ingsw.model.TurnPhase;
+import it.polimi.ingsw.model.singlePlayer.tokens.Token;
 import it.polimi.ingsw.model.specialAbilities.ProductionPower;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ReducedGame {
 
@@ -30,6 +28,9 @@ public class ReducedGame {
     private ReducedModel reducedModel;
 
     private int firstTurns;
+
+    private Stack<Token> tokens;
+    private Token token;
 
     public ReducedGame(ReducedModel reducedModel) {
         this.reducedModel = reducedModel;
@@ -126,5 +127,13 @@ public class ReducedGame {
 
     public ReducedPlayer getReducedPlayer(String nickname) {
         return this.players.get(nickname);
+    }
+
+    public void setTokens(Stack<Token> tokens) {
+        this.tokens = tokens;
+    }
+
+    public void setToken(Token token) {
+        this.token = token;
     }
 }

@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 public class FaithTrack extends FaithTrackObservable {
 
 	private int position;
+	private int LorenzoIlMagnificoPosition;
 
 	private Map<Integer, VaticanReport> vaticanReports;
 	private int[] faithTrackVictoryPoints;
@@ -42,10 +43,12 @@ public class FaithTrack extends FaithTrackObservable {
 	public FaithTrack(GameSettings gameSettings, Dashboard dashboard) {
 		this.victoryPoints = 0;
 		this.position = 0;
+		this.LorenzoIlMagnificoPosition = 0;
 		this.vaticanReports = gameSettings.getVaticanReports().stream()
 				.collect(Collectors.toMap(v -> v.end, VaticanReport::copy));
 		this.faithTrackVictoryPoints = gameSettings.getFaithTrackVictoryPoints();
 		this.dashboard = dashboard;
+		FaithTrack.maxReached = 0;
 	}
 
 	/**
@@ -155,5 +158,22 @@ public class FaithTrack extends FaithTrackObservable {
 
 	public Dashboard getDashboard() {
 		return dashboard;
+	}
+
+	public void moveLorenzoIlMagnificoMarker(int pos) {
+		for (int i = 1; i <= pos; i++) {
+			if (LorenzoIlMagnificoPosition == GameSettings.FAITH_TRACK_LENGTH - 1) {
+				notify(this);
+				return;
+			}
+			LorenzoIlMagnificoPosition++;
+			updateMaxReached(LorenzoIlMagnificoPosition);
+			updateVaticanReports();
+		}
+		notify(this);
+	}
+
+	public int getLorenzoIlMagnificoPosition() {
+		return LorenzoIlMagnificoPosition;
 	}
 }

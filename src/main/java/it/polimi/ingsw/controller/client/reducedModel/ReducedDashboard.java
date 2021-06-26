@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.specialAbilities.ProductionPower;
+import it.polimi.ingsw.server.lobby.LobbyType;
 import it.polimi.ingsw.utils.Pair;
 
 import java.util.*;
@@ -32,6 +33,7 @@ public class ReducedDashboard {
 
     // FaithTrack
     private int position;
+    private int LorenzoIlMagnificoPosition;
     private Map<Pair<Integer, Integer>, Pair<Integer, Integer>> vaticanReports;
     private int[] faithTrackVictoryPoints;
 
@@ -135,6 +137,10 @@ public class ReducedDashboard {
 
     public void setFaithTrackVictoryPoints(int[] faithTrackVictoryPoints) {
         this.faithTrackVictoryPoints = faithTrackVictoryPoints;
+    }
+
+    public void setLorenzoIlMagnificoPosition(int LorenzoIlMagnificoPosition) {
+        this.LorenzoIlMagnificoPosition = LorenzoIlMagnificoPosition;
     }
 
     public void setProductionPower(ProductionPower productionPower) {
