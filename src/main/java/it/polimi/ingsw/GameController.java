@@ -229,12 +229,8 @@ public class GameController {
         if (!player.equals(currentDisplayedPlayer)) {
             return;
         }
-        IntStream.range(0, playedLeaderCards.size())
-                .filter(i -> leaderCardSlots[i].isEmpty())
-                .forEach(System.out::println);
 
         IntStream.range(0, playedLeaderCards.size())
-                .filter(i -> leaderCardSlots[i].isEmpty())
                 .forEach(i -> printLeaderCard(playedLeaderCards.get(i), i));
     }
 
@@ -549,6 +545,7 @@ public class GameController {
         vaticanReportTokens = Arrays.asList(vaticanReport0IW, vaticanReport1IW, vaticanReport2IW);
     }
 
+    // TODO delete
     public void openChooseResourceWindow() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/choose_resource.fxml"));

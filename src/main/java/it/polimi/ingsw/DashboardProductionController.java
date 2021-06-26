@@ -297,7 +297,12 @@ public class DashboardProductionController {
         HashMap<Resource, Integer> resourceProducedOptional = new HashMap<>();
         resourceProducedOptional.put(selectedResource, 1);
 
-        gui.getClientConnection().send(new ActivateDashboardProductionGameMessage(resourceContainer, resourceRequiredOptional ,resourceProducedOptional));
+        if (resourceContainer == null || selectedResource == null || resourceProducedOptional.isEmpty()) {
+            gui.printErrorMessage("Select the resources first");
+            return;
+        }
+
+        gui.getClientConnection().send(new ActivateDashboardProductionGameMessage(resourceContainer, resourceRequiredOptional , resourceProducedOptional));
 
         Stage stage = (Stage) btnOk.getScene().getWindow();
         stage.close();

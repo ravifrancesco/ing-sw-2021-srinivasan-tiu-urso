@@ -297,6 +297,11 @@ public class LeaderProductionController {
         HashMap<Resource, Integer> resourceProducedOptional = new HashMap<>();
         resourceProducedOptional.put(selectedResource, 1);
 
+        if (resourceContainer == null || selectedResource == null) {
+            gui.printErrorMessage("Select the resources first");
+            return;
+        }
+
         gui.getClientConnection().send(new ActivateLeaderProductionGameMessage(cardIndex, resourceContainer, new HashMap<>(), resourceProducedOptional));
 
         Stage stage = (Stage) btnOk.getScene().getWindow();
