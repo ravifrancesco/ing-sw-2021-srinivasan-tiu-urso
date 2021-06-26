@@ -2,6 +2,8 @@ package it.polimi.ingsw;
 
 import it.polimi.ingsw.client.ReducedModel;
 import it.polimi.ingsw.controller.client.reducedModel.ReducedGame;
+import it.polimi.ingsw.model.Banner;
+import it.polimi.ingsw.model.BannerEnum;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.TurnPhase;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
@@ -57,9 +59,13 @@ public class GameController {
 
     private Slot[] leaderCardSlots;
 
+    private Slot[] developmentCardSlots;
+
     private ResourceController[] resourceControllers;
 
     private LeaderCardController[] leaderCardControllers;
+
+    private DevelopmentCardController[] developmentCardControllers;
 
     private ResourceController[] supplyControllers;
 
@@ -80,6 +86,8 @@ public class GameController {
     public static final int NUM_FAITH_SLOTS = 25;
 
     public static final int NUM_LEADER_CARDS = 2;
+
+    public static final int NUM_DEVELOPMENT_CARDS = 3;
 
     public static final int SIZE_EXTRA_DEPOSITS = 4;
 
@@ -128,12 +136,6 @@ public class GameController {
         reducedModel.askLeaderCardsUpdate(currentDisplayedPlayer);
         reducedModel.askFaithMarkerPosition(currentDisplayedPlayer);
         reducedModel.askPointsUpdate(currentDisplayedPlayer);
-        ReducedGame rg = gui.getReducedModel().getReducedGame();
-        if (currentDisplayedPlayer.equals(rg.getClientPlayer()) && currentDisplayedPlayer.equals(rg.getCurrentPlayer())) {
-            setEnable();
-        } else {
-            setDisable();
-        }
         hideWarehouseButtons();
     }
 
@@ -144,6 +146,8 @@ public class GameController {
         resourceControllers = new ResourceController[NUM_SHELFES + SIZE_EXTRA_DEPOSITS];
         leaderCardSlots = new Slot[NUM_LEADER_CARDS];
         leaderCardControllers = new LeaderCardController[NUM_LEADER_CARDS];
+        developmentCardSlots = new Slot[NUM_DEVELOPMENT_CARDS];
+        developmentCardControllers = new DevelopmentCardController[NUM_DEVELOPMENT_CARDS];
         supplyControllers = new ResourceController[SIZE_SUPPLY];
 
         depositSlots[0] = new Slot(327, 391, 52, 58);
@@ -170,7 +174,22 @@ public class GameController {
             pane.getChildren().add(slot.getRectangle());
         }
 
+        developmentCardSlots[0] = new Slot(580, 430, 155, 235);
+        developmentCardSlots[1] = new Slot(755, 430, 155, 235);
+        developmentCardSlots[2] = new Slot(930, 430, 155, 235);
+
+        for (Slot slot : developmentCardSlots) {
+            slot.setStroke(Color.RED);
+            pane.getChildren().add(slot.getRectangle());
+        }
+
         initializeFaithTrack();
+
+        // DEBUG
+
+        DevelopmentCard dvCard = new DevelopmentCard(1, 2, new HashMap<>(), new ProductionPower(new HashMap<>(), new HashMap<>(), 2), new Banner(BannerEnum.YELLOW, 2));
+
+        printDevelopmentCard(dvCard, 1);
 
     }
 
@@ -245,6 +264,28 @@ public class GameController {
         reloadWarehouseImages();
     }
 
+    public void printDevelopmentCards(List<Stack<DevelopmentCard>> playedDevelopmentCards) {
+        for (int i = 0; i < NUM_DEVELOPMENT_CARDS; i++) {
+            if (playedDevelopmentCards != null && !playedDevelopmentCards.get(i).empty()) {
+                printDevelopmentCard(playedDevelopmentCards.get(i).peek(), i);
+            }
+        }
+    }
+
+    public void printDevelopmentCard(DevelopmentCard developmentCard, int pos) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/development_card.fxml"));
+        try {
+            loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        developmentCardControllers[pos] = loader.getController();
+        developmentCardControllers[pos].assignSlots(developmentCardSlots);
+        developmentCardControllers[pos].createItem(developmentCard, pos);
+
+        pane.getChildren().add(developmentCardControllers[pos].getItem());
+    }
+
     public void reloadWarehouseImages() {
         for (ResourceController resourceController : resourceControllers) {
             if (resourceController != null) {
@@ -292,6 +333,13 @@ public class GameController {
         IntStream.range(0, supply.size())
                 .filter(i -> supply.get(i) != null)
                 .forEach(i -> printSupplyResource(supply.get(i), i));
+
+        ReducedGame rg = gui.getReducedModel().getReducedGame();
+        if (currentDisplayedPlayer.equals(rg.getClientPlayer()) && currentDisplayedPlayer.equals(rg.getCurrentPlayer())) {
+            setEnable();
+        } else {
+            setDisable();
+        }
     }
 
     public void cleanWarehouse() {
@@ -333,9 +381,10 @@ public class GameController {
 
     @FXML
     private void testClick(MouseEvent event) {
-        /*
+
         System.out.println(event.getX());
         System.out.println(event.getY());
+        /*
         faithMarkerController.moveFaithMarker(faithMarkerController.getPosition()+1);
         if (chooseResourceController == null) {
             // DEBUG
