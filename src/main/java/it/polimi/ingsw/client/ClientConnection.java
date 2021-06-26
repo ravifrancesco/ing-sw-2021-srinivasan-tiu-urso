@@ -154,6 +154,7 @@ public class ClientConnection implements Runnable {
         reducedGame.setGameStarted(gameStarted);
         String oldPlayer = reducedGame.getCurrentPlayer();
         TurnPhase oldPhase = reducedGame.getTurnPhase();
+        reducedGame.setGameStarted(gameStarted);
         reducedGame.setFirstPlayer(firstPlayer);
         reducedGame.setCurrentPlayer(currentPlayer);
         reducedGame.updatePlayers(playersNicknames);
