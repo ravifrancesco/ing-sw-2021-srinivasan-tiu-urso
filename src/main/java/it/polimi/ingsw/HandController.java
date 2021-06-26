@@ -1,10 +1,12 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.model.cards.LeaderCard;
+import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.game.PlayLeaderCardGameMessage;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.game.PlayerDiscardsExcessLeaderCards;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -15,14 +17,37 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DiscardLeaderCardController {
+public class HandController {
 
     @FXML
     HBox leaderCardContainerHBox;
 
+    @FXML
+    Button closeButton;
+
+    @FXML
+    Button discardButton;
+
+    @FXML
+    Button playButton;
+
     public GUI gui;
 
-    int selectedCard;
+    private List<ImageView> imageViews;
+
+    Integer selectedCard;
+
+    public void initialize() {
+        imageViews = new ArrayList<>();
+        enableButtons(false);
+    }
+
+    private void enableButtons(boolean b) {
+        playButton.setVisible(b);
+        playButton.setDisable(!b);
+        discardButton.setVisible(b);
+        discardButton.setDisable(!b);
+    }
 
     public void setGui(GUI gui) {
         this.gui = gui;
@@ -40,11 +65,15 @@ public class DiscardLeaderCardController {
         imageView.setFitHeight(200);
         imageView.setFitWidth(132);
         HBox.setMargin(imageView, new Insets(10,10,10,10));
-        imageView.setOnMouseClicked(event -> {
-            gui.getClientConnection().send(new PlayerDiscardsExcessLeaderCards(index));
-            ((Node)(event.getSource())).getScene().getWindow().hide();
-        });
+        imageView.setOnMouseClicked(event -> selectedCard(imageView));
+        imageViews.add(imageView);
+    }
 
+    private void selectedCard(ImageView imageView) {
+        selectedCard = imageViews.indexOf(imageView);
+        imageViews.forEach(this::setBrightnessHigh);
+        setBrightnessLow(imageView);
+        enableButtons(true);
     }
 
     private void setBrightnessLow(ImageView imageView) {
@@ -66,12 +95,20 @@ public class DiscardLeaderCardController {
 
     @FXML
     private void onPlayClicked(InputEvent event) {
-
+        if (selectedCard == null) {
+            this.gui.printErrorMessage("Select a card first!");
+            return;
+        }
+        gui.getClientConnection().send(new PlayLeaderCardGameMessage());
+        ((Node)(event.getSource())).getScene().getWindow().hide();
     }
 
     @FXML
     private void onDiscardClicked(InputEvent event) {
-
+        if (selectedCard == null) {
+            this.gui.printErrorMessage("Select a card first!");
+        }
     }
+
 
 }

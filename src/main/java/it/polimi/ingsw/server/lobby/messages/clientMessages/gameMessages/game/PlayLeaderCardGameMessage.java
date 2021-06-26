@@ -19,7 +19,6 @@ public class PlayLeaderCardGameMessage extends ClientGameMessage implements Seri
 
     @Override
     public void handle(Connection c, ServerController serverController) {
-        System.out.println("TESTEESTETS");
         serverController.playLeaderCard(c.getNickname(), cardToPlay, resourceContainer);
     }
 }
