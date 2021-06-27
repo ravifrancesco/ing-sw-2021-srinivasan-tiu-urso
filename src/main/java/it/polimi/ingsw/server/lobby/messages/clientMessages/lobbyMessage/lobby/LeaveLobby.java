@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.lobby.messages.clientMessages.lobbyMessage.lobby;
 
+import it.polimi.ingsw.client.SinglePlayerView;
 import it.polimi.ingsw.controller.ServerController;
 import it.polimi.ingsw.server.Connection;
 import it.polimi.ingsw.server.lobby.GameLobby;
@@ -21,5 +22,10 @@ public class LeaveLobby extends ClientGameMessage implements Serializable {
 
         // go back to main lobby
         connection.enterLobby(connection.getMainLobby());
+    }
+
+    @Override
+    public void handleLocally(SinglePlayerView singlePlayerView, ServerController serverController) {
+        // TODO
     }
 }

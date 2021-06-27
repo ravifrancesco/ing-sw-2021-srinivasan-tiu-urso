@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.game;
 
+import it.polimi.ingsw.client.SinglePlayerView;
 import it.polimi.ingsw.controller.ServerController;
 import it.polimi.ingsw.server.Connection;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.ClientGameMessage;
@@ -21,6 +22,15 @@ public class PlayerStoresFromSupply extends ClientGameMessage implements Seriali
         if (output == 0) {
             c.sendSuccessfulMoveMessage("Store from supply successfull, added resource to deposit index " + to);
             c.sendCLIupdateMessage("after_store_supply");
+        }
+    }
+
+    @Override
+    public void handleLocally(SinglePlayerView singlePlayerView, ServerController serverController) {
+        int output = serverController.storeFromSupply(singlePlayerView.getNickname(), from, to);
+        if (output == 0) {
+            singlePlayerView.printSuccessfulMove("Store from supply successfull, added resource to deposit index " + to);
+            singlePlayerView.getUi().handleMenuCode("after_store_supply");
         }
     }
 }

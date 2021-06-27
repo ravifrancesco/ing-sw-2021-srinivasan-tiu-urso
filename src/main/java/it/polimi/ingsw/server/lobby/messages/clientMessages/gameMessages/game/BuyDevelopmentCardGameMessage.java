@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.game;
 
+import it.polimi.ingsw.client.SinglePlayerView;
 import it.polimi.ingsw.controller.ServerController;
 import it.polimi.ingsw.model.ResourceContainer;
 import it.polimi.ingsw.server.Connection;
@@ -26,6 +27,15 @@ public class BuyDevelopmentCardGameMessage extends ClientGameMessage implements 
         int output = serverController.buyDevelopmentCard(c.getNickname(), row, column, resourceToPayCost, position);
         if(output == 0) {
             c.sendSuccessfulMoveMessage("Development card (" + row + "," + column + ")" +
+                    " has been succesfully bought and placed in position " + position);
+        }
+    }
+
+    @Override
+    public void handleLocally(SinglePlayerView singlePlayerView, ServerController serverController) {
+        int output = serverController.buyDevelopmentCard(singlePlayerView.getNickname(), row, column, resourceToPayCost, position);
+        if(output == 0) {
+            singlePlayerView.printSuccessfulMove("Development card (" + row + "," + column + ")" +
                     " has been succesfully bought and placed in position " + position);
         }
     }

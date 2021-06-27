@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
-public class ClientConnection implements Runnable {
+public class ClientConnection implements Runnable, Intermediary {
     private String playerNickname;
 
     private String ip;

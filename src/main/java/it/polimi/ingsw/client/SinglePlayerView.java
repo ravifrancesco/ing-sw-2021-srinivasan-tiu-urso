@@ -1,8 +1,10 @@
 package it.polimi.ingsw.client;
 
+import it.polimi.ingsw.client.IO.Constants;
 import it.polimi.ingsw.controller.ReducedDashboard;
 import it.polimi.ingsw.controller.ReducedGame;
 import it.polimi.ingsw.controller.ReducedGameBoard;
+import it.polimi.ingsw.controller.ServerController;
 import it.polimi.ingsw.controller.client.reducedModel.ReducedPlayer;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
@@ -10,6 +12,7 @@ import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.observerPattern.observers.*;
 import it.polimi.ingsw.server.Server;
 import it.polimi.ingsw.server.lobby.*;
+import it.polimi.ingsw.server.lobby.messages.clientMessages.ClientMessage;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.ClientGameMessage;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.lobbyMessage.ClientLobbyMessage;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.lobbyMessage.lobby.RegisterName;
@@ -34,18 +37,23 @@ import java.util.stream.Collectors;
  * TODO doc
  * TODO check synchronized methods (send/close)
  */
-public class SinglePlayerView implements
+public class SinglePlayerView implements Intermediary,
         FaithTrackObserver, WarehouseObserver, DashboardObserver,
         PlayerObserver, GameObserver, GameBoardObserver,
         DevelopmentCardGridObserver, MarketObserver, GameErrorObserver {
 
     private String nickname;
 
-    public final UI ui;
+    private final UI ui;
+
+    private ServerController serverController;
 
     public SinglePlayerView(UI ui, String nickname) {
         this.ui = ui;
         this.nickname = nickname;
+
+        GameSettings gameSettings = GameSettings.loadDefaultGameSettings();
+        this.serverController = new ServerController("local_single_player", 1);
     }
 
     public String getNickname() {
@@ -158,6 +166,23 @@ public class SinglePlayerView implements
         } else {
             return 2;
         }
+    }
+
+    @Override
+    public void send(ClientMessage message) {
+        ((ClientGameMessage) message).handleLocally(this, serverController);
+    }
+
+    public void printSuccessfulMove(String message) {
+        ui.printColoredMessage(message, Constants.ANSI_GREEN);
+    }
+
+    public UI getUi() {
+        return ui;
+    }
+
+    public void handleGameEnded() {
+        // TODO
     }
 }
 

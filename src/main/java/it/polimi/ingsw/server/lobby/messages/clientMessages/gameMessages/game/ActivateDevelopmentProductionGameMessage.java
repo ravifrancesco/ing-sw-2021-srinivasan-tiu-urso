@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.game;
 
+import it.polimi.ingsw.client.SinglePlayerView;
 import it.polimi.ingsw.controller.ServerController;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.ResourceContainer;
@@ -29,6 +30,15 @@ public class ActivateDevelopmentProductionGameMessage extends ClientGameMessage 
         output = serverController.activateDevelopmentCardProductionPower(c.getNickname(), cardToActivate, resourceToPayCost, resourceRequiredOptional, resourceProducedOptional);
         if (output == 0) {
             c.sendSuccessfulMoveMessage("Development card production activated successfully");
+        }
+    }
+
+    @Override
+    public void handleLocally(SinglePlayerView singlePlayerView, ServerController serverController) {
+        int output;
+        output = serverController.activateDevelopmentCardProductionPower(singlePlayerView.getNickname(), cardToActivate, resourceToPayCost, resourceRequiredOptional, resourceProducedOptional);
+        if (output == 0) {
+            singlePlayerView.printSuccessfulMove("Development card production activated successfully");
         }
     }
 }

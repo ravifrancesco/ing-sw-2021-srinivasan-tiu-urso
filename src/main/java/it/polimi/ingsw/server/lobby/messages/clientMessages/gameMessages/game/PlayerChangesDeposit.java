@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.game;
 
+import it.polimi.ingsw.client.SinglePlayerView;
 import it.polimi.ingsw.controller.ServerController;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.server.Connection;
@@ -19,6 +20,14 @@ public class PlayerChangesDeposit extends ClientGameMessage implements Serializa
         int output = serverController.changeDeposit(c.getNickname(), deposit);
         if (output == 0) {
             c.sendSuccessfulMoveMessage("Deposit swaps successful");
+        }
+    }
+
+    @Override
+    public void handleLocally(SinglePlayerView singlePlayerView, ServerController serverController) {
+        int output = serverController.changeDeposit(singlePlayerView.getNickname(), deposit);
+        if (output == 0) {
+            singlePlayerView.printSuccessfulMove("Deposit swaps successful");
         }
     }
 }

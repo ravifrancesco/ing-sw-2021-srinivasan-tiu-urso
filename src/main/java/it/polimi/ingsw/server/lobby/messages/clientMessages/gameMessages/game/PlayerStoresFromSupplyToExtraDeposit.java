@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.game;
 
+import it.polimi.ingsw.client.SinglePlayerView;
 import it.polimi.ingsw.controller.ServerController;
 import it.polimi.ingsw.server.Connection;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.ClientGameMessage;
@@ -22,6 +23,15 @@ public class PlayerStoresFromSupplyToExtraDeposit extends ClientGameMessage impl
         int output = serverController.storeFromSupplyInExtraDeposit(c.getNickname(), leaderCardPos, from, to);
         if(output == 0) {
             c.sendSuccessfulMoveMessage("Successfull storage to extra deposit, adding resource to leader card " +
+                    leaderCardPos + " on position " + to);
+        }
+    }
+
+    @Override
+    public void handleLocally(SinglePlayerView singlePlayerView, ServerController serverController) {
+        int output = serverController.storeFromSupplyInExtraDeposit(singlePlayerView.getNickname(), leaderCardPos, from, to);
+        if(output == 0) {
+            singlePlayerView.printSuccessfulMove("Successfull storage to extra deposit, adding resource to leader card " +
                     leaderCardPos + " on position " + to);
         }
     }

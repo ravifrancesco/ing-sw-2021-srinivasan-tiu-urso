@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.game;
 
+import it.polimi.ingsw.client.SinglePlayerView;
 import it.polimi.ingsw.controller.ServerController;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.ResourceContainer;
@@ -29,6 +30,15 @@ public class ActivateLeaderProductionGameMessage extends ClientGameMessage imple
         output = serverController.activateLeaderCardProductionPower(c.getNickname(), cardToActivate, resourceToPayCost, resourceRequiredOptional, resourceProducedOptional);
         if (output == 0) {
             c.sendSuccessfulMoveMessage("Leader card production activated successfully!");
+        }
+    }
+
+    @Override
+    public void handleLocally(SinglePlayerView singlePlayerView, ServerController serverController) {
+        int output;
+        output = serverController.activateLeaderCardProductionPower(singlePlayerView.getNickname(), cardToActivate, resourceToPayCost, resourceRequiredOptional, resourceProducedOptional);
+        if (output == 0) {
+            singlePlayerView.printSuccessfulMove("Leader card production activated successfully!");
         }
     }
 }

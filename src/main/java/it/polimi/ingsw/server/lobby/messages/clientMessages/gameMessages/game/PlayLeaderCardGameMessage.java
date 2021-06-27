@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.game;
 
+import it.polimi.ingsw.client.SinglePlayerView;
 import it.polimi.ingsw.controller.ServerController;
 import it.polimi.ingsw.model.ResourceContainer;
 import it.polimi.ingsw.server.Connection;
@@ -21,6 +22,15 @@ public class PlayLeaderCardGameMessage extends ClientGameMessage implements Seri
         output = serverController.playLeaderCard(c.getNickname(), cardToPlay);
         if (output == 0) {
             c.sendSuccessfulMoveMessage("Card with index " + cardToPlay + " has been placed correctly!");
+        }
+    }
+
+    @Override
+    public void handleLocally(SinglePlayerView singlePlayerView, ServerController serverController) {
+        int output;
+        output = serverController.playLeaderCard(singlePlayerView.getNickname(), cardToPlay);
+        if (output == 0) {
+            singlePlayerView.printSuccessfulMove("Card with index " + cardToPlay + " has been placed correctly!");
         }
     }
 }
