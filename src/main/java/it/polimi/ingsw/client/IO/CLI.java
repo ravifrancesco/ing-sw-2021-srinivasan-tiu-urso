@@ -111,15 +111,7 @@ public class CLI implements UI {
             while (true) {
                 String command = this.readCommand();
                 ClientMessage clientMessage = ClientMessageInputParser.parseInput(command, this);
-                if (local) {
-                    singlePlayerView.send(clientMessage);
-                } else if (clientMessage != null) {
-                    try {
-                        clientConnection.send(clientMessage);
-                    } catch (Exception e) {
-                        System.out.println(e.getMessage());
-                    }
-                }
+                sendMessage(clientMessage);
                 // TODO ugly asf, need to find a way to show the "enter command" after server answers
                 // and client is shown the response to its command
                 try {
@@ -130,6 +122,18 @@ public class CLI implements UI {
                 }
             }
         }).start();
+    }
+
+    private void sendMessage(ClientMessage clientMessage) {
+        if (local && clientMessage != null) {
+            singlePlayerView.send(clientMessage);
+        } else if (clientMessage != null) {
+            try {
+                sendMessage(clientMessage);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
     }
 
 
@@ -1027,7 +1031,7 @@ public class CLI implements UI {
         int owed = getOwed(reducedGame.getFirstTurns());
         if(owed - Arrays.stream(reducedGame.getPlayers()
                 .get(reducedGame.getClientPlayer()).getDashboard().getDeposit()).filter(Objects::nonNull).count() == 0) {
-            clientConnection.send(ClientMessageInputParser.parseInput("ENDTURN", this));
+            sendMessage(ClientMessageInputParser.parseInput("ENDTURN", this));
         } else {
             printMessage("You are owed " + owed + " more resources.");
 
@@ -1053,7 +1057,7 @@ public class CLI implements UI {
                 showDeposit(reducedModel.getReducedPlayer().getDashboard().getDeposit());
                 printMessage("");
             } else {
-                clientConnection.send(ClientMessageInputParser.parseInput("ENDTURN", this));
+                sendMessage(ClientMessageInputParser.parseInput("ENDTURN", this));
             }
         }
     }

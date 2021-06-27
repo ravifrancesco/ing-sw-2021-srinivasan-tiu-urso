@@ -139,6 +139,24 @@ public class ServerController {
         gameBoard.addObserver(singlePlayerView);
         gameBoard.getMarket().addObserver(singlePlayerView);
         gameBoard.getDevelopmentCardGrid().addObserver(singlePlayerView);
+
+        updatePlayerObserversLocal(singlePlayerView);
+
+    }
+
+    public void updatePlayerObserversLocal(SinglePlayerView singlePlayerView) {
+        List<Player> players = new ArrayList<>(game.getPlayers().values());
+        players.forEach(p -> p.addObserver(singlePlayerView));
+        players.forEach(p -> p.getDashboard().addObserver(singlePlayerView));
+        players.forEach(p -> p.getDashboard().getFaithTrack().addObserver(singlePlayerView));
+        players.forEach(p -> p.getDashboard().getWarehouse().addObserver(singlePlayerView));
+
+        Player currentPlayer = game.getPlayers().get(singlePlayerView.getNickname());
+        currentPlayer.addObserver(singlePlayerView);
+        currentPlayer.getDashboard().addObserver(singlePlayerView);
+        currentPlayer.getDashboard().getFaithTrack().addObserver(singlePlayerView);
+        currentPlayer.getDashboard().getWarehouse().addObserver(singlePlayerView);
+
     }
 
     /**

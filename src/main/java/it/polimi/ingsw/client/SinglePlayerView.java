@@ -27,10 +27,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -58,7 +55,7 @@ public class SinglePlayerView implements Intermediary, Runnable,
         this.reducedModel = new ReducedModel();
         ui.startUI(this, reducedModel);
         askNickname();
-        System.out.println("Insert STARTGAME to start playing");
+        System.out.println("Isnert STARTGAME to start playing");
     }
 
     public void askNickname() {
@@ -71,6 +68,7 @@ public class SinglePlayerView implements Intermediary, Runnable,
                 System.out.println("Please insert a non-empty nickname");
             } else {
                 nickname = choice;
+                this.reducedModel.setNickname(nickname);
                 try {
                     serverController.joinGame(nickname);
                 } catch (GameFullException | InvalidNameException e) {
@@ -148,6 +146,7 @@ public class SinglePlayerView implements Intermediary, Runnable,
         reducedPlayer.setNickname(nickname);
         reducedPlayer.setHand(message.getHand());
         reducedPlayer.setHandSize(message.getHandSize());
+        System.out.println(Arrays.toString(message.getActivatedWMR()));
         reducedPlayer.setActivatedWMR(message.getActivatedWMR());
     }
 
