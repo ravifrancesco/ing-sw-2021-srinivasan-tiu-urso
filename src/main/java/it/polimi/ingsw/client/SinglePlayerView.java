@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client;
 
+import it.polimi.ingsw.client.IO.CLI;
 import it.polimi.ingsw.client.IO.Constants;
 import it.polimi.ingsw.controller.ReducedDashboard;
 import it.polimi.ingsw.controller.ReducedGame;
@@ -31,13 +32,14 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.stream.Collectors;
 
 /**
  * TODO doc
  * TODO check synchronized methods (send/close)
  */
-public class SinglePlayerView implements Intermediary,
+public class SinglePlayerView implements Intermediary, Runnable,
         FaithTrackObserver, WarehouseObserver, DashboardObserver,
         PlayerObserver, GameObserver, GameBoardObserver,
         DevelopmentCardGridObserver, MarketObserver, GameErrorObserver {
@@ -48,13 +50,28 @@ public class SinglePlayerView implements Intermediary,
 
     private ServerController serverController;
 
-    public SinglePlayerView(UI ui, String nickname) {
+    public SinglePlayerView(UI ui) {
         this.ui = ui;
-        this.nickname = nickname;
-
+        askNickname();
         GameSettings gameSettings = GameSettings.loadDefaultGameSettings();
         this.serverController = new ServerController("local_single_player", 1);
         serverController.loadGameSettings(gameSettings);
+        System.out.println("Insert STARTGAME to start playing");
+    }
+
+    public void askNickname() {
+        Scanner input = new Scanner(System.in);
+        String choice;
+        System.out.println("Please insert a nickname: ");
+        while(true) {
+            choice = input.nextLine();
+            if(choice.isEmpty()) {
+                System.out.println("Please insert a non-empty nickname");
+            } else {
+                nickname = choice;
+                return;
+            }
+        }
     }
 
     public String getNickname() {
@@ -65,6 +82,12 @@ public class SinglePlayerView implements Intermediary,
         this.nickname = nickname;
     }
 
+    @Override
+    public void run() {
+        if (ui.getType() == UIType.CLI) {
+            ((CLI) ui).startReadingThread();
+        }
+    }
 
     @Override
     public void update(FaithTrack message) {

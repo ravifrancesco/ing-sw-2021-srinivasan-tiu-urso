@@ -42,7 +42,6 @@ public class CLI implements UI {
     }
 
     public String getIp() throws IOException {
-        System.out.println(Constants.logo);
         System.out.println();
         System.out.println("Insert the server ip: ");
         System.out.print("> ");
