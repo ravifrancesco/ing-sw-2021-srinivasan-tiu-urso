@@ -43,7 +43,7 @@ public class ClientMainLobbyController {
 
     @FXML
     public void handleRefreshClick(InputEvent event) {
-        gui.getClientConnection().send(new AskGameLobbies());
+        gui.send(new AskGameLobbies());
     }
 
     @FXML
@@ -51,7 +51,7 @@ public class ClientMainLobbyController {
         if (selectedGame == null) {
             gui.printErrorMessage("Please select a game");
         } else {
-            gui.getClientConnection().send(new JoinGameLobby(selectedGame));
+            gui.send(new JoinGameLobby(selectedGame));
             // TODO change windows
         }
     }
@@ -72,11 +72,11 @@ public class ClientMainLobbyController {
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == buttonTypeOne){
-            gui.getClientConnection().send(new CreateGameLobby(2));
+            gui.send(new CreateGameLobby(2));
         } else if (result.get() == buttonTypeTwo) {
-            gui.getClientConnection().send(new CreateGameLobby(3));
+            gui.send(new CreateGameLobby(3));
         } else if (result.get() == buttonTypeThree) {
-            gui.getClientConnection().send(new CreateGameLobby(4));
+            gui.send(new CreateGameLobby(4));
         }
     }
 

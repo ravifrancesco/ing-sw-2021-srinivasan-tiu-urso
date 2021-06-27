@@ -631,7 +631,7 @@ public class GameController {
 
         Optional<ButtonType> result = mainAlert.showAndWait();
         if (result.isPresent() && result.get() == buttonTypeOne){
-            this.gui.getClientConnection().send(new StartGameGameMessage());
+            this.gui.send(new StartGameGameMessage());
             Platform.runLater(this::initHostAlert); // TODO make it better
         }
     }
@@ -647,7 +647,7 @@ public class GameController {
         }
         gui.setEnableNoDeposit();
         gui.setEnableImageViews();
-        gui.getClientConnection().send(new PlayerChangesDeposit(deposit));
+        gui.send(new PlayerChangesDeposit(deposit));
     }
 
     public void btnCancelClick(MouseEvent event) {
@@ -827,7 +827,7 @@ public class GameController {
         int owed = getOwed(reducedGame.getFirstTurns());
         if(owed - Arrays.stream(reducedGame.getPlayers()
                 .get(reducedGame.getClientPlayer()).getDashboard().getDeposit()).filter(Objects::nonNull).count() == 0) {
-            gui.getClientConnection().send(new EndTurnGameMessage());
+            gui.send(new EndTurnGameMessage());
         } else {
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/choose_bonus_resources.fxml"));
@@ -865,7 +865,7 @@ public class GameController {
     }
 
     public void onEndTurnPressed() {
-        gui.getClientConnection().send(new EndTurnGameMessage());
+        gui.send(new EndTurnGameMessage());
     }
 
     public void setPointsText(String player, String text) {

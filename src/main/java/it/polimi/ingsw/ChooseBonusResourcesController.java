@@ -132,7 +132,7 @@ public class ChooseBonusResourcesController {
         if (selectedResource == null || selectedIndex == null) {
             gui.printErrorMessage("Select a resource and a slot!");
         } else {
-            gui.getClientConnection().send(new GetInitialResourcesGameMessage(selectedResource, selectedIndex));
+            gui.send(new GetInitialResourcesGameMessage(selectedResource, selectedIndex));
             ((Node)(event.getSource())).getScene().getWindow().hide();
         }
     }

@@ -300,7 +300,7 @@ public class LeaderProductionController {
             return;
         }
 
-        gui.getClientConnection().send(new ActivateLeaderProductionGameMessage(cardIndex, resourceContainer, new HashMap<>(), resourceProducedOptional));
+        gui.send(new ActivateLeaderProductionGameMessage(cardIndex, resourceContainer, new HashMap<>(), resourceProducedOptional));
 
         Stage stage = (Stage) btnOk.getScene().getWindow();
         stage.close();

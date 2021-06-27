@@ -1,11 +1,13 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.client.ClientConnection;
+import it.polimi.ingsw.client.SinglePlayerView;
 import it.polimi.ingsw.controller.ReducedModel;
 import it.polimi.ingsw.client.UI;
 import it.polimi.ingsw.client.UIType;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.server.lobby.GameLobbyDetails;
+import it.polimi.ingsw.server.lobby.messages.clientMessages.ClientMessage;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -20,6 +22,9 @@ import java.util.ArrayList;
 public class GUI extends Application implements UI {
 
     private ClientConnection clientConnection;
+    private SinglePlayerView singlePlayerView;
+    private boolean local;
+
     private ReducedModel reducedModel;
 
     private NicknameChoiceController nicknameChoiceController;
@@ -45,6 +50,13 @@ public class GUI extends Application implements UI {
     @Override
     public void startUI(ClientConnection clientConnection, ReducedModel reducedModel) {
         this.clientConnection = clientConnection;
+        this.reducedModel = reducedModel;
+    }
+
+    @Override
+    public void startUI(SinglePlayerView singlePlayerView, ReducedModel reducedModel) {
+        local = true;
+        this.singlePlayerView = singlePlayerView;
         this.reducedModel = reducedModel;
     }
 
@@ -113,6 +125,14 @@ public class GUI extends Application implements UI {
 
     public ClientConnection getClientConnection() {
         return clientConnection;
+    }
+
+    public void send(ClientMessage clientMessage) {
+        if (local) {
+            singlePlayerView.send(clientMessage);
+        } else {
+            clientConnection.send(clientMessage);
+        }
     }
 
     public void setClientConnection(ClientConnection clientConnection) {

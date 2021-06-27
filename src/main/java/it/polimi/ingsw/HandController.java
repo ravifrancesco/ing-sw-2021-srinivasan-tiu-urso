@@ -100,7 +100,7 @@ public class HandController {
             this.gui.printErrorMessage("Select a card first!");
             return;
         }
-        gui.getClientConnection().send(new PlayLeaderCardGameMessage(selectedCard));
+        gui.send(new PlayLeaderCardGameMessage(selectedCard));
         ((Node)(event.getSource())).getScene().getWindow().hide();
     }
 
@@ -109,7 +109,7 @@ public class HandController {
         if (selectedCard == null) {
             this.gui.printErrorMessage("Select a card first!");
         }
-        gui.getClientConnection().send(new PlayerDiscardsLeaderCard(selectedCard));
+        gui.send(new PlayerDiscardsLeaderCard(selectedCard));
         ((Node)(event.getSource())).getScene().getWindow().hide();
     }
 

@@ -41,7 +41,7 @@ public class DiscardLeaderCardController {
         imageView.setFitWidth(132);
         HBox.setMargin(imageView, new Insets(10,10,10,10));
         imageView.setOnMouseClicked(event -> {
-            gui.getClientConnection().send(new PlayerDiscardsExcessLeaderCards(index));
+            gui.send(new PlayerDiscardsExcessLeaderCards(index));
             ((Node)(event.getSource())).getScene().getWindow().hide();
         });
 

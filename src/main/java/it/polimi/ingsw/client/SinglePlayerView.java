@@ -2,11 +2,9 @@ package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.IO.CLI;
 import it.polimi.ingsw.client.IO.Constants;
-import it.polimi.ingsw.controller.ReducedDashboard;
-import it.polimi.ingsw.controller.ReducedGame;
-import it.polimi.ingsw.controller.ReducedGameBoard;
-import it.polimi.ingsw.controller.ServerController;
+import it.polimi.ingsw.controller.*;
 import it.polimi.ingsw.controller.client.reducedModel.ReducedPlayer;
+import it.polimi.ingsw.controller.exceptions.GameFullException;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
@@ -50,12 +48,16 @@ public class SinglePlayerView implements Intermediary, Runnable,
 
     private ServerController serverController;
 
+    private ReducedModel reducedModel;
+
     public SinglePlayerView(UI ui) {
         this.ui = ui;
-        askNickname();
         GameSettings gameSettings = GameSettings.loadDefaultGameSettings();
         this.serverController = new ServerController("local_single_player", 1);
         serverController.loadGameSettings(gameSettings);
+        this.reducedModel = new ReducedModel();
+        ui.startUI(this, reducedModel);
+        askNickname();
         System.out.println("Insert STARTGAME to start playing");
     }
 
@@ -69,6 +71,12 @@ public class SinglePlayerView implements Intermediary, Runnable,
                 System.out.println("Please insert a non-empty nickname");
             } else {
                 nickname = choice;
+                try {
+                    serverController.joinGame(nickname);
+                } catch (GameFullException | InvalidNameException e) {
+                    e.printStackTrace();
+                }
+                serverController.addObserversLocal(this);
                 return;
             }
         }

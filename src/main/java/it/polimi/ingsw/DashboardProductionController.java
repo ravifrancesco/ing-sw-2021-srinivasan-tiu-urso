@@ -301,7 +301,7 @@ public class DashboardProductionController {
             return;
         }
 
-        gui.getClientConnection().send(new ActivateDashboardProductionGameMessage(resourceContainer, resourceRequiredOptional , resourceProducedOptional));
+        gui.send(new ActivateDashboardProductionGameMessage(resourceContainer, resourceRequiredOptional , resourceProducedOptional));
 
         Stage stage = (Stage) btnOk.getScene().getWindow();
         stage.close();

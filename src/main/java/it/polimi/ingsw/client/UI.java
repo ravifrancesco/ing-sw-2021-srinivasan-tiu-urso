@@ -9,6 +9,8 @@ public interface UI {
 
     void startUI(ClientConnection clientConnection, ReducedModel reducedModel);
 
+    void startUI(SinglePlayerView singlePlayerView, ReducedModel reducedModel);
+
     UIType getType();
 
     String getNickname();

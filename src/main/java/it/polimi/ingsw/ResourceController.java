@@ -167,14 +167,14 @@ public class ResourceController {
                         if (supplyPos == -1) {
                             gui.changeResourceController(currentSlot, i);
                             int lcIndex = (currentSlot - GameController.NUM_SHELFES) / 2;
-                            gui.getClientConnection().send(new PlayerChangesExtraDeposit(gui.getDepositView(), gui.getExtraDepositView(lcIndex), lcIndex));
+                            gui.send(new PlayerChangesExtraDeposit(gui.getDepositView(), gui.getExtraDepositView(lcIndex), lcIndex));
                         }
                     }
                 }
                 currentSlot = i;
                 if (supplyPos != -1) {
                     gui.changeSupplyController(supplyPos, currentSlot);
-                    gui.getClientConnection().send(new PlayerStoresFromSupply(supplyPos, currentSlot));
+                    gui.send(new PlayerStoresFromSupply(supplyPos, currentSlot));
                     supplyPos = -1;
                 }
                 return;
@@ -194,13 +194,13 @@ public class ResourceController {
                     }
                     if (supplyPos == -1) {
                         gui.changeResourceController(currentSlot, i + GameController.NUM_SHELFES);
-                        gui.getClientConnection().send(new PlayerChangesExtraDeposit(gui.getDepositView(), gui.getExtraDepositView(i/2), i/2));
+                        gui.send(new PlayerChangesExtraDeposit(gui.getDepositView(), gui.getExtraDepositView(i/2), i/2));
                     }
                 }
                 currentSlot = i + GameController.NUM_SHELFES;
                 if (supplyPos != -1) {
                     gui.changeSupplyController(supplyPos, currentSlot);
-                    gui.getClientConnection().send(new PlayerStoresFromSupplyToExtraDeposit(i/2, supplyPos, i%2));
+                    gui.send(new PlayerStoresFromSupplyToExtraDeposit(i/2, supplyPos, i%2));
                     supplyPos = -1;
                 }
                 return;

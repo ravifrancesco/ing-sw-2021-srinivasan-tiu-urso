@@ -58,7 +58,7 @@ public class NicknameChoiceController {
             Parent root = fxmlLoader.load();
             gui.setClientMainLobbyController(fxmlLoader.getController());
             gui.getClientMainLobbyController().setGui(gui);
-            gui.getClientConnection().send(new AskGameLobbies());
+            gui.send(new AskGameLobbies());
             Stage stage = new Stage();
             stage.setScene(new Scene(root, 800, 600));
             stage.setOnCloseRequest(t -> System.exit(0));

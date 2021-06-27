@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client.IO;
 
 import it.polimi.ingsw.client.ClientConnection;
+import it.polimi.ingsw.client.SinglePlayerView;
 import it.polimi.ingsw.controller.*;
 import it.polimi.ingsw.client.UI;
 import it.polimi.ingsw.client.UIType;
@@ -28,6 +29,8 @@ public class CLI implements UI {
     private ReducedModel reducedModel;
 
     private ClientConnection clientConnection;
+    private SinglePlayerView singlePlayerView;
+    private boolean local;
 
     private FaithTrackCLI ftcli;
 
@@ -108,7 +111,9 @@ public class CLI implements UI {
             while (true) {
                 String command = this.readCommand();
                 ClientMessage clientMessage = ClientMessageInputParser.parseInput(command, this);
-                if (clientMessage != null) {
+                if (local) {
+                    singlePlayerView.send(clientMessage);
+                } else if (clientMessage != null) {
                     try {
                         clientConnection.send(clientMessage);
                     } catch (Exception e) {
@@ -827,7 +832,15 @@ public class CLI implements UI {
 
     @Override
     public void startUI(ClientConnection clientConnection, ReducedModel reducedModel) {
+        local = false;
         this.clientConnection = clientConnection;
+        this.reducedModel = reducedModel;
+    }
+
+    @Override
+    public void startUI(SinglePlayerView singlePlayerView, ReducedModel reducedModel) {
+        local = true;
+        this.singlePlayerView = singlePlayerView;
         this.reducedModel = reducedModel;
     }
 

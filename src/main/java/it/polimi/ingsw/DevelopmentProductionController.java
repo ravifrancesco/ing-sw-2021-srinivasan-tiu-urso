@@ -252,7 +252,7 @@ public class DevelopmentProductionController {
             resourceContainer.addLockerSelectedResource(Resource.SERVANT, Integer.parseInt(labelServant.getText()));
         }
 
-        gui.getClientConnection().send(new ActivateDevelopmentProductionGameMessage(cardIndex, resourceContainer, new HashMap<>(), new HashMap<>()));
+        gui.send(new ActivateDevelopmentProductionGameMessage(cardIndex, resourceContainer, new HashMap<>(), new HashMap<>()));
 
         Stage stage = (Stage) btnOk.getScene().getWindow();
         stage.close();

@@ -318,7 +318,7 @@ public class ChooseResourceController {
 
         Pair<Integer, Integer> position = buyDevCardController.getPosition();
 
-        gui.getClientConnection().send(new BuyDevelopmentCardGameMessage(position.first+1, position.second+1, resourceContainer, selectedCardSlot));
+        gui.send(new BuyDevelopmentCardGameMessage(position.first+1, position.second+1, resourceContainer, selectedCardSlot));
 
         Stage stage = (Stage) btnOk.getScene().getWindow();
         stage.close();

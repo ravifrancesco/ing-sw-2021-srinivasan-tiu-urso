@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.client.SinglePlayerView;
 import it.polimi.ingsw.controller.exceptions.*;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
@@ -128,6 +129,18 @@ public class ServerController {
                 });
     }
 
+    // TODO doc
+    public void addObserversLocal(SinglePlayerView singlePlayerView) {
+
+        game.addObserver(singlePlayerView);
+        game.getGameError().addObserver(singlePlayerView);
+
+        GameBoard gameBoard = game.getGameBoard();
+        gameBoard.addObserver(singlePlayerView);
+        gameBoard.getMarket().addObserver(singlePlayerView);
+        gameBoard.getDevelopmentCardGrid().addObserver(singlePlayerView);
+    }
+
     /**
      * Removes the connection from the observers of all observable classes
      *
@@ -161,14 +174,6 @@ public class ServerController {
                     currentPlayer.getDashboard().getFaithTrack().removeObserver(connection);
                     currentPlayer.getDashboard().getWarehouse().removeObserver(connection);
                 });
-    }
-
-    /**
-     * Reset method for the class. It resets the game, the current and the first player and initializes first turns.
-     */
-    public void reset() {
-        game.reset();
-        game.setFirstTurns(0);
     }
 
     /**
