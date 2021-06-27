@@ -119,16 +119,8 @@ public class GameLobby implements Lobby, Serializable {
         }
     }
 
-    public void getInitialResources(String nickname, Resource resource, int position) {
-        serverController.getInitialResources(nickname, resource, position);
-    }
-
     public String getId() {
         return id;
-    }
-
-    public Pair<Integer, Integer> getLobbyStatus() {
-        return new Pair<>(connectedPlayers.size(), maxPlayers);
     }
 
     public LobbyType getType() {
