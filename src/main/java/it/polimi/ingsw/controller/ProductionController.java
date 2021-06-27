@@ -69,6 +69,12 @@ public class ProductionController {
         }
 
         try {
+            dashboard.simulatePayment(resourcesToPayCost, productionPower.getResourceRequiredModified());
+        } catch (IllegalArgumentException e) {
+            throw new WrongMoveException("Resources do not match the cost");
+        }
+
+        try {
             productionPower.activate(player);
         } catch (IllegalStateException e) {
             throw new PowerNotActivatableException("Not enough resources");
@@ -76,11 +82,7 @@ public class ProductionController {
             throw new PowerNotActivatableException("Production already activated");
         }
 
-        try {
-            dashboard.payPrice(resourcesToPayCost, productionPower.getResourceRequiredModified());
-        } catch (IllegalArgumentException e) {
-            throw new WrongMoveException("Resources do not match the cost");
-        }
+        dashboard.payPrice(resourcesToPayCost, productionPower.getResourceRequiredModified());
     }
 
     /**
@@ -122,6 +124,12 @@ public class ProductionController {
         }
 
         try {
+            dashboard.simulatePayment(resourcesToPayCost, productionPower.getResourceRequiredModified());
+        } catch (IllegalArgumentException e) {
+            throw new WrongMoveException("Resources do not match the cost");
+        }
+
+        try {
             productionPower.activate(player);
         } catch (IllegalStateException e) {
             throw new PowerNotActivatableException("Not enough resources");
@@ -129,11 +137,7 @@ public class ProductionController {
             throw new PowerNotActivatableException("Production already activated");
         }
 
-        try {
-            dashboard.payPrice(resourcesToPayCost, productionPower.getResourceRequiredModified());
-        } catch (IllegalArgumentException e) {
-            throw new WrongMoveException("Resources do not match the cost");
-        }
+        dashboard.payPrice(resourcesToPayCost, productionPower.getResourceRequiredModified());
 
     }
 
@@ -179,6 +183,12 @@ public class ProductionController {
         }
 
         try {
+            dashboard.simulatePayment(resourcesToPayCost, productionPower.getResourceRequiredModified());
+        } catch (IllegalArgumentException e) {
+            throw new WrongMoveException("Resources do not match the cost");
+        }
+
+        try {
             developmentCard.activate(player);
         } catch (IllegalStateException e) {
             throw new PowerNotActivatableException("Not enough resources");
@@ -186,11 +196,7 @@ public class ProductionController {
             throw new PowerNotActivatableException("Production already activated");
         }
 
-        try {
-            dashboard.payPrice(resourcesToPayCost, productionPower.getResourceRequiredModified());
-        } catch (IllegalArgumentException e) {
-            throw new WrongMoveException("Resources do not match the cost");
-        }
+        dashboard.payPrice(resourcesToPayCost, productionPower.getResourceRequiredModified());
 
     }
 }

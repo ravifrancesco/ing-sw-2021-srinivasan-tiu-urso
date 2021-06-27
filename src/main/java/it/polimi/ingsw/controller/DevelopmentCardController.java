@@ -63,6 +63,16 @@ public class DevelopmentCardController {
 
         developmentCard = developmentCardGrid.peek(row, column);
 
+        Map<Resource, Integer> cost = developmentCard.getResourceCost();
+        activeDiscounts.forEach(discount -> cost.entrySet().stream().filter(e -> e.getKey() == discount.getResource())
+                .forEach(e -> cost.put(e.getKey(), Math.max(e.getValue() - discount.getQuantity(), 0))));
+
+        try {
+            dashboard.simulatePayment(resourcesToPayCost, cost);
+        } catch (IllegalArgumentException e) {
+            throw new WrongMoveException("Resources do not match the cost");
+        }
+
         try {
             dashboard.placeDevelopmentCard(developmentCard, position);
         }
@@ -73,17 +83,9 @@ public class DevelopmentCardController {
         System.out.println("Riga 67 devcardbuy");
 
 
-        Map<Resource, Integer> cost = developmentCard.getResourceCost();
-        activeDiscounts.forEach(discount -> cost.entrySet().stream().filter(e -> e.getKey() == discount.getResource())
-                .forEach(e -> cost.put(e.getKey(), Math.max(e.getValue() - discount.getQuantity(), 0))));
-
         // TODO check for cleaner options
 
-        try {
-            dashboard.payPrice(resourcesToPayCost, cost);
-        } catch (IllegalArgumentException e) {
-            throw new WrongMoveException("Resources do not match the cost");
-        }
+        dashboard.payPrice(resourcesToPayCost, cost);
 
         developmentCardGrid.buy(row, column);
         game.startUniquePhase(TurnPhase.BUY);
