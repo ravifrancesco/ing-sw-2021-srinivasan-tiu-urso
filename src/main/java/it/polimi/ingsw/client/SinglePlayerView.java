@@ -54,6 +54,7 @@ public class SinglePlayerView implements Intermediary,
 
         GameSettings gameSettings = GameSettings.loadDefaultGameSettings();
         this.serverController = new ServerController("local_single_player", 1);
+        serverController.loadGameSettings(gameSettings);
     }
 
     public String getNickname() {
