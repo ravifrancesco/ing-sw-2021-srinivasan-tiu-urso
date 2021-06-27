@@ -119,58 +119,8 @@ public class GameLobby implements Lobby, Serializable {
         }
     }
 
-    public void loadGameSettings(GameSettings gameSettings) {
-        serverController.loadGameSettings(gameSettings);
-    }
-
-    public void discardExcessLeaderCards(String nickname, int cardIndex) {
-        serverController.discardExcessLeaderCards(nickname, cardIndex);
-    }
     public void getInitialResources(String nickname, Resource resource, int position) {
         serverController.getInitialResources(nickname, resource, position);
-    }
-
-    public void playLeaderCard(String nickname, int cardToPlay) {
-        serverController.playLeaderCard(nickname, cardToPlay);
-    }
-
-    public void activateLeaderCardProductionPower(String nickname, int cardToActivate, ResourceContainer resourcesToPayCost,
-                                             Map<Resource, Integer> resourceRequiredOptional, Map<Resource, Integer> resourceProducedOptional) {
-        serverController.activateLeaderCardProductionPower(nickname, cardToActivate, resourcesToPayCost, resourceRequiredOptional, resourceProducedOptional);
-    }
-
-    public void activateDashboardProductionPower(String nickname, ResourceContainer resourcesToPayCost,
-                                            Map<Resource, Integer> resourceRequiredOptional, Map<Resource, Integer> resourceProducedOptional) {
-        serverController.activateDashboardProductionPower(nickname, resourcesToPayCost, resourceRequiredOptional, resourceProducedOptional);
-    }
-
-    public void activateDevelopmentCardProductionPower(String nickname, int cardToActivate, ResourceContainer resourcesToPayCost,
-                                                       Map<Resource, Integer> resourceRequiredOptional, Map<Resource, Integer> resourceProducedOptional) {
-        serverController.activateDevelopmentCardProductionPower(nickname, cardToActivate, resourcesToPayCost, resourceRequiredOptional, resourceProducedOptional);
-    }
-
-    public void getFromMarket(String nickname, int move, ArrayList<Resource> wmrs) {
-        serverController.getFromMarket(nickname, move, wmrs);
-    }
-
-    public void storeFromSupply(String nickname, int from, int to) {
-        serverController.storeFromSupply(nickname, from, to);
-    }
-
-    public void storeFromSupplyInExtraDeposit(String nickname, int leaderCardPos, int from, int to) {
-        serverController.storeFromSupplyInExtraDeposit(nickname, leaderCardPos, from, to);
-    }
-
-    public void discardLeaderCard(String nickname, int cardToDiscard) {
-        serverController.discardLeaderCard(nickname, cardToDiscard);
-    }
-
-    public void endTurn(String nickname) {
-        serverController.endTurn(nickname);
-    }
-
-    public void buyDevelopmentCard(String nickname, int row, int column, ResourceContainer resourcesToPayCost, int position) {
-        serverController.buyDevelopmentCard(nickname, row, column, resourcesToPayCost, position);
     }
 
     public String getId() {
