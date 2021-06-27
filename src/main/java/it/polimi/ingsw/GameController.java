@@ -230,6 +230,8 @@ public class GameController {
             return;
         }
 
+        cleanLeaderCards();
+
         IntStream.range(0, playedLeaderCards.size())
                 .forEach(i -> printLeaderCard(playedLeaderCards.get(i), i));
     }
@@ -271,10 +273,19 @@ public class GameController {
         pane.getChildren().add(leaderCardControllers[slot].getItem());
     }
 
+    public void cleanLeaderCards() {
+        for (int i = 0; i < leaderCardControllers.length; i++) {
+            if (leaderCardControllers[i] != null) {
+                pane.getChildren().remove(leaderCardControllers[i].getItem());
+            }
+        }
+    }
+
     public void printPlayedDevelopmentCards(String player, List<Stack<DevelopmentCard>> playedDevelopmentCards) {
         if (!player.equals(currentDisplayedPlayer)) {
             return;
         }
+        cleanDevelopmentCards();
         for (int i = 0; i < NUM_DEVELOPMENT_CARDS; i++) {
             if (playedDevelopmentCards != null && !playedDevelopmentCards.get(i).empty()) {
                 printDevelopmentCard(playedDevelopmentCards.get(i).peek(), i);
@@ -303,6 +314,14 @@ public class GameController {
         }
 
         pane.getChildren().add(developmentCardControllers[pos].getItem());
+    }
+
+    public void cleanDevelopmentCards() {
+        for (int i = 0; i < developmentCardControllers.length; i++) {
+            if (developmentCardControllers[i] != null) {
+                pane.getChildren().remove(developmentCardControllers[i].getItem());
+            }
+        }
     }
 
     public void reloadWarehouseImages() {
@@ -653,6 +672,8 @@ public class GameController {
     public void btnCancelClick(MouseEvent event) {
         btnConfirm.setVisible(false);
         btnCancel.setVisible(false);
+        gui.setEnableNoDeposit();
+        gui.setEnableImageViews();
         gui.getReducedModel().askWarehouseUpdate(currentDisplayedPlayer);
     }
 
@@ -859,7 +880,7 @@ public class GameController {
     }
 
     public void updateDevCardGrid(List<Stack<DevelopmentCard>> grid) {
-        if (marketController != null) {
+        if (devCardGridController != null) {
             devCardGridController.update(grid);
         }
     }
