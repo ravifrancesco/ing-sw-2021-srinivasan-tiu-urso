@@ -608,9 +608,10 @@ public class ServerController {
     }
 
     private void checkVaticanReports() {
+        game.updateMaxReached();
         game.getPlayers().values()
                 .stream().map(p -> p.getDashboard().getFaithTrack())
-                .forEach(f -> f.checkVaticanVictoryPoints(FaithTrack.maxReached));
+                .forEach(f -> f.checkVaticanVictoryPoints(game.getMaxReached()));
     }
 
     public int getNumberOfPlayers() {
