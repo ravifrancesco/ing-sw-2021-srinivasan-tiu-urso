@@ -36,6 +36,7 @@ public class FaithTrackUpdateMessage implements ServerMessage, Serializable {
 
     @Override
     public void updateClient(ClientConnection clientConnection, String nickname) {
+        System.out.println("Prima di chiamarla qua mi dà: " + position);
         clientConnection.updateReducedFaithTrack(playerNickname, position, LorenzoIlMagnificoPosition, vaticanReports, faithTrackVictoryPoints);
     }
 

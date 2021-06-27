@@ -400,7 +400,7 @@ public class CLI implements UI {
             int position = reducedPlayer.getDashboard().getPosition();
             System.out.println("position is: " + position);
             ftcli.setPos(position);
-            List<Pair<Integer, Integer>> vc = getPassedVaticanReports();
+            List<Pair<Integer, Integer>> vc = getPassedVaticanReports(reducedPlayer.getDashboard());
             IntStream.range(0, 3).forEach(i -> ftcli.handleVr(i+1, vc.get(i).second));
             ftcli.showFTCLI();
         } else {
@@ -408,8 +408,7 @@ public class CLI implements UI {
         }
     }
 
-    public List<Pair<Integer, Integer>> getPassedVaticanReports () {
-        ReducedDashboard reducedDashboard = reducedModel.getReducedPlayer().getDashboard();
+    public List<Pair<Integer, Integer>> getPassedVaticanReports (ReducedDashboard reducedDashboard) {
         return  reducedDashboard.getVaticanReports().entrySet().stream()
                 .sorted(Comparator.comparingInt(e -> e.getKey().second))
                 .map(Map.Entry::getValue)
