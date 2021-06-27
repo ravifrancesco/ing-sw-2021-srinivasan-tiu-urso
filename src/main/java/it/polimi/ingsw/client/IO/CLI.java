@@ -125,6 +125,7 @@ public class CLI implements UI {
                 try {
                     Thread.sleep(250);
                 } catch (InterruptedException e) {
+                    System.out.println("ma entro qua? ");
                     e.printStackTrace();
                 }
             }

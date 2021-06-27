@@ -58,7 +58,7 @@ public class ClientConnection implements Runnable, Intermediary {
     }
 
     public void connectToServer() throws IOException {
-        ui.printColoredMessage("Connection at " + ip + " on port " + port, Constants.GOLD_COLOR);
+        ui.printColoredMessage("Connecting to " + ip + " on port " + port, Constants.GOLD_COLOR);
         try {
             socket = new Socket(ip, port);
         } catch (IOException e) {
