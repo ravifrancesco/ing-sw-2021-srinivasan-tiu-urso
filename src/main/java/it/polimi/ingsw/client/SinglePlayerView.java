@@ -58,6 +58,16 @@ public class SinglePlayerView implements Intermediary, Runnable,
         System.out.println("Isnert STARTGAME to start playing");
     }
 
+    public SinglePlayerView(UI ui, String nickname) {
+        this.ui = ui;
+        GameSettings gameSettings = GameSettings.loadDefaultGameSettings();
+        this.serverController = new ServerController("local_single_player", 1);
+        serverController.loadGameSettings(gameSettings);
+        this.reducedModel = new ReducedModel();
+        ui.startUI(this, reducedModel);
+        setNickName(nickname);
+    }
+
     public void askNickname() {
         Scanner input = new Scanner(System.in);
         String choice;
@@ -67,25 +77,25 @@ public class SinglePlayerView implements Intermediary, Runnable,
             if(choice.isEmpty()) {
                 System.out.println("Please insert a non-empty nickname");
             } else {
-                nickname = choice;
-                this.reducedModel.setNickname(nickname);
-                try {
-                    serverController.joinGame(nickname);
-                } catch (GameFullException | InvalidNameException e) {
-                    e.printStackTrace();
-                }
-                serverController.addObserversLocal(this);
+                setNickName(choice);
                 return;
             }
         }
     }
 
-    public String getNickname() {
-        return nickname;
+    private void setNickName(String choice) {
+        this.nickname = choice;
+        this.reducedModel.setNickname(nickname);
+        try {
+            serverController.joinGame(nickname);
+        } catch (GameFullException | InvalidNameException e) {
+            e.printStackTrace();
+        }
+        serverController.addObserversLocal(this);
     }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
+    public String getNickname() {
+        return nickname;
     }
 
     @Override

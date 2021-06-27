@@ -1,6 +1,8 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.client.ClientConnection;
+import it.polimi.ingsw.client.SinglePlayerView;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -37,6 +39,12 @@ public class ServerChoiceController {
         }
     }
 
+    @FXML
+    private void handleOfflineClick(InputEvent event) {
+        new SinglePlayerView(gui, "local_host");
+        gui.enterGamePhase(true, true);
+    }
+
     private void openNicknameWindow(InputEvent event) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/NicknameChoice.fxml"));
@@ -52,6 +60,10 @@ public class ServerChoiceController {
         catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public Scene getScene() {
+        return ipField.getScene();
     }
 
     public void setGui(GUI gui) {

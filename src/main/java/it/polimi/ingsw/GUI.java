@@ -34,7 +34,7 @@ public class GUI extends Application implements UI {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/ServerChoice.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/server_choice.fxml"));
         Parent root = fxmlLoader.load();
         serverChoiceController = fxmlLoader.getController();
         serverChoiceController.setGui(this);
@@ -97,7 +97,7 @@ public class GUI extends Application implements UI {
     }
 
     @Override
-    public void enterGamePhase(boolean isHost) {
+    public void enterGamePhase(boolean isHost, boolean isOffline) {
         Platform.runLater(
                 () -> {
                     try {
@@ -109,7 +109,11 @@ public class GUI extends Application implements UI {
                         stage.setScene(new Scene(root, 1366, 768));
                         stage.setOnCloseRequest(t -> System.exit(0));
                         stage.show();
-                        clientMainLobbyController.getScene().getWindow().hide();
+                        if (isOffline) {
+                            serverChoiceController.getScene().getWindow().hide();
+                        } else {
+                            clientMainLobbyController.getScene().getWindow().hide();
+                        }
                         if (isHost) {
                             gameController.initHostAlert();
                         } else {

@@ -17,6 +17,6 @@ public class SuccessfulConnectionToGameLobbyMessage implements ServerMessage, Se
 
     @Override
     public void updateClient(ClientConnection clientConnection, String nickname) {
-        clientConnection.ui.enterGamePhase(isHost);
+        clientConnection.ui.enterGamePhase(isHost, false);
     }
 }

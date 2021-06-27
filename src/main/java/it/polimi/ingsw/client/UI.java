@@ -24,7 +24,7 @@ public interface UI {
     void showGameLobbies(ArrayList<GameLobbyDetails> gameLobbies);
 
     // TODO add to cli
-    void enterGamePhase(boolean isHost);
+    void enterGamePhase(boolean isHost, boolean isOffline);
 
     void handleMenuCode(String menuCode);
 

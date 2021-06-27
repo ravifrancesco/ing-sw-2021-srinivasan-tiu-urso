@@ -157,8 +157,8 @@ public class CLI implements UI {
     }
 
     @Override
-    public void enterGamePhase(boolean isHost) {
-        // TODO
+    public void enterGamePhase(boolean isHost, boolean isOffline) {
+        // TODO want to display something?
     }
 
     public void showHand(String nickname) {
