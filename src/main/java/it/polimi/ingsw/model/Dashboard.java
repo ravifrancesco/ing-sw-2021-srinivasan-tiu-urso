@@ -559,19 +559,23 @@ public class Dashboard extends DashboardObservable {
 	 * Removes the resources from the warehouse
 	 * @param resToPayWith 	a SelectedResource data structure containing the player's choices of where to take the resources from
 	 */
-	public void payPrice(ResourceContainer resToPayWith, Map<Resource, Integer> cost) throws IllegalArgumentException {
-		HashMap<Resource, Integer> rcAllRes = (HashMap<Resource, Integer>) resToPayWith.getAllResources(warehouse);
-		cost.forEach((k, v) -> rcAllRes.merge(k, v, (v1, v2) -> v1-v2));
-		if (rcAllRes.values().stream().anyMatch(v -> v != 0)) {
-			notify(this);
-			throw new IllegalArgumentException("Resources do not match the cost");
-		}
+	public void payPrice(ResourceContainer resToPayWith, Map<Resource, Integer> cost) {
 		resToPayWith.getSelectedDepositIndexes().forEach(warehouse::removeFromDeposit);
 		resToPayWith.getSelectedLockerResources().forEach(warehouse::removeFromLocker);
 		IntStream.range(0, 1).forEach(i ->
 				resToPayWith.getSelectedExtraDepositIndexes().get(i).forEach(pos ->
 						warehouse.removeFromExtraDeposit(i, pos)));
 		notify(this);
+	}
+
+	// TODO doc
+	public void simulatePayment(ResourceContainer resToPayWith, Map<Resource, Integer> cost) throws IllegalArgumentException {
+		HashMap<Resource, Integer> rcAllRes = (HashMap<Resource, Integer>) resToPayWith.getAllResources(warehouse);
+		cost.forEach((k, v) -> rcAllRes.merge(k, v, (v1, v2) -> v1-v2));
+		if (rcAllRes.values().stream().anyMatch(v -> v != 0)) {
+			notify(this);
+			throw new IllegalArgumentException("Resources do not match the cost");
+		}
 	}
 
 	// TODO doc

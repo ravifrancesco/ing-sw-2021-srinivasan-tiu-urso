@@ -4,8 +4,10 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Resource;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -119,8 +121,11 @@ public class ProductionPower implements SpecialAbility, Serializable {
 	 */
 
 	public boolean isActivatable(Map<Resource, Integer> playerResources) {
+		Set<Map.Entry<Resource, Integer>> entries = resourceRequiredModified.entrySet();
+		HashMap<Resource, Integer> copy = (HashMap<Resource, Integer>) entries.stream()
+				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
-		resourceRequiredModified.entrySet().forEach(e-> playerResources.entrySet().stream()
+		copy.entrySet().forEach(e-> playerResources.entrySet().stream()
 				.filter(e2 -> e.getKey() == e2.getKey())
 				.forEach(e2 -> {int diff = e.getValue()-e2.getValue(); e.setValue(Math.max(diff, 0));
 					e2.setValue(-diff); } ));
