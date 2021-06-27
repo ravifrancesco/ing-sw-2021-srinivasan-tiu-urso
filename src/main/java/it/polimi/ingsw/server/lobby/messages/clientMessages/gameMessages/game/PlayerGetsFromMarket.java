@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.game;
 
+import it.polimi.ingsw.client.SinglePlayerView;
 import it.polimi.ingsw.controller.ServerController;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.specialAbilities.WhiteMarbleResource;
@@ -24,6 +25,15 @@ public class PlayerGetsFromMarket extends ClientGameMessage implements Serializa
         if (output == 0) {
             c.sendSuccessfulMoveMessage("Market move completed, adding resources to your supply...");
             c.sendCLIupdateMessage("after_getfrommarket");
+        }
+    }
+
+    @Override
+    public void handleLocally(SinglePlayerView singlePlayerView, ServerController serverController) {
+        int output = serverController.getFromMarket(singlePlayerView.getNickname(), move, wmrs);
+        if (output == 0) {
+            singlePlayerView.printSuccessfulMove("Market move completed, adding resources to your supply...");
+            singlePlayerView.getUi().handleMenuCode("after_getfrommarket");
         }
     }
 }

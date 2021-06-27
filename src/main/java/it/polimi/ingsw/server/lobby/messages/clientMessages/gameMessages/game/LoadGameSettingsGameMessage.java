@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.game;
 
+import it.polimi.ingsw.client.SinglePlayerView;
 import it.polimi.ingsw.controller.ServerController;
 import it.polimi.ingsw.model.GameSettings;
 import it.polimi.ingsw.server.Connection;
@@ -17,6 +18,15 @@ public class LoadGameSettingsGameMessage extends ClientGameMessage implements Se
 
     @Override
     public void handle(Connection c, ServerController serverController) {
+        try {
+            serverController.loadGameSettings(gameSettings);
+        } catch (Exception e) {
+            // TODO
+        }
+    }
+
+    @Override
+    public void handleLocally(SinglePlayerView singlePlayerView, ServerController serverController) {
         try {
             serverController.loadGameSettings(gameSettings);
         } catch (Exception e) {

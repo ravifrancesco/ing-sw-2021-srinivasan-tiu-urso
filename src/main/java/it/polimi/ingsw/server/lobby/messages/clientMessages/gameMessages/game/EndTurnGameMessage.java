@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.game;
 
+import it.polimi.ingsw.client.SinglePlayerView;
 import it.polimi.ingsw.controller.ServerController;
 import it.polimi.ingsw.server.Connection;
 import it.polimi.ingsw.server.lobby.GameLobby;
@@ -27,6 +28,19 @@ public class EndTurnGameMessage extends ClientGameMessage implements Serializabl
             });
             c.getMainLobby().removeGameLobby(gl);
 
+        }
+    }
+
+    @Override
+    public void handleLocally(SinglePlayerView singlePlayerView, ServerController serverController) {
+        int output = serverController.endTurnSinglePlayer(singlePlayerView.getNickname());
+        if (output == 0) {
+            singlePlayerView.printSuccessfulMove("Turn ended correctly");
+            singlePlayerView.getUi().handleMenuCode("after_end_turn");
+        }
+        if (output == 1) {
+            singlePlayerView.getUi().handleMenuCode("back_in_lobby");
+            singlePlayerView.handleGameEnded();
         }
     }
 }

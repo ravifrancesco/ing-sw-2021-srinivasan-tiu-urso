@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.singlePlayer.tokens.*;
 import it.polimi.ingsw.utils.Pair;
 
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class Game extends GameObservable  {
@@ -39,6 +40,8 @@ public class Game extends GameObservable  {
 
 	private GameError gameError;
 
+	private int maxReached;
+
 	private Stack<Token> tokens;
 	private Token lastToken;
 
@@ -64,6 +67,7 @@ public class Game extends GameObservable  {
 		this.gameEnded = false;
 		this.gameStarted = false;
 		this.endGamePhase = false;
+		this.maxReached = 0;
 		resetTokens();
 		notify(this);
 	}
@@ -241,5 +245,19 @@ public class Game extends GameObservable  {
 
 	public Token getLastToken() {
 		return lastToken;
+	}
+
+	public void updateMaxReached() {
+		int maxReachedPlayer = Collections.max(players.values().stream()
+				.map(p -> p.getDashboard().getFaithTrack().getPosition())
+				.collect(Collectors.toList()));
+		int maxReachedLorenzo =  Collections.max(players.values().stream()
+				.map(p -> p.getDashboard().getFaithTrack().getLorenzoIlMagnificoPosition())
+				.collect(Collectors.toList()));
+		maxReached = Math.max(maxReachedPlayer, maxReachedLorenzo);
+	}
+
+	public int getMaxReached() {
+		return maxReached;
 	}
 }

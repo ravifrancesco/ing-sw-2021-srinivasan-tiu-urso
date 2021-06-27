@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.game;
 
+import it.polimi.ingsw.client.SinglePlayerView;
 import it.polimi.ingsw.controller.ServerController;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.server.Connection;
@@ -26,4 +27,16 @@ public class GetInitialResourcesGameMessage extends ClientGameMessage implements
             c.sendCLIupdateMessage("after_initial_resources");
         }
     }
+
+    @Override
+    public void handleLocally(SinglePlayerView singlePlayerView, ServerController serverController) {
+        int output = serverController.getInitialResources(singlePlayerView.getUi().getNickname(), resource, position);
+        if (output == 0) {
+            singlePlayerView.printSuccessfulMove("Initial resources obtained successfully, adding "
+                    + resource + " to your deposition on position " + position);
+            singlePlayerView.getUi().handleMenuCode("after_initial_resources");
+        }
+    }
+
+
 }
