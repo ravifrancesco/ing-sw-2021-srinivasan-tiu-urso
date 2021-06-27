@@ -74,11 +74,17 @@ public class CLI implements UI {
         System.out.println(Constants.ANSI_RED + error + Constants.ANSI_RESET);
     }
 
-    public void printMessage(String message) { System.out.println(message); }
+    public void printMessage(String message) {
+        System.out.println(message);
+    }
 
-    public void printMessageNoNL(String message) { System.out.print(message); }
+    public void printMessageNoNL(String message) {
+        System.out.print(message);
+    }
 
-    public void printColoredMessageNoNL(String message, String color) { System.out.print(color + message + Constants.ANSI_RESET); }
+    public void printColoredMessageNoNL(String message, String color) {
+        System.out.print(color + message + Constants.ANSI_RESET);
+    }
 
     public void showMainLobbyMenu() {
         printMessage("Please insert:");
@@ -100,7 +106,7 @@ public class CLI implements UI {
     public void startReadingThread() {
         // TODO how to kill this thread if the receivingThread dies?
         new Thread(() -> {
-            while(true) {
+            while (true) {
                 String command = this.readCommand();
                 ClientMessage clientMessage = ClientMessageInputParser.parseInput(command, this);
                 if (clientMessage != null) {
@@ -153,7 +159,7 @@ public class CLI implements UI {
             if (leaderCardList.size() != 0) {
                 IntStream.range(0, leaderCardList.size()).forEach(i -> {
                     printMessage("");
-                    printColoredMessage("------- CARD #" + i + " -------", Constants.BOLD+Constants.SHIELD_COLOR);
+                    printColoredMessage("------- CARD #" + i + " -------", Constants.BOLD + Constants.SHIELD_COLOR);
                     showCard(leaderCardList.get(i));
                     System.out.println();
                 });
@@ -166,11 +172,11 @@ public class CLI implements UI {
     }
 
     private void showCard(LeaderCard leaderCard) {
-        if(leaderCard != null) {
+        if (leaderCard != null) {
             printMessage("CARD VICTORY POINTS: \n" + leaderCard.getVictoryPoints());
             printMessage("");
 
-            if(leaderCard.getBannerCost().size() != 0) {
+            if (leaderCard.getBannerCost().size() != 0) {
                 printMessage("REQUIRED BANNERS: ");
                 leaderCard.getBannerCost().forEach((key, value) -> {
                     printMessageNoNL("Level " + value + " ");
@@ -195,7 +201,7 @@ public class CLI implements UI {
         printMessage("");
 
         printMessageNoNL("CARD WITH BANNER ");
-        printColoredMessage(developmentCard.getBanner().toString().split("=")[1].split(":")[0],
+        printColoredMessageNoNL(developmentCard.getBanner().toString().split("=")[1].split(":")[0],
                 handleBannerColor(developmentCard.getBanner().toString().split("=")[1].split(":")[0]));
 
         printMessage("LEVEL " + developmentCard.getBanner().getLevel());
@@ -205,9 +211,9 @@ public class CLI implements UI {
     }
 
     private void showResourceCost(Map<Resource, Integer> resourceCost) {
-        if(resourceCost.size() != 0) {
+        if (resourceCost.size() != 0) {
             printMessage("RESOURCE COST:");
-            resourceCost.forEach((key, value) ->  {
+            resourceCost.forEach((key, value) -> {
                 printColoredMessageNoNL("" + key, handleResourceColor(key.toString()));
                 printMessage(": " + value);
             });
@@ -218,7 +224,7 @@ public class CLI implements UI {
     }
 
     private String handleBannerColor(String banner) {
-        return switch(banner) {
+        return switch (banner) {
             case "YELLOW" -> Constants.GOLD_COLOR;
             case "BLUE" -> Constants.SHIELD_COLOR;
             case "PURPLE" -> Constants.SERVANT_COLOR;
@@ -228,7 +234,7 @@ public class CLI implements UI {
     }
 
     private String handleResourceColor(String resource) {
-        return switch(resource) {
+        return switch (resource) {
             case "GOLD" -> Constants.GOLD_COLOR;
             case "SHIELD" -> Constants.SHIELD_COLOR;
             case "SERVANT" -> Constants.SERVANT_COLOR;
@@ -238,12 +244,11 @@ public class CLI implements UI {
     }
 
     private void handleSA(SpecialAbility sa) {
-        switch(sa.getType()) {
-            case DEVELOPMENT_CARD_DISCOUNT ->
-                printMessage("[DVD] Discounts " + ((DevelopmentCardDiscount) sa).getQuantity() + " " +
-                        handleResourceColor(((DevelopmentCardDiscount) sa).getResource().toString()) +
-                        ((DevelopmentCardDiscount) sa).getResource() + Constants.ANSI_RESET +
-                        " when buying a development card");
+        switch (sa.getType()) {
+            case DEVELOPMENT_CARD_DISCOUNT -> printMessage("[DVD] Discounts " + ((DevelopmentCardDiscount) sa).getQuantity() + " " +
+                    handleResourceColor(((DevelopmentCardDiscount) sa).getResource().toString()) +
+                    ((DevelopmentCardDiscount) sa).getResource() + Constants.ANSI_RESET +
+                    " when buying a development card");
 
             case PRODUCTION_POWER -> {
                 ProductionPower pp = (ProductionPower) sa;
@@ -252,23 +257,23 @@ public class CLI implements UI {
                 required.remove(Resource.ANY);
                 produced.remove(Resource.ANY);
                 printMessage("[PP] Allows to transform");
-                if(required.size() > 0) {
+                if (required.size() > 0) {
                     required.forEach((resource, qty) ->
-                        printMessage(qty + " " + handleResourceColor(resource.toString()) + resource + Constants.ANSI_RESET)
+                            printMessage(qty + " " + handleResourceColor(resource.toString()) + resource + Constants.ANSI_RESET)
                     );
                 }
-                if(pp.getNumRequiredAny() > 0) {
+                if (pp.getNumRequiredAny() > 0) {
                     printMessage(pp.getNumRequiredAny() + Constants.STONE_COLOR + " ANY RESOURCE" + Constants.ANSI_RESET);
                 }
                 printMessage("Into");
                 // TODO qualcosa non va qua, non funziona bene se ha i faith track
 
-                if(produced.size() > 0) {
+                if (produced.size() > 0) {
                     produced.forEach((resource, qty) ->
-                        printMessage(qty + " " + handleResourceColor(resource.toString()) + resource + Constants.ANSI_RESET)
+                            printMessage(qty + " " + handleResourceColor(resource.toString()) + resource + Constants.ANSI_RESET)
                     );
                 }
-                if(pp.getNumProducedAny() > 0) {
+                if (pp.getNumProducedAny() > 0) {
                     printMessage(pp.getNumProducedAny() + Constants.STONE_COLOR + " ANY RESOURCE" + Constants.ANSI_RESET);
                 }
             }
@@ -291,12 +296,11 @@ public class CLI implements UI {
         Map<Resource, Integer> produced = pp.getResourceProduced();
         printMessage("REQUIRES: ");
         required.forEach((resource, qty) ->
-            printMessage(handleResourceColor(resource.toString()) + qty)
+                printMessage(handleResourceColor(resource.toString()) + qty)
         );
         // TODO finire
         return "";
     }
-
 
 
     private String handleBanner(String banner) {
@@ -318,7 +322,7 @@ public class CLI implements UI {
             printMessage("PLAYED LEADER CARDS: \n");
             IntStream.range(0, ReducedDashboard.NUM_LEADER_CARDS).forEach(i -> {
                 printColoredMessage("LEADER CARD #" + i, Constants.BOLD);
-                if(i < reducedDashboard.getPlayedLeaderCards().size()) {
+                if (i < reducedDashboard.getPlayedLeaderCards().size()) {
                     System.out.println("*****************************************");
                     showCard(reducedDashboard.getPlayedLeaderCards().get(i));
                     System.out.println("*****************************************");
@@ -331,7 +335,7 @@ public class CLI implements UI {
             System.out.println();
             IntStream.range(0, ReducedDashboard.NUM_DEVELOPMENT_CARD_STACKS).forEach(i -> {
                 printColoredMessage("DEVELOPMENT CARD #" + i, Constants.BOLD);
-                if(reducedDashboard.getPlayedDevelopmentCards().get(i).isEmpty()) {
+                if (reducedDashboard.getPlayedDevelopmentCards().get(i).isEmpty()) {
                     printColoredMessage("EMPTY", Constants.ANSI_RED);
                 } else {
                     System.out.println("*****************************************");
@@ -353,16 +357,16 @@ public class CLI implements UI {
         }
     }
 
-    public void showSupply (ArrayList<Resource> supply) {
-        int hBarSize = (7*supply.size()) + (4*supply.size()) + 1;
-        if(supply.size() > 0) {
+    public void showSupply(ArrayList<Resource> supply) {
+        int hBarSize = (7 * supply.size()) + (4 * supply.size()) + 1;
+        if (supply.size() > 0) {
             IntStream.range(0, hBarSize).forEach(i -> {
                 // printing indexes
-                switch(i) {
-                    case(5) -> printMessageNoNL("0");
-                    case(16) -> printMessageNoNL("1");
-                    case(27) -> printMessageNoNL("2");
-                    case(38) -> printMessageNoNL("3");
+                switch (i) {
+                    case (5) -> printMessageNoNL("0");
+                    case (16) -> printMessageNoNL("1");
+                    case (27) -> printMessageNoNL("2");
+                    case (38) -> printMessageNoNL("3");
                     default -> printMessageNoNL("―");
                 }
             });
@@ -370,7 +374,7 @@ public class CLI implements UI {
 
             IntStream.range(0, 6).forEach(column -> {
                 IntStream.range(0, supply.size()).forEach(i ->
-                    printMessageNoNL("| " + renderResourceRow(supply.get(i))[column] + " |")
+                        printMessageNoNL("| " + renderResourceRow(supply.get(i))[column] + " |")
                 );
                 printMessage("");
             });
@@ -382,7 +386,7 @@ public class CLI implements UI {
     }
 
     public String[] renderResourceRow(Resource r) {
-        if(r == null) {
+        if (r == null) {
             return Constants.empty;
         } else {
             return switch (r.toString()) {
@@ -398,15 +402,28 @@ public class CLI implements UI {
     public void showFaithTrack(String nickname) {
         ReducedPlayer reducedPlayer = reducedModel.getReducedGame().getPlayers().get(nickname);
         if (reducedPlayer != null) {
+            if (reducedModel.getReducedGame().getNumberOfPlayers() == 1) {
+                showLorenzoFT(nickname);
+                System.out.println("\n\n YOUR FAITHTRACK: \n");
+            }
             int position = reducedPlayer.getDashboard().getPosition();
-            System.out.println("position is: " + position);
             ftcli.setPos(position);
             List<Pair<Integer, Integer>> vc = getPassedVaticanReports(reducedPlayer.getDashboard());
-            IntStream.range(0, 3).forEach(i -> ftcli.handleVr(i+1, vc.get(i).second));
+            IntStream.range(0, 3).forEach(i -> ftcli.handleVr(i + 1, vc.get(i).second));
             ftcli.showFTCLI();
         } else {
             printErrorMessage("PLAYER " + nickname + " DOESN'T EXISTS");
         }
+    }
+
+    public void showLorenzoFT(String nickname) {
+        ReducedPlayer reducedPlayer = reducedModel.getReducedGame().getPlayers().get(nickname);
+        System.out.println("LORENZO's FAITHTRACK");
+        int lorenzoPosition = reducedPlayer.getDashboard().getLorenzoIlMagnificoPosition();
+        ftcli.setPos(lorenzoPosition);
+        List<Pair<Integer, Integer>> vc = getPassedVaticanReports(reducedPlayer.getDashboard());
+        IntStream.range(0, 3).forEach(i -> ftcli.handleVr(i + 1, vc.get(i).second));
+        ftcli.showFTCLI();
     }
 
     public List<Pair<Integer, Integer>> getPassedVaticanReports (ReducedDashboard reducedDashboard) {
@@ -939,7 +956,8 @@ public class CLI implements UI {
         IntStream.range(0, 12).forEach(i -> {
             printMessage("Remaining card with index " + i + ": " + reducedModel.getReducedGameBoard().getGrid().get(i).size());
         });
-        printMessage("Lorenzo faithtrack position: " + reducedModel.getReducedPlayer().getDashboard().getLorenzoIlMagnificoPosition());
+        printMessage("Lorenzo faithtrack position: " +
+                reducedModel.getReducedPlayer().getDashboard().getLorenzoIlMagnificoPosition() + "/24");
     }
 
     private void endGameHasStarted() {

@@ -126,6 +126,7 @@ public class GameLobby implements Lobby, Serializable {
     public void discardExcessLeaderCards(String nickname, int cardIndex) {
         serverController.discardExcessLeaderCards(nickname, cardIndex);
     }
+
     public void getInitialResources(String nickname, Resource resource, int position) {
         serverController.getInitialResources(nickname, resource, position);
     }

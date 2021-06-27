@@ -156,7 +156,7 @@ public class DefaultSettingsBuilder {
 
     private Resource parseResource(String resourceName) {
 
-        return switch (resourceName) {
+        return switch (resourceName.toUpperCase()) {
             case "SHIELD" -> Resource.SHIELD;
             case "SERVANT" -> Resource.SERVANT;
             case "STONE" -> Resource.STONE;
@@ -169,7 +169,7 @@ public class DefaultSettingsBuilder {
 
     private Banner parseBanner(String bannerColor, String level) {
 
-        return switch (bannerColor) {
+        return switch (bannerColor.toUpperCase()) {
             case "GREEN" -> new Banner(BannerEnum.GREEN, Integer.parseInt(level));
             case "YELLOW" -> new Banner(BannerEnum.YELLOW, Integer.parseInt(level));
             case "BLUE" -> new Banner(BannerEnum.BLUE, Integer.parseInt(level));
