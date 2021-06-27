@@ -150,9 +150,6 @@ public class ClientConnection implements Runnable {
     public void updateReducedGame(String firstPlayer, String currentPlayer, List<String> playersNicknames, TurnPhase turnPhase, int firstTurns, boolean gameStarted, Stack<Token> tokens, Token token) {
         ReducedGame reducedGame = reducedModel.getReducedGame();
         reducedGame.setGameStarted(gameStarted);
-        String oldPlayer = reducedGame.getCurrentPlayer();
-        TurnPhase oldPhase = reducedGame.getTurnPhase();
-        reducedGame.setGameStarted(gameStarted);
         reducedGame.setFirstPlayer(firstPlayer);
         reducedGame.setCurrentPlayer(currentPlayer);
         reducedGame.updatePlayers(playersNicknames);
@@ -160,17 +157,7 @@ public class ClientConnection implements Runnable {
         reducedGame.setFirstTurns(firstTurns);
         reducedGame.setTokens(tokens);
         reducedGame.setToken(token);
-        handleMenus(reducedGame, oldPlayer, oldPhase);
     }
-
-
-
-    public void handleMenus(ReducedGame reducedGame, String oldPlayer, TurnPhase oldPhase) {
-        String currentPlayer = reducedGame.getCurrentPlayer();
-        TurnPhase currentPhase = reducedGame.getTurnPhase();
-    }
-
-
 
     public void updateReducedDashboard(String nickname, int playerPoints,
                                        List<LeaderCard> playedLeaderCards,
