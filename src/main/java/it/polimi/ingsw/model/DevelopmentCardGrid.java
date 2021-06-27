@@ -151,4 +151,23 @@ public class DevelopmentCardGrid extends DevelopmentCardGridObservable {
 	public List<Stack<DevelopmentCard>> getGrid() {
 		return grid;
 	}
+
+	public boolean discardCard(int COLOR_INDEX) {
+		if (!grid.get(COLOR_INDEX).isEmpty()) {
+			grid.get(COLOR_INDEX).pop();
+		} else if (!grid.get(COLOR_INDEX + 4).isEmpty()) {
+			grid.get(COLOR_INDEX + 4).pop();
+		} else if (!grid.get(COLOR_INDEX + 2*4).isEmpty()) {
+			grid.get(COLOR_INDEX + 2*4).pop();
+		}
+
+		if (grid.get(COLOR_INDEX + 2*4).isEmpty()) {
+			notify(this);
+			return true;
+		} else {
+			notify(this);
+			return false;
+		}
+
+	}
 }

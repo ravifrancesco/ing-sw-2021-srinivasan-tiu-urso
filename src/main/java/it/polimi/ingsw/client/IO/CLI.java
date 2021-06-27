@@ -4,6 +4,7 @@ import it.polimi.ingsw.client.ClientConnection;
 import it.polimi.ingsw.controller.*;
 import it.polimi.ingsw.client.UI;
 import it.polimi.ingsw.client.UIType;
+import it.polimi.ingsw.model.GameSettings;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.TurnPhase;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
@@ -876,16 +877,69 @@ public class CLI implements UI {
         }
         if ("end_game_has_started".equals(menuCode)) {
             endGameHasStarted();
-
         }
         if("game_has_ended".equals(menuCode)) {
             gameHasEnded();
+        }
+        if("game_has_ended_single".equals(menuCode)) {
+            gameHasEndedSingle();
         }
         if("back_in_lobby". equals(menuCode)) {
             System.out.println("\n\n\n\nYou are being redirected to the main lobby...\n");
             System.out.println("Back to the main lobby!\n");
             showMainLobbyMenu();
         }
+        if("after_end_turn_single".equals(menuCode)) {
+            showAfterEndTurnSingleMenu();
+        }
+    }
+
+    private void gameHasEndedSingle() {
+        printMessage("\n\n");
+        printMessage("Lorenzo has activated the following token: " + reducedModel.getReducedGame().getToken());
+        IntStream.range(0, 12).forEach(i -> {
+            printMessage("Remaining card with index " + i + ": " + reducedModel.getReducedGameBoard().getGrid().get(i).size());
+        });
+        printMessage("Lorenzo faithtrack position: " + reducedModel.getReducedPlayer().getDashboard().getLorenzoIlMagnificoPosition());
+        int winner = establishWinner();
+        if(winner == 0) {
+            System.out.println("\nLorenzo has won!");
+        } else {
+            System.out.println("You've won!");
+        }
+    }
+
+    private int establishWinner() {
+        ReducedDashboard reducedDashboard = reducedModel.getReducedPlayer().getDashboard();
+        ReducedGameBoard reducedGameBoard = reducedModel.getReducedGameBoard();
+        if(checkFTEnd(reducedDashboard) || checkDvGridEnd(reducedGameBoard)) {
+            return 0;
+        } else {
+            return 1;
+        }
+    }
+
+    private boolean checkFTEnd(ReducedDashboard reducedDashboard) {
+        return reducedDashboard.getLorenzoIlMagnificoPosition() == GameSettings.FAITH_TRACK_LENGTH-1;
+    }
+
+    private boolean checkDvGridEnd(ReducedGameBoard reducedGameBoard) {
+        for(int i = 8; i < 12; i++) {
+            if(reducedGameBoard.getGrid().get(i).isEmpty()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    private void showAfterEndTurnSingleMenu() {
+        printMessage("\n\n");
+        printMessage("Lorenzo has activated the following token: " + reducedModel.getReducedGame().getToken());
+        IntStream.range(0, 12).forEach(i -> {
+            printMessage("Remaining card with index " + i + ": " + reducedModel.getReducedGameBoard().getGrid().get(i).size());
+        });
+        printMessage("Lorenzo faithtrack position: " + reducedModel.getReducedPlayer().getDashboard().getLorenzoIlMagnificoPosition());
     }
 
     private void endGameHasStarted() {

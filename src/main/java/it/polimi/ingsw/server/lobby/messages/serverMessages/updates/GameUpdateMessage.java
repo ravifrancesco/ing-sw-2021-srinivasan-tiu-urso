@@ -33,7 +33,6 @@ public class GameUpdateMessage implements ServerMessage, Serializable {
         this.firstTurns = game.getFirstTurns();
         this.tokens = game.getTokens();
         this.lastToken = game.getLastToken();
-        System.out.println("Ci arrivo? ");
     }
 
     @Override

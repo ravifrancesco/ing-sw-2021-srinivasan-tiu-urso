@@ -249,21 +249,35 @@ public class Connection implements Runnable,
     @Override
     public void update(Game message) {
         send(new GameUpdateMessage(message));
+        try {
+            GameLobby gl = (GameLobby) currentLobby;
+            if(gl.getConnectedPlayers().size() == 1) {
+                if(message.getGameEnded()) {
+                    if(!gl.isGameOver()) {
+                        gl.gameOverSinglePlayer();
+                    }
+                }
 
-        if(message.isEndGamePhase()) {
-            GameLobby gl = (GameLobby) currentLobby;
-            if(!gl.isEndGamePhase()) {
-                gl.startEndGamePhase();
-            };
-        }
-        if(message.getGameEnded()) {
-            GameLobby gl = (GameLobby) currentLobby;
-            if(!gl.isGameOver()) {
-                gl.gameOver();
+            } else {
+                if(message.isEndGamePhase()) {
+                    if(!gl.isEndGamePhase()) {
+                        gl.startEndGamePhase();
+                    };
+                }
+                if(message.getGameEnded()) {
+                    if(!gl.isGameOver()) {
+                        gl.gameOverMultiPlayer();
+                    }
+                }
             }
+        } catch (Exception e) {
+            System.out.println("Errore nel casting di GameLobby, send help");
         }
+
 
     }
+
+
 
     @Override
     public void update(GameBoard message) {

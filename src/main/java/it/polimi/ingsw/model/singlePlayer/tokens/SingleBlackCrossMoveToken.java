@@ -13,7 +13,7 @@ public class SingleBlackCrossMoveToken implements Token, Serializable {
         Dashboard dashboard = game.getPlayers()
                 .get(game.getCurrentPlayer()).getDashboard();
 
-        dashboard.getFaithTrack().moveLorenzoIlMagnificoMarker(2);
+        dashboard.getFaithTrack().moveLorenzoIlMagnificoMarker(1);
 
         game.resetTokens();
 

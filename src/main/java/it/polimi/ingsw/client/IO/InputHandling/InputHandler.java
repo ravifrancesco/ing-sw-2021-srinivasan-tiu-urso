@@ -85,7 +85,6 @@ public class InputHandler {
             return new GimmeMessage(row, column, index);
 
         } catch (Exception e) {
-            System.out.println("AOOOOO");
             return null;
         }
     }

@@ -41,7 +41,7 @@ public class GameLobby implements Lobby, Serializable {
         return gameOver;
     }
 
-    public void gameOver() {
+    public void gameOverMultiPlayer() {
         this.gameOver = true;
         getConnectedPlayers().forEach((nickname, player) -> {
             player.sendCLIupdateMessage("game_has_ended");
@@ -185,4 +185,10 @@ public class GameLobby implements Lobby, Serializable {
         return LobbyType.GAME_LOBBY;
     }
 
+    public void gameOverSinglePlayer() {
+        this.gameOver = true;
+        getConnectedPlayers().forEach((nickname, player) -> {
+            player.sendCLIupdateMessage("game_has_ended_single");
+        });
+    }
 }

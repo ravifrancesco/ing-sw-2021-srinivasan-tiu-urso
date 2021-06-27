@@ -519,6 +519,7 @@ public class ServerController {
 
     // TODO doc
     public int endTurnSinglePlayer(String nickname) {
+        boolean singlePlayerEnd;
         String currentPlayer = game.getCurrentPlayer();
         if (!currentPlayer.equals(nickname)) {
             game.setError(new WrongTurnException("Not " + nickname + " turn"), nickname);
@@ -550,10 +551,10 @@ public class ServerController {
         }
 
         game.drawToken();
-        // TODO signal end game
 
         if(player.getDashboard().checkGameEnd() || game.checkEnd()) {
-            // SIGNAL END GAME
+            game.endGame();
+            return 1;
         } else if(game.getFirstTurns() < game.getNumberOfPlayers()-1) {
             dashboard.moveFaithMarker(game.getFirstTurns() < 2 ? 0 : 1);
             game.setFirstTurns(game.getFirstTurns() + 1);
@@ -566,7 +567,6 @@ public class ServerController {
 
         game.changePlayer();
 
-        //return game.getTurnPhase() == TurnPhase.ENDGAME && game.getCurrentPlayer().equals(game.getFirstPlayer());
         return 0;
     }
 

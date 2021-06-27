@@ -11,11 +11,13 @@ public class EndTurnGameMessage extends ClientGameMessage implements Serializabl
 
     @Override
     public void handle(Connection c, ServerController serverController) {
+        String menuCode;
         int numberOfPlayers = serverController.getNumberOfPlayers();
         int output = numberOfPlayers == 1 ? serverController.endTurnSinglePlayer(c.getNickname()) : serverController.endTurn(c.getNickname());
         if (output == 0) {
             c.sendSuccessfulMoveMessage("Turn ended correctly");
-            ((GameLobby) c.getCurrentLobby()).getConnectedPlayers().forEach((nickname, connection) -> connection.sendCLIupdateMessage("after_end_turn"));
+            menuCode = numberOfPlayers == 1 ? "after_end_turn_single" : "after_end_turn";
+            ((GameLobby) c.getCurrentLobby()).getConnectedPlayers().forEach((nickname, connection) -> connection.sendCLIupdateMessage(menuCode));
         }
         if (output == 1) {
             GameLobby gl = (GameLobby) c.getCurrentLobby();

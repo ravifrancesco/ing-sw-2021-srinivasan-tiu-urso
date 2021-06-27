@@ -228,7 +228,6 @@ public class ClientConnection implements Runnable {
     }
 
     public void updateReducedFaithTrack(String nickname, int position, int LorenzoIlMagnificoPosition, Map<Pair<Integer, Integer>, Pair<Integer, Integer>> vaticanReports, int[] faithTrackVictoryPoints) {
-        System.out.println("Appena chiamato dal clientConnection su updateReducedFaithTrack mi viene: " + position);
         ReducedGame reducedGame = reducedModel.getReducedGame();
         if (!reducedGame.getPlayers().containsKey(nickname)) {
             reducedGame.createPlayer(nickname);

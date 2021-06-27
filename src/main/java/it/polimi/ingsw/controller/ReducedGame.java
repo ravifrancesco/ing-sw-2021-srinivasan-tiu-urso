@@ -28,6 +28,10 @@ public class ReducedGame {
 
     private int firstTurns;
 
+    public Token getToken() {
+        return token;
+    }
+
     private Stack<Token> tokens;
     private Token token;
 
