@@ -10,7 +10,7 @@ public class WelcomeMessage implements ServerMessage, Serializable {
 
     @Override
     public void updateClient(ClientConnection clientConnection, String nickname) {
-        clientConnection.ui.printColoredMessage("Connection successfully registered\n", Constants.GOLD_COLOR);
+        clientConnection.ui.printColoredMessage("Connected!\n", Constants.GOLD_COLOR);
     }
 
 }

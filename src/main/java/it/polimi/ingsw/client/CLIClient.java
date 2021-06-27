@@ -16,6 +16,7 @@ public class CLIClient {
         System.out.println("Please choose");
         System.out.println("LOCAL to play locally");
         System.out.println("ONLINE to play online");
+        System.out.print("> ");
         while (true) {
             choice = input.nextLine();
             System.out.println(choice);
@@ -32,15 +33,24 @@ public class CLIClient {
     }
 
     public void handleServer(CLI cli) {
+        boolean connected = false;
         try {
-            String ip = cli.getIp();
-            int port = cli.getPort();
-            ClientConnection clientConnection = new ClientConnection(ip, port, cli);
-            clientConnection.connectToServer();
+            ClientConnection clientConnection;
+            do {
+                String ip = cli.getIp();
+                int port = cli.getPort();
+                 clientConnection = new ClientConnection(ip, port, cli);
+                try {
+                    clientConnection.connectToServer();
+                    connected = true;
+                } catch (Exception e) {
+                    System.out.println("Connection to server failed, please try again.");
+                }
+            } while (!connected);
+
             while (!clientConnection.isNameRegistered()) {
                 clientConnection.registerName();
             }
-
             clientConnection.run();
             return;
         } catch (IllegalArgumentException e) {
