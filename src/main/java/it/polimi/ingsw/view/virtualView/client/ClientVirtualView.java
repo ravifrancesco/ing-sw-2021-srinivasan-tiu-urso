@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.virtualView.client;
 
+import it.polimi.ingsw.model.full.specialAbilities.DevelopmentCardDiscount;
 import it.polimi.ingsw.view.UI.CLI.CLI;
 import it.polimi.ingsw.view.UI.CLI.IO.Constants;
 import it.polimi.ingsw.view.UI.UIType;
@@ -193,7 +194,7 @@ public class ClientVirtualView implements Runnable, ClientVirtualViewIF {
         reducedModel.getReducedGameBoard().setMarblesGrid(marblesGrid);
     }
 
-    public void updateReducedPlayer(String nickname, List<LeaderCard> hand, int handSize, Resource[] wmrs) {
+    public void updateReducedPlayer(String nickname, List<LeaderCard> hand, int handSize, Resource[] wmrs, ArrayList<DevelopmentCardDiscount> discounts) {
         ReducedGame reducedGame = reducedModel.getReducedGame();
         if (!reducedGame.getPlayers().containsKey(nickname)) {
             reducedGame.createPlayer(nickname);
@@ -203,6 +204,7 @@ public class ClientVirtualView implements Runnable, ClientVirtualViewIF {
         reducedPlayer.setHand(hand);
         reducedPlayer.setHandSize(handSize);
         reducedPlayer.setActivatedWMR(wmrs);
+        reducedPlayer.setDiscounts(discounts);
     }
 
     public void updateReducedWarehouse(String nickname, Resource[] deposit, Resource[][] extraDeposits, Map<Resource, Integer> locker) {

@@ -34,19 +34,6 @@ public class ReducedGame {
     private Stack<Token> tokens;
     private Token token;
 
-
-    public boolean isGameEnded() {
-        return gameEnded;
-    }
-
-    public boolean isEndGamePhase() {
-        return endGamePhase;
-    }
-
-    private boolean gameEnded;
-
-    private boolean endGamePhase;
-
     public ReducedGame(ReducedModel reducedModel) {
         this.reducedModel = reducedModel;
         this.gameId = "";

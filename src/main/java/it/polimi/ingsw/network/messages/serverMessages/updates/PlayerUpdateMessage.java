@@ -1,5 +1,6 @@
 package it.polimi.ingsw.network.messages.serverMessages.updates;
 
+import it.polimi.ingsw.model.full.specialAbilities.DevelopmentCardDiscount;
 import it.polimi.ingsw.view.virtualView.client.ClientVirtualView;
 import it.polimi.ingsw.model.full.table.Player;
 import it.polimi.ingsw.model.full.table.Resource;
@@ -7,6 +8,7 @@ import it.polimi.ingsw.model.full.cards.LeaderCard;
 import it.polimi.ingsw.network.messages.serverMessages.ServerMessage;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,6 +20,7 @@ public class PlayerUpdateMessage implements ServerMessage, Serializable {
     private List<LeaderCard> hand;
     private int handSize;
     private Resource[] wmrs;
+    private ArrayList<DevelopmentCardDiscount> discounts;
 
     /**
      * Constructor.
@@ -29,6 +32,7 @@ public class PlayerUpdateMessage implements ServerMessage, Serializable {
         this.hand = player.getHand();
         this.handSize = player.getHandSize();
         this.wmrs = player.getActivatedWMR();
+        this.discounts = player.getActiveDiscounts();
     }
 
     @Override
@@ -36,6 +40,6 @@ public class PlayerUpdateMessage implements ServerMessage, Serializable {
         if (!playerNickname.equals(nickname)) {
             hand.clear();
         }
-        clientVirtualView.updateReducedPlayer(this.playerNickname, hand, handSize, wmrs);
+        clientVirtualView.updateReducedPlayer(this.playerNickname, hand, handSize, wmrs, discounts);
     }
 }

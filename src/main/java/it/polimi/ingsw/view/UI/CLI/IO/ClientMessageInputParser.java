@@ -36,7 +36,7 @@ public class ClientMessageInputParser {
             case "PLAYLEADERCARD" -> InputHandler.playLeaderCard(in, cli); // tested
 
             case "STOREFROMSUPPLY" -> InputHandler.storeFromSupply(in, cli); // tested
-            case "STOREFROMSUPPLYTOEXTRADEPOSIT" -> InputHandler.storeFromSupplyToExtraDeposit(in, cli); // TODO controllare se ho sistemato gli indici
+            case "STOREFROMSUPPLYED" -> InputHandler.storeFromSupplyToExtraDeposit(in, cli); // TODO controllare se ho sistemato gli indici
             case "CHANGEDEPOSIT" -> InputHandler.changeDeposit(in, cli); // tested
 
             case "LOADGAMESETTINGS" -> InputHandler.loadGameSettings(in); // TODO test

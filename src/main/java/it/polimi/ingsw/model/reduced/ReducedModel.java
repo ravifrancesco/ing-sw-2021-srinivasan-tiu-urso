@@ -166,6 +166,7 @@ public class ReducedModel {
     }
 
     public void updateToken(Token token) {
+        if (gameController == null) return;
         Platform.runLater(() -> gameController.updateToken(token));
     }
 
