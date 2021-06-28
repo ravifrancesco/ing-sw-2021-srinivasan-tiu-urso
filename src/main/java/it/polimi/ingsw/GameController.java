@@ -71,6 +71,8 @@ public class GameController {
 
     private FaithMarkerController faithMarkerController;
 
+    private FaithMarkerController lorenzoIlMagnificoFaithMarkerController;
+
     private ChooseResourceController chooseResourceController;
 
     private MarketViewController marketController;
@@ -262,9 +264,7 @@ public class GameController {
             if (!((ProductionPower)leaderCard.getSpecialAbility()).isActivatable()) {
                 leaderCardControllers[slot].setDarker();
             } else {
-                leaderCardControllers[slot].getItem().setOnMouseClicked(mouseEvent -> {
-                    leaderCardControllers[slot].openProductionPowerView(mouseEvent);
-                });
+                leaderCardControllers[slot].getItem().setOnMouseClicked(mouseEvent -> leaderCardControllers[slot].openProductionPowerView(mouseEvent));
             }
         }
 
@@ -308,9 +308,7 @@ public class GameController {
         if (!developmentCard.getProductionPower().isActivatable()) {
             developmentCardControllers[pos].setDarker();
         } else {
-            developmentCardControllers[pos].getItem().setOnMouseClicked(mouseEvent -> {
-                developmentCardControllers[pos].openProductionPowerView(mouseEvent);
-            });
+            developmentCardControllers[pos].getItem().setOnMouseClicked(mouseEvent -> developmentCardControllers[pos].openProductionPowerView(mouseEvent));
         }
 
         pane.getChildren().add(developmentCardControllers[pos].getItem());
@@ -419,101 +417,6 @@ public class GameController {
 
     @FXML
     private void testClick(MouseEvent event) {
-
-        System.out.println(event.getX());
-        System.out.println(event.getY());
-        /*
-        faithMarkerController.moveFaithMarker(faithMarkerController.getPosition()+1);
-        if (chooseResourceController == null) {
-            // DEBUG
-
-            Map<Banner, Integer> bannerCost = new HashMap<>();
-
-            bannerCost.put(new Banner(BannerEnum.GREEN, 1), 2);
-            bannerCost.put(new Banner(BannerEnum.BLUE, 2), 1);
-
-            Map<Resource, Integer> resourceCost = new HashMap<>();
-
-            resourceCost.put(Resource.GOLD, 3);
-
-            Map<Resource, Integer> resourceRequired = new HashMap<>();
-            resourceRequired.put(Resource.ANY, 1);
-
-            SpecialAbility sa = new WarehouseExtraSpace(Resource.SHIELD);
-
-            LeaderCard leaderCard = new LeaderCard(7, 5, bannerCost, resourceCost, sa);
-
-            playedLeaderCard = new ArrayList<>();
-
-            playedLeaderCard.add(leaderCard);
-
-            //printLeaderCard(leaderCard, 0);
-
-            printPlayedLeaderCards(playedLeaderCard);
-
-            // DEBUGGING
-
-            Resource[] deposit = new Resource[6];
-            deposit[0] = Resource.GOLD;
-            deposit[2] = Resource.SHIELD;
-            deposit[5] = Resource.SERVANT;
-
-            Map<Resource, Integer> map = new HashMap<>();
-            map.put(Resource.GOLD, 5);
-            map.put(Resource.SERVANT, 3);
-
-            ArrayList<Resource> supplyOld = new ArrayList<>();
-            supplyOld.add(Resource.GOLD);
-
-            printWarehouse("ravi", deposit, map, new Resource[2][2], supplyOld);
-
-            cleanWarehouse();
-
-            Resource[] deposit2 = new Resource[6];
-            deposit2[0] = Resource.SHIELD;
-            deposit2[2] = Resource.GOLD;
-            deposit2[4] = Resource.STONE;
-
-            Map<Resource, Integer> map2 = new HashMap<>();
-            map2.put(Resource.SHIELD, 2);
-            map2.put(Resource.STONE, 3);
-
-            Resource[][] extraDeposits2 = new Resource[2][2];
-
-            extraDeposits2[0][1] = Resource.SHIELD;
-
-            ArrayList<Resource> supply = new ArrayList<>();
-
-            supply.add(Resource.SHIELD);
-            supply.add(Resource.STONE);
-            supply.add(Resource.SERVANT);
-            supply.add(Resource.GOLD);
-
-
-            printWarehouse("ravi", deposit2, map2, extraDeposits2, supply);
-
-            openChooseResourceWindow();
-
-            Map<Banner, Integer> bannerCost2 = new HashMap<>();
-
-            bannerCost.put(new Banner(BannerEnum.GREEN, 1), 2);
-            bannerCost.put(new Banner(BannerEnum.BLUE, 2), 1);
-
-            Map<Resource, Integer> resourceCost2 = new HashMap<>();
-
-            resourceCost.put(Resource.GOLD, 3);
-
-            SpecialAbility sa2 = new DevelopmentCardDiscount(Resource.SHIELD, 1);
-
-            LeaderCard leaderCard2 = new LeaderCard(1, 5, bannerCost2, resourceCost2, sa2);
-
-            playedLeaderCard.add(leaderCard2);
-
-            //printLeaderCard(leaderCard2, 1);
-
-            printPlayedLeaderCards(playedLeaderCard);
-        }
-         */
     }
 
 
@@ -561,42 +464,14 @@ public class GameController {
 
         pane.getChildren().add(faithMarkerController.getItem());
 
+        lorenzoIlMagnificoFaithMarkerController = new FaithMarkerController();
+        lorenzoIlMagnificoFaithMarkerController.assignSlots(faithSlots);
+        lorenzoIlMagnificoFaithMarkerController.createLorenzoItem();
+        lorenzoIlMagnificoFaithMarkerController.hide();
+
+        pane.getChildren().add(lorenzoIlMagnificoFaithMarkerController.getItem());
+
         vaticanReportTokens = Arrays.asList(vaticanReport0IW, vaticanReport1IW, vaticanReport2IW);
-    }
-
-    // TODO delete
-    public void openChooseResourceWindow() {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/choose_resource.fxml"));
-            Parent root = fxmlLoader.load();
-            chooseResourceController = fxmlLoader.getController();
-            Stage stage = new Stage();
-            stage.setTitle("Buy dv card");
-            stage.setScene(new Scene(root, 500, 700));
-            stage.show();
-
-            Resource[] deposit = new Resource[6];
-            deposit[0] = Resource.GOLD;
-            deposit[2] = Resource.SHIELD;
-            deposit[5] = Resource.SERVANT;
-
-            Map<Resource, Integer> map = new HashMap<>();
-            map.put(Resource.GOLD, 5);
-            map.put(Resource.SERVANT, 3);
-
-            Resource[][] extraDeposits = new Resource[2][2];
-
-            extraDeposits[0][0] = Resource.GOLD;
-            extraDeposits[0][1] = Resource.SHIELD;
-            extraDeposits[1][0] = Resource.STONE;
-            extraDeposits[1][1] = Resource.SERVANT;
-
-            chooseResourceController.setResources(deposit, map, extraDeposits);
-
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     public void openMarketWindow(MouseEvent event) {
@@ -789,6 +664,10 @@ public class GameController {
             return;
         }
         faithMarkerController.moveFaithMarker(position);
+    }
+
+    public void moveLorenzoFaithMarker(int position) {
+        lorenzoIlMagnificoFaithMarkerController.moveFaithMarker(position);
     }
 
     public void showAfterGameStart() {

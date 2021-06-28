@@ -144,6 +144,7 @@ public class ReducedDashboard {
 
     public void setLorenzoIlMagnificoPosition(int LorenzoIlMagnificoPosition) {
         this.LorenzoIlMagnificoPosition = LorenzoIlMagnificoPosition;
+        updateLorenzoFaithMarker(LorenzoIlMagnificoPosition);
     }
 
     public void setProductionPower(ProductionPower productionPower) {
@@ -172,5 +173,9 @@ public class ReducedDashboard {
 
     private void updateVaticanReports() {
         this.reducedModel.updateVaticanReports(reducedPlayer.getNickname(), vaticanReports);
+    }
+
+    private void updateLorenzoFaithMarker(int LorenzoIlMagnificoPosition) {
+        this.reducedModel.updateLorenzoFaithMarker(LorenzoIlMagnificoPosition);
     }
 }

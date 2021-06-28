@@ -165,4 +165,9 @@ public class ReducedModel {
         Platform.runLater(() -> gameController.updateVaticanReports(player, vaticanReportPairs));
     }
 
+    public void updateLorenzoFaithMarker(int position) {
+        if (gameController == null) return;
+        Platform.runLater(() -> gameController.moveLorenzoFaithMarker(position));
+    }
+
 }
