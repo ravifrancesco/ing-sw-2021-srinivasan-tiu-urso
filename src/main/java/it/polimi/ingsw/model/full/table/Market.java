@@ -8,9 +8,9 @@ import java.util.Collections;
 import java.util.stream.IntStream;
 
 public class Market extends MarketObservable {
-	static final int gridRowLength = 3;
+	public static final int gridRowLength = 3;
 
-	static final int gridColLength = 4;
+	public static final int gridColLength = 4;
 
 	private Marble[] marblesGrid;
 

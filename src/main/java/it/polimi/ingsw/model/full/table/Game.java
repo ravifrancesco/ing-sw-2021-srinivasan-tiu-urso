@@ -5,7 +5,6 @@ import it.polimi.ingsw.model.utils.GameError;
 import it.polimi.ingsw.model.utils.GameSettings;
 import it.polimi.ingsw.model.full.cards.LeaderCard;
 import it.polimi.ingsw.model.observerPattern.observables.GameObservable;
-import it.polimi.ingsw.model.singlePlayer.tokens.*;
 import it.polimi.ingsw.model.full.tokens.*;
 import it.polimi.ingsw.utils.Pair;
 

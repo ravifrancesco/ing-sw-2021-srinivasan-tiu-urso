@@ -121,7 +121,7 @@ public class BuyDevCardController {
     }
 
     private void displayResource(ImageView iw, Label lb, Resource r) {
-        File file = new File("src/main/resources/png/"+r.name().toLowerCase()+".png");
+        File file = new File("src/main/resources/png/resources/"+r.name().toLowerCase()+".png");
         Image image = new Image(file.toURI().toString());
         iw.setImage(image);
         discountHbox.setVisible(true);

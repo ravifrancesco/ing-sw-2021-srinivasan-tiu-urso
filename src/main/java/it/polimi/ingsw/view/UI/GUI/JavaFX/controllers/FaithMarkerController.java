@@ -26,7 +26,7 @@ public class FaithMarkerController {
     }
 
     public void createItem() {
-        File file = new File("src/main/resources/png/faith_marker.png");
+        File file = new File("src/main/resources/png/table/faith_marker.png");
         Image image = new Image(file.toURI().toString());
         faithMarker = new ImageView(image);
         increment = 2.5;
@@ -38,7 +38,7 @@ public class FaithMarkerController {
     }
 
     public void createLorenzoItem() {
-        File file = new File("src/main/resources/png/lorenzo_faith_marker.png");
+        File file = new File("src/main/resources/png/singlePlayer/lorenzo_faith_marker.png");
         Image image = new Image(file.toURI().toString());
         faithMarker = new ImageView(image);
         increment = 7.5;

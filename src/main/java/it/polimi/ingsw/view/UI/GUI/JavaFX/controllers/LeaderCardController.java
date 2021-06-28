@@ -90,4 +90,8 @@ public class LeaderCardController {
             e.printStackTrace();
         }
     }
+
+    public LeaderCard getLeaderCard() {
+        return leaderCard;
+    }
 }

@@ -13,9 +13,9 @@ public class VaticanReportTest {
         VaticanReport vaticanReport = new VaticanReport(0, 25, 5);
         Assumptions.assumeFalse(vaticanReport.isMissed());
         Assumptions.assumeFalse(vaticanReport.isAchieved());
-        Assert.assertEquals(0, vaticanReport.start);
-        Assert.assertEquals(25, vaticanReport.end);
-        Assert.assertEquals(5, vaticanReport.victoryPoints);
+        Assert.assertEquals(0, vaticanReport.getStart());
+        Assert.assertEquals(25, vaticanReport.getEnd());
+        Assert.assertEquals(5, vaticanReport.getVictoryPoints());
 
     }
 
@@ -61,9 +61,9 @@ public class VaticanReportTest {
 
         Assumptions.assumeFalse(cloneVaticanReport.isMissed());
         Assumptions.assumeFalse(cloneVaticanReport.isAchieved());
-        Assert.assertEquals(0, cloneVaticanReport.start);
-        Assert.assertEquals(25, cloneVaticanReport.end);
-        Assert.assertEquals(5, cloneVaticanReport.victoryPoints);
+        Assert.assertEquals(0, cloneVaticanReport.getStart());
+        Assert.assertEquals(25, cloneVaticanReport.getEnd());
+        Assert.assertEquals(5, cloneVaticanReport.getVictoryPoints());
 
     }
 

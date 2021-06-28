@@ -297,6 +297,10 @@ public class GameController {
         for (int i = 0; i < leaderCardControllers.length; i++) {
             if (leaderCardControllers[i] != null) {
                 pane.getChildren().remove(leaderCardControllers[i].getItem());
+                if (leaderCardControllers[i].getLeaderCard().getSpecialAbility().getType() == SpecialAbilityType.WAREHOUSE_EXTRA_SPACE) {
+                    pane.getChildren().remove(extraDepositSlots[i*2].getRectangle());
+                    pane.getChildren().remove(extraDepositSlots[i*2+1].getRectangle());
+                }
             }
         }
     }
@@ -878,7 +882,7 @@ public class GameController {
         if (token == null) {
             tokenIW.setImage(null);
         } else {
-            File file = new File("src/main/resources/png/tokens/token_"+token.getType()+".png");
+            File file = new File("src/main/resources/png/singlePlayer/tokens/token_"+token.getType()+".png");
             Image image = new Image(file.toURI().toString());
             tokenIW.setImage(image);
         }

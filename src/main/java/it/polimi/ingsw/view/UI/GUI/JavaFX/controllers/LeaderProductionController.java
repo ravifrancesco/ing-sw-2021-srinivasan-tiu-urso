@@ -223,7 +223,7 @@ public class LeaderProductionController {
             case STONE -> resourceName = "stone";
             case SERVANT -> resourceName = "servant";
         }
-        File file = new File("src/main/resources/png/"+resourceName+".png");
+        File file = new File("src/main/resources/png/resources/"+resourceName+".png");
         Image image = new Image(file.toURI().toString());
         ImageView imageView = new ImageView(image);
         imageView.setOnMouseClicked(mouseEvent -> clickedDepositResource(imageView, mouseEvent, pos));
@@ -254,7 +254,7 @@ public class LeaderProductionController {
             case STONE -> resourceName = "stone";
             case SERVANT -> resourceName = "servant";
         }
-        File file = new File("src/main/resources/png/"+resourceName+".png");
+        File file = new File("src/main/resources/png/resources/"+resourceName+".png");
         Image image = new Image(file.toURI().toString());
         ImageView imageView = new ImageView(image);
         imageView.setOnMouseClicked(mouseEvent -> clickedExtraDepositResource(imageView, mouseEvent, pos));

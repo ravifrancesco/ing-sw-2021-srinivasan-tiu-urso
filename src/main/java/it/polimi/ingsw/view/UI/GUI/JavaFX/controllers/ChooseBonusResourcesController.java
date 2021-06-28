@@ -101,7 +101,7 @@ public class ChooseBonusResourcesController {
 
 
     private Image loadResourceImage(String resource) {
-        File file = new File("src/main/resources/png/"+resource+".png");
+        File file = new File("src/main/resources/png/resources/"+resource+".png");
         return new Image(file.toURI().toString());
     }
 

@@ -91,7 +91,7 @@ public class VaticanReport implements Serializable {
      *
      * @return a clone of <code>this</code>
      */
-    protected VaticanReport copy() {
+    public VaticanReport copy() {
         return new VaticanReport(start, end, victoryPoints);
     }
 
