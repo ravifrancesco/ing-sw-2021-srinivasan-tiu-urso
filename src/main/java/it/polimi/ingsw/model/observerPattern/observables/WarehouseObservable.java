@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model.observerPattern.observables;
 
-import it.polimi.ingsw.model.Warehouse;
+import it.polimi.ingsw.model.full.table.Warehouse;
 import it.polimi.ingsw.model.observerPattern.observers.WarehouseObserver;
 
 import java.util.ArrayList;

@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.full.cards.Banner;
+import it.polimi.ingsw.model.full.cards.BannerEnum;
 import org.junit.Assert;
 import org.junit.Test;
 

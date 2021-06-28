@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.full.table.VaticanReport;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.jupiter.api.Assumptions;

@@ -3,13 +3,10 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.controller.exceptions.IllegalDepositStateException;
 import it.polimi.ingsw.controller.exceptions.WrongMoveException;
 import it.polimi.ingsw.controller.exceptions.WrongTurnException;
-import it.polimi.ingsw.model.Dashboard;
-import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.Resource;
-import it.polimi.ingsw.model.marbles.Marble;
-
-import java.util.ArrayList;
+import it.polimi.ingsw.model.full.table.Dashboard;
+import it.polimi.ingsw.model.full.table.Game;
+import it.polimi.ingsw.model.full.table.Player;
+import it.polimi.ingsw.model.full.table.Resource;
 
 public class WarehouseController {
     private final Game game;
@@ -35,7 +32,7 @@ public class WarehouseController {
     }
 
     /**
-     * @see ServerController#changeDeposit(String, Resource[])
+     * @see Controller#changeDeposit(String, Resource[])
      */
     public void changeResourcesDeposit(String nickname, Resource[] deposit) throws WrongTurnException, WrongMoveException, IllegalDepositStateException {
         if (!game.getCurrentPlayer().equals(nickname)) {
@@ -55,7 +52,7 @@ public class WarehouseController {
     }
 
     /**
-     * @see ServerController#changeDepositExtraDeposit(String, Resource[], Resource[], int)
+     * @see Controller#changeDepositExtraDeposit(String, Resource[], Resource[], int)
      */
     public void changeResourcesDepositExtraDeposit(String nickname, Resource[] deposit, Resource[] extraDeposit, int lcIndex) throws WrongTurnException, IllegalDepositStateException, WrongMoveException {
         if (!game.getCurrentPlayer().equals(nickname)) {
@@ -78,7 +75,7 @@ public class WarehouseController {
 
 
   /**
-    *  @see ServerController#storeFromSupply(String, int, int)
+    *  @see Controller#storeFromSupply(String, int, int)
   */
     public void storeFromSupply(String nickname, int from, int to) throws WrongTurnException, WrongMoveException, IllegalDepositStateException {
         if (!game.getCurrentPlayer().equals(nickname)) {
@@ -98,7 +95,7 @@ public class WarehouseController {
     }
 
     /**
-     * @see ServerController#storeFromSupplyInExtraDeposit(String, int, int, int)
+     * @see Controller#storeFromSupplyInExtraDeposit(String, int, int, int)
      */
 
     public void storeFromSupplyInExtraDeposit(String nickname, int leaderCardPos, int from, int to) throws WrongTurnException, WrongMoveException, IllegalDepositStateException {

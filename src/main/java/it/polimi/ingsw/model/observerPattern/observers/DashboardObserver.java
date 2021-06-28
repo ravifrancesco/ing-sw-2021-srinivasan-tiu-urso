@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model.observerPattern.observers;
 
-import it.polimi.ingsw.model.Dashboard;
+import it.polimi.ingsw.model.full.table.Dashboard;
 
 /**
  * Interface class for observers of Dashboard.

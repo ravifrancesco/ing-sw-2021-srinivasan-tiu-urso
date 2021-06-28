@@ -4,8 +4,9 @@ import it.polimi.ingsw.controller.exceptions.CardNotPlayableException;
 import it.polimi.ingsw.controller.exceptions.WrongMoveException;
 import it.polimi.ingsw.controller.exceptions.WrongTurnException;
 import it.polimi.ingsw.controller.exceptions.WrongTurnPhaseException;
-import it.polimi.ingsw.model.*;
-import it.polimi.ingsw.model.cards.LeaderCard;
+import it.polimi.ingsw.model.full.cards.Banner;
+import it.polimi.ingsw.model.full.cards.LeaderCard;
+import it.polimi.ingsw.model.full.table.*;
 
 import java.util.Map;
 
@@ -23,7 +24,7 @@ public class LeaderCardController {
     }
 
     /**
-     * @see ServerController#discardExcessLeaderCards(String, int)
+     * @see Controller#discardExcessLeaderCards(String, int)
      */
 
     public void discardExcessLeaderCards(String nickname, int cardToDiscard) throws WrongTurnException, WrongMoveException, CardNotPlayableException {
@@ -76,7 +77,7 @@ public class LeaderCardController {
     }
 
     /**
-     * @see ServerController#discardLeaderCard(String, int)
+     * @see Controller#discardLeaderCard(String, int)
      */
 
     public void discardLeaderCard(String nickname, int cardToDiscard) throws WrongTurnException, CardNotPlayableException {

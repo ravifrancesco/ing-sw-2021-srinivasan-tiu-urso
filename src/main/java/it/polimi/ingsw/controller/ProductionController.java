@@ -4,11 +4,12 @@ import it.polimi.ingsw.controller.exceptions.PowerNotActivatableException;
 import it.polimi.ingsw.controller.exceptions.WrongMoveException;
 import it.polimi.ingsw.controller.exceptions.WrongTurnException;
 import it.polimi.ingsw.controller.exceptions.WrongTurnPhaseException;
-import it.polimi.ingsw.model.*;
-import it.polimi.ingsw.model.cards.DevelopmentCard;
-import it.polimi.ingsw.model.specialAbilities.ProductionPower;
-import it.polimi.ingsw.model.specialAbilities.SpecialAbility;
-import it.polimi.ingsw.model.specialAbilities.SpecialAbilityType;
+import it.polimi.ingsw.model.full.cards.DevelopmentCard;
+import it.polimi.ingsw.model.full.specialAbilities.ProductionPower;
+import it.polimi.ingsw.model.full.specialAbilities.SpecialAbility;
+import it.polimi.ingsw.model.full.specialAbilities.SpecialAbilityType;
+import it.polimi.ingsw.model.full.table.*;
+import it.polimi.ingsw.model.utils.ResourceContainer;
 
 import java.util.Map;
 
@@ -142,7 +143,7 @@ public class ProductionController {
     }
 
     /**
-     * @see ServerController#activateDevelopmentCardProductionPower(String, int, ResourceContainer, Map, Map)
+     * @see Controller#activateDevelopmentCardProductionPower(String, int, ResourceContainer, Map, Map)
      */
 
     public void activateDevelopmentCardProductionPower(String nickname, int cardToActivate, ResourceContainer resourcesToPayCost,

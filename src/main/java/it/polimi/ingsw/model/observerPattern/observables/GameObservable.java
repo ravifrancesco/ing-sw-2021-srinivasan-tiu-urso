@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model.observerPattern.observables;
 
-import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.full.table.Game;
 import it.polimi.ingsw.model.observerPattern.observers.GameObserver;
 
 import java.util.ArrayList;

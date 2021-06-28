@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model.observerPattern.observables;
 
-import it.polimi.ingsw.model.GameError;
+import it.polimi.ingsw.model.utils.GameError;
 import it.polimi.ingsw.model.observerPattern.observers.GameErrorObserver;
 
 import java.util.ArrayList;

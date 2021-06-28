@@ -3,8 +3,7 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.controller.exceptions.WrongMoveException;
 import it.polimi.ingsw.controller.exceptions.WrongTurnException;
 import it.polimi.ingsw.controller.exceptions.WrongTurnPhaseException;
-import it.polimi.ingsw.model.*;
-import it.polimi.ingsw.model.specialAbilities.WhiteMarbleResource;
+import it.polimi.ingsw.model.full.table.*;
 
 import java.util.ArrayList;
 import java.util.stream.IntStream;
@@ -22,7 +21,7 @@ public class MarketController {
     }
 
     /**
-     * @see ServerController#getFromMarket(String, int, ArrayList)
+     * @see Controller#getFromMarket(String, int, ArrayList)
      */
     
     public void getFromMarket(String nickname, int move, ArrayList<Resource> wmrs) throws WrongTurnException, WrongMoveException {

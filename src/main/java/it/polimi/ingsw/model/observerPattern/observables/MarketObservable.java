@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model.observerPattern.observables;
 
-import it.polimi.ingsw.model.Market;
+import it.polimi.ingsw.model.full.table.Market;
 import it.polimi.ingsw.model.observerPattern.observers.MarketObserver;
 
 import java.util.ArrayList;

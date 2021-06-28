@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="471.0" prefWidth="524.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.ChooseBonusResourcesController">
+<AnchorPane prefHeight="471.0" prefWidth="524.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.UI.GUI.JavaFX.controllers.ChooseBonusResourcesController">
    <children>
       <Label layoutX="82.0" layoutY="34.0" text="Choose your bonus resource">
          <font>
@@ -27,22 +27,22 @@
       </Label>
       <ImageView fx:id="goldIW" fitHeight="37.0" fitWidth="37.0" layoutX="270.0" layoutY="129.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="270.0">
          <image>
-            <Image url="@../png/gold.png" />
+            <Image url="@../png/resources/gold.png" />
          </image>
       </ImageView>
       <ImageView fx:id="servantIW" fitHeight="37.0" fitWidth="37.0" layoutX="317.0" layoutY="129.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../png/servant.png" />
+            <Image url="@../png/resources/servant.png" />
          </image>
       </ImageView>
       <ImageView fx:id="shieldIW" fitHeight="37.0" fitWidth="37.0" layoutX="364.0" layoutY="129.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../png/shield.png" />
+            <Image url="@../png/resources/shield.png" />
          </image>
       </ImageView>
       <ImageView fx:id="stoneIW" fitHeight="37.0" fitWidth="37.0" layoutX="411.0" layoutY="129.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../png/stone.png" />
+            <Image url="@../png/resources/stone.png" />
          </image>
       </ImageView>
       <Pane layoutX="338.0" layoutY="217.0" style="-fx-background-color: DARKGREY;">

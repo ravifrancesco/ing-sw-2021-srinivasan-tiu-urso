@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model.observerPattern.observables;
 
-import it.polimi.ingsw.model.Dashboard;
+import it.polimi.ingsw.model.full.table.Dashboard;
 import it.polimi.ingsw.model.observerPattern.observers.DashboardObserver;
 
 import java.util.ArrayList;

@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model.observerPattern.observers;
 
-import it.polimi.ingsw.model.DevelopmentCardGrid;
+import it.polimi.ingsw.model.full.table.DevelopmentCardGrid;
 
 /**
  * Interface class for observers of DevelopmentCardGrid.

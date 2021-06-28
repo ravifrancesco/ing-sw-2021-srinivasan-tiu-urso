@@ -1,5 +1,9 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.full.table.Game;
+import it.polimi.ingsw.model.full.table.Player;
+import it.polimi.ingsw.model.full.table.TurnPhase;
+import it.polimi.ingsw.model.utils.GameSettings;
 import it.polimi.ingsw.utils.GameSettingsBuilder;
 import org.junit.Assert;
 import org.junit.Test;

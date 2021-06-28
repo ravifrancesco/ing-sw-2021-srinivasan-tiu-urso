@@ -3,4 +3,4 @@
 <?import javafx.scene.image.*?>
 
 
-<ImageView id="item" fx:id="item" fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.ResourceController" />
+<ImageView id="item" fx:id="item" fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.UI.GUI.JavaFX.controllers.ResourceController" />

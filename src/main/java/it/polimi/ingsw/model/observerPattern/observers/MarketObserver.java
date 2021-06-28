@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model.observerPattern.observers;
 
-import it.polimi.ingsw.model.FaithTrack;
-import it.polimi.ingsw.model.Market;
+import it.polimi.ingsw.model.full.table.Market;
 
 /**
  * Interface class for observers of Market.

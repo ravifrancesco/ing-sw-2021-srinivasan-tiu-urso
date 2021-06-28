@@ -1,5 +1,9 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.full.table.FaithTrack;
+import it.polimi.ingsw.model.full.table.Player;
+import it.polimi.ingsw.model.full.table.VaticanReport;
+import it.polimi.ingsw.model.utils.GameSettings;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.jupiter.api.Assumptions;

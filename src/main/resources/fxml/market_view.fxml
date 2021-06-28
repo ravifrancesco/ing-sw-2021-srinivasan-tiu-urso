@@ -9,11 +9,11 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="700.0" prefWidth="465.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.MarketViewController">
+<AnchorPane prefHeight="700.0" prefWidth="465.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.UI.GUI.JavaFX.controllers.MarketViewController">
    <children>
       <ImageView fitHeight="600.0" fitWidth="503.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../png/market_board.png" />
+            <Image url="@../png/table/market_board.png" />
          </image>
       </ImageView>
       <GridPane fx:id="marketGridPane" layoutX="67.0" layoutY="68.0" prefHeight="274.0" prefWidth="330.0">

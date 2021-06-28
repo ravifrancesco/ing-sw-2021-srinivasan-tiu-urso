@@ -1,8 +1,6 @@
 package it.polimi.ingsw.model.observerPattern.observables;
 
-import it.polimi.ingsw.model.Dashboard;
-import it.polimi.ingsw.model.DevelopmentCardGrid;
-import it.polimi.ingsw.model.observerPattern.observers.DashboardObserver;
+import it.polimi.ingsw.model.full.table.DevelopmentCardGrid;
 import it.polimi.ingsw.model.observerPattern.observers.DevelopmentCardGridObserver;
 
 import java.util.ArrayList;

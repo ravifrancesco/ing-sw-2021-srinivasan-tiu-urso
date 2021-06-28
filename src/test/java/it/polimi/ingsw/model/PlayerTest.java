@@ -1,9 +1,13 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.cards.LeaderCard;
-import it.polimi.ingsw.model.specialAbilities.DevelopmentCardDiscount;
-import it.polimi.ingsw.model.specialAbilities.WarehouseExtraSpace;
-import it.polimi.ingsw.model.specialAbilities.WhiteMarbleResource;
+import it.polimi.ingsw.model.full.cards.LeaderCard;
+import it.polimi.ingsw.model.full.specialAbilities.DevelopmentCardDiscount;
+import it.polimi.ingsw.model.full.specialAbilities.WarehouseExtraSpace;
+import it.polimi.ingsw.model.full.specialAbilities.WhiteMarbleResource;
+import it.polimi.ingsw.model.full.table.GameBoard;
+import it.polimi.ingsw.model.full.table.Player;
+import it.polimi.ingsw.model.full.table.Resource;
+import it.polimi.ingsw.model.utils.GameSettings;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;

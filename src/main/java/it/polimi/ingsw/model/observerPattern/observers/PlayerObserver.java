@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model.observerPattern.observers;
 
-import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.full.table.Player;
 
 /**
  * Interface class for observers of Player.

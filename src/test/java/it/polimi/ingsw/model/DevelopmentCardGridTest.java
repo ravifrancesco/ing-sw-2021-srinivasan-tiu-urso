@@ -1,15 +1,19 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.cards.DevelopmentCard;
-import it.polimi.ingsw.model.cards.LeaderCard;
-import it.polimi.ingsw.model.specialAbilities.*;
+import it.polimi.ingsw.model.full.cards.Banner;
+import it.polimi.ingsw.model.full.cards.BannerEnum;
+import it.polimi.ingsw.model.full.cards.DevelopmentCard;
+import it.polimi.ingsw.model.full.cards.LeaderCard;
+import it.polimi.ingsw.model.full.specialAbilities.*;
+import it.polimi.ingsw.model.full.table.*;
+import it.polimi.ingsw.model.utils.GameSettings;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.*;
 import java.util.stream.IntStream;
 
-import static it.polimi.ingsw.model.DevelopmentCardGrid.DEVELOPMENT_CARD_NUM;
+import static it.polimi.ingsw.model.full.table.DevelopmentCardGrid.DEVELOPMENT_CARD_NUM;
 
 public class DevelopmentCardGridTest {
 

@@ -1,10 +1,13 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.DefaultSettingsBuilder;
+import it.polimi.ingsw.model.utils.DefaultSettingsBuilder;
+import it.polimi.ingsw.model.full.table.Player;
+import it.polimi.ingsw.model.full.table.Resource;
+import it.polimi.ingsw.model.full.table.Warehouse;
+import it.polimi.ingsw.model.utils.GameSettings;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.IntStream;
 

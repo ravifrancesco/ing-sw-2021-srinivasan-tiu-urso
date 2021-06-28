@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="508.0" prefWidth="510.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.HandController">
+<AnchorPane prefHeight="508.0" prefWidth="510.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.UI.GUI.JavaFX.controllers.HandController">
    <children>
       <HBox fx:id="leaderCardContainerHBox" alignment="CENTER" layoutX="32.0" layoutY="104.0" prefHeight="300.0" prefWidth="447.0" />
       <Label layoutX="195.0" layoutY="54.0" text="Your Hand" textAlignment="CENTER">

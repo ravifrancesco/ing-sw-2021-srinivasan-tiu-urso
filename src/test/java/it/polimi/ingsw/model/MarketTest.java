@@ -1,7 +1,12 @@
 package it.polimi.ingsw.model;
 
 
-import it.polimi.ingsw.model.marbles.*;
+import it.polimi.ingsw.model.full.marbles.*;
+import it.polimi.ingsw.model.full.table.Market;
+import it.polimi.ingsw.model.full.table.Player;
+import it.polimi.ingsw.model.full.table.Resource;
+import it.polimi.ingsw.model.full.table.VaticanReport;
+import it.polimi.ingsw.model.utils.GameSettings;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -41,12 +46,12 @@ public class MarketTest {
         Map<String, Long> dest = alMarble.stream().collect(Collectors.groupingBy(m -> m.getClass().toString(), Collectors.counting()));
 
 
-        Assert.assertEquals(Long.valueOf(2), dest.get("class it.polimi.ingsw.model.marbles.YellowMarble"));
-        Assert.assertEquals(Long.valueOf(2), dest.get("class it.polimi.ingsw.model.marbles.GreyMarble"));
-        Assert.assertEquals(Long.valueOf(1), dest.get("class it.polimi.ingsw.model.marbles.RedMarble"));
-        Assert.assertEquals(Long.valueOf(2), dest.get("class it.polimi.ingsw.model.marbles.PurpleMarble"));
-        Assert.assertEquals(Long.valueOf(2), dest.get("class it.polimi.ingsw.model.marbles.BlueMarble"));
-        Assert.assertEquals(Long.valueOf(4), dest.get("class it.polimi.ingsw.model.marbles.WhiteMarble"));
+        Assert.assertEquals(Long.valueOf(2), dest.get("class it.polimi.ingsw.model.full.marbles.YellowMarble"));
+        Assert.assertEquals(Long.valueOf(2), dest.get("class it.polimi.ingsw.model.full.marbles.GreyMarble"));
+        Assert.assertEquals(Long.valueOf(1), dest.get("class it.polimi.ingsw.model.full.marbles.RedMarble"));
+        Assert.assertEquals(Long.valueOf(2), dest.get("class it.polimi.ingsw.model.full.marbles.PurpleMarble"));
+        Assert.assertEquals(Long.valueOf(2), dest.get("class it.polimi.ingsw.model.full.marbles.BlueMarble"));
+        Assert.assertEquals(Long.valueOf(4), dest.get("class it.polimi.ingsw.model.full.marbles.WhiteMarble"));
 
 
     }

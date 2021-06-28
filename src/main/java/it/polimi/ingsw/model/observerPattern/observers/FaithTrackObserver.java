@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model.observerPattern.observers;
 
-import it.polimi.ingsw.model.FaithTrack;
+import it.polimi.ingsw.model.full.table.FaithTrack;
 
 /**
  * Interface class for observers of FaithTrack.

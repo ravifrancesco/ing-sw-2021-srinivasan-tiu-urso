@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model.observerPattern.observables;
 
-import it.polimi.ingsw.model.FaithTrack;
+import it.polimi.ingsw.model.full.table.FaithTrack;
 import it.polimi.ingsw.model.observerPattern.observers.FaithTrackObserver;
 
 import java.util.ArrayList;

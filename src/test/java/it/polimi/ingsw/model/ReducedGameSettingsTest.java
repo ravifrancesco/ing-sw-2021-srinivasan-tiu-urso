@@ -1,12 +1,16 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.cards.DevelopmentCard;
-import it.polimi.ingsw.model.cards.LeaderCard;
-import it.polimi.ingsw.model.specialAbilities.*;
+import it.polimi.ingsw.model.full.cards.Banner;
+import it.polimi.ingsw.model.full.cards.BannerEnum;
+import it.polimi.ingsw.model.full.cards.DevelopmentCard;
+import it.polimi.ingsw.model.full.cards.LeaderCard;
+import it.polimi.ingsw.model.full.specialAbilities.*;
+import it.polimi.ingsw.model.full.table.Resource;
+import it.polimi.ingsw.model.full.table.VaticanReport;
+import it.polimi.ingsw.model.utils.GameSettings;
 import org.junit.Assert;
 import org.junit.Test;
 
-import javax.management.MBeanServerDelegateMBean;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;

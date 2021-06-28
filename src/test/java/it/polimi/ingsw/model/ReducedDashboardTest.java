@@ -1,11 +1,19 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.cards.DevelopmentCard;
-import it.polimi.ingsw.model.cards.LeaderCard;
-import it.polimi.ingsw.model.specialAbilities.ProductionPower;
-import it.polimi.ingsw.model.specialAbilities.SpecialAbility;
-import it.polimi.ingsw.model.specialAbilities.WarehouseExtraSpace;
-import it.polimi.ingsw.model.specialAbilities.WhiteMarbleResource;
+import it.polimi.ingsw.model.full.cards.Banner;
+import it.polimi.ingsw.model.full.cards.BannerEnum;
+import it.polimi.ingsw.model.full.cards.DevelopmentCard;
+import it.polimi.ingsw.model.full.cards.LeaderCard;
+import it.polimi.ingsw.model.full.specialAbilities.ProductionPower;
+import it.polimi.ingsw.model.full.specialAbilities.SpecialAbility;
+import it.polimi.ingsw.model.full.specialAbilities.WarehouseExtraSpace;
+import it.polimi.ingsw.model.full.specialAbilities.WhiteMarbleResource;
+import it.polimi.ingsw.model.full.table.Dashboard;
+import it.polimi.ingsw.model.full.table.Player;
+import it.polimi.ingsw.model.full.table.Resource;
+import it.polimi.ingsw.model.full.table.Warehouse;
+import it.polimi.ingsw.model.utils.GameSettings;
+import it.polimi.ingsw.model.utils.ResourceContainer;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;

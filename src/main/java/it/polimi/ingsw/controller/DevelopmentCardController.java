@@ -1,9 +1,10 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.controller.exceptions.*;
-import it.polimi.ingsw.model.*;
-import it.polimi.ingsw.model.cards.DevelopmentCard;
-import it.polimi.ingsw.model.specialAbilities.DevelopmentCardDiscount;
+import it.polimi.ingsw.model.full.cards.DevelopmentCard;
+import it.polimi.ingsw.model.full.specialAbilities.DevelopmentCardDiscount;
+import it.polimi.ingsw.model.full.table.*;
+import it.polimi.ingsw.model.utils.ResourceContainer;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -21,7 +22,7 @@ public class DevelopmentCardController {
     }
 
     /**
-     * @see ServerController#buyDevelopmentCard(String, int, int, ResourceContainer, int) 
+     * @see Controller#buyDevelopmentCard(String, int, int, ResourceContainer, int)
      */
     public void buyDevelopmentCard(String nickname, int row, int column, ResourceContainer resourcesToPayCost, int position)
             throws WrongTurnException, CardNotBuyableException, CardNotPlayableException, WrongMoveException {

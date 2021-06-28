@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model.observerPattern.observers;
 
-import it.polimi.ingsw.model.Warehouse;
+import it.polimi.ingsw.model.full.table.Warehouse;
 
 /**
  * Interface class for observers of Warehouse.

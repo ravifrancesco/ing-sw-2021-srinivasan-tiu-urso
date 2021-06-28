@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="623.0" prefWidth="422.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.BuyDevCardController">
+<AnchorPane prefHeight="623.0" prefWidth="422.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.UI.GUI.JavaFX.controllers.BuyDevCardController">
    <children>
       <ImageView fx:id="cardImageView" fitHeight="466.0" fitWidth="309.0" layoutX="57.0" layoutY="79.0" pickOnBounds="true" preserveRatio="true">
       </ImageView>
@@ -60,7 +60,7 @@
                   <Insets left="20.0" />
                </HBox.margin>
                <image>
-                  <Image url="@../png/gold.png" />
+                  <Image url="@../png/resources/gold.png" />
                </image>
             </ImageView>
             <Label fx:id="resourceTwoLabel" text="-1" textFill="RED">
