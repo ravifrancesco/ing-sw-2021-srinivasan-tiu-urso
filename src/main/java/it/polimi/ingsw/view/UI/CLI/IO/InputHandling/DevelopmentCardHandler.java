@@ -45,7 +45,7 @@ public class DevelopmentCardHandler {
             if (getNumRequiredAny != 0) {
                 cli.printMessage(ANSI_GREEN + "Please choose the required selectables resources" + ANSI_RESET);
                 requiredResources = ResourceHandler.chooseAnyResources(cli, getNumRequiredAny);
-                cli.printMessage(ANSI_GREEN + "You have selected: " + requiredResources + ANSI_RESET);
+                ResourceHandler.showCurrSelected(cli, requiredResources);
             } else {
                 requiredResources = new HashMap<>();
             }
@@ -54,7 +54,7 @@ public class DevelopmentCardHandler {
             if (getNumProducedAny != 0) {
                 cli.printMessage(ANSI_GREEN + "Please choose the produced selectable resources" + ANSI_RESET);
                 producedResources = ResourceHandler.chooseAnyResources(cli, getNumProducedAny);
-                cli.printMessage(ANSI_GREEN + "You have selected: " + producedResources + ANSI_RESET);
+                ResourceHandler.showCurrSelected(cli, producedResources);
             } else {
                 producedResources = new HashMap<>();
             }
