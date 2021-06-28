@@ -139,9 +139,10 @@ public class GameController {
 
     public void setPlayers() {
         Set<String> players = this.gui.getReducedModel().getReducedGame().getPlayers().keySet(); // TODO change with number of players
-        if (players.size() == 1) {
+        if (players.size() == 1) { // TODO solve bug
             this.lorenzoPicIW.setVisible(true); // TODO show lorenzo
             this.tokenIW.setVisible(true);
+            setSelectedPlayerSinglePlayer(gui.getReducedModel().getReducedPlayer().getNickname());
         } else {
             nicknameCombo.getItems().addAll(players);
             setSelectedPlayer(this.gui.getReducedModel().getReducedPlayer().getNickname());
@@ -151,6 +152,10 @@ public class GameController {
 
     public void setSelectedPlayer(String nickname) {
         nicknameCombo.getSelectionModel().select(nickname);
+        currentDisplayedPlayer = nickname;
+    }
+
+    public void setSelectedPlayerSinglePlayer(String nickname) {
         currentDisplayedPlayer = nickname;
     }
 
@@ -278,8 +283,6 @@ public class GameController {
             extraDepositSlots[slot*2+1].setStroke(Color.RED);
             extraDepositSlots[slot*2+1].setAvailable(true);
             extraDepositSlots[slot*2+1].setSlotType(wes.getStoredResource());
-            pane.getChildren().add(extraDepositSlots[slot*2].getRectangle());
-            pane.getChildren().add(extraDepositSlots[slot*2+1].getRectangle());
         } else if (leaderCard.getSpecialAbility().getType() == SpecialAbilityType.PRODUCTION_POWER) {
             if (!((ProductionPower)leaderCard.getSpecialAbility()).isActivatable()) {
                 leaderCardControllers[slot].setDarker();
@@ -288,9 +291,14 @@ public class GameController {
             }
         }
 
-        reloadWarehouseImages();
-
         pane.getChildren().add(leaderCardControllers[slot].getItem());
+
+        if (leaderCard.getSpecialAbility().getType() == SpecialAbilityType.WAREHOUSE_EXTRA_SPACE) {
+            pane.getChildren().add(extraDepositSlots[slot*2].getRectangle());
+            pane.getChildren().add(extraDepositSlots[slot*2+1].getRectangle());
+        }
+
+        reloadWarehouseImages();
     }
 
     public void cleanLeaderCards() {
@@ -301,6 +309,7 @@ public class GameController {
                     pane.getChildren().remove(extraDepositSlots[i*2].getRectangle());
                     pane.getChildren().remove(extraDepositSlots[i*2+1].getRectangle());
                 }
+                leaderCardControllers[i] = null;
             }
         }
     }
