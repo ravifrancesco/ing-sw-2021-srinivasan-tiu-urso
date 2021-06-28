@@ -564,7 +564,7 @@ public class Dashboard extends DashboardObservable {
 	public void payPrice(ResourceContainer resToPayWith, Map<Resource, Integer> cost) {
 		resToPayWith.getSelectedDepositIndexes().forEach(warehouse::removeFromDeposit);
 		resToPayWith.getSelectedLockerResources().forEach(warehouse::removeFromLocker);
-		IntStream.range(0, 1).forEach(i ->
+		IntStream.range(0, 2).forEach(i ->
 				resToPayWith.getSelectedExtraDepositIndexes().get(i).forEach(pos ->
 						warehouse.removeFromExtraDeposit(i, pos)));
 		notify(this);
