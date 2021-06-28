@@ -170,4 +170,9 @@ public class ReducedModel {
         Platform.runLater(() -> gameController.updateToken(token));
     }
 
+    public void updateLorenzoFaithMarker(int position) {
+        if (gameController == null) return;
+        Platform.runLater(() -> gameController.moveLorenzoFaithMarker(position));
+    }
+
 }

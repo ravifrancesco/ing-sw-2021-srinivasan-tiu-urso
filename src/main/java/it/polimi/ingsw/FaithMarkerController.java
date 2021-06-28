@@ -18,25 +18,39 @@ public class FaithMarkerController {
 
     private Slot[] faithSlots;
 
+    double increment;
+
     public void assignSlots(Slot[] slots) {
         this.faithSlots = slots;
     }
 
     public void createItem() {
-        String name = "";
         File file = new File("src/main/resources/png/faith_marker.png");
         Image image = new Image(file.toURI().toString());
         faithMarker = new ImageView(image);
+        increment = 2.5;
         faithMarker.setFitHeight(35);
         faithMarker.setFitWidth(35);
-        faithMarker.setX(faithSlots[0].getX() + 2.5);
-        faithMarker.setY(faithSlots[0].getY() + 2.5);
+        faithMarker.setX(faithSlots[0].getX() + increment);
+        faithMarker.setY(faithSlots[0].getY() + increment);
+        position = 0;
+    }
+
+    public void createLorenzoItem() {
+        File file = new File("src/main/resources/png/lorenzo_faith_marker.png");
+        Image image = new Image(file.toURI().toString());
+        faithMarker = new ImageView(image);
+        increment = 7.5;
+        faithMarker.setFitHeight(25);
+        faithMarker.setFitWidth(25);
+        faithMarker.setX(faithSlots[0].getX() + increment);
+        faithMarker.setY(faithSlots[0].getY() + increment);
         position = 0;
     }
 
     public void moveFaithMarker(int position) {
-        faithMarker.setX(faithSlots[position].getX() + 2.5);
-        faithMarker.setY(faithSlots[position].getY() + 2.5);
+        faithMarker.setX(faithSlots[position].getX() + increment);
+        faithMarker.setY(faithSlots[position].getY() + increment);
         this.position = position;
     }
 
@@ -50,5 +64,13 @@ public class FaithMarkerController {
 
     public void setGui(GUI gui) {
         this.gui = gui;
+    }
+
+    public void hide() {
+        faithMarker.setVisible(false);
+    }
+
+    public void show() {
+        faithMarker.setVisible(true);
     }
 }
