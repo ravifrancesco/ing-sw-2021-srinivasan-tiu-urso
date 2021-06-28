@@ -14,10 +14,10 @@ import java.io.Serializable;
  */
 public class VaticanReport implements Serializable {
 
-    protected final int start;
-    protected final int end;
+    public final int start;
+    public final int end;
 
-    protected final int victoryPoints;
+    public final int victoryPoints;
 
     private boolean missed;
     private boolean achieved;

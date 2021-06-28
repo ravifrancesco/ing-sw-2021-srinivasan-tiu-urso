@@ -1,9 +1,12 @@
 package it.polimi.ingsw.model.reduced;
 
+import it.polimi.ingsw.model.full.specialAbilities.DevelopmentCardDiscount;
 import it.polimi.ingsw.model.full.table.Resource;
 import it.polimi.ingsw.model.full.cards.LeaderCard;
+import it.polimi.ingsw.utils.Pair;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class ReducedPlayer {
@@ -14,6 +17,19 @@ public class ReducedPlayer {
     private List<LeaderCard> hand;
     private int handSize;
     private Resource[] activatedWMR;
+    private ArrayList<DevelopmentCardDiscount> discounts;
+
+    public HashMap<Resource, Integer> getDiscounts() {
+        HashMap<Resource, Integer> discountsMap = new HashMap<>();
+        discounts.forEach(dvd -> {
+            discountsMap.merge(dvd.getResource(), dvd.getQuantity(), Integer::sum);
+        });
+        return discountsMap;
+    }
+
+    public void setDiscounts(ArrayList<DevelopmentCardDiscount> discounts) {
+        this.discounts = discounts;
+    }
 
     // Dashboard
     private final ReducedDashboard dashboard;

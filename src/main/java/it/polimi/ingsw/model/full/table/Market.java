@@ -12,7 +12,7 @@ public class Market extends MarketObservable {
 
 	public static final int gridColLength = 4;
 
-	private Marble[] marblesGrid;
+    private Marble[] marblesGrid;
 
 	/**
 	 * The constructor for the Market class.

@@ -10,6 +10,8 @@ public class Constants {
     public static final String ANSI_CYAN = "\u001b[36m";
     public static final String STONE_COLOR = "\u001b[37m";
 
+    public static final String RED_ISH = "\u001b[38;5;88m";
+
     public static final String SHIELD_COLOR_BG = "\u001b[48;5;21m";
     public static final String ANSI_BG_RED = "\u001b[48;5;196m";
     public static final String STONE_COLOR_BG = "\u001b[48;5;245m";

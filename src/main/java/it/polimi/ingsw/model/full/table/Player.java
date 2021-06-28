@@ -144,6 +144,7 @@ public class Player extends PlayerObservable {
 			throw new IllegalStateException();
 		}
 		activeDiscounts.add(discount);
+		notify(this);
 	}
 
 	/**

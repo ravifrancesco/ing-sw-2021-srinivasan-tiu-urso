@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.utils;
 
 import it.polimi.ingsw.model.utils.DefaultSettingsBuilder;
 import it.polimi.ingsw.model.full.table.Player;
