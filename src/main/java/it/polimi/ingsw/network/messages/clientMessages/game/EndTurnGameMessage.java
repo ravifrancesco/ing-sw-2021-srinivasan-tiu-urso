@@ -35,7 +35,7 @@ public class EndTurnGameMessage extends ClientGameMessage implements Serializabl
         int output = controller.endTurnSinglePlayer(offlineClientVirtualView.getNickname());
         if (output == 0) {
             offlineClientVirtualView.printSuccessfulMove("Turn ended correctly");
-            offlineClientVirtualView.getUi().handleMenuCode("after_end_turn");
+            offlineClientVirtualView.getUi().handleMenuCode("after_end_turn_single");
         }
         if (output == 1) {
             offlineClientVirtualView.getUi().handleMenuCode("back_in_lobby");

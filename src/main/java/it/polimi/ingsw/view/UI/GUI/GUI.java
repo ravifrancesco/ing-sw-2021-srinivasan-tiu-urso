@@ -58,6 +58,7 @@ public class GUI extends Application implements UI {
 
     @Override
     public void startUI(ClientVirtualView clientVirtualView, ReducedModel reducedModel) {
+        local = false;
         this.clientVirtualView = clientVirtualView;
         this.reducedModel = reducedModel;
     }

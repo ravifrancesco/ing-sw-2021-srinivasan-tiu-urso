@@ -44,7 +44,7 @@ public class OfflineClientVirtualView implements ClientVirtualViewIF, Runnable,
         this.controller = new Controller("local_single_player", 1);
         controller.loadGameSettings(gameSettings);
         this.reducedModel = new ReducedModel();
-        ui.startUI(this, reducedModel);
+        this.ui.startUI(this, reducedModel);
         askNickname();
         System.out.println("Isnert STARTGAME to start playing");
     }
