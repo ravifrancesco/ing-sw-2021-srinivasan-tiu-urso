@@ -134,7 +134,7 @@ public class GameController {
     }
 
     public void setPlayers() {
-        Set<String> players = this.gui.getReducedModel().getReducedGame().getPlayers().keySet();
+        Set<String> players = this.gui.getReducedModel().getReducedGame().getPlayers().keySet(); // TODO change with number of players
         if (players.size() == 1) {
             this.lorenzoPicIW.setVisible(true); // TODO show lorenzo
             this.tokenIW.setVisible(true);
@@ -684,6 +684,9 @@ public class GameController {
 
     public void moveLorenzoFaithMarker(int position) {
         lorenzoIlMagnificoFaithMarkerController.moveFaithMarker(position);
+        if (gui.getReducedModel().getReducedGame().getPlayers().size() == 1) { // TODO change with number of players
+            lorenzoIlMagnificoFaithMarkerController.show();
+        }
     }
 
     public void showAfterGameStart() {
