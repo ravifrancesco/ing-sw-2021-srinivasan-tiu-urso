@@ -14,7 +14,7 @@ public class PlayerStoresFromSupplyToExtraDeposit extends ClientGameMessage impl
     public PlayerStoresFromSupplyToExtraDeposit(int leaderCardPos, int from, int to) {
         this.leaderCardPos = leaderCardPos;
         this.from = from;
-        this.to = from;
+        this.to = to;
     }
 
     @Override
