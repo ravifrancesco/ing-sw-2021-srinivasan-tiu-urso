@@ -9,7 +9,9 @@ import org.junit.Test;
 import org.junit.jupiter.api.Assumptions;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class FaithTrackTest {
 
@@ -89,6 +91,8 @@ public class FaithTrackTest {
         Assert.assertEquals(1, faithTrack.getVictoryPoints());
 
         faithTrack.moveFaithMarker(11);
+
+        faithTrack.checkVaticanVictoryPoints(15);
 
         Assert.assertEquals(24, faithTrack.getVictoryPoints());
 

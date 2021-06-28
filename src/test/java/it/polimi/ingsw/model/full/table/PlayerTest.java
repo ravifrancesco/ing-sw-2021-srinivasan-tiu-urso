@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.full.cards.LeaderCard;
 import it.polimi.ingsw.model.full.specialAbilities.DevelopmentCardDiscount;
 import it.polimi.ingsw.model.full.specialAbilities.WarehouseExtraSpace;
 import it.polimi.ingsw.model.full.specialAbilities.WhiteMarbleResource;
+import it.polimi.ingsw.model.reduced.ReducedGameSettingsTest;
 import it.polimi.ingsw.model.utils.GameSettings;
 import org.junit.Assert;
 import org.junit.BeforeClass;
