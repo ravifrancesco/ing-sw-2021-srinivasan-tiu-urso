@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.UI.GUI;
 
+import it.polimi.ingsw.network.messages.clientMessages.lobbyMessage.AskGameLobbies;
 import it.polimi.ingsw.view.virtualView.client.ClientVirtualView;
 import it.polimi.ingsw.view.virtualView.client.OfflineClientVirtualView;
 import it.polimi.ingsw.model.reduced.ReducedModel;
@@ -15,6 +16,7 @@ import it.polimi.ingsw.network.messages.clientMessages.ClientMessage;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -210,9 +212,31 @@ public class GUI extends Application implements UI {
         if ("after_initial_resources".equals(menuCode)) {
             Platform.runLater(() -> gameController.getInitialResources());
         }
-        if ("after_getfrommarket".equals(menuCode)) {
-            //showAfterMarketMenu();
+        if ("game_has_ended".equals(menuCode)) {
+            Platform.runLater(() -> gameController.gameHasEnded());
         }
+        if ("game_has_ended_single".equals(menuCode)) {
+            Platform.runLater(() -> gameController.gameHasEnded());
+        }
+    }
+
+    public void resetGUI() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/client_main_lobby.fxml"));
+            Parent root = fxmlLoader.load();
+            this.clientMainLobbyController = fxmlLoader.getController();
+            this.clientMainLobbyController.setGui(this);
+            this.send(new AskGameLobbies());
+            Stage stage = new Stage();
+            stage.setTitle("Choose a nickname");
+            stage.setScene(new Scene(root, 800, 600));
+            stage.show();
+            gameController.getScene().getWindow().hide();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public void setDisableImageViews() {

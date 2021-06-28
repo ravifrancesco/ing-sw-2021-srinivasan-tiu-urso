@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.UI.GUI.JavaFX.controllers;
 
+import it.polimi.ingsw.model.reduced.ReducedPlayer;
 import it.polimi.ingsw.view.UI.GUI.JavaFX.utils.ExtraDepositSlot;
 import it.polimi.ingsw.view.UI.GUI.GUI;
 import it.polimi.ingsw.view.UI.GUI.JavaFX.utils.Slot;
@@ -734,6 +735,28 @@ public class GameController {
         }
     }
 
+    public void gameHasEnded() {
+        hideAlert();
+        mainAlert = new Alert(Alert.AlertType.INFORMATION);
+        mainAlert.setTitle("Game has ended");
+        Optional<ReducedPlayer> winner = gui.getReducedModel().getReducedGame().getPlayers().values()
+                .stream()
+                .max(Comparator.comparingInt(p -> p.getDashboard().getPlayerPoints())
+                );
+        mainAlert.setHeaderText(winner.get().getNickname() + " has one with " + winner.get().getDashboard().getPlayerPoints() + " victory points!");
+        mainAlert.showAndWait();;
+        gui.resetGUI();
+    }
+
+    public void gameHasEndedSinglePlayer() {
+        hideAlert();
+        mainAlert = new Alert(Alert.AlertType.INFORMATION);
+        mainAlert.setTitle("Game has ended");
+        mainAlert.setHeaderText("Lorenzo Il Magnifico has won the game!");
+        mainAlert.showAndWait();;
+        gui.resetGUI();
+    }
+
     public void showDiscardExcessLeaderCardMenu() {
         ReducedGame rg = gui.getReducedModel().getReducedGame();
         if(!rg.getClientPlayer().equals(rg.getCurrentPlayer())) {
@@ -895,6 +918,10 @@ public class GameController {
             Image image = new Image(file.toURI().toString());
             tokenIW.setImage(image);
         }
+    }
+
+    public Scene getScene() {
+        return pane.getScene();
     }
 
 }
