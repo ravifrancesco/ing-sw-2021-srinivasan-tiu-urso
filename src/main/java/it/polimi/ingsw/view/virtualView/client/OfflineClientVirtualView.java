@@ -163,6 +163,9 @@ public class OfflineClientVirtualView implements ClientVirtualViewIF, Runnable,
         reducedGame.setFirstTurns(message.getFirstTurns());
         reducedGame.setTokens(message.getTokens());
         reducedGame.setToken(message.getLastToken());
+        if(message.getGameEnded()) {
+            ui.handleMenuCode("game_has_ended_single");
+        }
     }
 
     @Override
