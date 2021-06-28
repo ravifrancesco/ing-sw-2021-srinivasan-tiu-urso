@@ -23,6 +23,7 @@ public class PlayerStoresFromSupplyToExtraDeposit extends ClientGameMessage impl
         if(output == 0) {
             c.sendSuccessfulMoveMessage("Successfull storage to extra deposit, adding resource to leader card " +
                     leaderCardPos + " on position " + to);
+            c.sendCLIupdateMessage("after_store_supply");
         }
     }
 

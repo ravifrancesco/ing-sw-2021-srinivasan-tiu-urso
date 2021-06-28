@@ -20,7 +20,6 @@ import org.junit.Test;
 
 import java.util.*;
 
-import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.fail;
 
 public class ReducedDashboardTest {

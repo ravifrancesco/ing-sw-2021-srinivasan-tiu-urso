@@ -1,13 +1,12 @@
 package it.polimi.ingsw.view.UI.GUI.JavaFX.controllers;
 
-import it.polimi.ingsw.model.reduced.ReducedPlayer;
+import it.polimi.ingsw.model.reduced.*;
+import it.polimi.ingsw.model.utils.GameSettings;
 import it.polimi.ingsw.view.UI.GUI.JavaFX.utils.ExtraDepositSlot;
 import it.polimi.ingsw.view.UI.GUI.GUI;
 import it.polimi.ingsw.view.UI.GUI.JavaFX.utils.Slot;
 import it.polimi.ingsw.model.full.table.Resource;
 import it.polimi.ingsw.model.full.table.TurnPhase;
-import it.polimi.ingsw.model.reduced.ReducedModel;
-import it.polimi.ingsw.model.reduced.ReducedGame;
 import it.polimi.ingsw.model.full.cards.DevelopmentCard;
 import it.polimi.ingsw.model.full.cards.LeaderCard;
 import it.polimi.ingsw.model.full.marbles.Marble;
@@ -752,10 +751,39 @@ public class GameController {
         hideAlert();
         mainAlert = new Alert(Alert.AlertType.INFORMATION);
         mainAlert.setTitle("Game has ended");
-        mainAlert.setHeaderText("Lorenzo Il Magnifico has won the game!");
+        int winner = establishWinner();
+        if(winner == 0) {
+            mainAlert.setHeaderText("Lorenzo has won!");
+        } else {
+            mainAlert.setHeaderText("You've won!");
+        }
         mainAlert.showAndWait();;
-        gui.resetGUI();
+        gui.resetGUIOffline();
     }
+
+    private int establishWinner() {
+        ReducedDashboard reducedDashboard = gui.getReducedModel().getReducedPlayer().getDashboard();
+        ReducedGameBoard reducedGameBoard = gui.getReducedModel().getReducedGameBoard();
+        if(checkFTEnd(reducedDashboard) || checkDvGridEnd(reducedGameBoard)) {
+            return 0;
+        } else {
+            return 1;
+        }
+    }
+
+    private boolean checkFTEnd(ReducedDashboard reducedDashboard) {
+        return reducedDashboard.getLorenzoIlMagnificoPosition() == GameSettings.FAITH_TRACK_LENGTH-1;
+    }
+
+    private boolean checkDvGridEnd(ReducedGameBoard reducedGameBoard) {
+        for(int i = 8; i < 12; i++) {
+            if(reducedGameBoard.getGrid().get(i).isEmpty()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     public void showDiscardExcessLeaderCardMenu() {
         ReducedGame rg = gui.getReducedModel().getReducedGame();

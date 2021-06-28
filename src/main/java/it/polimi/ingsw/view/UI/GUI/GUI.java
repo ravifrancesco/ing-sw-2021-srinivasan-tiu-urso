@@ -1,5 +1,8 @@
 package it.polimi.ingsw.view.UI.GUI;
 
+import it.polimi.ingsw.model.reduced.ReducedDashboard;
+import it.polimi.ingsw.model.reduced.ReducedGameBoard;
+import it.polimi.ingsw.model.utils.GameSettings;
 import it.polimi.ingsw.network.messages.clientMessages.lobbyMessage.AskGameLobbies;
 import it.polimi.ingsw.view.virtualView.client.ClientVirtualView;
 import it.polimi.ingsw.view.virtualView.client.OfflineClientVirtualView;
@@ -216,7 +219,7 @@ public class GUI extends Application implements UI {
             Platform.runLater(() -> gameController.gameHasEnded());
         }
         if ("game_has_ended_single".equals(menuCode)) {
-            Platform.runLater(() -> gameController.gameHasEnded());
+            Platform.runLater(() -> gameController.gameHasEndedSinglePlayer());
         }
     }
 
@@ -228,8 +231,25 @@ public class GUI extends Application implements UI {
             this.clientMainLobbyController.setGui(this);
             this.send(new AskGameLobbies());
             Stage stage = new Stage();
-            stage.setTitle("Choose a nickname");
             stage.setScene(new Scene(root, 800, 600));
+            stage.show();
+            gameController.getScene().getWindow().hide();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void resetGUIOffline() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/server_choice.fxml"));
+            Parent root = fxmlLoader.load();
+            serverChoiceController = fxmlLoader.getController();
+            serverChoiceController.setGui(this);
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root, 600, 400));
+            stage.setTitle("Choose a server");
             stage.show();
             gameController.getScene().getWindow().hide();
         }
