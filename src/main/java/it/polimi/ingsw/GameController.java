@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.marbles.Marble;
+import it.polimi.ingsw.model.singlePlayer.tokens.Token;
 import it.polimi.ingsw.model.specialAbilities.*;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.game.EndTurnGameMessage;
 import it.polimi.ingsw.server.lobby.messages.clientMessages.gameMessages.game.PlayerChangesDeposit;
@@ -48,6 +49,11 @@ public class GameController {
 
     @FXML
     private Text pointsText;
+
+    @FXML
+    private ImageView lorenzoPicIW;
+    @FXML
+    private ImageView tokenIW;
 
     private Alert mainAlert;
 
@@ -127,8 +133,14 @@ public class GameController {
 
     public void setPlayers() {
         Set<String> players = this.gui.getReducedModel().getReducedGame().getPlayers().keySet();
-        nicknameCombo.getItems().addAll(players);
-        setSelectedPlayer(this.gui.getReducedModel().getReducedPlayer().getNickname());
+        if (players.size() == 1) {
+            this.lorenzoPicIW.setVisible(true); // TODO show lorenzo
+            this.tokenIW.setVisible(true);
+        } else {
+            nicknameCombo.getItems().addAll(players);
+            setSelectedPlayer(this.gui.getReducedModel().getReducedPlayer().getNickname());
+            this.nicknameCombo.setVisible(true);
+        }
     }
 
     public void setSelectedPlayer(String nickname) {
@@ -193,6 +205,10 @@ public class GameController {
         }
 
         initializeFaithTrack();
+
+        this.lorenzoPicIW.setVisible(false);
+        this.tokenIW.setVisible(false);
+        nicknameCombo.setVisible(false);
     }
 
     public void printResource(Resource resource, int pos) {
@@ -969,6 +985,16 @@ public class GameController {
         }
         catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void updateToken(Token token) {
+        if (token == null) {
+            tokenIW.setImage(null);
+        } else {
+            File file = new File("src/main/resources/png/tokens/token_"+token.getType()+".png");
+            Image image = new Image(file.toURI().toString());
+            tokenIW.setImage(image);
         }
     }
 

@@ -18,4 +18,9 @@ public class DiscardDevCardPurple implements Token, Serializable {
         developmentCardGrid.discardCard(COLOR_INDEX);
         return developmentCardGrid.discardCard(COLOR_INDEX);
     }
+
+    @Override
+    public String getType() {
+        return "purple";
+    }
 }

@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.marbles.Marble;
+import it.polimi.ingsw.model.singlePlayer.tokens.Token;
 import it.polimi.ingsw.utils.Pair;
 import javafx.application.Platform;
 
@@ -163,6 +164,10 @@ public class ReducedModel {
                 .map(Map.Entry::getValue)
                 .collect(Collectors.toList());
         Platform.runLater(() -> gameController.updateVaticanReports(player, vaticanReportPairs));
+    }
+
+    public void updateToken(Token token) {
+        Platform.runLater(() -> gameController.updateToken(token));
     }
 
 }

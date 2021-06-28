@@ -21,4 +21,9 @@ public class SingleBlackCrossMoveToken implements Token, Serializable {
 
     }
 
+    @Override
+    public String getType() {
+        return "one";
+    }
+
 }

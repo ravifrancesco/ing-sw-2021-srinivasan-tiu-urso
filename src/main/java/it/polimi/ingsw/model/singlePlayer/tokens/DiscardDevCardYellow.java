@@ -19,4 +19,9 @@ public class DiscardDevCardYellow implements Token, Serializable {
         return developmentCardGrid.discardCard(COLOR_INDEX);
     }
 
+    @Override
+    public String getType() {
+        return "yellow";
+    }
+
 }

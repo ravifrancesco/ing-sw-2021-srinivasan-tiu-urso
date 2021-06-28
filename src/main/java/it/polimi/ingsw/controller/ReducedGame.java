@@ -151,6 +151,7 @@ public class ReducedGame {
 
     public void setToken(Token token) {
         this.token = token;
+        this.reducedModel.updateToken(token);
     }
 
     public void setEndGamePhase(boolean endGamePhase) {

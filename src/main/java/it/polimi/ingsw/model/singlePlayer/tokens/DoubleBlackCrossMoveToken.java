@@ -18,4 +18,10 @@ public class DoubleBlackCrossMoveToken implements Token, Serializable {
         return dashboard.checkGameEnd();
 
     }
+
+    @Override
+    public String getType() {
+        return "two";
+    }
+
 }
