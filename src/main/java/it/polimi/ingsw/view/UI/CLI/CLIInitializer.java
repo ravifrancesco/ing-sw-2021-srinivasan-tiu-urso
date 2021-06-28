@@ -71,7 +71,6 @@ public class CLIInitializer {
     public void handleLocal(CLI cli) {
         OfflineClientVirtualView offlineClientVirtualView = new OfflineClientVirtualView(cli);
         offlineClientVirtualView.run();
-
     }
 
 }

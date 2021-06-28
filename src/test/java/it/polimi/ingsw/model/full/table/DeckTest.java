@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.full.table;
 
 import it.polimi.ingsw.model.full.cards.Banner;
 import it.polimi.ingsw.model.full.cards.BannerEnum;
