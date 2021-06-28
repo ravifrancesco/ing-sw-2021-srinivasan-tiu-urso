@@ -59,6 +59,7 @@ public class GUI extends Application implements UI {
     @Override
     public void startUI(ClientVirtualView clientVirtualView, ReducedModel reducedModel) {
         local = false;
+        this.offlineClientVirtualView = null;
         this.clientVirtualView = clientVirtualView;
         this.reducedModel = reducedModel;
     }
@@ -66,6 +67,7 @@ public class GUI extends Application implements UI {
     @Override
     public void startUI(OfflineClientVirtualView offlineClientVirtualView, ReducedModel reducedModel) {
         local = true;
+        this.clientVirtualView = null;
         this.offlineClientVirtualView = offlineClientVirtualView;
         this.reducedModel = reducedModel;
     }
