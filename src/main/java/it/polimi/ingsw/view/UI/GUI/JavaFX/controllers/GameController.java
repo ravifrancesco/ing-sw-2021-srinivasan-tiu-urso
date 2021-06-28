@@ -195,8 +195,8 @@ public class GameController {
 
         extraDepositSlots[0] = new ExtraDepositSlot(55, 380, 40, 40);
         extraDepositSlots[1] = new ExtraDepositSlot(132, 380, 40, 40);
-        extraDepositSlots[2] = new ExtraDepositSlot(55, 710, 40, 40);
-        extraDepositSlots[3] = new ExtraDepositSlot(132, 710, 40, 40);
+        extraDepositSlots[2] = new ExtraDepositSlot(55, 705, 40, 40);
+        extraDepositSlots[3] = new ExtraDepositSlot(132, 705, 40, 40);
 
         leaderCardSlots[0] = new Slot(10, 125, 205, 310);
         leaderCardSlots[1] = new Slot(10, 450, 205, 310);
