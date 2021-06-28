@@ -61,12 +61,16 @@ public class DevCardGridController {
     }
 
     private void loadImage(ImageView imageView, DevelopmentCard developmentCard) {
-        String id = String.valueOf(developmentCard.getId());
-        File file = new File("src/main/resources/png/cards/devCards/dev_card_" + id + ".png");
-        Image image = new Image(file.toURI().toString());
-        imageView.setImage(image);
-        imageView.setFitWidth(130);
-        imageView.setFitHeight(200);
+        if (developmentCard == null) {
+            imageView.setImage(null);
+        } else {
+            String id = String.valueOf(developmentCard.getId());
+            File file = new File("src/main/resources/png/cards/devCards/dev_card_" + id + ".png");
+            Image image = new Image(file.toURI().toString());
+            imageView.setImage(image);
+            imageView.setFitWidth(130);
+            imageView.setFitHeight(200);
+        }
     }
 
     private void openBuyDevCardController(MouseEvent event, Image image, int row, int col) {
@@ -88,7 +92,7 @@ public class DevCardGridController {
 
     public void update(List<Stack<DevelopmentCard>> grid) {
         for (int i = 0; i < NUM_OF_ROWS*NUM_OF_COLUMNS; i++) {
-            loadImage(cardImageViews.get(i), grid.get(i).peek());
+            loadImage(cardImageViews.get(i), grid.get(i).isEmpty() ? null : grid.get(i).peek());
         }
     }
 

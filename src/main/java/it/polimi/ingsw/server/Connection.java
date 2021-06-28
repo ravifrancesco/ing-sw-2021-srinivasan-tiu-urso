@@ -193,7 +193,8 @@ public class Connection implements Runnable,
 
     public void sendGameLobbiesDetails() {
         ArrayList<GameLobbyDetails> gameLobbies = new ArrayList<>();
-        mainLobby.getActiveGameLobbies().forEach(gameLobby -> gameLobbies.add(new GameLobbyDetails(gameLobby.getId(),
+        mainLobby.getActiveGameLobbies().stream().filter(gameLobby -> gameLobby.getMaxPlayers() != 1)
+                .forEach(gameLobby -> gameLobbies.add(new GameLobbyDetails(gameLobby.getId(),
                 gameLobby.getCreator(), gameLobby.getConnectedPlayers().size(), gameLobby.getMaxPlayers()))
         );
         send(new GameLobbiesMessage(gameLobbies));
