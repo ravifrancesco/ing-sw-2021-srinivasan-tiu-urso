@@ -43,13 +43,6 @@ public class DevelopmentCardController {
         ArrayList<DevelopmentCardDiscount> activeDiscounts = player.getActiveDiscounts();
         DevelopmentCard developmentCard;
 
-        System.out.println("Riga 45 devcardbuy");
-
-        System.out.println("player resources is");
-        System.out.println(playerResources);
-        System.out.println("active discounts is");
-        System.out.println(activeDiscounts);
-
         try {
             if (!developmentCardGrid.isBuyable(row, column, playerResources, activeDiscounts)) {
                 throw new CardNotBuyableException("Incorrect resource selection, please try again. ");
@@ -81,8 +74,6 @@ public class DevelopmentCardController {
 
         System.out.println("Riga 67 devcardbuy");
 
-
-        // TODO check for cleaner options
 
         dashboard.payPrice(resourcesToPayCost, cost);
 

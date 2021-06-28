@@ -465,35 +465,34 @@ public class CLI implements UI {
                 System.out.println(":  " + value);
             });
             System.out.println();
-
             Resource[][] extraDeposits = reducedDashboard.getExtraDeposits();
-            if (Arrays.stream(extraDeposits).anyMatch(Objects::nonNull)) {
-                System.out.println("EXTRA DEPOSITS: ");
-                Arrays.stream(extraDeposits).forEach(deposit -> showExtraDeposit(deposit));
-                IntStream.range(0, extraDeposits.length).forEach(i -> {
-                    if(extraDeposits[i] != null) {
-                        System.out.println("INDEX " + i);
-                        IntStream.range(0, extraDeposits[i].length).forEach(j -> {
-                            if (extraDeposits[i][j] == null) {
-                                printColoredMessage("    EMPTY", Constants.STONE_COLOR);
-                            } else {
-                                printColoredMessage("    ", handleResourceColor(extraDeposits[i][j].toString()));
-                            }
-                        });
-                    }
-                });
-
-            }
-        } else
-        {
+            showAllExtraDeposits(extraDeposits);
+        } else {
             printErrorMessage("PLAYER " + nickname + " DOESN'T EXISTS");
+        }
+    }
+
+    private void showAllExtraDeposits(Resource[][] extraDeposits) {
+        if (Arrays.stream(extraDeposits).anyMatch(Objects::nonNull)) {
+            IntStream.range(0, extraDeposits.length).forEach(i -> {
+                if(extraDeposits[i] != null) {
+                    System.out.println("EXTRA DEPOSIT FOR LEADERCARD #" + i);
+                    showExtraDeposit(extraDeposits[i]);
+                }
+            });
         }
     }
 
     public void showExtraDeposit(Resource[] deposit) {
         if(deposit[0] == null) {
-            printMessage("  INDEX 0: empty");
+            printMessage("  INDEX 0: EMPTY");
         } else {
+            printMessage("  INDEX 0: " + deposit[0]);
+        }
+        if(deposit[1] == null) {
+            printMessage("  INDEX 1: EMPTY");
+        } else {
+            printMessage("  INDEX 1: " + deposit[1]);
         }
     }
 
@@ -945,6 +944,7 @@ public class CLI implements UI {
         if("game_has_ended_single".equals(menuCode)) {
             gameHasEndedSingle();
         }
+
         if("back_in_lobby". equals(menuCode)) {
             System.out.println("\n\n\n\nYou are being redirected to the main lobby...\n");
             System.out.println("Back to the main lobby!\n");

@@ -101,9 +101,9 @@ public class Player extends PlayerObservable {
 		if(saType == SpecialAbilityType.DEVELOPMENT_CARD_DISCOUNT || saType == SpecialAbilityType.WHITE_MARBLE_RESOURCES) {
 			leaderCard.activate(this);
 		} else if(saType == SpecialAbilityType.WAREHOUSE_EXTRA_SPACE) {
-			leaderCard.activate(this);
 			WarehouseExtraSpace wes = (WarehouseExtraSpace) leaderCard.getSpecialAbility();
 			wes.setLeaderCardPos(position);
+			leaderCard.activate(this);
 		}
 		notify(this);
 	}

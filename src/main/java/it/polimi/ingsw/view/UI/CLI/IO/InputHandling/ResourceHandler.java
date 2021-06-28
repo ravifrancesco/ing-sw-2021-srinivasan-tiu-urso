@@ -26,7 +26,6 @@ public class ResourceHandler {
         Resource r;
         System.out.println("Please choose the resource(s)");
         System.out.println("Options: STONE, GOLD, SHIELD, SERVANT");
-        System.out.println("Remaining to select: " + qty);
 
         try {
             while (qty != 0) {
@@ -91,21 +90,24 @@ public class ResourceHandler {
     }
 
     public static void showCurrSelected(CLI cli, Map<Resource, Integer> currentRes) {
-        cli.printColoredMessageNoNL("STONE: ", Constants.STONE_COLOR);
 
         if(currentRes.get(Resource.STONE) != null && currentRes.get(Resource.STONE) != 0) {
+            cli.printColoredMessageNoNL("STONE: ", Constants.STONE_COLOR);
             cli.printMessage(currentRes.get(Resource.STONE) + "");
         }
 
         if(currentRes.get(Resource.GOLD) != null && currentRes.get(Resource.GOLD) != 0) {
+            cli.printColoredMessageNoNL("GOLD: ", Constants.GOLD_COLOR);
             cli.printMessage(currentRes.get(Resource.GOLD) + "");
         }
 
         if(currentRes.get(Resource.SERVANT) != null && currentRes.get(Resource.SERVANT) != 0) {
+            cli.printColoredMessageNoNL("SERVANT: ", Constants.SERVANT_COLOR);
             cli.printMessage(currentRes.get(Resource.SERVANT) + "");
         }
 
         if(currentRes.get(Resource.SHIELD) != null && currentRes.get(Resource.SHIELD) != 0) {
+            cli.printColoredMessageNoNL("SHIELD: ", Constants.SHIELD_COLOR);
             cli.printMessage(currentRes.get(Resource.SHIELD) + "");
         }
     }
