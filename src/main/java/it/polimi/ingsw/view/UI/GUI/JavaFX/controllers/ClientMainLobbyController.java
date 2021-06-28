@@ -62,15 +62,18 @@ public class ClientMainLobbyController {
         alert.setHeaderText("You are creating a new game");
         alert.setContentText("Select the number of players");
 
+        ButtonType buttonTypeZero = new ButtonType("Single player");
         ButtonType buttonTypeOne = new ButtonType("Two");
         ButtonType buttonTypeTwo = new ButtonType("Three");
         ButtonType buttonTypeThree = new ButtonType("Four");
         ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
 
-        alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo, buttonTypeThree, buttonTypeCancel);
+        alert.getButtonTypes().setAll(buttonTypeZero, buttonTypeOne, buttonTypeTwo, buttonTypeThree, buttonTypeCancel);
 
         Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == buttonTypeOne){
+        if (result.get() == buttonTypeZero) {
+            gui.send(new CreateGameLobby(1));
+        } else if (result.get() == buttonTypeOne){
             gui.send(new CreateGameLobby(2));
         } else if (result.get() == buttonTypeTwo) {
             gui.send(new CreateGameLobby(3));
