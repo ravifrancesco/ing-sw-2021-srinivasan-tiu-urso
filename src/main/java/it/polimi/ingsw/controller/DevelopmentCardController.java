@@ -52,12 +52,10 @@ public class DevelopmentCardController {
 
         try {
             if (!developmentCardGrid.isBuyable(row, column, playerResources, activeDiscounts)) {
-                System.out.println("not enough resources");
-                throw new CardNotBuyableException("Not enough resources");
+                throw new CardNotBuyableException("Incorrect resource selection, please try again. ");
             }
         } catch (IllegalArgumentException e) {
-                System.out.println("card doesnt exist");
-            throw new CardNotBuyableException("Card doesn't exist");
+            throw new CardNotBuyableException("Card doesn't exist, please try again. ");
         }
 
         System.out.println("Riga 55 devcardbuy");

@@ -24,10 +24,10 @@ public class WarehouseHandler {
 
     public static ClientMessage storeFromSupplyToExtraDeposit(String[] in, CLI cli) {
         try {
-            int supplyPos = Integer.parseInt(in[1]);
-            int extraDepositIndex = Integer.parseInt(in[2]);
-            int extraDepositPos = Integer.parseInt(in[3]);
-            return new PlayerStoresFromSupplyToExtraDeposit(supplyPos, extraDepositIndex, extraDepositPos);
+            int from = Integer.parseInt(in[1]);
+            int lcPos = Integer.parseInt(in[3]);
+            int to = Integer.parseInt(in[2]);
+            return new PlayerStoresFromSupplyToExtraDeposit(lcPos, from, to);
         } catch (NumberFormatException | IndexOutOfBoundsException e) {
             cli.printErrorMessage("Failed parsing indexes");
             return null;

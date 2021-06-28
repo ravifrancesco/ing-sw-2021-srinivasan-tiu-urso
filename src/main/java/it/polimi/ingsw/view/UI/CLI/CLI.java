@@ -134,7 +134,7 @@ public class CLI implements UI {
             offlineClientVirtualView.send(clientMessage);
         } else if (clientMessage != null) {
             try {
-                sendMessage(clientMessage);
+                clientVirtualView.send(clientMessage);
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
@@ -218,7 +218,7 @@ public class CLI implements UI {
         printColoredMessageNoNL(developmentCard.getBanner().toString().split("=")[1].split(":")[0],
                 handleBannerColor(developmentCard.getBanner().toString().split("=")[1].split(":")[0]));
 
-        printMessage("LEVEL " + developmentCard.getBanner().getLevel());
+        printMessage(" LEVEL " + developmentCard.getBanner().getLevel());
         showResourceCost(developmentCard.getResourceCost());
 
         handleSA(developmentCard.getProductionPower());
@@ -289,6 +289,9 @@ public class CLI implements UI {
                 }
                 if (pp.getNumProducedAny() > 0) {
                     printMessage(pp.getNumProducedAny() + Constants.STONE_COLOR + " ANY RESOURCE" + Constants.ANSI_RESET);
+                }
+                if (pp.getNumberFaithPoints() != 0) {
+                    printColoredMessage("" + pp.getNumberFaithPoints() + " FAITH POINT", Constants.RED_ISH);
                 }
             }
             case WHITE_MARBLE_RESOURCES -> {
@@ -432,7 +435,7 @@ public class CLI implements UI {
 
     public void showLorenzoFT(String nickname) {
         ReducedPlayer reducedPlayer = reducedModel.getReducedGame().getPlayers().get(nickname);
-        System.out.println("LORENZO's FAITHTRACK");
+        System.out.println("\nLORENZO's FAITHTRACK: ");
         int lorenzoPosition = reducedPlayer.getDashboard().getLorenzoIlMagnificoPosition();
         ftcli.setPos(lorenzoPosition);
         List<Pair<Integer, Integer>> vc = getPassedVaticanReports(reducedPlayer.getDashboard());
@@ -466,6 +469,7 @@ public class CLI implements UI {
             Resource[][] extraDeposits = reducedDashboard.getExtraDeposits();
             if (Arrays.stream(extraDeposits).anyMatch(Objects::nonNull)) {
                 System.out.println("EXTRA DEPOSITS: ");
+                Arrays.stream(extraDeposits).forEach(deposit -> showExtraDeposit(deposit));
                 IntStream.range(0, extraDeposits.length).forEach(i -> {
                     if(extraDeposits[i] != null) {
                         System.out.println("INDEX " + i);
@@ -483,6 +487,13 @@ public class CLI implements UI {
         } else
         {
             printErrorMessage("PLAYER " + nickname + " DOESN'T EXISTS");
+        }
+    }
+
+    public void showExtraDeposit(Resource[] deposit) {
+        if(deposit[0] == null) {
+            printMessage("  INDEX 0: empty");
+        } else {
         }
     }
 
@@ -583,6 +594,17 @@ public class CLI implements UI {
         System.out.println();
         System.out.print("> ");
         String choice = readLine();
+        ReducedPlayer reducedPlayer = reducedModel.getReducedPlayer();
+        if(reducedPlayer.getDiscounts() != null
+                && reducedPlayer.getDiscounts().size() != 0) {
+            printMessage("Keep in mind that due to your activated ability(s)");
+            reducedPlayer.getDiscounts().forEach((resource, qty) -> {
+                printMessageNoNL("" + qty);
+                printColoredMessageNoNL(" " + resource, handleResourceColor(resource.toString()));
+                printMessage(" will be discounted");
+            });
+
+        }
         switch(choice.toUpperCase()) {
             case "1", "2", "3" -> showDvRow(Integer.parseInt(choice));
             case "GREEN", "BLUE", "YELLOW", "PURPLE" -> showDvColumn(choice);
@@ -976,10 +998,38 @@ public class CLI implements UI {
         printMessage("\n\n");
         printMessage("Lorenzo has activated the following token: " + reducedModel.getReducedGame().getToken());
         IntStream.range(0, 12).forEach(i -> {
-            printMessage("Remaining card with index " + i + ": " + reducedModel.getReducedGameBoard().getGrid().get(i).size());
+            String color = decideColor(i);
+            String level = decideLevel(i);
+            if(color != null && level != null) {
+                printMessageNoNL("Level " + level + " ");
+                printColoredMessageNoNL(color, handleBannerColor(color));
+                printMessageNoNL(" cards remaining: " + reducedModel.getReducedGameBoard().getGrid().get(i).size());
+            } else {
+                printMessage("Remaining card with index " + i + ": " + reducedModel.getReducedGameBoard().getGrid().get(i).size());
+            }
         });
-        printMessage("Lorenzo faithtrack position: " +
-                reducedModel.getReducedPlayer().getDashboard().getLorenzoIlMagnificoPosition() + "/24");
+        showLorenzoFT(reducedModel.getReducedPlayer().getNickname());
+        // printMessage("Lorenzo faithtrack position: " +
+               //  reducedModel.getReducedPlayer().getDashboard().getLorenzoIlMagnificoPosition() + "/24");
+    }
+
+    private String decideColor(int i) {
+        return switch(i) {
+            case 0, 4, 8 -> "GREEN";
+            case 1, 5, 9 -> "BLUE";
+            case 2, 6, 10 -> "YELLOW";
+            case 3, 7, 11 -> "PURPLE";
+            default -> null;
+        };
+    }
+
+    private String decideLevel(int i) {
+        return switch(i) {
+            case 0, 1, 2, 3 -> "1";
+            case 4, 5, 6, 7 -> "2";
+            case 8, 9, 10, 11 -> "3";
+            default -> null;
+        };
     }
 
     private void endGameHasStarted() {
@@ -1020,7 +1070,7 @@ public class CLI implements UI {
         printMessage("Please use");
         printColoredMessageNoNL("STOREFROMSUPPLY <supplyPos> <depositPos>", Constants.SERVANT_COLOR);
         printMessage(" to store a resource from your supply to your deposit");
-        printColoredMessageNoNL("STOREFROMSUPPLYTOEXTRADEPOSIT <supplyPos> <depositIndex> <depositPos>", Constants.SERVANT_COLOR);
+        printColoredMessageNoNL("STOREFROMSUPPLYED <supplyPos> <edPos> <leaderCardPos>", Constants.SERVANT_COLOR);
         printMessage(" to store a resource from your supply to an extra deposit");
         printColoredMessageNoNL("CHANGEDEPOSIT", Constants.SERVANT_COLOR);
         printMessage(" to rearrange your deposit");
@@ -1131,13 +1181,16 @@ public class CLI implements UI {
         rg.getPlayers().keySet().forEach(p ->
             printMessageNoNL(p + " | ")
         );
+        if(reducedModel.getReducedGame().getNumberOfPlayers() == 1) {
+            printMessage("Lorenzo's faith track can be shown by calling to see your own");
+        }
         printMessage("");
     }
 
     public void showDepositMenu() {
         printColoredMessageNoNL("STOREFROMSUPPLY <supplyPos> <depositPos>", Constants.SERVANT_COLOR);
         printMessage(" to store a resource from your supply to your deposit");
-        printColoredMessageNoNL("STOREFROMSUPPLYTOEXTRADEPOSIT <supplyPos> <depositIndex> <depositPos>", Constants.SERVANT_COLOR);
+        printColoredMessageNoNL("STOREFROMSUPPLYED <supplyPos> <edPos> <leaderCardPos>", Constants.SERVANT_COLOR);
         printMessage(" to store a resource from your supply to an extra deposit");
         printColoredMessageNoNL("CHANGEDEPOSIT", Constants.SERVANT_COLOR);
         printMessage(" to rearrange your deposit");
