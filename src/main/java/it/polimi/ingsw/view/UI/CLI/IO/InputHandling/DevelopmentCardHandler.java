@@ -15,6 +15,13 @@ public class DevelopmentCardHandler {
     public static String ANSI_GREEN = "\u001B[32m";
     public static String ANSI_RESET = "\u001B[0m";
     public static String ANSI_BLUE = "\u001B[34m";
+
+    /**
+     * Creates a message to activate a development card production
+     * @param in the input string to be parsed
+     * @param cli the cli
+     * @return the client message for the server
+     */
     public static ClientMessage activateDevelopmentProduction(String[] in, CLI cli) {
         try {
             int card = Integer.parseInt(in[1]);
@@ -68,6 +75,12 @@ public class DevelopmentCardHandler {
         }
     }
 
+    /**
+     * Creates the message for the buying of a development card process
+     * @param in
+     * @param cli
+     * @return
+     */
     public static ClientMessage buyDevelopmentCard(String[] in, CLI cli) {
         try {
             int row = Integer.parseInt(in[1]);

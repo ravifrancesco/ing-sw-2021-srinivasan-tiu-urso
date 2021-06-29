@@ -9,11 +9,18 @@ import java.util.Scanner;
 
 public class CLIInitializer {
 
+    /**
+     * Runs the cli
+     * @param args the arguments
+     */
     public static void main(String[] args) {
         CLIInitializer CLIInitializer = new CLIInitializer();
         CLIInitializer.run();
     }
 
+    /**
+     * Runs the CLI, handling the connection to the game either locally or online
+     */
     public void run() {
         CLI cli = new CLI();
         Scanner input = new Scanner(System.in);
@@ -37,6 +44,10 @@ public class CLIInitializer {
         }
     }
 
+    /**
+     * Handles the multiplayer game setup
+     * @param cli the CLI
+     */
     public void handleServer(CLI cli) {
         boolean connected = false;
         try {
@@ -57,7 +68,6 @@ public class CLIInitializer {
                 clientVirtualView.registerName();
             }
             clientVirtualView.run();
-            return;
         } catch (IllegalArgumentException e) {
             cli.printErrorMessage("Invalid ip/port name");
         } catch (IOException e) {
@@ -67,6 +77,10 @@ public class CLIInitializer {
         }
     }
 
+    /**
+     * Handles the local game setup
+     * @param cli the CLI
+     */
     public void handleLocal(CLI cli) {
         OfflineClientVirtualView offlineClientVirtualView = new OfflineClientVirtualView(cli);
         offlineClientVirtualView.run();

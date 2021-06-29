@@ -13,8 +13,13 @@ import java.util.Map;
 public class ProductionHandler {
     public static String ANSI_GREEN = "\u001B[32m";
     public static String ANSI_RESET = "\u001B[0m";
-    public static String ANSI_BLUE = "\u001B[34m";
 
+    /**
+     * Creates a message to activate a dashboard card production
+     * @param in the input string to be parsed
+     * @param cli the cli
+     * @return the client message for the server
+     */
     public static ClientMessage activateDashboardProduction(String[] in, CLI cli) {
         try {
             ProductionPower pp = cli.getReducedModel().getReducedPlayer().getDashboard().getProductionPower();

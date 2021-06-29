@@ -5,9 +5,13 @@ import it.polimi.ingsw.network.messages.clientMessages.ClientMessage;
 import it.polimi.ingsw.network.messages.clientMessages.lobbyMessage.AskGameLobbies;
 import it.polimi.ingsw.network.messages.clientMessages.lobbyMessage.CreateGameLobby;
 import it.polimi.ingsw.network.messages.clientMessages.lobbyMessage.JoinGameLobby;
-import it.polimi.ingsw.network.messages.clientMessages.lobbyMessage.QuitGame;
 
 public class MainLobbyHandler {
+    /**
+     * Handles the creation for the message to create a game
+     * @param input the string to parse with the needed arguments
+     * @return the client message with the move
+     */
     public static ClientMessage createGame(String[] input) {
         try {
             int numberOfPlayers = Integer.parseInt(input[1]);
@@ -17,10 +21,20 @@ public class MainLobbyHandler {
         }
     }
 
+    /**
+     * Handles the creation for the message to show available games
+     * @return the client message with the move
+     */
     public static ClientMessage showGames() {
         return new AskGameLobbies();
     }
 
+    /**
+     * Handles the creation for the message to join a game
+     * @param input the string to parse with the needed arguments
+     * @param cli the CLI
+     * @return the client message with the move
+     */
     public static ClientMessage joinGame(String[] input, CLI cli) {
         try {
             String id = input[1];
@@ -29,8 +43,5 @@ public class MainLobbyHandler {
             cli.printErrorMessage("Something went wrong while joining a game");
             return null;
         }
-    }
-    public static ClientMessage quit(String[] in) {
-        return new QuitGame();
     }
 }

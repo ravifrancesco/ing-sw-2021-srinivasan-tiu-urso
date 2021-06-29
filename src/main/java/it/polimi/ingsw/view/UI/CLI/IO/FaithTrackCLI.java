@@ -9,6 +9,9 @@ public class FaithTrackCLI {
     static final String[][] grid = new String[gridRows][gridCols];
     private static int currPos;
 
+    /**
+     * Class used to show a faith track
+     */
     public FaithTrackCLI() {
         for(int i = 0; i < gridRows; i++) {
             for(int j = 0; j < gridCols; j++) {
@@ -48,7 +51,7 @@ public class FaithTrackCLI {
         for(int j = 0; j <= 24; j++) {
             if(indexVp.containsKey(j)) {
                 grid[3][j] = Constants.BOLD + "  " + Constants.BOLD + Constants.ANSI_GREEN +indexVp.get(j) +
-                        Constants.ANSI_RESET + (indexVp.get(j) > 9 ? "  " : "   ");;
+                        Constants.ANSI_RESET + (indexVp.get(j) > 9 ? "  " : "   ");
             } else {
                 grid[3][j] = "      ";
             }
@@ -57,6 +60,10 @@ public class FaithTrackCLI {
         currPos = 0;
     }
 
+    /**
+     * Sets the current player position on the track (prints red background ansi codes)
+     * @param i the position
+     */
     public void setPos(int i) {
         restore(currPos);
         grid[1][i] = Constants.FT_EMPTY + Constants.BLACK + Constants.BOLD + "|" + Constants.ANSI_RESET +
@@ -65,12 +72,20 @@ public class FaithTrackCLI {
         currPos = i;
     }
 
+    /**
+     * Removes a previous position (re-prints background ansi-code) on the position
+     * @param i the position to restore
+     */
     public void restore(int i) {
         grid[1][i] = Constants.FT_EMPTY + Constants.BLACK + Constants.BOLD + "|" + Constants.ANSI_RESET +
                 Constants.FT_EMPTY + "    " + Constants.ANSI_RESET +
                 Constants.FT_EMPTY + Constants.BLACK + Constants.BOLD + "|" + Constants.ANSI_RESET;
     }
 
+    /**
+     * Colors the vatican report for when it is activated correctly
+     * @param i the index for the vatican report
+     */
     public void activateVR(int i) {
         switch(i) {
             case(1) -> IntStream.range(5, 9).forEach(j -> grid[0][j] = Constants.FT_SPACE_ACTIVATED + "      " + Constants.ANSI_RESET);
@@ -79,6 +94,10 @@ public class FaithTrackCLI {
         }
     }
 
+    /**
+     * Colors the vatican report for when it is missed
+     * @param i the index for the vatican report
+     */
     public void missVR(int i) {
         switch(i) {
             case(1) -> IntStream.range(5, 9).forEach(j -> grid[0][j] = Constants.FT_SPACE_MISSED + "      " + Constants.ANSI_RESET);
@@ -87,6 +106,11 @@ public class FaithTrackCLI {
         }
     }
 
+    /**
+     * Handles a vatican report and colors it the correct way
+     * @param i the vatican report index
+     * @param state the state index, 1 if missed 2 if activated
+     */
     public void handleVr(int i, int state) {
         switch(state) {
             case(1) -> missVR(i);
@@ -94,6 +118,9 @@ public class FaithTrackCLI {
         }
     }
 
+    /**
+     * Shows the faith track itself
+     */
     public void showFTCLI() {
         for(int i = 0; i < gridRows; i++) {
             for(int j = 0; j < gridCols; j++) {
@@ -117,7 +144,5 @@ public class FaithTrackCLI {
 
             System.out.println("\n\n\n");
         }
-
-
     }
 }

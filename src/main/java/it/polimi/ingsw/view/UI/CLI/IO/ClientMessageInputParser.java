@@ -7,6 +7,12 @@ import it.polimi.ingsw.network.messages.clientMessages.ClientMessage;
 
 public class ClientMessageInputParser {
 
+    /**
+     * Handles every possible (and correct) input for a command in the CLI
+     * @param input the input
+     * @param cli the cli where the command has to be handled
+     * @return a client message
+     */
     public static ClientMessage parseInput(String input, CLI cli) {
 
         String[] in = input.split(" ");

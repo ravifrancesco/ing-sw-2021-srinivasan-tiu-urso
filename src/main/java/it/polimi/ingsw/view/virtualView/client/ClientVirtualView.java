@@ -71,11 +71,9 @@ public class ClientVirtualView implements Runnable, ClientVirtualViewIF {
         inputStream = new ObjectInputStream(socket.getInputStream());
         try {
             ServerMessage serverMessage = receiveServerMessage();
-            // System.out.println("I have received serverMessage: " + serverMessage.toString());
             serverMessage.updateClient(this, null);
         } catch (Exception e) {
-            // welcome message not received
-            // connection failed
+            System.out.println("Connection failed");
         }
     }
 
