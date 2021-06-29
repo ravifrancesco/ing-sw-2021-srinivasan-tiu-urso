@@ -25,11 +25,10 @@ public class ProductionPower implements SpecialAbility, Serializable {
 
 	/**
 	 * The constructor for a Production Power object.
-	 * @param resourceRequired represents the cost to activate the production power.
-	 * @param resourceProduced represents the resources produced.
-	 * @param numberFaithPoints represents the faith points given by the production power.
+	 * @param 	resourceRequired represents the cost to activate the production power.
+	 * @param 	resourceProduced represents the resources produced.
+	 * @param 	numberFaithPoints represents the faith points given by the production power.
 	 */
-
 	public ProductionPower(Map<Resource, Integer> resourceRequired, Map<Resource, Integer> resourceProduced, int numberFaithPoints) {
 		this.resourceRequired = resourceRequired.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 		this.resourceProduced = resourceProduced != null ? resourceProduced.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)) : null;
@@ -39,9 +38,8 @@ public class ProductionPower implements SpecialAbility, Serializable {
 
 	/**
 	 * It allows to move the faith marker and to store the resources given by the production power.
-	 * @param p the player who activated the production power.
+	 * @param 	p the player who activated the production power.
 	 */
-
 	@Override
 	public void activate(Player p) throws UnsupportedOperationException {
 		if(!this.isActivatable()) {
@@ -63,62 +61,55 @@ public class ProductionPower implements SpecialAbility, Serializable {
 	/**
 	 * Allows to activate again the production power in the next turns.
 	 */
-
 	public void reset() {
 		activated = false;
 	}
 
 	/**
 	 * Getter for resource required.
-	 * @return the resource cost of the production power.
+	 * @return 	the resource cost of the production power.
 	 */
-
 	public Map<Resource, Integer> getResourceRequired() {
 		return resourceRequired.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 	}
 
 	/**
 	 * Getter for resource produced.
-	 * @return the resources produced by the production power.
+	 * @return 	the resources produced by the production power.
 	 */
-
 	public Map<Resource, Integer> getResourceProduced() {
 		return resourceProduced != null ? resourceProduced.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)) : null;
 	}
 
 	/**
 	 * Getter for resource required modified.
-	 * @return the resource cost of the production power (without selectable resources).
+	 * @return 	the resource cost of the production power (without selectable resources).
 	 */
-
 	public Map<Resource, Integer> getResourceRequiredModified() {
 		return resourceRequiredModified.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 	}
 
 	/**
 	 * Getter for resource produced modified.
-	 * @return the resources produced by the production power (without selectable resources).
+	 * @return 	the resources produced by the production power (without selectable resources).
 	 */
-
 	public Map<Resource, Integer> getResourceProducedModified() {
 		return resourceProducedModified != null ? resourceProducedModified.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)) : null;
 	}
 
 	/**
 	 * Getter for number faith points.
-	 * @return the number of faith points given by the production power.
+	 * @return 	the number of faith points given by the production power.
 	 */
-
 	public int getNumberFaithPoints() {
 		return numberFaithPoints;
 	}
 
 	/**
 	 * Allows to know if this card is activatable.
-	 * @param playerResources all the resources of the player.
-	 * @return if this card is activatable or not with the given resources.
+	 * @param 	playerResources all the resources of the player.
+	 * @return 	true if this card is activatable with the given resources, false otherwise.
 	 */
-
 	public boolean isActivatable(Map<Resource, Integer> playerResources) {
 		Set<Map.Entry<Resource, Integer>> entries = resourceRequiredModified.entrySet();
 		HashMap<Resource, Integer> copy = (HashMap<Resource, Integer>) entries.stream()
@@ -134,18 +125,16 @@ public class ProductionPower implements SpecialAbility, Serializable {
 
 	/**
 	 * Allows to know if this production power has been activated in the current turn.
-	 * @return true if the production power is activatable, false otherwise.
+	 * @return 	true if the production power is activatable, false otherwise.
 	 */
-
 	public boolean isActivatable() {
 		return !activated;
 	}
 
 	/**
 	 * To string method of the class.
-	 * @return a string representation of the object.
+	 * @return 	a string representation of the object.
 	 */
-
 	public String toString() {
 		String result="";
 
@@ -166,9 +155,8 @@ public class ProductionPower implements SpecialAbility, Serializable {
 
 	/**
 	 * Method to get the type of this special ability.
-	 * @return the type of this special ability.
+	 * @return 	the type of this special ability.
 	 */
-
 	@Override
 	public SpecialAbilityType getType() {
 		return SpecialAbilityType.PRODUCTION_POWER;
@@ -176,12 +164,11 @@ public class ProductionPower implements SpecialAbility, Serializable {
 
 	/**
 	 * Allows to change resource required and produced in order to remove the selectable resources.
-	 * @param resourceRequiredOptional the resource required which replace the selectable resources.
-	 * @param resourceProducedOptional the resource produced which replace the selectable resources.
-	 * @throws IllegalArgumentException if the number of resources chosen doesn't match.
-	 * @throws IllegalStateException if the resource required or produced still contain selectable resources.
+	 * @param 	resourceRequiredOptional the resource required which replace the selectable resources.
+	 * @param 	resourceProducedOptional the resource produced which replace the selectable resources.
+	 * @throws 	IllegalArgumentException if the number of resources chosen doesn't match.
+	 * @throws 	IllegalStateException if the resource required or produced still contain selectable resources.
 	 */
-
 	public void setSelectableResource(Map<Resource, Integer> resourceRequiredOptional, Map<Resource, Integer> resourceProducedOptional)
 			throws IllegalArgumentException, IllegalStateException {
 
@@ -209,10 +196,18 @@ public class ProductionPower implements SpecialAbility, Serializable {
 
 	}
 
+	/**
+	 * Getter for the number of required selectable resources.
+	 * @return	the number of required selectable resources.
+	 */
 	public int getNumRequiredAny() {
 		return resourceRequired.get(Resource.ANY) == null ? 0 : resourceRequired.get(Resource.ANY);
 	}
 
+	/**
+	 * Getter for the number of produced selectable resources.
+	 * @return	the number of produced selectable resources.
+	 */
 	public int getNumProducedAny() {
 		return resourceProduced.get(Resource.ANY) == null ? 0 : resourceProduced.get(Resource.ANY);
 	}

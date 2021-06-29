@@ -28,13 +28,12 @@ public class DevelopmentCard implements Card, Serializable {
 
 	/**
 	 * The constructor for a Development Card object.
-	 * @param id represents the unique id of the card.
-	 * @param victoryPoints represents the victory points given by the card.
-	 * @param resourceCost represents the resource cost to buy the card.
-	 * @param productionPower represents the production power of the card.
-	 * @param banner represents the banner of the card.
+	 * @param 	id represents the unique id of the card.
+	 * @param 	victoryPoints represents the victory points given by the card.
+	 * @param 	resourceCost represents the resource cost to buy the card.
+	 * @param 	productionPower represents the production power of the card.
+	 * @param 	banner represents the banner of the card.
 	 */
-
 	public DevelopmentCard(int id, int victoryPoints, Map<Resource, Integer> resourceCost, ProductionPower productionPower, Banner banner) {
 		this.id=id;
 		this.victoryPoints = victoryPoints;
@@ -45,9 +44,8 @@ public class DevelopmentCard implements Card, Serializable {
 
 	/**
 	 * Allows to activate the production power.
-	 * @param p represents the player.
+	 * @param 	p represents the player.
 	 */
-
 	@Override
 	public void activate(Player p) {
 		productionPower.activate(p);
@@ -55,54 +53,48 @@ public class DevelopmentCard implements Card, Serializable {
 
 	/**
 	 * Getter for the id.
-	 * @return the id of the card.
+	 * @return 	the id of the card.
 	 */
-
 	public int getId() {
 		return id;
 	}
 
 	/**
 	 * Getter for victory points.
-	 * @return the victory points given by the card.
+	 * @return 	the victory points given by the card.
 	 */
-
 	public int getVictoryPoints() {
 		return victoryPoints;
 	}
 
 	/**
 	 * Getter for resourceCost.
-	 * @return the resource cost of the card.
+	 * @return 	the resource cost of the card.
 	 */
-
 	public Map<Resource, Integer> getResourceCost() {
 		return resourceCost.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 	}
 
 	/**
 	 * Getter for productionPower.
-	 * @return the production power of the card.
+	 * @return 	the production power of the card.
 	 */
-
 	public ProductionPower getProductionPower() {
 		return productionPower;
 	}
 
 	/**
 	 * Getter for banner.
-	 * @return the banner of the card.
+	 * @return 	the banner of the card.
 	 */
-
 	public Banner getBanner() {
 		return banner;
 	}
 
 	/**
 	 * To string method of the class.
-	 * @return a string representation of the object.
+	 * @return 	a string representation of the object.
 	 */
-
 	@Override
 	public String toString() {
 		String result="";
@@ -121,17 +113,15 @@ public class DevelopmentCard implements Card, Serializable {
 	/**
 	 * Allows to reset the production power of the card (in order to not activate the same production power twice in one turn).
 	 */
-
 	public void resetProductionPower() {
 		this.productionPower.reset();
 	}
 
 	/**
 	 * Equals method for the class.
-	 * @param o the other development card to compare.
-	 * @return true if the two cards have the same id.
+	 * @param 	o the other development card to compare.
+	 * @return 	true if the two cards have the same id, false otherwise.
 	 */
-
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
