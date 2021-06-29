@@ -66,7 +66,7 @@ public class ServerVirtualView implements Runnable,
     }
 
     private synchronized void send(ServerMessage message) {
-
+        System.out.println(message);
         try {
             out.writeObject(message);
             out.flush();
@@ -119,6 +119,10 @@ public class ServerVirtualView implements Runnable,
             System.out.println("Deregistering client " + nickname + "..");
             deregisterConnection();
             System.out.println("Deregistration complete");
+            if (currentLobby.getType() == LobbyType.GAME_LOBBY) {
+                ((GameLobby) currentLobby).getConnectedPlayers().values()
+                        .forEach(value -> value.sendCLIupdateMessage("force_disconnection"));
+            }
         }
     }
 
