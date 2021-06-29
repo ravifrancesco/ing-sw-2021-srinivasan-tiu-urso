@@ -4,6 +4,12 @@ import it.polimi.ingsw.view.UI.CLI.CLI;
 import it.polimi.ingsw.network.messages.clientMessages.ClientMessage;
 
 public class ViewHandler {
+    /**
+     * Handles the SHOW command to further call other methods
+     * @param input the string to parse
+     * @param cli the CLI
+     * @return the correct client message
+     */
     public static ClientMessage show(String[] input, CLI cli) {
         String objectToShow;
         if(input.length >= 2) {

@@ -11,6 +11,12 @@ import java.util.Map;
 
 public class ResourceHandler {
 
+
+    /**
+     * Parses a resource
+     * @param in string to parse
+     * @return the resource
+     */
     public static Resource parseResource(String in) {
         return switch (in.toUpperCase()) {
             case "STONE" -> Resource.STONE;
@@ -21,6 +27,12 @@ public class ResourceHandler {
         };
     }
 
+    /**
+     * Handles the selection of resources
+     * @param cli the CLI
+     * @param qty amount of resources to parse
+     * @return the selected resources
+     */
     public static Map<Resource, Integer> chooseAnyResources(CLI cli, int qty) {
         HashMap<Resource, Integer> output = new HashMap<>();
         Resource r;
@@ -51,6 +63,11 @@ public class ResourceHandler {
     }
 
 
+    /**
+     * Handles the choosing of resources for a payment
+     * @param cli the CLI
+     * @return the resource container
+     */
     public static ResourceContainer chooseResources(CLI cli) {
         ResourceContainer rc = new ResourceContainer();
         cli.showWarehouse(cli.getReducedModel().getReducedPlayer().getNickname());
@@ -64,7 +81,7 @@ public class ResourceHandler {
         cli.printColoredMessageNoNL("DONE", Constants.SERVANT_COLOR);
         cli.printMessage(" to conclude the selection");
 
-        System.out.println("");
+        System.out.println();
 
         System.out.println();
         System.out.println("Resources selected until now: ");
@@ -89,6 +106,11 @@ public class ResourceHandler {
         return rc;
     }
 
+    /**
+     * Shows the currently selected resources for the chooseResources method
+     * @param cli the cli
+     * @param currentRes the resource map
+     */
     public static void showCurrSelected(CLI cli, Map<Resource, Integer> currentRes) {
 
         if(currentRes.get(Resource.STONE) != null && currentRes.get(Resource.STONE) != 0) {
@@ -112,6 +134,12 @@ public class ResourceHandler {
         }
     }
 
+    /**
+     * Parses and handles a deposit selection
+     * @param input the input string
+     * @param player the reduced player
+     * @param rc the resource container to add resources to
+     */
     public static void handleDepositSelection(String[] input, ReducedPlayer player, ResourceContainer rc) {
         try {
             int index = Integer.parseInt(input[1]);
@@ -121,6 +149,12 @@ public class ResourceHandler {
         }
     }
 
+    /**
+     * Parses and handles an extra deposit selection
+     * @param input the input string
+     * @param player the reduced player
+     * @param rc the resource container
+     */
     public static void handleExtraDepositSelection(String[] input, ReducedPlayer player, ResourceContainer rc) {
         try {
             int lcPos = Integer.parseInt(input[1]);
@@ -131,6 +165,12 @@ public class ResourceHandler {
         }
     }
 
+    /**
+     * Parses and handles locker selection
+     * @param input the string to parse
+     * @param player the reduces player
+     * @param rc the resource container
+     */
     public static void handleLockerSelection(String[] input, ReducedPlayer player, ResourceContainer rc) {
         try {
             Resource res = ResourceHandler.parseResource(input[1]);

@@ -16,6 +16,12 @@ public class LeaderCardHandler {
     public static String ANSI_BLUE = "\u001B[34m";
 
 
+    /**
+     * Handles the creation for the message to discard an excess card
+     * @param in the string to parse with the needed arguments
+     * @param cli the CLI
+     * @return the client message with the move
+     */
     public static ClientMessage discardExcessCard(String[] in, CLI cli) {
         try {
             int cardIndex = Integer.parseInt(in[1]);
@@ -26,6 +32,12 @@ public class LeaderCardHandler {
         }
     }
 
+    /**
+     * Handles the creation for the message to discard a card
+     * @param in the string to parse with the needed arguments
+     * @param cli the CLI
+     * @return the client message with the move
+     */
     public static ClientMessage discardCard(String[] in, CLI cli) {
         try {
             int cardIndex = Integer.parseInt(in[1]);
@@ -36,6 +48,12 @@ public class LeaderCardHandler {
         }
     }
 
+    /**
+     * Handles the creation for the message to activate a leader card production
+     * @param in the string to parse with the needed arguments
+     * @param cli the CLI
+     * @return the client message with the move
+     */
     public static ClientMessage activateLeaderProduction(String[] in, CLI cli) {
         try {
             int card = Integer.parseInt(in[1]);
@@ -91,6 +109,12 @@ public class LeaderCardHandler {
         }
     }
 
+    /**
+     * Handles the creation for the message to play a leader card
+     * @param in the string to parse with the needed arguments
+     * @param cli the CLI
+     * @return the client message with the move
+     */
     public static ClientMessage playLeaderCard(String[] in, CLI cli) {
         try {
             int cardIndex = Integer.parseInt(in[1]);

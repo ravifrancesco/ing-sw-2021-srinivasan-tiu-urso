@@ -46,6 +46,12 @@ public class ClientVirtualView implements Runnable, ClientVirtualViewIF {
 
     ReducedModel reducedModel;
 
+    /**
+     * Virtual view for the multi player game
+     * @param ip the ip string
+     * @param port the port string
+     * @param ui the ui
+     */
     public ClientVirtualView(String ip, int port, UI ui) {
         this.ip = ip;
         this.port = port;
@@ -55,11 +61,19 @@ public class ClientVirtualView implements Runnable, ClientVirtualViewIF {
         this.ui.startUI(this, reducedModel);
     }
 
+    /**
+     * Sets the player nickname
+     * @param playerNickname the player nickname
+     */
     public void setPlayerNickname(String playerNickname) {
         this.playerNickname = playerNickname;
         this.reducedModel.setNickname(playerNickname);
     }
 
+    /**
+     * Handles server connection
+     * @throws IOException if the connection fails
+     */
     public void connectToServer() throws IOException {
         ui.printColoredMessage("Connecting to " + ip + " on port " + port, Constants.GOLD_COLOR);
         try {
@@ -71,14 +85,17 @@ public class ClientVirtualView implements Runnable, ClientVirtualViewIF {
         inputStream = new ObjectInputStream(socket.getInputStream());
         try {
             ServerMessage serverMessage = receiveServerMessage();
-            // System.out.println("I have received serverMessage: " + serverMessage.toString());
             serverMessage.updateClient(this, null);
         } catch (Exception e) {
-            // welcome message not received
-            // connection failed
+            System.out.println("Connection failed");
         }
     }
 
+    /**
+     * Handles the registration of a nickname to the server
+     * @throws IOException if the registration fails
+     * @throws ClassNotFoundException if the wrong message is received
+     */
     public void registerName() throws IOException, ClassNotFoundException {
         String nickname = ui.getNickname();
         if (!nickname.equals("")) {
@@ -97,18 +114,35 @@ public class ClientVirtualView implements Runnable, ClientVirtualViewIF {
         }
     }
 
+    /**
+     * Receives a server message and reads it
+     * @return the read server message
+     * @throws IOException if it is not received correctly
+     * @throws ClassNotFoundException if the wrong class is parsed
+     */
     public ServerMessage receiveServerMessage() throws IOException, ClassNotFoundException {
         return (ServerMessage) inputStream.readObject();
     }
 
+    /**
+     * Checks to see if the user registered
+     * @return true if correctly registered
+     */
     public boolean isNameRegistered() {
         return nameRegistered;
     }
 
+    /**
+     * Sets the name registered boolean
+     */
     public void nameRegistered() {
         nameRegistered = true;
     }
 
+    /**
+     * Sends a client message
+     * @param message the client message
+     */
     public synchronized void send(ClientMessage message){
         try {
             outputStream.writeObject(message);
@@ -119,6 +153,9 @@ public class ClientVirtualView implements Runnable, ClientVirtualViewIF {
         }
     }
 
+    /**
+     * Closes the socket connection
+     */
     public void close() {
         try {
             socket.close();
@@ -127,6 +164,9 @@ public class ClientVirtualView implements Runnable, ClientVirtualViewIF {
         }
     }
 
+    /**
+     * See UI
+     */
     @Override
     public void run() {
         startReceivingThread();
@@ -135,6 +175,9 @@ public class ClientVirtualView implements Runnable, ClientVirtualViewIF {
         }
     }
 
+    /**
+     * Starts the thread that receives messages from the server
+      */
     private void startReceivingThread() {
         new Thread(() -> {
             while(true) {
@@ -150,6 +193,9 @@ public class ClientVirtualView implements Runnable, ClientVirtualViewIF {
         }).start();
     }
 
+    /**
+     * Methods for updates on information on the reduced model
+     */
     public void updateReducedGame(String firstPlayer, String currentPlayer, List<String> playersNicknames, TurnPhase turnPhase, int firstTurns, boolean gameStarted, Stack<Token> tokens, Token token) {
         ReducedGame reducedGame = reducedModel.getReducedGame();
         reducedGame.setGameStarted(gameStarted);
