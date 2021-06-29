@@ -131,7 +131,6 @@ public class FaithTrack extends FaithTrackObservable {
 				.reduce(0, Integer::sum);
 	}
 
-	//TODO doc
 	public int[] getFaithTrackVictoryPoints() {
 		return faithTrackVictoryPoints;
 	}
@@ -153,6 +152,10 @@ public class FaithTrack extends FaithTrackObservable {
 		return dashboard;
 	}
 
+	/**
+	 * Move's Lorenzo faith marker
+	 * @param pos the new position
+	 */
 	public void moveLorenzoIlMagnificoMarker(int pos) {
 		for (int i = 1; i <= pos; i++) {
 			if (LorenzoIlMagnificoPosition == GameSettings.FAITH_TRACK_LENGTH - 1) {

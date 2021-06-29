@@ -226,53 +226,9 @@ public class GUI extends Application implements UI {
         if ("game_has_ended_single".equals(menuCode)) {
             Platform.runLater(() -> gameController.gameHasEndedSinglePlayer());
         }
-        if ("back_in_lobby".equals(menuCode)) {
-            this.send(new AskGameLobbies());
+        if ("force_disconnection".equals(menuCode)) {
+            Platform.runLater(() -> gameController.forceDisconnection());
         }
-    }
-
-    public void resetGUI() {
-        if (local) {
-            resetGUIOffline();
-        } else {
-            resetGUIOnline();
-        }
-        this.gameController = null;
-    }
-
-    private void resetGUIOnline() {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/client_main_lobby.fxml"));
-            Parent root = fxmlLoader.load();
-            this.clientMainLobbyController = fxmlLoader.getController();
-            this.clientMainLobbyController.setGui(this);
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root, 800, 600));
-            stage.show();
-            gameController.getScene().getWindow().hide();
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    private void resetGUIOffline() {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/server_choice.fxml"));
-            Parent root = fxmlLoader.load();
-            serverChoiceController = fxmlLoader.getController();
-            serverChoiceController.setGui(this);
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root, 600, 400));
-            stage.setTitle("Choose a server");
-            stage.show();
-            gameController.getScene().getWindow().hide();
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-
     }
 
     public void setDisableImageViews() {

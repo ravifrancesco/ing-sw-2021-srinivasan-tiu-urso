@@ -11,6 +11,10 @@ public class WarehouseExtraSpace implements SpecialAbility, Serializable {
 
 	private int leaderCardPos;
 
+	/**
+	 * Sets a leader card position
+	 * @param leaderCardPos the position
+	 */
 	public void setLeaderCardPos(int leaderCardPos) {
 		this.leaderCardPos = leaderCardPos;
 	}
@@ -42,7 +46,6 @@ public class WarehouseExtraSpace implements SpecialAbility, Serializable {
 
 	/**
 	 * To string method of the class.
-	 * TODO test
 	 * @return a string representation of the object.
 	 */
 	public String toString() {

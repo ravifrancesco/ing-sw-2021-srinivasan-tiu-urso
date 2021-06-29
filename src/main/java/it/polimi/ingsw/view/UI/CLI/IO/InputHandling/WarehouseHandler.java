@@ -11,6 +11,12 @@ import it.polimi.ingsw.network.messages.clientMessages.game.PlayerStoresFromSupp
 import java.util.stream.IntStream;
 
 public class WarehouseHandler {
+    /**
+     * Creates a message to activate a store from supply move
+     * @param in the input string to be parsed
+     * @param cli the cli
+     * @return the client message for the server
+     */
     public static ClientMessage storeFromSupply(String[] in, CLI cli) {
         try {
             int supplyPos = Integer.parseInt(in[1]);
@@ -22,6 +28,12 @@ public class WarehouseHandler {
         }
     }
 
+    /**
+     * Creates a message to activate a store from supply to extra deposit move
+     * @param in the input string to be parsed
+     * @param cli the cli
+     * @return the client message for the server
+     */
     public static ClientMessage storeFromSupplyToExtraDeposit(String[] in, CLI cli) {
         try {
             int from = Integer.parseInt(in[1]);
@@ -34,6 +46,12 @@ public class WarehouseHandler {
         }
     }
 
+    /**
+     * Creates a message to activate a change deposit move
+     * @param in the input string to be parsed
+     * @param cli the cli
+     * @return the client message for the server
+     */
     public static ClientMessage changeDeposit(String[] in, CLI cli) {
         try {
             return new PlayerChangesDeposit(swapDeposit(cli));
@@ -43,6 +61,11 @@ public class WarehouseHandler {
         }
     }
 
+    /**
+     * Handles a deposit swap
+     * @param cli the cli
+     * @return the swapped deposit
+     */
     private static Resource[] swapDeposit(CLI cli) {
         cli.printMessage("Current deposit: ");
         Resource[] newDeposit = new Resource[6];

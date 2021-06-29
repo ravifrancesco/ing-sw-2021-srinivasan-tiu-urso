@@ -28,7 +28,7 @@ public class Server {
             try {
                 Socket socket = serverSocket.accept();
 
-                ServerVirtualView serverVirtualView = new ServerVirtualView(socket, this, mainLobby);
+                ServerVirtualView serverVirtualView = new ServerVirtualView(socket, mainLobby);
                 mainLobby.registerConnection(serverVirtualView);
 
                 System.out.println("Connection registered!");

@@ -19,7 +19,6 @@ public class Deck {
 	/**
 	 * The constructor for a Deck object.
 	 */
-
 	public Deck() {
 		deck = new Stack<>();
 	}
@@ -31,9 +30,8 @@ public class Deck {
 
 	/**
 	 * Initializes the deck of cards from a list of cards.
-	 * @param cards the cards to add to the deck.
+	 * @param 	cards the cards to add to the deck.
 	 */
-
 	public void reset(List<Card> cards) {
 		deck.clear();
 		cards.forEach(deck::push);

@@ -232,22 +232,27 @@ public class Player extends PlayerObservable {
 		return this.dashboard.checkGameEnd();
 	}
 
-	// TODO doc
 	public int getHandSize() {
 		return this.hand.getHandSize();
 	}
 
-	// TODO doc
 	public LeaderCard getCard(int c) {
 		return this.hand.getCard(c);
 	}
 
-	// TODO doc
+	/**
+	 * Adds a card to the hand
+	 * @param lc
+	 */
 	public void addCard(LeaderCard lc) {
 		this.hand.addCard(lc);
 		notify(this);
 	}
 
+	/**
+	 * Fills the hand with leader cards
+	 * @param leaderCards list of leader cards
+	 */
 	public void fillHand(List<LeaderCard> leaderCards) {
 		leaderCards.forEach(card -> hand.addCard(card));
 		notify(this);

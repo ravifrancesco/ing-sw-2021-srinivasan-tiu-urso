@@ -11,19 +11,42 @@ import it.polimi.ingsw.network.messages.clientMessages.game.StartGameGameMessage
 import it.polimi.ingsw.network.messages.clientMessages.lobbyMessage.LeaveLobby;
 
 public class GameLobbyHandler {
+    /**
+     * Generates the message to leave the lobby
+     * @param in the string to parse
+     * @param cli the cli
+     * @return the client message to leave the lobby
+     */
     public static ClientMessage leaveLobby(String[] in, CLI cli) {
         cli.printMessage("Leaving lobby...");
         return new LeaveLobby();
     }
 
+    /**
+     * Generates the message to start the game
+     * @param in the string to parse
+     * @param cli the cli
+     * @return the client message to start the game
+     */
     public static ClientMessage startGame(String[] in, CLI cli) {
         return new StartGameGameMessage();
     }
 
+    /**
+     * Generates the message to end the turn
+     * @param in the string to parse
+     * @return the client message to end the turn
+     */
     public static ClientMessage endTurn(String[] in) {
         return new EndTurnGameMessage();
     }
 
+    /**
+     * Generates the message to get initial resources
+     * @param in the string to parse with the index
+     * @param cli the cli
+     * @return the client message to get initial resources
+     */
     public static ClientMessage getInitialResources(String[] in, CLI cli) {
         try {
             Resource initialResource = ResourceParser.parse(in[1]);
@@ -36,9 +59,13 @@ public class GameLobbyHandler {
         }
     }
 
+    /**
+     * Generates the message to load game settings
+     * @param in the string to parse with the path for the game settings
+     * @return the client message
+     */
     public static ClientMessage loadGameSettings(String[] in) {
         String path = in[1];
-        // is this the correct usage?
         GameSettings gameSettings = new GameSettings(path);
         gameSettings.loadSettings(path);
         return new LoadGameSettingsGameMessage(gameSettings);

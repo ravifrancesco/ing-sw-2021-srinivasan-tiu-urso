@@ -624,7 +624,7 @@ public class ReducedDashboardTest {
 
 
         try {
-            dashboard.payPrice(rc2, cost);
+            dashboard.simulatePayment(rc2, cost);
         } catch (IllegalArgumentException e) {
             thrownExceptions += 1;
         }

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.UI.CLI.IO.InputHandling;
 
+import it.polimi.ingsw.network.messages.clientMessages.lobbyMessage.QuitGame;
 import it.polimi.ingsw.view.UI.CLI.CLI;
 import it.polimi.ingsw.network.messages.clientMessages.ClientMessage;
 import it.polimi.ingsw.network.messages.clientMessages.game.EndMessage;
@@ -8,6 +9,10 @@ import it.polimi.ingsw.network.messages.clientMessages.game.PlayMessage;
 import it.polimi.ingsw.network.messages.clientMessages.game.UnlimitedResourcesMessage;
 
 public class InputHandler {
+
+    /**
+     * Every method in this class redirects a call to generated a client message from a string to the correct handler class
+     */
 
     public static ClientMessage createGame(String[] in) { return MainLobbyHandler.createGame(in); }
 
@@ -22,7 +27,8 @@ public class InputHandler {
     }
 
     public static ClientMessage quit(String[] in) {
-        return MainLobbyHandler.quit(in);
+        System.exit(0);
+        return new QuitGame();
     }
 
     public static ClientMessage discardExcessCard(String[] in, CLI cli) {
@@ -77,6 +83,21 @@ public class InputHandler {
 
     public static ClientMessage buyDevelopmentCard(String[] in, CLI cli) { return DevelopmentCardHandler.buyDevelopmentCard(in, cli); }
 
+    /**
+     * Shows the menu with all the possible commands
+     * @param cli
+     * @return
+     */
+    public static ClientMessage sendHelp(CLI cli) {
+        cli.showGeneralMenu();
+        return null;
+    }
+
+    /**
+     * Hacked commands to simplify testing
+     * @param in
+     * @return
+     */
     public static ClientMessage gimme(String[] in) {
         try {
             int row = Integer.parseInt(in[1]);
@@ -99,12 +120,11 @@ public class InputHandler {
         }
     }
 
-    public static ClientMessage sendHelp(CLI cli) {
-        cli.showGeneralMenu();
-        return null;
-    }
-
     public static ClientMessage end(String[] in) {
         return new EndMessage();
     }
+
+
+
+
 }

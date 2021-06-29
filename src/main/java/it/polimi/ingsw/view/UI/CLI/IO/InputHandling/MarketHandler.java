@@ -11,6 +11,12 @@ import it.polimi.ingsw.network.messages.clientMessages.game.PlayerGetsFromMarket
 import java.util.ArrayList;
 
 public class MarketHandler {
+    /**
+     * Creates a message to activate a get from market move
+     * @param in the input string to be parsed
+     * @param cli the cli
+     * @return the client message for the server
+     */
     public static ClientMessage getFromMarket(String[] in, CLI cli) {
         try {
             int move = Integer.parseInt(in[1]);
@@ -38,6 +44,12 @@ public class MarketHandler {
         }
     }
 
+    /**
+     * Creates the arraylist of WMRs to be sent to the server
+     * @param whiteMarblesCount amount of white marbles
+     * @param cli the cli
+     * @return the client message for the server
+     */
     public static ArrayList<Resource> handleWMR(int whiteMarblesCount, CLI cli) {
         ArrayList<Resource> resources = new ArrayList<>();
         Resource res;

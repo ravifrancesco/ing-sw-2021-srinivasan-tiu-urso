@@ -744,7 +744,7 @@ public class GameController {
                 );
         mainAlert.setHeaderText(winner.get().getNickname() + " has one with " + winner.get().getDashboard().getPlayerPoints() + " victory points!");
         mainAlert.showAndWait();;
-        gui.resetGUI();
+        System.exit(0);
     }
 
     public void gameHasEndedSinglePlayer() {
@@ -758,7 +758,16 @@ public class GameController {
             mainAlert.setHeaderText("You've won!");
         }
         mainAlert.showAndWait();;
-        gui.resetGUI();
+        System.exit(0);
+    }
+
+    public void forceDisconnection() {
+        hideAlert();
+        mainAlert = new Alert(Alert.AlertType.INFORMATION);
+        mainAlert.setTitle("Disconnection");
+        mainAlert.setHeaderText("Game is ended due to the disconnection of a player");
+        mainAlert.showAndWait();
+        System.exit(0);
     }
 
     private int establishWinner() {
