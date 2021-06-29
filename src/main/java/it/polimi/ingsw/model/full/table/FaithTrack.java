@@ -24,6 +24,8 @@ public class FaithTrack extends FaithTrackObservable {
 	private int position;
 	private int LorenzoIlMagnificoPosition;
 
+	private int victoryPoints;
+
 	private Map<Integer, VaticanReport> vaticanReports;
 	private int[] faithTrackVictoryPoints;
 
@@ -39,6 +41,7 @@ public class FaithTrack extends FaithTrackObservable {
 	 */
 	public FaithTrack(GameSettings gameSettings, Dashboard dashboard) {
 		this.position = 0;
+		this.victoryPoints = 0;
 		this.LorenzoIlMagnificoPosition = 0;
 		this.vaticanReports = gameSettings.getVaticanReports().stream()
 				.collect(Collectors.toMap(v -> v.end, VaticanReport::copy));
@@ -51,6 +54,7 @@ public class FaithTrack extends FaithTrackObservable {
 	 */
 	public void reset() {
 		this.position = 0;
+		this.victoryPoints = 0;
 		vaticanReports.values().forEach(VaticanReport::reset);
 		notify(this);
 	}
@@ -65,11 +69,13 @@ public class FaithTrack extends FaithTrackObservable {
 	public void moveFaithMarker(int pos) {
 		for (int i = 1; i <= pos; i++) {
 			if (position == GameSettings.FAITH_TRACK_LENGTH - 1) {
+				updateVictoryPoints();
 				notify(this);
 				return;
 			}
 			position++;
 		}
+		updateVictoryPoints();
 		notify(this);
 	}
 
@@ -96,6 +102,7 @@ public class FaithTrack extends FaithTrackObservable {
 				}
 			}
 		}
+		updateVictoryPoints();
 		notify(this);
 	}
 
@@ -113,8 +120,8 @@ public class FaithTrack extends FaithTrackObservable {
 	 *
 	 * @return the current victoryPoints
 	 */
-	public int getVictoryPoints() {
-		int victoryPoints = 0;
+	public void updateVictoryPoints() {
+		this.victoryPoints = 0;
 		for (int i = 0; i <= position; i++) {
 			victoryPoints += faithTrackVictoryPoints[i];
 		}
@@ -122,12 +129,15 @@ public class FaithTrack extends FaithTrackObservable {
 				.stream()
 				.map(v ->  v.isAchieved() ? v.getVictoryPoints() : 0)
 				.reduce(0, Integer::sum);
-		return victoryPoints;
 	}
 
 	//TODO doc
 	public int[] getFaithTrackVictoryPoints() {
 		return faithTrackVictoryPoints;
+	}
+
+	public int getVictoryPoints() {
+		return victoryPoints;
 	}
 
 	/**
