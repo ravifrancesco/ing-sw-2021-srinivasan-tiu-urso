@@ -108,8 +108,6 @@ public class VaticanReport implements Serializable {
 
     }
 
-    //TODO doc
-
     public int getStart() {
         return start;
     }

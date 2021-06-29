@@ -153,6 +153,11 @@ public class DevelopmentCardGrid extends DevelopmentCardGridObservable {
 		return grid;
 	}
 
+	/**
+	 * Discards a card from the grid (used by Lorenzo in the singleplayer)
+	 * @param COLOR_INDEX the index for the color to discard
+	 * @return
+	 */
 	public boolean discardCard(int COLOR_INDEX) {
 		if (!grid.get(COLOR_INDEX).isEmpty()) {
 			grid.get(COLOR_INDEX).pop();

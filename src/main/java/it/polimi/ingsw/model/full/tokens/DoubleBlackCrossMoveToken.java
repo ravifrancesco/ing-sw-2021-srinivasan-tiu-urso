@@ -6,6 +6,9 @@ import it.polimi.ingsw.model.full.table.Game;
 import java.io.Serializable;
 
 public class DoubleBlackCrossMoveToken implements Token, Serializable {
+    /**
+     * Moves Lorenzo faith track marker by two positions
+     */
 
     @Override
     public boolean useToken(Game game) {

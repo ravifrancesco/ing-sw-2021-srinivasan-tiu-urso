@@ -7,6 +7,9 @@ import java.io.Serializable;
 
 public class SingleBlackCrossMoveToken implements Token, Serializable {
 
+    /**
+     * Moves Lorenzo faith track marker by 1, readds all the used tokens and shuffles them. (in order to never run out)
+     */
     @Override
     public boolean useToken(Game game) {
 

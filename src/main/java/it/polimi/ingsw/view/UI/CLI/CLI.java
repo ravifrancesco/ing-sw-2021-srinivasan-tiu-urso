@@ -1111,6 +1111,14 @@ public class CLI implements UI {
         if("after_end_turn_single".equals(menuCode)) {
             showAfterEndTurnSingleMenu();
         }
+        if("force_disconnection".equals(menuCode)) {
+            forceDisconnection(); 
+        }
+    }
+
+    private void forceDisconnection() {
+        System.exit(0);
+
     }
 
     /**
