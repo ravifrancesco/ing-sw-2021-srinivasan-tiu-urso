@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
  * The id.
  * The victory points.
  * The cost in terms of banner.
+ * The cost in terms of resources.
  * The special ability of the card.
  */
 
@@ -29,11 +30,11 @@ public class LeaderCard implements Card, Serializable {
 	 * The constructor for a LeaderCard object.
 	 * It initializes the id, the victory points, the resource cost, the banner cost,
 	 * and the special ability.
-	 * @param id represents the unique id of the card.
-	 * @param victoryPoints represents the victory points given by the card.
-	 * @param bannerCost represents the banner cost to buy the card.
-	 * @param resourceCost represents the resource cost to buy the card.
-	 * @param specialAbility represents the special ability of the card.
+	 * @param 	id represents the unique id of the card.
+	 * @param 	victoryPoints represents the victory points given by the card.
+	 * @param 	bannerCost represents the banner cost to buy the card.
+	 * @param 	resourceCost represents the resource cost to buy the card.
+	 * @param 	specialAbility represents the special ability of the card.
 	 */
 	public LeaderCard(int id, int victoryPoints, Map<Banner, Integer> bannerCost, Map<Resource, Integer> resourceCost, SpecialAbility specialAbility) {
 		this.id = id;
@@ -46,9 +47,8 @@ public class LeaderCard implements Card, Serializable {
 
 	/**
 	 * Allows to activate the special ability of the leader card.
-	 * @param p represents the player.
+	 * @param 	p represents the player.
 	 */
-
 	@Override
 	public void activate(Player p) {
 		specialAbility.activate(p);
@@ -56,54 +56,48 @@ public class LeaderCard implements Card, Serializable {
 
 	/**
 	 * Getter for the id.
-	 * @return the id of the card.
+	 * @return 	the id of the card.
 	 */
-
 	public int getId() {
 		return id;
 	}
 
 	/**
 	 * Getter for the victory points.
-	 * @return the victory points given by the card.
+	 * @return 	the victory points given by the card.
 	 */
-
 	public int getVictoryPoints() {
 		return victoryPoints;
 	}
 
 	/**
 	 * Getter for bannerCost.
-	 * @return the banner cost of the card.
+	 * @return 	the banner cost of the card.
 	 */
-
 	public Map<Banner, Integer> getBannerCost() {
 		return bannerCost.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 	}
 
 	/**
 	 * Getter for resourceCost.
-	 * @return the resource cost of the card.
+	 * @return 	the resource cost of the card.
 	 */
-
 	public Map<Resource, Integer> getResourceCost() {
 		return resourceCost.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 	}
 
 	/**
 	 * Getter for specialAbility.
-	 * @return the special ability of the card.
+	 * @return 	the special ability of the card.
 	 */
-
 	public SpecialAbility getSpecialAbility() {
 		return specialAbility;
 	}
 
 	/**
 	 * To string method of the class.
-	 * @return a string representation of the object.
+	 * @return 	a string representation of the object.
 	 */
-
 	@Override
 	public String toString() {
 		String result="";
@@ -123,11 +117,10 @@ public class LeaderCard implements Card, Serializable {
 
 	/**
 	 * Allows to know if the card is playable.
-	 * @param playerBanners all the banner of the player.
-	 * @param playerResources all the resources of the player.
-	 * @return if the card is playable or not with the given banners.
+	 * @param 	playerBanners all the banner of the player.
+	 * @param 	playerResources all the resources of the player.
+	 * @return 	true if the card is playable with the given banners, false otherwise.
 	 */
-
 	public boolean isPlayable(Map<Banner, Integer> playerBanners, Map<Resource, Integer> playerResources) {
 		Map<Banner, Integer> playerBannersCopy = playerBanners.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 		Map<Banner, Integer> bannerCostCopy = bannerCost.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
@@ -149,10 +142,9 @@ public class LeaderCard implements Card, Serializable {
 
 	/**
 	 * Equals method for the class.
-	 * @param o the other leader card to compare.
-	 * @return true if the two cards have the same id, false otherwise.
+	 * @param 	o the other leader card to compare.
+	 * @return 	true if the two cards have the same id, false otherwise.
 	 */
-
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
