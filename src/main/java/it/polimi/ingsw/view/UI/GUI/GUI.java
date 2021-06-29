@@ -227,6 +227,14 @@ public class GUI extends Application implements UI {
     }
 
     public void resetGUI() {
+        if (local) {
+            resetGUIOffline();
+        } else {
+            resetGUIOnline();
+        }
+    }
+
+    private void resetGUIOnline() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/client_main_lobby.fxml"));
             Parent root = fxmlLoader.load();
@@ -244,7 +252,7 @@ public class GUI extends Application implements UI {
 
     }
 
-    public void resetGUIOffline() {
+    private void resetGUIOffline() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/server_choice.fxml"));
             Parent root = fxmlLoader.load();

@@ -758,7 +758,7 @@ public class GameController {
             mainAlert.setHeaderText("You've won!");
         }
         mainAlert.showAndWait();;
-        gui.resetGUIOffline();
+        gui.resetGUI();
     }
 
     private int establishWinner() {
