@@ -21,10 +21,6 @@ import javax.naming.InvalidNameException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-/**
- * TODO doc
- * TODO check synchronized methods (send/close)
- */
 public class OfflineClientVirtualView implements ClientVirtualViewIF, Runnable,
         FaithTrackObserver, WarehouseObserver, DashboardObserver,
         PlayerObserver, GameObserver, GameBoardObserver,
@@ -38,6 +34,10 @@ public class OfflineClientVirtualView implements ClientVirtualViewIF, Runnable,
 
     private ReducedModel reducedModel;
 
+    /**
+     * The virtual view for the offline local game
+     * @param ui
+     */
     public OfflineClientVirtualView(UI ui) {
         this.ui = ui;
         GameSettings gameSettings = GameSettings.loadDefaultGameSettings();
@@ -50,6 +50,10 @@ public class OfflineClientVirtualView implements ClientVirtualViewIF, Runnable,
         System.out.println("Insert STARTGAME to start playing");
     }
 
+    /**
+     * The virtual view for the offline local game
+     * @param ui
+     */
     public OfflineClientVirtualView(UI ui, String nickname) {
         this.ui = ui;
         GameSettings gameSettings = GameSettings.loadDefaultGameSettings();
@@ -61,6 +65,9 @@ public class OfflineClientVirtualView implements ClientVirtualViewIF, Runnable,
         setNickName(nickname);
     }
 
+    /**
+     * Handles the insertion of the nickname
+     */
     public void askNickname() {
         Scanner input = new Scanner(System.in);
         String choice;
@@ -76,6 +83,10 @@ public class OfflineClientVirtualView implements ClientVirtualViewIF, Runnable,
         }
     }
 
+    /**
+     * Sets the nickname
+     * @param choice the nickname
+     */
     private void setNickName(String choice) {
         this.nickname = choice;
         this.reducedModel.setNickname(nickname);
@@ -97,6 +108,12 @@ public class OfflineClientVirtualView implements ClientVirtualViewIF, Runnable,
             ((CLI) ui).startReadingThread();
         }
     }
+
+    /**
+     * Update methods for the observers
+     * @param message the updated class
+     */
+
 
     @Override
     public void update(FaithTrack message) {
@@ -194,6 +211,11 @@ public class OfflineClientVirtualView implements ClientVirtualViewIF, Runnable,
         }
     }
 
+    /**
+     * Returns a vatican report state
+     * @param v the vatican report
+     * @return
+     */
     private int vaticanReportState(VaticanReport v) {
         if (!v.isMissed() && !v.isAchieved()) {
             return 0;
@@ -209,6 +231,10 @@ public class OfflineClientVirtualView implements ClientVirtualViewIF, Runnable,
         ((ClientGameMessage) message).handleLocally(this, controller);
     }
 
+    /**
+     * Prints a successful move message
+     * @param message the message
+     */
     public void printSuccessfulMove(String message) {
         ui.printColoredMessage(message, Constants.ANSI_GREEN);
     }
@@ -218,7 +244,6 @@ public class OfflineClientVirtualView implements ClientVirtualViewIF, Runnable,
     }
 
     public void handleGameEnded() {
-        // TODO
     }
 }
 

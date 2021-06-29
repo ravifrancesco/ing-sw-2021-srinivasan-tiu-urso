@@ -46,25 +46,45 @@ public class ServerVirtualView implements Runnable,
 
     private boolean active = true;
 
-    public ServerVirtualView(Socket socket, Server server, MainLobby mainLobby) {
+    /**
+     * The server virtual view, handling the network on the server side
+     * @param socket the socket
+     * @param mainLobby the main lobby with all the lobbies
+     */
+    public ServerVirtualView(Socket socket, MainLobby mainLobby) {
         this.socket = socket;
         this.mainLobby = mainLobby;
         this.currentLobby = mainLobby;
     }
 
-
+    /**
+     * Gets the current player lobby
+     * @return the current lobby
+     */
     public Lobby getCurrentLobby() {
         return currentLobby;
     }
 
+    /**
+     * Enter a lobby
+     * @param lobby the lobby
+     */
     public synchronized void enterLobby(Lobby lobby) {
         this.currentLobby = lobby;
     }
 
+    /**
+     * Sees if the connection is still active
+     * @return
+     */
     private synchronized boolean isActive() {
         return active;
     }
 
+    /**
+     * Sends a message to the client
+     * @param message the message
+     */
     private synchronized void send(ServerMessage message) {
 
         try {
@@ -77,22 +97,45 @@ public class ServerVirtualView implements Runnable,
 
     }
 
+    /**
+     * Receives and casts a game message (whilst inside a game lobby)
+     * @return the client message to be cast
+     * @throws IOException if not received correctly
+     * @throws ClassNotFoundException if wrong type of cast
+     */
     public ClientGameMessage receiveGameMessage() throws IOException, ClassNotFoundException {
         return (ClientGameMessage) in.readObject();
     }
 
+    /**
+     * Receives and casts a lobby message (whilst inside a main lobby)
+     * @return the client message to be cast
+     * @throws IOException if not received correctly
+     * @throws ClassNotFoundException if wrong type of cast
+     */
     public ClientLobbyMessage receiveLobbyMessage() throws IOException, ClassNotFoundException {
         return (ClientLobbyMessage) in.readObject();
     }
 
+    /**
+     * Notifies the client with a message that a move was successful
+     * @param message string with the details about the move
+     */
     public void sendSuccessfulMoveMessage(String message) {
         send(new SuccessfulMoveMessage(message));
     }
 
+    /**
+     * Notifies the client with a message that a move failed
+     * @param message string with the details about the move
+     */
     public void sendFailedMoveMessage(String message) {
         send(new FailedMoveMessage(message));
     }
 
+    /**
+     * Closes the socket
+     */
     private void closeConnection() {
         try {
             socket.close();
@@ -102,6 +145,9 @@ public class ServerVirtualView implements Runnable,
         active = false;
     }
 
+    /**
+     * Deregisters the connection
+     */
     private void deregisterConnection() {
         if (currentLobby.getType() == LobbyType.GAME_LOBBY) {
             GameLobby gameLobby = (GameLobby) currentLobby;
@@ -113,6 +159,9 @@ public class ServerVirtualView implements Runnable,
         mainLobby.deregisterConnection(this);
     }
 
+    /**
+     * Closes the connection and deregisters it from the lobby
+     */
     public synchronized void close() {
         if (active) {
             closeConnection();
@@ -122,6 +171,9 @@ public class ServerVirtualView implements Runnable,
         }
     }
 
+    /**
+     * Starts the server
+     */
     @Override
     public void run() {
         try {
@@ -139,10 +191,11 @@ public class ServerVirtualView implements Runnable,
         }
     }
 
-    public void quit() throws IOException {
-        throw new IOException();
-    }
 
+    /**
+     * Handles name registration
+     * @throws IOException if the client disconnect at anytime
+     */
     public void registerName() throws IOException {
         while (true) {
             try {
@@ -159,6 +212,9 @@ public class ServerVirtualView implements Runnable,
         }
     }
 
+    /**
+     * Handles a client message
+     */
     public void handleMessage() {
         if (currentLobby.getType() == LobbyType.MAIN_LOBBY) {
             ClientLobbyMessage read;
@@ -193,6 +249,9 @@ public class ServerVirtualView implements Runnable,
         }
     }
 
+    /**
+     * Sends the details of a game lobby
+     */
     public void sendGameLobbiesDetails() {
         ArrayList<GameLobbyDetails> gameLobbies = new ArrayList<>();
         mainLobby.getActiveGameLobbies().stream().filter(gameLobby -> gameLobby.getMaxPlayers() != 1)
@@ -202,6 +261,11 @@ public class ServerVirtualView implements Runnable,
         send(new GameLobbiesMessage(gameLobbies));
     }
 
+    /**
+     * Sends the details of a just entered lobby
+     * @param id
+     * @param isHost
+     */
     public void sendGameLobbyEntered(String id, boolean isHost) {
         send(new SuccessfulConnectionToGameLobbyMessage(id, isHost));
     }
@@ -214,21 +278,26 @@ public class ServerVirtualView implements Runnable,
         this.nickname = nickname;
     }
 
+    /**
+     * Sends a CLI update message with a certain menuCode, which will correspond to a certain menu
+     * @param menuCode the menu code string
+     */
     public void sendCLIupdateMessage(String menuCode) {
         send(new CLIMenuUpdate(menuCode));
     }
 
     /**
-     * TODO all of this methods and messages should handle only the necessary information. To be defined after client.
-     * TODO, this will be done changing the messages.
-     * TODO the notifies have to be handled. (Together)
+     * Sends a notification to announce that a player has joined a lobby
+     * @param player the player name
      */
-
     public void playerJoinedLobby(String player) {
         send(new PlayerJoinedMessage(player));
     }
 
-
+    /**
+     * Sends an update for when a notify is called
+     * @param message the update class
+     */
     @Override
     public void update(FaithTrack message) {
         send(new FaithTrackUpdateMessage(message));
@@ -249,6 +318,10 @@ public class ServerVirtualView implements Runnable,
         send(new PlayerUpdateMessage(message));
     }
 
+    /**
+     * Updates the game and check for game over proceedings, handling them if necessary.
+     * @param message   update message.
+     */
     @Override
     public void update(Game message) {
         send(new GameUpdateMessage(message));
@@ -274,13 +347,9 @@ public class ServerVirtualView implements Runnable,
                 }
             }
         } catch (Exception e) {
-            System.out.println("Errore nel casting di GameLobby, send help");
+            System.out.println("Error in game end handling, please try again");
         }
-
-
     }
-
-
 
     @Override
     public void update(GameBoard message) {
