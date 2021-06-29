@@ -57,9 +57,12 @@ public class CLI implements UI {
     public int getPort() {
         System.out.println("Insert the server port: ");
         System.out.print("> ");
-        int port = input.nextInt();
-        input.nextLine();
-        return port;
+        String port = input.nextLine();
+        try {
+            return Integer.parseInt(port);
+        } catch (NumberFormatException e) {
+            return 0;
+        }
     }
 
     public ReducedModel getReducedModel() {
