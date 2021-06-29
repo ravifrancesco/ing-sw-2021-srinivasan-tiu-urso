@@ -206,6 +206,7 @@ public class GUI extends Application implements UI {
 
     @Override
     public void handleMenuCode(String menuCode) {
+        System.out.println(menuCode);
         if ("after_game_start".equals(menuCode)) {
             Platform.runLater(() -> gameController.showAfterGameStart());
         }
@@ -224,6 +225,9 @@ public class GUI extends Application implements UI {
         if ("game_has_ended_single".equals(menuCode)) {
             Platform.runLater(() -> gameController.gameHasEndedSinglePlayer());
         }
+        if ("back_in_lobby".equals(menuCode)) {
+            this.send(new AskGameLobbies());
+        }
     }
 
     public void resetGUI() {
@@ -232,6 +236,7 @@ public class GUI extends Application implements UI {
         } else {
             resetGUIOnline();
         }
+        this.gameController = null;
     }
 
     private void resetGUIOnline() {
@@ -240,7 +245,6 @@ public class GUI extends Application implements UI {
             Parent root = fxmlLoader.load();
             this.clientMainLobbyController = fxmlLoader.getController();
             this.clientMainLobbyController.setGui(this);
-            this.send(new AskGameLobbies());
             Stage stage = new Stage();
             stage.setScene(new Scene(root, 800, 600));
             stage.show();
