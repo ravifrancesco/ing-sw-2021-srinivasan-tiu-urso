@@ -97,7 +97,7 @@ public class FaithTrack extends FaithTrackObservable {
 			if (currentVaticanReport != null) {
 				if (position < currentVaticanReport.start) {
 					currentVaticanReport.miss();
-				} else {
+				} else if (!currentVaticanReport.isMissed()) {
 					currentVaticanReport.achieve();
 				}
 			}
