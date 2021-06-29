@@ -16,17 +16,17 @@
       </Label>
       <Button fx:id="closeButton" layoutX="360.0" layoutY="421.0" mnemonicParsing="false" onMouseClicked="#onCloseClicked" prefHeight="62.0" prefWidth="119.0" style="-fx-background-color: #323232;" text="CLOSE" textFill="WHITE">
          <font>
-            <Font name="Garamond" size="14.0" />
+            <Font name="Arial" size="14.0" />
          </font>
       </Button>
       <Button fx:id="discardButton" layoutX="196.0" layoutY="421.0" mnemonicParsing="false" onMouseClicked="#onDiscardClicked" prefHeight="62.0" prefWidth="119.0" style="-fx-background-color: #323232;" text="DISCARD" textFill="WHITE">
          <font>
-            <Font name="Garamond" size="14.0" />
+            <Font name="Arial" size="14.0" />
          </font>
       </Button>
       <Button fx:id="playButton" layoutX="32.0" layoutY="421.0" mnemonicParsing="false" onMouseClicked="#onPlayClicked" prefHeight="62.0" prefWidth="119.0" style="-fx-background-color: #323232;" text="PLAY" textFill="WHITE">
          <font>
-            <Font name="Garamond" size="14.0" />
+            <Font name="Arial" size="14.0" />
          </font>
       </Button>
    </children>

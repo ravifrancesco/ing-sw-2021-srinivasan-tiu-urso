@@ -28,12 +28,12 @@
          <children>
             <Button fx:id="buyButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#onBuyPressed" prefHeight="43.0" prefWidth="81.0" style="-fx-background-color: #323232;" text="BUY" textFill="WHITE">
                <font>
-                  <Font name="Garamond" size="14.0" />
+                  <Font name="Arial" size="14.0" />
                </font>
             </Button>
             <Button fx:id="cancelButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#closeWindow" prefHeight="43.0" prefWidth="81.0" style="-fx-background-color: #323232;" text="CANCEL" textFill="WHITE" GridPane.columnIndex="2">
                <font>
-                  <Font name="Garamond" size="14.0" />
+                  <Font name="Arial" size="14.0" />
                </font>
             </Button>
          </children>

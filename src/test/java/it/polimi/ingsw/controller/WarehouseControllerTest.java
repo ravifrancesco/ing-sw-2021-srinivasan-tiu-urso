@@ -5,17 +5,18 @@ import it.polimi.ingsw.model.full.table.Resource;
 import it.polimi.ingsw.model.utils.GameSettings;
 import it.polimi.ingsw.utils.GameSettingsBuilder;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import javax.naming.InvalidNameException;
 import java.util.stream.IntStream;
 
 public class WarehouseControllerTest {
-    private Controller controller;
+    static Controller controller;
 
-
-    public void init() {
-        this.controller = new Controller("01", 3);
+    @BeforeClass
+    public static void init() {
+        controller = new Controller("01", 3);
         GameSettingsBuilder gameSettingsBuilder = new GameSettingsBuilder();
         GameSettings gameSettings = gameSettingsBuilder.build();
         controller.loadGameSettings(gameSettings);
@@ -39,16 +40,12 @@ public class WarehouseControllerTest {
         controller.getInitialResources("giuseppeurso", Resource.STONE, 0);
         controller.endTurn("giuseppeurso");
 
-
-
     }
 
 
 
     @Test
     public void changeResourcesDepositTest() {
-        init();
-        int thrownException = 0;
         Resource[] resourcesDeposit = new Resource[6];
         Assert.assertEquals(controller.changeDeposit("ravifrancesco", resourcesDeposit), -1);
         controller.endTurn("rbta-svg");

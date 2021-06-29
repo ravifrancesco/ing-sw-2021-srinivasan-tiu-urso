@@ -53,7 +53,7 @@
             </ImageView>
             <Button fx:id="endTurnButton" layoutX="1191.0" layoutY="681.0" mnemonicParsing="false" onMouseClicked="#onEndTurnPressed" prefHeight="62.0" prefWidth="119.0" style="-fx-background-color: #323232;" text="END TURN" textFill="WHITE">
                <font>
-                  <Font name="Garamond" size="14.0" />
+                  <Font name="Arial" size="14.0" />
                </font>
             </Button>
             <ImageView fitHeight="86.0" fitWidth="249.0" layoutX="595.0" layoutY="44.0" pickOnBounds="true" preserveRatio="true">
@@ -68,7 +68,7 @@
             </Text>
             <Button fx:id="handButton" layoutX="1191.0" layoutY="608.0" mnemonicParsing="false" onMouseClicked="#onHandPressed" prefHeight="62.0" prefWidth="119.0" style="-fx-background-color: #323232;" text="HAND" textFill="WHITE">
                <font>
-                  <Font name="Garamond" size="14.0" />
+                  <Font name="Arial" size="14.0" />
                </font>
             </Button>
             <ImageView fx:id="vaticanReport0IW" fitHeight="63.0" fitWidth="66.0" layoutX="453.0" layoutY="219.0" pickOnBounds="true" preserveRatio="true" />

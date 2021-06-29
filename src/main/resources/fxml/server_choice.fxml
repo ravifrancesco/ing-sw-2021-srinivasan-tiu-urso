@@ -26,11 +26,11 @@
                <children>
                   <TextField id="ipField" fx:id="ipField" layoutX="192.0" layoutY="48.0" promptText="Server IP">
                      <font>
-                        <Font name="Garamond" size="14.0" />
+                        <Font name="Arial" size="14.0" />
                      </font></TextField>
                   <TextField id="portField" fx:id="portField" layoutX="192.0" layoutY="109.0" promptText="Server Port">
                      <font>
-                        <Font name="Garamond" size="14.0" />
+                        <Font name="Arial" size="14.0" />
                      </font></TextField>
                </children>
             </Pane>
@@ -43,11 +43,11 @@
          <children>
             <Button layoutX="157.0" layoutY="19.0" mnemonicParsing="false" onMouseClicked="#handleConnectClick" prefHeight="62.0" prefWidth="119.0" style="-fx-background-color: #323232;" text="CONNECT" textFill="WHITE">
                <font>
-                  <Font name="Garamond" size="14.0" />
+                  <Font name="Arial" size="14.0" />
                </font></Button>
             <Button layoutX="323.0" layoutY="19.0" mnemonicParsing="false" onMouseClicked="#handleOfflineClick" prefHeight="62.0" prefWidth="119.0" style="-fx-background-color: #323232;" text="OFFLINE" textFill="WHITE">
                <font>
-                  <Font name="Garamond" size="14.0" />
+                  <Font name="Arial" size="14.0" />
                </font>
             </Button>
          </children></AnchorPane>

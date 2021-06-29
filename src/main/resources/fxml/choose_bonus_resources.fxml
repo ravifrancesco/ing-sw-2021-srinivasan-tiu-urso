@@ -77,7 +77,7 @@
       </Pane>
       <Button layoutX="211.0" layoutY="376.0" mnemonicParsing="false" onMouseClicked="#handleConfirmClick" prefHeight="62.0" prefWidth="119.0" style="-fx-background-color: #323232;" text="CONFIRM" textFill="WHITE">
          <font>
-            <Font name="Garamond" size="14.0" />
+            <Font name="Arial" size="14.0" />
          </font>
       </Button>
    </children>

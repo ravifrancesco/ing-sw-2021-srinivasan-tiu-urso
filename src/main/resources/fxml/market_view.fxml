@@ -44,7 +44,7 @@
       </GridPane>
        <Button fx:id="backButton" layoutX="173.0" layoutY="618.0" mnemonicParsing="false" onMouseClicked="#onBackPressed" prefHeight="62.0" prefWidth="119.0" style="-fx-background-color: #323232;" text="BACK" textFill="WHITE">
            <font>
-               <Font name="Garamond" size="14.0" />
+               <Font name="Arial" size="14.0" />
            </font>
        </Button>   </children>
 </AnchorPane>

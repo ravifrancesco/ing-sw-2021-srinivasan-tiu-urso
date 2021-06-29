@@ -45,7 +45,7 @@
                            <children>
                               <Button fx:id="joinGameButton" alignment="CENTER" contentDisplay="CENTER" layoutX="4.0" layoutY="5.0" mnemonicParsing="false" onMouseClicked="#handleJoinClick" prefHeight="50.0" prefWidth="191.0" style="-fx-background-color: #323232;" text="JOIN GAME" textFill="WHITE">
                                  <font>
-                                    <Font name="Garamond" size="14.0" />
+                                    <Font name="Arial" size="14.0" />
                                  </font>
                               </Button>
                            </children>
@@ -54,7 +54,7 @@
                            <children>
                               <Button fx:id="createGameButton" alignment="CENTER" contentDisplay="CENTER" layoutX="4.0" layoutY="5.0" mnemonicParsing="false" onMouseClicked="#handleCreateGameClick" prefHeight="50.0" prefWidth="191.0" style="-fx-background-color: #323232;" text="CREATE GAME" textFill="WHITE">
                                  <font>
-                                    <Font name="Garamond" size="14.0" />
+                                    <Font name="Arial" size="14.0" />
                                  </font>
                               </Button>
                            </children>
@@ -63,7 +63,7 @@
                            <children>
                               <Button fx:id="refreshButton" alignment="CENTER" contentDisplay="CENTER" layoutX="4.0" layoutY="5.0" mnemonicParsing="false" onMouseClicked="#handleRefreshClick" prefHeight="50.0" prefWidth="191.0" style="-fx-background-color: #323232;" text="REFRESH" textFill="WHITE">
                                  <font>
-                                    <Font name="Garamond" size="14.0" />
+                                    <Font name="Arial" size="14.0" />
                                  </font>
                               </Button>
                            </children>
@@ -72,7 +72,7 @@
                            <children>
                               <Button fx:id="quitButton" alignment="CENTER" contentDisplay="CENTER" layoutX="4.0" layoutY="5.0" mnemonicParsing="false" onMouseClicked="#handleQuitClick" prefHeight="50.0" prefWidth="191.0" style="-fx-background-color: #323232;" text="QUIT" textFill="WHITE">
                                  <font>
-                                    <Font name="Garamond" size="14.0" />
+                                    <Font name="Arial" size="14.0" />
                                  </font>
                               </Button>
                            </children>

@@ -20,7 +20,7 @@
                     <children>
                         <TextField id="nicknameField" fx:id="nicknameField" layoutX="192.0" layoutY="83.0" promptText="Nickname">
                             <font>
-                                <Font name="Garamond" size="14.0" />
+                                <Font name="Arial" size="14.0" />
                             </font></TextField>
                     </children>
                 </Pane>
@@ -33,7 +33,7 @@
             <children>
                 <Button layoutX="241.0" layoutY="19.0" mnemonicParsing="false" onMouseClicked="#handleChooseClick" prefHeight="62.0" prefWidth="119.0" style="-fx-background-color: #323232;" text="CHOOSE" textFill="WHITE">
                     <font>
-                        <Font name="Garamond" size="14.0" />
+                        <Font name="Arial" size="14.0" />
                     </font></Button>
             </children></AnchorPane>
     </children>
