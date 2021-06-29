@@ -44,9 +44,10 @@ public class OfflineClientVirtualView implements ClientVirtualViewIF, Runnable,
         this.controller = new Controller("local_single_player", 1);
         controller.loadGameSettings(gameSettings);
         this.reducedModel = new ReducedModel();
+        reducedModel.getReducedGame().setNumberOfPlayers(1);
         this.ui.startUI(this, reducedModel);
         askNickname();
-        System.out.println("Isnert STARTGAME to start playing");
+        System.out.println("Insert STARTGAME to start playing");
     }
 
     public OfflineClientVirtualView(UI ui, String nickname) {
@@ -55,6 +56,7 @@ public class OfflineClientVirtualView implements ClientVirtualViewIF, Runnable,
         this.controller = new Controller("local_single_player", 1);
         controller.loadGameSettings(gameSettings);
         this.reducedModel = new ReducedModel();
+        this.reducedModel.getReducedGame().setNumberOfPlayers(1);
         ui.startUI(this, reducedModel);
         setNickName(nickname);
     }
@@ -147,7 +149,6 @@ public class OfflineClientVirtualView implements ClientVirtualViewIF, Runnable,
         reducedPlayer.setNickname(nickname);
         reducedPlayer.setHand(message.getHand());
         reducedPlayer.setHandSize(message.getHandSize());
-        System.out.println(Arrays.toString(message.getActivatedWMR()));
         reducedPlayer.setActivatedWMR(message.getActivatedWMR());
     }
 

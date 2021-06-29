@@ -52,7 +52,7 @@ public class WarehouseHandler {
         cli.printColoredMessageNoNL("<index1> <index2> ", Constants.SERVANT_COLOR);
         cli.printMessage("to swap resources");
         cli.printColoredMessageNoNL("DONE", Constants.SERVANT_COLOR);
-        cli.printMessage("to finish swapping resources");
+        cli.printMessage(" to finish swapping resources");
 
         String[] input;
         int firstIndex;

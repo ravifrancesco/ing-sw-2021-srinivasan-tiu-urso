@@ -12,7 +12,6 @@ public class StartGameGameMessage extends ClientGameMessage implements Serializa
     @Override
     public void handle(ServerVirtualView c, Controller controller) {
         int output = controller.startGame(c.getNickname());
-        System.out.println("output is " + output);
         if(output == 0) {
             ((GameLobby) c.getCurrentLobby()).getConnectedPlayers().forEach((name, connection) -> connection.sendCLIupdateMessage("after_game_start"));
         }
@@ -21,7 +20,6 @@ public class StartGameGameMessage extends ClientGameMessage implements Serializa
     @Override
     public void handleLocally(OfflineClientVirtualView offlineClientVirtualView, Controller controller) {
         int output = controller.startGame(offlineClientVirtualView.getNickname());
-        System.out.println("output is " + output);
         if(output == 0) {
             offlineClientVirtualView.getUi().handleMenuCode("after_game_start");
         }

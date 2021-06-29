@@ -25,7 +25,6 @@ public class CLIInitializer {
         System.out.print("> ");
         while (true) {
             choice = input.nextLine();
-            System.out.println(choice);
             switch (choice.toUpperCase()) {
                 case "LOCAL" -> {
                     handleLocal(cli);

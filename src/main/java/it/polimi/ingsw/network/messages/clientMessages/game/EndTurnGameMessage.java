@@ -26,7 +26,6 @@ public class EndTurnGameMessage extends ClientGameMessage implements Serializabl
                 player.sendCLIupdateMessage("back_in_lobby");
             });
             c.getMainLobby().removeGameLobby(gl);
-
         }
     }
 

@@ -237,7 +237,6 @@ public class Game extends GameObservable  {
 	public void drawToken() {
 		lastToken = this.tokens.pop();
 		gameEnded = lastToken.useToken(this);
-		System.out.println("game ended after token activation is" + gameEnded);
 		notify(this);
 	}
 

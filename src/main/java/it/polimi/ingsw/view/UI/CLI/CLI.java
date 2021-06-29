@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.UI.CLI;
 
+import it.polimi.ingsw.model.full.tokens.Token;
 import it.polimi.ingsw.view.UI.CLI.IO.ClientMessageInputParser;
 import it.polimi.ingsw.view.UI.CLI.IO.Constants;
 import it.polimi.ingsw.view.UI.CLI.IO.FaithTrackCLI;
@@ -18,9 +19,6 @@ import it.polimi.ingsw.model.full.specialAbilities.*;
 import it.polimi.ingsw.network.server.lobby.GameLobbyDetails;
 import it.polimi.ingsw.network.messages.clientMessages.ClientMessage;
 import it.polimi.ingsw.utils.Pair;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 
 import java.io.IOException;
 import java.util.*;
@@ -122,7 +120,6 @@ public class CLI implements UI {
                 try {
                     Thread.sleep(250);
                 } catch (InterruptedException e) {
-                    System.out.println("ma entro qua? ");
                     e.printStackTrace();
                 }
             }
@@ -473,14 +470,15 @@ public class CLI implements UI {
     }
 
     private void showAllExtraDeposits(Resource[][] extraDeposits) {
-        if (Arrays.stream(extraDeposits).anyMatch(Objects::nonNull)) {
-            IntStream.range(0, extraDeposits.length).forEach(i -> {
-                if(extraDeposits[i] != null) {
-                    System.out.println("EXTRA DEPOSIT FOR LEADERCARD #" + i);
-                    showExtraDeposit(extraDeposits[i]);
-                }
-            });
-        }
+        IntStream.range(0, extraDeposits.length).forEach(i -> {
+            if (extraDeposits[i] != null) {
+                Resource res = ((WarehouseExtraSpace) reducedModel.getReducedPlayer().
+                        getDashboard().getPlayedLeaderCards().get(i).getSpecialAbility()).getStoredResource();
+                printMessageNoNL("EXTRA DEPOSIT #" + i +" FOR RESOURCE ");
+                printColoredMessage("" + res, handleResourceColor(res.toString()));
+                showExtraDeposit(extraDeposits[i]);
+            }
+        });
     }
 
     public void showExtraDeposit(Resource[] deposit) {
@@ -596,13 +594,12 @@ public class CLI implements UI {
         ReducedPlayer reducedPlayer = reducedModel.getReducedPlayer();
         if(reducedPlayer.getDiscounts() != null
                 && reducedPlayer.getDiscounts().size() != 0) {
-            printMessage("Keep in mind that due to your activated ability(s)");
+            printMessage("\n\nKeep in mind that due to your activated ability(s)\n");
             reducedPlayer.getDiscounts().forEach((resource, qty) -> {
                 printMessageNoNL("" + qty);
                 printColoredMessageNoNL(" " + resource, handleResourceColor(resource.toString()));
-                printMessage(" will be discounted");
+                printMessage(" will be discounted\n\n");
             });
-
         }
         switch(choice.toUpperCase()) {
             case "1", "2", "3" -> showDvRow(Integer.parseInt(choice));
@@ -946,7 +943,7 @@ public class CLI implements UI {
         }
 
         if("back_in_lobby". equals(menuCode)) {
-            System.out.println("\n\n\n\nYou are being redirected to the main lobby...\n");
+            System.out.println("\n\nYou are being redirected to the main lobby...\n");
             System.out.println("Back to the main lobby!\n");
             showMainLobbyMenu();
         }
@@ -956,17 +953,12 @@ public class CLI implements UI {
     }
 
     private void gameHasEndedSingle() {
-        printMessage("\n\n");
-        printMessage("Lorenzo has activated the following token: " + reducedModel.getReducedGame().getToken());
-        IntStream.range(0, 12).forEach(i -> {
-            printMessage("Remaining card with index " + i + ": " + reducedModel.getReducedGameBoard().getGrid().get(i).size());
-        });
-        printMessage("Lorenzo faithtrack position: " + reducedModel.getReducedPlayer().getDashboard().getLorenzoIlMagnificoPosition());
+        showAfterEndTurnSingleMenu();
         int winner = establishWinner();
         if(winner == 0) {
-            System.out.println("\nLorenzo has won!");
+            printColoredMessage("Lorenzo has won!", Constants.BOLD + Constants.ANSI_RED);
         } else {
-            System.out.println("You've won!");
+            printColoredMessage("You've won!", Constants.BOLD + Constants.ANSI_GREEN);
         }
     }
 
@@ -996,14 +988,14 @@ public class CLI implements UI {
 
     private void showAfterEndTurnSingleMenu() {
         printMessage("\n\n");
-        printMessage("Lorenzo has activated the following token: " + reducedModel.getReducedGame().getToken());
+        showActivatedToken(reducedModel.getReducedGame().getToken());
         IntStream.range(0, 12).forEach(i -> {
             String color = decideColor(i);
             String level = decideLevel(i);
             if(color != null && level != null) {
                 printMessageNoNL("Level " + level + " ");
                 printColoredMessageNoNL(color, handleBannerColor(color));
-                printMessageNoNL(" cards remaining: " + reducedModel.getReducedGameBoard().getGrid().get(i).size());
+                printMessage(" cards remaining: " + reducedModel.getReducedGameBoard().getGrid().get(i).size());
             } else {
                 printMessage("Remaining card with index " + i + ": " + reducedModel.getReducedGameBoard().getGrid().get(i).size());
             }
@@ -1011,6 +1003,18 @@ public class CLI implements UI {
         showLorenzoFT(reducedModel.getReducedPlayer().getNickname());
         // printMessage("Lorenzo faithtrack position: " +
                //  reducedModel.getReducedPlayer().getDashboard().getLorenzoIlMagnificoPosition() + "/24");
+    }
+
+    private void showActivatedToken(Token token) {
+        printMessageNoNL("\nLorenzo has activated the following token: ");
+        switch(token.getType()) {
+            case "one" -> printColoredMessage("Single Black Cross move\n", Constants.RED_ISH);
+            case "two" -> printColoredMessage("Double Black Cross move", Constants.RED_ISH);
+            case "yellow" -> printColoredMessage("Discard Yellow Development Card\n", Constants.GOLD_COLOR);
+            case "purple" -> printColoredMessage("Discard Purple Development Card\n", Constants.SERVANT_COLOR);
+            case "blue" -> printColoredMessage("Discard Blue Development Card\n", Constants.SHIELD_COLOR);
+            case "green" -> printColoredMessage("Discard Green Development Card\n", Constants.ANSI_GREEN);
+        }
     }
 
     private String decideColor(int i) {
@@ -1051,6 +1055,14 @@ public class CLI implements UI {
         if(!supply.isEmpty()) {
             System.out.println("DEPOSIT: ");
             showDeposit(reducedModel.getReducedPlayer().getDashboard().getDeposit());
+            Resource[][] extraDeposits = reducedModel.getReducedPlayer().getDashboard().getExtraDeposits();
+
+            if (reducedModel.getReducedPlayer().getDashboard().getExtraDeposits()[0] != null) {
+                showSingleExtraWh(0);
+            }
+            if (reducedModel.getReducedPlayer().getDashboard().getExtraDeposits()[1] != null) {
+                showSingleExtraWh(1);
+            }
             System.out.println("SUPPLY: ");
             showSupply(reducedModel.getReducedPlayer().getDashboard().getSupply());
             System.out.println();
@@ -1061,10 +1073,31 @@ public class CLI implements UI {
 
     }
 
+    private void showSingleExtraWh(int i) {
+        Resource res = ((WarehouseExtraSpace) reducedModel.getReducedPlayer().
+                getDashboard().getPlayedLeaderCards().get(i).getSpecialAbility()).getStoredResource();
+        printMessageNoNL("EXTRA DEPOSIT #" + i +" FOR RESOURCE ");
+        printColoredMessage("" + res, handleResourceColor(res.toString()));
+        showExtraDeposit(reducedModel.getReducedPlayer().getDashboard().getExtraDeposits()[i]);
+        System.out.println();
+    }
+
 
     private void showAfterMarketMenu() {
         System.out.println("DEPOSIT: ");
         showDeposit(reducedModel.getReducedPlayer().getDashboard().getDeposit());
+        Resource[][] extraDeposits = reducedModel.getReducedPlayer().getDashboard().getExtraDeposits();
+
+        if(extraDeposits[0] != null || extraDeposits[1] != null) {
+            System.out.println("EXTRA DEPOSIT(s): ");
+        }
+        if (reducedModel.getReducedPlayer().getDashboard().getExtraDeposits()[0] != null) {
+            showSingleExtraWh(0);
+        }
+        if (reducedModel.getReducedPlayer().getDashboard().getExtraDeposits()[1] != null) {
+            showSingleExtraWh(1);
+        }
+
         System.out.println("SUPPLY: ");
         showSupply(reducedModel.getReducedPlayer().getDashboard().getSupply());
         printMessage("Please use");

@@ -54,8 +54,6 @@ public class MarketController {
 
 
         // check to see that the WMRS size corresponds to the amount of white marbles (against hacked clients)
-        System.out.println("#1 : " + marketRes.stream().filter(r -> r == Resource.ANY).count());
-        System.out.println("#2 : " + wmrs);
         if (marketRes.stream().filter(r -> r == Resource.ANY).count() != wmrs.size()) {
             throw new IllegalArgumentException(game.getCurrentPlayer() + " asked for too many white marble transformed resources.");
         }

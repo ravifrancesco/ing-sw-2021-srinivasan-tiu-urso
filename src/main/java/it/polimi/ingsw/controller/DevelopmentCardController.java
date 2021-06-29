@@ -32,7 +32,6 @@ public class DevelopmentCardController {
         } else if (!game.getTurnPhase().equals(TurnPhase.COMMON)) {
             throw new WrongTurnPhaseException("Turn phase is " + game.getTurnPhase().name());
         }
-        System.out.println("Riga 34 devcardbuy");
 
         Player player = game.getPlayers().get(nickname);
         Dashboard dashboard = player.getDashboard();
@@ -51,7 +50,6 @@ public class DevelopmentCardController {
             throw new CardNotBuyableException("Card doesn't exist, please try again. ");
         }
 
-        System.out.println("Riga 55 devcardbuy");
 
         developmentCard = developmentCardGrid.peek(row, column);
 
@@ -72,13 +70,11 @@ public class DevelopmentCardController {
             throw new CardNotPlayableException("Not a valid index");
         }
 
-        System.out.println("Riga 67 devcardbuy");
 
 
         dashboard.payPrice(resourcesToPayCost, cost);
 
         developmentCardGrid.buy(row, column);
         game.startUniquePhase(TurnPhase.BUY);
-        System.out.println("Finito");
     }
 }
