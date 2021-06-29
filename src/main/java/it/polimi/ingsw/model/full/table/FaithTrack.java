@@ -27,8 +27,6 @@ public class FaithTrack extends FaithTrackObservable {
 	private Map<Integer, VaticanReport> vaticanReports;
 	private int[] faithTrackVictoryPoints;
 
-	private int victoryPoints;
-
 	private Dashboard dashboard;
 
 	/**
@@ -40,7 +38,6 @@ public class FaithTrack extends FaithTrackObservable {
 	 * @param gameSettings the settings for the current game.
 	 */
 	public FaithTrack(GameSettings gameSettings, Dashboard dashboard) {
-		this.victoryPoints = 0;
 		this.position = 0;
 		this.LorenzoIlMagnificoPosition = 0;
 		this.vaticanReports = gameSettings.getVaticanReports().stream()
@@ -53,7 +50,6 @@ public class FaithTrack extends FaithTrackObservable {
 	 * Resets the state of this object to the initial state.
 	 */
 	public void reset() {
-		this.victoryPoints = 0;
 		this.position = 0;
 		vaticanReports.values().forEach(VaticanReport::reset);
 		notify(this);
@@ -73,17 +69,8 @@ public class FaithTrack extends FaithTrackObservable {
 				return;
 			}
 			position++;
-			victoryPoints += faithTrackVictoryPoints[position];
 		}
 		notify(this);
-	}
-
-	private void updateVaticanReports(int maxReached) {
-		vaticanReports.forEach((k,v) -> {
-			if (maxReached == k) {
-				checkVaticanVictoryPoints(k);
-			}
-		});
 	}
 
 	/**
@@ -106,7 +93,6 @@ public class FaithTrack extends FaithTrackObservable {
 					currentVaticanReport.miss();
 				} else {
 					currentVaticanReport.achieve();
-					victoryPoints += currentVaticanReport.victoryPoints;
 				}
 			}
 		}
@@ -128,6 +114,14 @@ public class FaithTrack extends FaithTrackObservable {
 	 * @return the current victoryPoints
 	 */
 	public int getVictoryPoints() {
+		int victoryPoints = 0;
+		for (int i = 0; i <= position; i++) {
+			victoryPoints += faithTrackVictoryPoints[i];
+		}
+		victoryPoints += vaticanReports.values()
+				.stream()
+				.map(v ->  v.isAchieved() ? v.getVictoryPoints() : 0)
+				.reduce(0, Integer::sum);
 		return victoryPoints;
 	}
 
