@@ -1,9 +1,9 @@
 package it.polimi.ingsw.network.messages.serverMessages.updates;
 
-import it.polimi.ingsw.view.virtualView.client.ClientVirtualView;
-import it.polimi.ingsw.model.full.table.Market;
 import it.polimi.ingsw.model.full.marbles.Marble;
+import it.polimi.ingsw.model.full.table.Market;
 import it.polimi.ingsw.network.messages.serverMessages.ServerMessage;
+import it.polimi.ingsw.view.virtualView.client.ClientVirtualView;
 
 import java.io.Serializable;
 

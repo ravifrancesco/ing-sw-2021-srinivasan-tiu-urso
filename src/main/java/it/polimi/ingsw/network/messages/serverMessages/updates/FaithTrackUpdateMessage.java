@@ -1,10 +1,10 @@
 package it.polimi.ingsw.network.messages.serverMessages.updates;
 
-import it.polimi.ingsw.view.virtualView.client.ClientVirtualView;
 import it.polimi.ingsw.model.full.table.FaithTrack;
 import it.polimi.ingsw.model.full.table.VaticanReport;
 import it.polimi.ingsw.network.messages.serverMessages.ServerMessage;
 import it.polimi.ingsw.utils.Pair;
+import it.polimi.ingsw.view.virtualView.client.ClientVirtualView;
 
 import java.io.Serializable;
 import java.util.HashMap;

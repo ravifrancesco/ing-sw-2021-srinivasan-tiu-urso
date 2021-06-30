@@ -1,14 +1,13 @@
 package it.polimi.ingsw.network.messages.serverMessages.updates;
 
-import it.polimi.ingsw.view.virtualView.client.ClientVirtualView;
 import it.polimi.ingsw.model.full.table.Game;
 import it.polimi.ingsw.model.full.table.TurnPhase;
 import it.polimi.ingsw.model.full.tokens.Token;
 import it.polimi.ingsw.network.messages.serverMessages.ServerMessage;
+import it.polimi.ingsw.view.virtualView.client.ClientVirtualView;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Stack;
 
 /**
  * Class used to send Game updates to the clients.
