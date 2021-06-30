@@ -1,12 +1,12 @@
 package it.polimi.ingsw.view.UI.CLI.IO.InputHandling;
 
-import it.polimi.ingsw.view.UI.CLI.CLI;
+import it.polimi.ingsw.model.full.specialAbilities.ProductionPower;
 import it.polimi.ingsw.model.full.table.Resource;
 import it.polimi.ingsw.model.utils.ResourceContainer;
-import it.polimi.ingsw.model.full.specialAbilities.ProductionPower;
 import it.polimi.ingsw.network.messages.clientMessages.ClientMessage;
 import it.polimi.ingsw.network.messages.clientMessages.game.ActivateDevelopmentProductionGameMessage;
 import it.polimi.ingsw.network.messages.clientMessages.game.BuyDevelopmentCardGameMessage;
+import it.polimi.ingsw.view.UI.CLI.CLI;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,7 +17,8 @@ public class DevelopmentCardHandler {
 
     /**
      * Creates a message to activate a development card production
-     * @param in the input string to be parsed
+     *
+     * @param in  the input string to be parsed
      * @param cli the cli
      * @return the client message for the server
      */
@@ -40,12 +41,12 @@ public class DevelopmentCardHandler {
             int getNumRequiredAny = pp.getNumRequiredAny();
             int getNumProducedAny = pp.getNumProducedAny();
 
-            if(getNumProducedAny != 0 || getNumRequiredAny != 0) {
+            if (getNumProducedAny != 0 || getNumRequiredAny != 0) {
                 cli.printMessage(ANSI_GREEN + "Production has " + getNumRequiredAny +
                         "required selectable resources and " + getNumProducedAny + " produced selectable resources..." + ANSI_RESET);
             }
 
-                Map<Resource, Integer> requiredResources;
+            Map<Resource, Integer> requiredResources;
             Map<Resource, Integer> producedResources;
 
             if (getNumRequiredAny != 0) {
@@ -76,6 +77,7 @@ public class DevelopmentCardHandler {
 
     /**
      * Creates the message for the buying of a development card process
+     *
      * @param in
      * @param cli
      * @return

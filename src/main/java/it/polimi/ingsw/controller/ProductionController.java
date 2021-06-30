@@ -19,6 +19,7 @@ public class ProductionController {
 
     /**
      * Constructor for a Production Controller object.
+     *
      * @param game represents the game which the controller belongs to.
      */
 
@@ -63,9 +64,9 @@ public class ProductionController {
 
         try {
             productionPower.setSelectableResource(resourceRequiredOptional, resourceProducedOptional);
-        } catch(IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             throw new PowerNotActivatableException();
-        } catch(IllegalStateException e) {
+        } catch (IllegalStateException e) {
             throw new PowerNotActivatableException();
         }
 
@@ -87,7 +88,7 @@ public class ProductionController {
     }
 
     /**
-     // @see ServerController#activateDashboardProduction(String, ResourceContainer, Map, Map)
+     * // @see ServerController#activateDashboardProduction(String, ResourceContainer, Map, Map)
      */
 
     public void activateDashboardProduction(String nickname, ResourceContainer resourcesToPayCost,
@@ -114,9 +115,9 @@ public class ProductionController {
 
         try {
             productionPower.setSelectableResource(resourceRequiredOptional, resourceProducedOptional);
-        } catch(IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             throw new PowerNotActivatableException();
-        } catch(IllegalStateException e) {
+        } catch (IllegalStateException e) {
             throw new PowerNotActivatableException();
         }
 
@@ -152,7 +153,7 @@ public class ProductionController {
         if (!game.getCurrentPlayer().equals(nickname)) {
             throw new WrongTurnException("Not " + nickname + " turn");
         } else if (!(game.getTurnPhase().equals(TurnPhase.COMMON) || game.getTurnPhase().equals(TurnPhase.PRODUCTION))) {
-        // } else if (!game.getTurnPhase().equals(TurnPhase.COMMON) || !game.getTurnPhase().equals(TurnPhase.PRODUCTION)) {
+            // } else if (!game.getTurnPhase().equals(TurnPhase.COMMON) || !game.getTurnPhase().equals(TurnPhase.PRODUCTION)) {
             throw new WrongTurnPhaseException("Turn phase is " + game.getTurnPhase().name());
         }
 
@@ -173,9 +174,9 @@ public class ProductionController {
 
         try {
             productionPower.setSelectableResource(resourceRequiredOptional, resourceProducedOptional);
-        } catch(IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             throw new PowerNotActivatableException();
-        } catch(IllegalStateException e) {
+        } catch (IllegalStateException e) {
             throw new PowerNotActivatableException();
         }
 

@@ -1,38 +1,42 @@
 package it.polimi.ingsw.view.virtualView.client;
 
-import it.polimi.ingsw.view.UI.CLI.CLI;
-import it.polimi.ingsw.view.UI.CLI.IO.Constants;
-import it.polimi.ingsw.view.UI.UIType;
-import it.polimi.ingsw.controller.*;
-import it.polimi.ingsw.model.full.table.*;
-import it.polimi.ingsw.model.reduced.*;
+import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.controller.exceptions.GameFullException;
+import it.polimi.ingsw.model.full.table.*;
 import it.polimi.ingsw.model.observerPattern.observers.*;
+import it.polimi.ingsw.model.reduced.ReducedDashboard;
+import it.polimi.ingsw.model.reduced.ReducedGame;
+import it.polimi.ingsw.model.reduced.ReducedModel;
+import it.polimi.ingsw.model.reduced.ReducedPlayer;
 import it.polimi.ingsw.model.utils.GameError;
 import it.polimi.ingsw.model.utils.GameSettings;
 import it.polimi.ingsw.network.messages.clientMessages.ClientMessage;
 import it.polimi.ingsw.network.messages.clientMessages.game.ClientGameMessage;
 import it.polimi.ingsw.utils.Pair;
+import it.polimi.ingsw.view.UI.CLI.CLI;
+import it.polimi.ingsw.view.UI.CLI.IO.Constants;
 import it.polimi.ingsw.view.UI.UI;
+import it.polimi.ingsw.view.UI.UIType;
 
 import javax.naming.InvalidNameException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
 
 public class OfflineClientVirtualView implements ClientVirtualViewIF, Runnable,
         FaithTrackObserver, WarehouseObserver, DashboardObserver,
         PlayerObserver, GameObserver,
         DevelopmentCardGridObserver, MarketObserver, GameErrorObserver {
 
-    private String nickname;
-
     private final UI ui;
-
     private final Controller controller;
-
     private final ReducedModel reducedModel;
+    private String nickname;
 
     /**
      * The virtual view for the offline local game
+     *
      * @param ui
      */
     public OfflineClientVirtualView(UI ui) {
@@ -49,6 +53,7 @@ public class OfflineClientVirtualView implements ClientVirtualViewIF, Runnable,
 
     /**
      * The virtual view for the offline local game
+     *
      * @param ui
      */
     public OfflineClientVirtualView(UI ui, String nickname) {
@@ -69,9 +74,9 @@ public class OfflineClientVirtualView implements ClientVirtualViewIF, Runnable,
         Scanner input = new Scanner(System.in);
         String choice;
         System.out.println("Please insert a nickname: ");
-        while(true) {
+        while (true) {
             choice = input.nextLine();
-            if(choice.isEmpty()) {
+            if (choice.isEmpty()) {
                 System.out.println("Please insert a non-empty nickname");
             } else {
                 setNickName(choice);
@@ -82,6 +87,7 @@ public class OfflineClientVirtualView implements ClientVirtualViewIF, Runnable,
 
     /**
      * Sets the nickname
+     *
      * @param choice the nickname
      */
     private void setNickName(String choice) {
@@ -108,6 +114,7 @@ public class OfflineClientVirtualView implements ClientVirtualViewIF, Runnable,
 
     /**
      * Update methods for the observers
+     *
      * @param message the updated class
      */
 
@@ -176,7 +183,7 @@ public class OfflineClientVirtualView implements ClientVirtualViewIF, Runnable,
         reducedGame.setTurnPhase(message.getTurnPhase());
         reducedGame.setFirstTurns(message.getFirstTurns());
         reducedGame.setToken(message.getLastToken());
-        if(message.getGameEnded()) {
+        if (message.getGameEnded()) {
             ui.handleMenuCode("game_has_ended_single");
         }
     }
@@ -200,6 +207,7 @@ public class OfflineClientVirtualView implements ClientVirtualViewIF, Runnable,
 
     /**
      * Returns a vatican report state
+     *
      * @param v the vatican report
      * @return
      */
@@ -220,6 +228,7 @@ public class OfflineClientVirtualView implements ClientVirtualViewIF, Runnable,
 
     /**
      * Prints a successful move message
+     *
      * @param message the message
      */
     public void printSuccessfulMove(String message) {

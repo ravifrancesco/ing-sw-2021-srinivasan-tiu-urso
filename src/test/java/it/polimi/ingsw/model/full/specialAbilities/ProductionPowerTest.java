@@ -11,7 +11,10 @@ import it.polimi.ingsw.model.utils.GameSettings;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.IntStream;
 
 public class ProductionPowerTest {
@@ -25,7 +28,7 @@ public class ProductionPowerTest {
         Map<Resource, Integer> resourceProduced = new HashMap<>();
         resourceProduced.put(Resource.SHIELD, 1);
 
-        ProductionPower p = new ProductionPower(resourceRequired, resourceProduced,2);
+        ProductionPower p = new ProductionPower(resourceRequired, resourceProduced, 2);
 
         Assert.assertEquals(p.getNumberFaithPoints(), 2);
         Assert.assertEquals(p.getResourceRequired(), resourceRequired);
@@ -43,7 +46,7 @@ public class ProductionPowerTest {
         Map<Resource, Integer> resourceProduced = new HashMap<>();
         resourceProduced.put(Resource.SHIELD, 1);
 
-        ProductionPower p = new ProductionPower(resourceRequired, resourceProduced,2);
+        ProductionPower p = new ProductionPower(resourceRequired, resourceProduced, 2);
 
         String s1 = "SA=PP;RR=STONE:1,GOLD:1;RP=SHIELD:1;FP=2;";
         String s2 = "SA=PP;RR=GOLD:1,STONE:1;RP=SHIELD:1;FP=2;";
@@ -57,7 +60,7 @@ public class ProductionPowerTest {
         resourceRequired.put(Resource.GOLD, 1);
         resourceRequired.put(Resource.STONE, 1);
 
-        ProductionPower p = new ProductionPower(resourceRequired, new HashMap<>(),2);
+        ProductionPower p = new ProductionPower(resourceRequired, new HashMap<>(), 2);
 
         String s1 = "SA=PP;RR=STONE:1,GOLD:1;RP=;FP=2;";
         String s2 = "SA=PP;RR=GOLD:1,STONE:1;RP=;FP=2;";
@@ -74,7 +77,7 @@ public class ProductionPowerTest {
         Map<Resource, Integer> resourceProduced = new HashMap<>();
         resourceProduced.put(Resource.SHIELD, 1);
 
-        ProductionPower p = new ProductionPower(resourceRequired, resourceProduced,2);
+        ProductionPower p = new ProductionPower(resourceRequired, resourceProduced, 2);
 
         p.setSelectableResource(new HashMap<>(), new HashMap<>());
 
@@ -97,7 +100,7 @@ public class ProductionPowerTest {
         Map<Resource, Integer> resourceProduced = new HashMap<>();
         resourceProduced.put(Resource.SHIELD, 1);
 
-        ProductionPower p = new ProductionPower(resourceRequired, resourceProduced,2);
+        ProductionPower p = new ProductionPower(resourceRequired, resourceProduced, 2);
 
         p.setSelectableResource(new HashMap<>(), new HashMap<>());
 
@@ -121,7 +124,7 @@ public class ProductionPowerTest {
         Map<Resource, Integer> resourceProduced = new HashMap<>();
         resourceProduced.put(Resource.SERVANT, 3);
 
-        ProductionPower p = new ProductionPower(resourceRequired, resourceProduced,2);
+        ProductionPower p = new ProductionPower(resourceRequired, resourceProduced, 2);
 
         Map<Resource, Integer> resourceRequiredSelectable = new HashMap<>();
 
@@ -149,7 +152,7 @@ public class ProductionPowerTest {
         Map<Resource, Integer> resourceProduced = new HashMap<>();
         resourceProduced.put(Resource.SERVANT, 3);
 
-        ProductionPower p = new ProductionPower(resourceRequired, resourceProduced,2);
+        ProductionPower p = new ProductionPower(resourceRequired, resourceProduced, 2);
 
         Map<Resource, Integer> resourceRequiredSelectable = new HashMap<>();
 
@@ -179,11 +182,11 @@ public class ProductionPowerTest {
         Map<Resource, Integer> resourceProduced = new HashMap<>();
         resourceProduced.put(Resource.SERVANT, 3);
 
-        ProductionPower p = new ProductionPower(resourceRequired, resourceProduced,2);
+        ProductionPower p = new ProductionPower(resourceRequired, resourceProduced, 2);
 
-        try{
+        try {
             p.setSelectableResource(new HashMap<>(), new HashMap<>());
-        } catch(IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             thrownExceptions++;
         }
 
@@ -201,11 +204,11 @@ public class ProductionPowerTest {
         Map<Resource, Integer> resourceProduced = new HashMap<>();
         resourceProduced.put(Resource.ANY, 1);
 
-        ProductionPower p = new ProductionPower(resourceRequired, resourceProduced,2);
+        ProductionPower p = new ProductionPower(resourceRequired, resourceProduced, 2);
 
-        try{
+        try {
             p.setSelectableResource(new HashMap<>(), new HashMap<>());
-        } catch(IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             thrownExceptions++;
         }
 
@@ -220,7 +223,7 @@ public class ProductionPowerTest {
         Map<Resource, Integer> resourceProduced = new HashMap<>();
         resourceProduced.put(Resource.ANY, 1);
 
-        ProductionPower p = new ProductionPower(resourceRequired, resourceProduced,2);
+        ProductionPower p = new ProductionPower(resourceRequired, resourceProduced, 2);
 
         Map<Resource, Integer> resourceRequiredSelectable = new HashMap<>();
         Map<Resource, Integer> resourceProducedSelectable = new HashMap<>();
@@ -250,7 +253,7 @@ public class ProductionPowerTest {
         Map<Resource, Integer> resourceProduced = new HashMap<>();
         resourceProduced.put(Resource.SERVANT, 1);
 
-        ProductionPower p = new ProductionPower(resourceRequired, resourceProduced,2);
+        ProductionPower p = new ProductionPower(resourceRequired, resourceProduced, 2);
 
         p.setSelectableResource(new HashMap<>(), new HashMap<>());
 
@@ -288,7 +291,7 @@ public class ProductionPowerTest {
         Map<Resource, Integer> resourceProduced = new HashMap<>();
         resourceProduced.put(Resource.SERVANT, 1);
 
-        ProductionPower p = new ProductionPower(resourceRequired, resourceProduced,0);
+        ProductionPower p = new ProductionPower(resourceRequired, resourceProduced, 0);
 
         p.setSelectableResource(new HashMap<>(), new HashMap<>());
 
@@ -323,7 +326,7 @@ public class ProductionPowerTest {
         resourceRequired.put(Resource.GOLD, 1);
         resourceRequired.put(Resource.STONE, 1);
 
-        ProductionPower p = new ProductionPower(resourceRequired, new HashMap<>(),2);
+        ProductionPower p = new ProductionPower(resourceRequired, new HashMap<>(), 2);
 
         p.setSelectableResource(new HashMap<>(), new HashMap<>());
 
@@ -362,13 +365,15 @@ public class ProductionPowerTest {
         Map<Resource, Integer> resourceProduced = new HashMap<>();
         resourceProduced.put(Resource.SERVANT, 1);
 
-        ProductionPower p = new ProductionPower(resourceRequired, resourceProduced,2);
+        ProductionPower p = new ProductionPower(resourceRequired, resourceProduced, 2);
 
         p.setSelectableResource(new HashMap<>(), new HashMap<>());
 
         try {
             p.activate(player);
-        } catch (IllegalStateException e) { thrownExceptions++; }
+        } catch (IllegalStateException e) {
+            thrownExceptions++;
+        }
 
         Map<Resource, Integer> playerResources = player.getDashboard().getAllPlayerResources();
 
@@ -395,7 +400,7 @@ public class ProductionPowerTest {
         Map<Resource, Integer> resourceProduced = new HashMap<>();
         resourceProduced.put(Resource.SERVANT, 1);
 
-        ProductionPower p = new ProductionPower(resourceRequired, resourceProduced,2);
+        ProductionPower p = new ProductionPower(resourceRequired, resourceProduced, 2);
 
         p.setSelectableResource(new HashMap<>(), new HashMap<>());
 
@@ -410,9 +415,11 @@ public class ProductionPowerTest {
 
         p.activate(player);
 
-        try{
+        try {
             p.activate(player);
-        } catch (UnsupportedOperationException e) { thrownExceptions++; }
+        } catch (UnsupportedOperationException e) {
+            thrownExceptions++;
+        }
 
         playerResources = player.getDashboard().getAllPlayerResources();
 
@@ -438,7 +445,7 @@ public class ProductionPowerTest {
         Map<Resource, Integer> resourceProduced = new HashMap<>();
         resourceProduced.put(Resource.SERVANT, 1);
 
-        ProductionPower p = new ProductionPower(resourceRequired, resourceProduced,2);
+        ProductionPower p = new ProductionPower(resourceRequired, resourceProduced, 2);
 
         p.setSelectableResource(new HashMap<>(), new HashMap<>());
 
@@ -482,7 +489,7 @@ public class ProductionPowerTest {
         int vaticanReportsNum = 3;
         List<VaticanReport> vaticanReports = vaticanReportsListBuilder();
 
-        int[] faithTrackVictoryPoints = {0,0,0,1,0,0,2,0,0,4,0,0,6,0,0,9,0,0,12,0,0,16,0,0,0};
+        int[] faithTrackVictoryPoints = {0, 0, 0, 1, 0, 0, 2, 0, 0, 4, 0, 0, 6, 0, 0, 9, 0, 0, 12, 0, 0, 16, 0, 0, 0};
 
         return new GameSettings(developmentCards, leaderCardNum, leaderCards,
                 dashboardProductionPower, vaticanReports, faithTrackVictoryPoints);
@@ -503,7 +510,7 @@ public class ProductionPowerTest {
         Map<Resource, Integer> resourceProduced = new HashMap<>();
         resourceProduced.put(Resource.SHIELD, 1);
 
-        ProductionPower p = new ProductionPower(resourceRequired, resourceProduced,2);
+        ProductionPower p = new ProductionPower(resourceRequired, resourceProduced, 2);
 
         return IntStream.range(0, GameSettings.DEVELOPMENT_CARD_NUM)
                 .boxed()
@@ -536,9 +543,9 @@ public class ProductionPowerTest {
         SAs[2] = new WarehouseExtraSpace(Resource.SERVANT);
         SAs[3] = new WhiteMarbleResource(Resource.SHIELD);
 
-        return  IntStream.range(0, leaderCardNum)
+        return IntStream.range(0, leaderCardNum)
                 .boxed()
-                .map(i -> new LeaderCard(i, 2, bannerCost, resourceCost, SAs[i%4]))
+                .map(i -> new LeaderCard(i, 2, bannerCost, resourceCost, SAs[i % 4]))
                 .toArray(LeaderCard[]::new);
 
     }
@@ -552,7 +559,7 @@ public class ProductionPowerTest {
         Map<Resource, Integer> resourceProduced = new HashMap<>();
         resourceProduced.put(Resource.SHIELD, 1);
 
-        return new ProductionPower(resourceRequired, resourceProduced,2);
+        return new ProductionPower(resourceRequired, resourceProduced, 2);
 
     }
 

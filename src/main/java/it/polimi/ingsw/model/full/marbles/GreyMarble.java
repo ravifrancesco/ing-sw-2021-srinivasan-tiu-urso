@@ -7,8 +7,8 @@ import java.io.Serializable;
 
 public class GreyMarble implements Marble, Serializable {
     /**
-     * @see Marble#getResource(Player)
      * @param p
+     * @see Marble#getResource(Player)
      */
     @Override
     public Resource getResource(Player p) {

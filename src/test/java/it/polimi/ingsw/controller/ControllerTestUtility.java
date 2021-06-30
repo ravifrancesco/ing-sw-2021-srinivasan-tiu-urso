@@ -4,7 +4,6 @@ import it.polimi.ingsw.controller.exceptions.GameFullException;
 import it.polimi.ingsw.model.full.table.Resource;
 import it.polimi.ingsw.model.utils.GameSettings;
 import it.polimi.ingsw.utils.GameSettingsBuilder;
-import org.junit.BeforeClass;
 
 import javax.naming.InvalidNameException;
 

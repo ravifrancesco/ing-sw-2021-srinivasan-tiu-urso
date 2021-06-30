@@ -1,12 +1,12 @@
 package it.polimi.ingsw.model.reduced;
 
-import it.polimi.ingsw.view.UI.GUI.JavaFX.controllers.GameController;
-import it.polimi.ingsw.model.full.table.Resource;
 import it.polimi.ingsw.model.full.cards.DevelopmentCard;
 import it.polimi.ingsw.model.full.cards.LeaderCard;
 import it.polimi.ingsw.model.full.marbles.Marble;
+import it.polimi.ingsw.model.full.table.Resource;
 import it.polimi.ingsw.model.full.tokens.Token;
 import it.polimi.ingsw.utils.Pair;
+import it.polimi.ingsw.view.UI.GUI.JavaFX.controllers.GameController;
 import javafx.application.Platform;
 
 import java.util.*;
@@ -15,10 +15,9 @@ import java.util.stream.Collectors;
 public class ReducedModel {
 
     private final ReducedGame reducedGame;
-    private ReducedPlayer reducedPlayer;
     private final ReducedGameBoard reducedGameBoard;
-
     GameController gameController;
+    private final ReducedPlayer reducedPlayer;
 
     public ReducedModel() {
         reducedGame = new ReducedGame(this);

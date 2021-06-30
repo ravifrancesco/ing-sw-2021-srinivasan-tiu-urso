@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.observerPattern.observables;
 
-import it.polimi.ingsw.model.utils.GameError;
 import it.polimi.ingsw.model.observerPattern.observers.GameErrorObserver;
+import it.polimi.ingsw.model.utils.GameError;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +15,7 @@ public class GameErrorObservable {
      *
      * @param observer observer to add.
      */
-    public void addObserver(GameErrorObserver observer){
+    public void addObserver(GameErrorObserver observer) {
         synchronized (observers) {
             observers.add(observer);
         }
@@ -24,9 +24,9 @@ public class GameErrorObservable {
     /**
      * Notify observes.
      *
-     * @param message   message for notification.
+     * @param message message for notification.
      */
-    public void notify(GameError message){
+    public void notify(GameError message) {
         synchronized (observers) {
             for (GameErrorObserver observer : observers) {
                 observer.update(message);

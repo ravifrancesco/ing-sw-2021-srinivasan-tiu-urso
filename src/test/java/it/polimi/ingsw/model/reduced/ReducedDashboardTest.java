@@ -18,7 +18,10 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 import static org.junit.Assert.fail;
 
@@ -263,7 +266,7 @@ public class ReducedDashboardTest {
         Map<Resource, Integer> resourceProduced = new HashMap<>();
         resourceProduced.put(Resource.ANY, 1);
 
-        ProductionPower p = new ProductionPower(resourceRequired, resourceProduced,2);
+        ProductionPower p = new ProductionPower(resourceRequired, resourceProduced, 2);
 
         DevelopmentCard developmentCard1 = new DevelopmentCard(0, 1, new HashMap<>(), p, new Banner(BannerEnum.BLUE, 1));
         dashboard.placeDevelopmentCard(developmentCard1, 0);
@@ -298,8 +301,8 @@ public class ReducedDashboardTest {
         Map<Resource, Integer> resourceProduced = new HashMap<>();
         resourceProduced.put(Resource.ANY, 1);
 
-        ProductionPower p1 = new ProductionPower(resourceRequired, resourceProduced,2);
-        ProductionPower p2 = new ProductionPower(resourceRequired, resourceProduced,2);
+        ProductionPower p1 = new ProductionPower(resourceRequired, resourceProduced, 2);
+        ProductionPower p2 = new ProductionPower(resourceRequired, resourceProduced, 2);
 
         DevelopmentCard developmentCard1 = new DevelopmentCard(0, 1, new HashMap<>(), p1, new Banner(BannerEnum.BLUE, 1));
 
@@ -364,8 +367,6 @@ public class ReducedDashboardTest {
             thrownExceptions += 1;
         }
         Assert.assertEquals(thrownExceptions, 2);
-
-
 
 
     }
@@ -451,7 +452,7 @@ public class ReducedDashboardTest {
             Assert.assertTrue(true);
         }
 
-        dashboard.storeFromSupply(0,4);
+        dashboard.storeFromSupply(0, 4);
 
     }
 
@@ -502,7 +503,7 @@ public class ReducedDashboardTest {
         }
 
         try {
-            dashboard.storeFromSupplyInExtraDeposit(0,2, 1);
+            dashboard.storeFromSupplyInExtraDeposit(0, 2, 1);
             fail();
         } catch (IllegalArgumentException e) {
             fail();
@@ -510,10 +511,10 @@ public class ReducedDashboardTest {
             Assert.assertTrue(true);
         }
 
-        dashboard.storeFromSupplyInExtraDeposit(0,1, 0);
+        dashboard.storeFromSupplyInExtraDeposit(0, 1, 0);
 
         try {
-            dashboard.storeFromSupplyInExtraDeposit(0,0, 0);
+            dashboard.storeFromSupplyInExtraDeposit(0, 0, 0);
             fail();
         } catch (IllegalStateException e) {
             fail();
@@ -536,17 +537,17 @@ public class ReducedDashboardTest {
 
         dashboard.reset();
 
-        DevelopmentCard developmentCard1  = new DevelopmentCard(0,1, new HashMap<>(),null, new Banner(BannerEnum.BLUE, 1));
-        DevelopmentCard developmentCard2 = new DevelopmentCard(0,1, new HashMap<>(),null, new Banner(BannerEnum.BLUE, 2));
-        DevelopmentCard developmentCard3 = new DevelopmentCard(0,1, new HashMap<>(),null, new Banner(BannerEnum.BLUE, 3));
+        DevelopmentCard developmentCard1 = new DevelopmentCard(0, 1, new HashMap<>(), null, new Banner(BannerEnum.BLUE, 1));
+        DevelopmentCard developmentCard2 = new DevelopmentCard(0, 1, new HashMap<>(), null, new Banner(BannerEnum.BLUE, 2));
+        DevelopmentCard developmentCard3 = new DevelopmentCard(0, 1, new HashMap<>(), null, new Banner(BannerEnum.BLUE, 3));
 
         dashboard.placeDevelopmentCard(developmentCard1, 0);
         dashboard.placeDevelopmentCard(developmentCard2, 0);
         dashboard.placeDevelopmentCard(developmentCard3, 0);
 
-        DevelopmentCard developmentCard4  = new DevelopmentCard(0,1, new HashMap<>(),null, new Banner(BannerEnum.GREEN, 1));
-        DevelopmentCard developmentCard5 = new DevelopmentCard(0,1, new HashMap<>(),null, new Banner(BannerEnum.GREEN, 2));
-        DevelopmentCard developmentCard6 = new DevelopmentCard(0,1, new HashMap<>(),null, new Banner(BannerEnum.GREEN, 3));
+        DevelopmentCard developmentCard4 = new DevelopmentCard(0, 1, new HashMap<>(), null, new Banner(BannerEnum.GREEN, 1));
+        DevelopmentCard developmentCard5 = new DevelopmentCard(0, 1, new HashMap<>(), null, new Banner(BannerEnum.GREEN, 2));
+        DevelopmentCard developmentCard6 = new DevelopmentCard(0, 1, new HashMap<>(), null, new Banner(BannerEnum.GREEN, 3));
 
         dashboard.placeDevelopmentCard(developmentCard4, 1);
         dashboard.placeDevelopmentCard(developmentCard5, 1);
@@ -554,7 +555,7 @@ public class ReducedDashboardTest {
 
         Assert.assertFalse(dashboard.checkGameEnd());
 
-        DevelopmentCard developmentCard7  = new DevelopmentCard(0,1,new HashMap<>(),null,new Banner(BannerEnum.YELLOW, 1));
+        DevelopmentCard developmentCard7 = new DevelopmentCard(0, 1, new HashMap<>(), null, new Banner(BannerEnum.YELLOW, 1));
 
         dashboard.placeDevelopmentCard(developmentCard7, 2);
 
@@ -654,8 +655,6 @@ public class ReducedDashboardTest {
         dashboard.storeFromSupplyInExtraDeposit(0, 0, 1);
 
 
-
-
         Map<Resource, Integer> cost2 = new HashMap<>();
 
         cost2.put(Resource.GOLD, 2);
@@ -676,13 +675,6 @@ public class ReducedDashboardTest {
         Assert.assertEquals(java.util.Optional.ofNullable(allResources.get(Resource.STONE)), Optional.of(0));
         Assert.assertEquals(java.util.Optional.ofNullable(allResources.get(Resource.SHIELD)), Optional.of(0));
         Assert.assertEquals(java.util.Optional.ofNullable(allResources.get(Resource.SERVANT)), Optional.of(0));
-
-
-
-
-
-
-
 
 
     }

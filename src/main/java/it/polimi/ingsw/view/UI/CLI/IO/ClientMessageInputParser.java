@@ -1,16 +1,17 @@
 package it.polimi.ingsw.view.UI.CLI.IO;
 
+import it.polimi.ingsw.network.messages.clientMessages.ClientMessage;
 import it.polimi.ingsw.view.UI.CLI.CLI;
 import it.polimi.ingsw.view.UI.CLI.IO.InputHandling.InputHandler;
 import it.polimi.ingsw.view.UI.CLI.IO.InputHandling.ViewHandler;
-import it.polimi.ingsw.network.messages.clientMessages.ClientMessage;
 
 public class ClientMessageInputParser {
 
     /**
      * Handles every possible (and correct) input for a command in the CLI
+     *
      * @param input the input
-     * @param cli the cli where the command has to be handled
+     * @param cli   the cli where the command has to be handled
      * @return a client message
      */
     public static ClientMessage parseInput(String input, CLI cli) {
@@ -20,7 +21,7 @@ public class ClientMessageInputParser {
 
         return switch (command) {
             case "CREATEGAME" -> InputHandler.createGame(in); // tested
-            case "SHOWGAMES"-> InputHandler.showGames(); // tested
+            case "SHOWGAMES" -> InputHandler.showGames(); // tested
             case "JOINGAME" -> InputHandler.joinGame(in, cli); // tested
             case "LEAVELOBBY" -> InputHandler.leaveLobby(cli); // tested
             case "STARTGAME" -> InputHandler.startGame();

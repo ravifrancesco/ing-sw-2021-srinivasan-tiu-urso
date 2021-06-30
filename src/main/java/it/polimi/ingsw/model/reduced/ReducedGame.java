@@ -3,30 +3,20 @@ package it.polimi.ingsw.model.reduced;
 import it.polimi.ingsw.model.full.table.TurnPhase;
 import it.polimi.ingsw.model.full.tokens.Token;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ReducedGame {
 
-    private int numberOfPlayers;
-
-    private boolean gameStarted;
-
-    private String clientPlayer;
-
-    private String currentPlayer;
-
-    private Map<String, ReducedPlayer> players;
-
-    private TurnPhase turnPhase;
-
     private final ReducedModel reducedModel;
-
+    private int numberOfPlayers;
+    private boolean gameStarted;
+    private String clientPlayer;
+    private String currentPlayer;
+    private final Map<String, ReducedPlayer> players;
+    private TurnPhase turnPhase;
     private int firstTurns;
-
-    public Token getToken() {
-        return token;
-    }
-
     private Token token;
 
     public ReducedGame(ReducedModel reducedModel) {
@@ -35,6 +25,15 @@ public class ReducedGame {
         this.gameStarted = false;
         this.clientPlayer = "";
         this.players = new HashMap<>();
+    }
+
+    public Token getToken() {
+        return token;
+    }
+
+    public void setToken(Token token) {
+        this.token = token;
+        this.reducedModel.updateToken(token);
     }
 
     public int getNumberOfPlayers() {
@@ -93,20 +92,15 @@ public class ReducedGame {
         }
     }
 
-    public void setFirstTurns(int firstTurns) {
-        this.firstTurns = firstTurns;
-    }
-
     public int getFirstTurns() {
         return firstTurns;
     }
 
-    public ReducedPlayer getReducedPlayer(String nickname) {
-        return this.players.get(nickname);
+    public void setFirstTurns(int firstTurns) {
+        this.firstTurns = firstTurns;
     }
 
-    public void setToken(Token token) {
-        this.token = token;
-        this.reducedModel.updateToken(token);
+    public ReducedPlayer getReducedPlayer(String nickname) {
+        return this.players.get(nickname);
     }
 }

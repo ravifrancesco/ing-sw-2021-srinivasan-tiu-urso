@@ -12,67 +12,73 @@ import java.io.Serializable;
 
 public class DevelopmentCardDiscount implements SpecialAbility, Serializable {
 
-	private final Resource resource;
-	private final int quantity;
+    private final Resource resource;
+    private final int quantity;
 
-	/**
-	 * The constructor for a DevelopmentCardDiscount object.
-	 * @param 	resource the resource associated with the discount.
-	 * @param 	quantity the quantity of the discount.
-	 */
-	public DevelopmentCardDiscount(Resource resource, int quantity) {
-		this.resource = resource;
-		this.quantity = quantity;
-	}
+    /**
+     * The constructor for a DevelopmentCardDiscount object.
+     *
+     * @param resource the resource associated with the discount.
+     * @param quantity the quantity of the discount.
+     */
+    public DevelopmentCardDiscount(Resource resource, int quantity) {
+        this.resource = resource;
+        this.quantity = quantity;
+    }
 
-	/**
-	 * Activate the discount special ability. It adds this object to the discount collection of the player.
-	 * @param 	p the player who activated the discount.
-	 */
-	@Override
-	public void activate(Player p) {
-		p.addActiveDiscount(this);
-	}
+    /**
+     * Activate the discount special ability. It adds this object to the discount collection of the player.
+     *
+     * @param p the player who activated the discount.
+     */
+    @Override
+    public void activate(Player p) {
+        p.addActiveDiscount(this);
+    }
 
-	/**
-	 * Getter for the resource.
-	 * @return 	the resource associated with the discount.
-	 */
-	public Resource getResource() {
-		return resource;
-	}
+    /**
+     * Getter for the resource.
+     *
+     * @return the resource associated with the discount.
+     */
+    public Resource getResource() {
+        return resource;
+    }
 
-	/**
-	 * Getter for the quantity.
-	 * @return 	the quantity of the discount.
-	 */
-	public int getQuantity() {
-		return quantity;
-	}
+    /**
+     * Getter for the quantity.
+     *
+     * @return the quantity of the discount.
+     */
+    public int getQuantity() {
+        return quantity;
+    }
 
-	/**
-	 * Method to get the type of this special ability.
-	 * @return 	the type of this special ability.
-	 */
-	public SpecialAbilityType getType() {
-		return SpecialAbilityType.DEVELOPMENT_CARD_DISCOUNT;
-	}
+    /**
+     * Method to get the type of this special ability.
+     *
+     * @return the type of this special ability.
+     */
+    public SpecialAbilityType getType() {
+        return SpecialAbilityType.DEVELOPMENT_CARD_DISCOUNT;
+    }
 
-	/**
-	 * To string method of the class.
-	 * @return 	a string representation of the object.
-	 */
-	public String toString() {
+    /**
+     * To string method of the class.
+     *
+     * @return a string representation of the object.
+     */
+    public String toString() {
 
-		String result = "";
+        String result = "";
 
-		result += "SA=DCD;";
+        result += "SA=DCD;";
 
-		result += "R=" + resource.toString() + ";";
+        result += "R=" + resource.toString() + ";";
 
-		result += "Q=" + quantity + ";";
+        result += "Q=" + quantity + ";";
 
-		return result;
+        return result;
 
-	}
+    }
 }

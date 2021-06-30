@@ -1,11 +1,8 @@
 package it.polimi.ingsw.model.utils;
 
-import it.polimi.ingsw.model.utils.DefaultSettingsBuilder;
 import it.polimi.ingsw.model.full.table.Player;
 import it.polimi.ingsw.model.full.table.Resource;
 import it.polimi.ingsw.model.full.table.Warehouse;
-import it.polimi.ingsw.model.utils.GameSettings;
-import it.polimi.ingsw.model.utils.ResourceContainer;
 import org.junit.Assert;
 import org.junit.Test;
 

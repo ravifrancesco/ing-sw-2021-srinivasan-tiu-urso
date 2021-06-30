@@ -18,7 +18,7 @@ public class GameObservable {
      *
      * @param observer observer to add.
      */
-    public void addObserver(GameObserver observer){
+    public void addObserver(GameObserver observer) {
         synchronized (observers) {
             observers.add(observer);
         }
@@ -27,9 +27,9 @@ public class GameObservable {
     /**
      * Remove observer.
      *
-     * @param observer  observer to remove.
+     * @param observer observer to remove.
      */
-    public void removeObserver(GameObserver observer){
+    public void removeObserver(GameObserver observer) {
         synchronized (observers) {
             observers.remove(observer);
         }
@@ -38,9 +38,9 @@ public class GameObservable {
     /**
      * Notify observes.
      *
-     * @param message   message for notification.
+     * @param message message for notification.
      */
-    public void notify(Game message){
+    public void notify(Game message) {
         synchronized (observers) {
             for (GameObserver observer : observers) {
                 observer.update(message);

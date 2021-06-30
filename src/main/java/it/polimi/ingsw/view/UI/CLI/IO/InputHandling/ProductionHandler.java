@@ -1,11 +1,11 @@
 package it.polimi.ingsw.view.UI.CLI.IO.InputHandling;
 
-import it.polimi.ingsw.view.UI.CLI.CLI;
+import it.polimi.ingsw.model.full.specialAbilities.ProductionPower;
 import it.polimi.ingsw.model.full.table.Resource;
 import it.polimi.ingsw.model.utils.ResourceContainer;
-import it.polimi.ingsw.model.full.specialAbilities.ProductionPower;
 import it.polimi.ingsw.network.messages.clientMessages.ClientMessage;
 import it.polimi.ingsw.network.messages.clientMessages.game.ActivateDashboardProductionGameMessage;
+import it.polimi.ingsw.view.UI.CLI.CLI;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,6 +16,7 @@ public class ProductionHandler {
 
     /**
      * Creates a message to activate a dashboard card production
+     *
      * @param cli the cli
      * @return the client message for the server
      */
@@ -42,7 +43,8 @@ public class ProductionHandler {
 
             Map<Resource, Integer> selectedResources = rc.getAllResources(cli.getReducedModel().getReducedPlayer().getDashboard());
             reqRes.forEach((k, v) -> {
-                if (k != Resource.ANY) selectedResources.merge(k, v, (v1, v2) -> v1 - v2); });
+                if (k != Resource.ANY) selectedResources.merge(k, v, (v1, v2) -> v1 - v2);
+            });
 
             Map<Resource, Integer> producedResources;
 

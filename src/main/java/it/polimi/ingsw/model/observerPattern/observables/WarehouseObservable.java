@@ -18,7 +18,7 @@ public class WarehouseObservable {
      *
      * @param observer observer to add.
      */
-    public void addObserver(WarehouseObserver observer){
+    public void addObserver(WarehouseObserver observer) {
         synchronized (observers) {
             observers.add(observer);
         }
@@ -27,9 +27,9 @@ public class WarehouseObservable {
     /**
      * Remove observer.
      *
-     * @param observer  observer to remove.
+     * @param observer observer to remove.
      */
-    public void removeObserver(WarehouseObserver observer){
+    public void removeObserver(WarehouseObserver observer) {
         synchronized (observers) {
             observers.remove(observer);
         }
@@ -38,9 +38,9 @@ public class WarehouseObservable {
     /**
      * Notify observes.
      *
-     * @param message   message for notification.
+     * @param message message for notification.
      */
-    public void notify(Warehouse message){
+    public void notify(Warehouse message) {
         synchronized (observers) {
             for (WarehouseObserver observer : observers) {
                 observer.update(message);

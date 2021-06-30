@@ -1,7 +1,7 @@
 package it.polimi.ingsw.network.server;
 
-import it.polimi.ingsw.view.virtualView.server.ServerVirtualView;
 import it.polimi.ingsw.network.server.lobby.MainLobby;
+import it.polimi.ingsw.view.virtualView.server.ServerVirtualView;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -9,10 +9,8 @@ import java.net.Socket;
 
 //  TODO Logger
 public class Server {
-    static final int PORT = 3001;
-
     public static final int THREAD_NUMBER = 256;
-
+    static final int PORT = 3001;
     private final ServerSocket serverSocket;
 
     private final MainLobby mainLobby;
@@ -24,7 +22,7 @@ public class Server {
 
     public void run() {
         System.out.println("Server listening on port: " + PORT);
-        while(true){
+        while (true) {
             try {
                 Socket socket = serverSocket.accept();
 
@@ -32,16 +30,11 @@ public class Server {
                 mainLobby.registerConnection(serverVirtualView);
 
                 System.out.println("Connection registered!");
-            } catch (IOException e){
+            } catch (IOException e) {
                 System.err.println("Connection error!");
             }
         }
     }
-
-
-
-
-
 
 
 }

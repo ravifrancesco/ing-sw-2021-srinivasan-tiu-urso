@@ -2,10 +2,6 @@ package it.polimi.ingsw.model.full.table;
 
 
 import it.polimi.ingsw.model.full.marbles.*;
-import it.polimi.ingsw.model.full.table.Market;
-import it.polimi.ingsw.model.full.table.Player;
-import it.polimi.ingsw.model.full.table.Resource;
-import it.polimi.ingsw.model.full.table.VaticanReport;
 import it.polimi.ingsw.model.utils.GameSettings;
 import org.junit.Assert;
 import org.junit.Test;
@@ -17,14 +13,15 @@ import java.util.stream.IntStream;
 
 public class MarketTest {
     GameSettings gs;
-    public void setGs () {
-        int[] faithTrackVictoryPoints = {0,0,0,1,0,0,2,0,0,4,0,0,6,0,0,9,0,0,12,0,0,16,0,0,0};
+
+    public void setGs() {
+        int[] faithTrackVictoryPoints = {0, 0, 0, 1, 0, 0, 2, 0, 0, 4, 0, 0, 6, 0, 0, 9, 0, 0, 12, 0, 0, 16, 0, 0, 0};
 
         List<VaticanReport> vaticanReports = new ArrayList<>();
 
-        vaticanReports.add(new VaticanReport(5,8,2));
-        vaticanReports.add(new VaticanReport(12,15,2));
-        vaticanReports.add(new VaticanReport(19,24,4));
+        vaticanReports.add(new VaticanReport(5, 8, 2));
+        vaticanReports.add(new VaticanReport(12, 15, 2));
+        vaticanReports.add(new VaticanReport(19, 24, 4));
 
 
         gs = new GameSettings(null, 0, null, null, vaticanReports, faithTrackVictoryPoints);
@@ -65,7 +62,7 @@ public class MarketTest {
         market.reset();
 
 
-        for(int possibleMove = 0; possibleMove < 7; possibleMove++) {
+        for (int possibleMove = 0; possibleMove < 7; possibleMove++) {
             ArrayList<Resource> testResList = new ArrayList<>();
             Map<Resource, Long> testRes;
 
@@ -73,13 +70,13 @@ public class MarketTest {
             Map<Resource, Long> actualRes;
 
             int pM = possibleMove;
-            if(possibleMove < 3) {
+            if (possibleMove < 3) {
                 // row move
                 IntStream.range(0, Market.gridColLength).forEach(i -> testResList.add(market.getMarble(pM, i).getResource(p)));
                 actualResList = market.getResources(pM, p);
             } else {
                 // col move
-                IntStream.range(0, Market.gridRowLength).forEach(i -> testResList.add(market.getMarble(i, pM-3).getResource(p)));
+                IntStream.range(0, Market.gridRowLength).forEach(i -> testResList.add(market.getMarble(i, pM - 3).getResource(p)));
                 actualResList = market.getResources(pM, p);
             }
 
@@ -88,7 +85,6 @@ public class MarketTest {
 
             actualRes = actualResList.stream().filter(Objects::nonNull)
                     .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
-
 
 
             Assert.assertEquals(testRes.get(Resource.STONE), actualRes.get(Resource.STONE));
@@ -105,7 +101,7 @@ public class MarketTest {
         Marble mar = m.getFreeMarble();
         int isCorrectType = 0;
 
-        if(mar instanceof WhiteMarble) {
+        if (mar instanceof WhiteMarble) {
             isCorrectType = 1;
         } else if (mar instanceof RedMarble) {
             isCorrectType = 1;
@@ -113,16 +109,14 @@ public class MarketTest {
             isCorrectType = 1;
         } else if (mar instanceof PurpleMarble) {
             isCorrectType = 1;
-        } else if (mar instanceof  GreyMarble) {
+        } else if (mar instanceof GreyMarble) {
             isCorrectType = 1;
-        } else if (mar instanceof  YellowMarble) {
+        } else if (mar instanceof YellowMarble) {
             isCorrectType = 1;
         }
 
         Assert.assertEquals(isCorrectType, 1);
     }
-
-
 
 
 }

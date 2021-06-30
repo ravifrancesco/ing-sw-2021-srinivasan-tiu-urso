@@ -1,8 +1,6 @@
 package it.polimi.ingsw.model.reduced;
 
-import it.polimi.ingsw.model.full.cards.Card;
 import it.polimi.ingsw.model.full.cards.DevelopmentCard;
-import it.polimi.ingsw.model.full.cards.LeaderCard;
 import it.polimi.ingsw.model.full.marbles.Marble;
 
 import java.util.ArrayList;
@@ -15,11 +13,9 @@ public class ReducedGameBoard {
     // Market
     static final int gridRowLength = 3;
     static final int gridColLength = 4;
-    private Marble[] marblesGrid;
-
-    private List<Stack<DevelopmentCard>> grid;
-
     private final ReducedModel reducedModel;
+    private Marble[] marblesGrid;
+    private List<Stack<DevelopmentCard>> grid;
 
     public ReducedGameBoard(ReducedModel reducedModel) {
         this.reducedModel = reducedModel;
@@ -46,17 +42,17 @@ public class ReducedGameBoard {
     }
 
     public ArrayList<Marble> getMarblesMove(int move) {
-        return move < 3 ? getMarblesRowMove(move) : getMarblesColMove(move-3);
+        return move < 3 ? getMarblesRowMove(move) : getMarblesColMove(move - 3);
     }
 
     public Marble getMarble(int row, int col) {
-        return marblesGrid[(row*gridColLength) + col];
+        return marblesGrid[(row * gridColLength) + col];
     }
 
     private ArrayList<Marble> getMarblesRowMove(int move) {
         ArrayList<Marble> marbles = new ArrayList<>();
 
-        for(int i = 0; i < gridColLength; i++) {
+        for (int i = 0; i < gridColLength; i++) {
             marbles.add(getMarble(move, i));
         }
         return marbles;

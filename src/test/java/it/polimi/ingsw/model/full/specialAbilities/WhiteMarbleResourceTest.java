@@ -15,14 +15,15 @@ public class WhiteMarbleResourceTest {
     // TODO fix after market change
 
     GameSettings gs;
-    public void setGs () {
-        int[] faithTrackVictoryPoints = {0,0,0,1,0,0,2,0,0,4,0,0,6,0,0,9,0,0,12,0,0,16,0,0,0};
+
+    public void setGs() {
+        int[] faithTrackVictoryPoints = {0, 0, 0, 1, 0, 0, 2, 0, 0, 4, 0, 0, 6, 0, 0, 9, 0, 0, 12, 0, 0, 16, 0, 0, 0};
 
         List<VaticanReport> vaticanReports = new ArrayList<>();
 
-        vaticanReports.add(new VaticanReport(5,8,2));
-        vaticanReports.add(new VaticanReport(12,15,2));
-        vaticanReports.add(new VaticanReport(19,24,4));
+        vaticanReports.add(new VaticanReport(5, 8, 2));
+        vaticanReports.add(new VaticanReport(12, 15, 2));
+        vaticanReports.add(new VaticanReport(19, 24, 4));
 
 
         gs = new GameSettings(null, 0, null, null, vaticanReports, faithTrackVictoryPoints);
@@ -72,10 +73,10 @@ public class WhiteMarbleResourceTest {
         WhiteMarbleResource sa3 = new WhiteMarbleResource(Resource.SERVANT);
         WhiteMarbleResource sa4 = new WhiteMarbleResource(Resource.STONE);
 
-        Assert.assertEquals(sa1.toString(),"SA=WMR;R=SHIELD;");
-        Assert.assertEquals(sa2.toString(),"SA=WMR;R=GOLD;");
-        Assert.assertEquals(sa3.toString(),"SA=WMR;R=SERVANT;");
-        Assert.assertEquals(sa4.toString(),"SA=WMR;R=STONE;");
+        Assert.assertEquals(sa1.toString(), "SA=WMR;R=SHIELD;");
+        Assert.assertEquals(sa2.toString(), "SA=WMR;R=GOLD;");
+        Assert.assertEquals(sa3.toString(), "SA=WMR;R=SERVANT;");
+        Assert.assertEquals(sa4.toString(), "SA=WMR;R=STONE;");
 
     }
 

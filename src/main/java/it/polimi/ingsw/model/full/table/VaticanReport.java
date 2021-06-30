@@ -26,9 +26,9 @@ public class VaticanReport implements Serializable {
      * The constructor for a VaticanReport object. It sets the missed and achieved
      * to false.
      *
-     * @param start             the start of the vatican report zone.
-     * @param end               the end of the vatican report zone (also the checkpoint).
-     * @param victoryPoints     the victory points obtained if the the card is flipped.
+     * @param start         the start of the vatican report zone.
+     * @param end           the end of the vatican report zone (also the checkpoint).
+     * @param victoryPoints the victory points obtained if the the card is flipped.
      */
     public VaticanReport(int start, int end, int victoryPoints) {
         this.start = start;
@@ -67,9 +67,9 @@ public class VaticanReport implements Serializable {
     /**
      * Getter for missed.
      *
-     * @return  <code>true</code> if the player has discarded
-     *          the bonus victory points card;
-     *          <code>false</code> otherwise.
+     * @return <code>true</code> if the player has discarded
+     * the bonus victory points card;
+     * <code>false</code> otherwise.
      */
     public boolean isMissed() {
         return missed;
@@ -78,9 +78,9 @@ public class VaticanReport implements Serializable {
     /**
      * Getter for achieved.
      *
-     * @return  <code>true</code> if the player has flipped
-     *          the bonus victory points card;
-     *          <code>false</code> otherwise.
+     * @return <code>true</code> if the player has flipped
+     * the bonus victory points card;
+     * <code>false</code> otherwise.
      */
     public boolean isAchieved() {
         return achieved;
@@ -100,9 +100,9 @@ public class VaticanReport implements Serializable {
 
         String result = "";
 
-        result+="ST="+start+";";
-        result+="END="+end+";";
-        result+="VP="+victoryPoints+";";
+        result += "ST=" + start + ";";
+        result += "END=" + end + ";";
+        result += "VP=" + victoryPoints + ";";
 
         return result;
 

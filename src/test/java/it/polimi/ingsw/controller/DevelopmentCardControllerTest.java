@@ -1,8 +1,6 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.full.cards.DevelopmentCard;
-import it.polimi.ingsw.model.full.marbles.Marble;
-import it.polimi.ingsw.model.full.table.Resource;
 import it.polimi.ingsw.model.utils.ResourceContainer;
 import org.junit.Assert;
 import org.junit.BeforeClass;

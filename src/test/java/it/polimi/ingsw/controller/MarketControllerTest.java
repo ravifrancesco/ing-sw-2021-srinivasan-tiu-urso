@@ -1,18 +1,12 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.controller.exceptions.GameFullException;
 import it.polimi.ingsw.model.full.marbles.Marble;
 import it.polimi.ingsw.model.full.table.Resource;
-import it.polimi.ingsw.model.utils.GameSettings;
-import it.polimi.ingsw.utils.GameSettingsBuilder;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import javax.naming.InvalidNameException;
 import java.util.ArrayList;
-
-import static org.junit.Assert.fail;
 
 public class MarketControllerTest {
 

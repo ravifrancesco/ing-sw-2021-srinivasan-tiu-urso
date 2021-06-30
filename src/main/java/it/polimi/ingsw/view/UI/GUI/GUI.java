@@ -1,29 +1,23 @@
 package it.polimi.ingsw.view.UI.GUI;
 
-import it.polimi.ingsw.model.reduced.ReducedDashboard;
-import it.polimi.ingsw.model.reduced.ReducedGameBoard;
-import it.polimi.ingsw.model.utils.GameSettings;
-import it.polimi.ingsw.network.messages.clientMessages.lobbyMessage.AskGameLobbies;
-import it.polimi.ingsw.view.virtualView.client.ClientVirtualView;
-import it.polimi.ingsw.view.virtualView.client.OfflineClientVirtualView;
+import it.polimi.ingsw.model.full.table.Resource;
 import it.polimi.ingsw.model.reduced.ReducedModel;
+import it.polimi.ingsw.network.messages.clientMessages.ClientMessage;
+import it.polimi.ingsw.network.server.lobby.GameLobbyDetails;
 import it.polimi.ingsw.view.UI.GUI.JavaFX.controllers.ClientMainLobbyController;
 import it.polimi.ingsw.view.UI.GUI.JavaFX.controllers.GameController;
 import it.polimi.ingsw.view.UI.GUI.JavaFX.controllers.NicknameChoiceController;
 import it.polimi.ingsw.view.UI.GUI.JavaFX.controllers.ServerChoiceController;
 import it.polimi.ingsw.view.UI.UI;
 import it.polimi.ingsw.view.UI.UIType;
-import it.polimi.ingsw.model.full.table.Resource;
-import it.polimi.ingsw.network.server.lobby.GameLobbyDetails;
-import it.polimi.ingsw.network.messages.clientMessages.ClientMessage;
+import it.polimi.ingsw.view.virtualView.client.ClientVirtualView;
+import it.polimi.ingsw.view.virtualView.client.OfflineClientVirtualView;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -42,8 +36,12 @@ public class GUI extends Application implements UI {
     private ClientMainLobbyController clientMainLobbyController;
     private GameController gameController;
 
+    public static void main(String[] args) {
+        launch(args);
+    }
+
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/server_choice.fxml"));
         Parent root = fxmlLoader.load();
         serverChoiceController = fxmlLoader.getController();
@@ -51,10 +49,6 @@ public class GUI extends Application implements UI {
         primaryStage.setTitle("Choose a server");
         primaryStage.setScene(new Scene(root, 600, 400));
         primaryStage.show();
-    }
-
-    public static void main(String[] args) {
-        launch(args);
     }
 
     @Override
@@ -132,8 +126,7 @@ public class GUI extends Application implements UI {
                         } else {
                             gameController.initPlayerAlert();
                         }
-                    }
-                    catch (IOException e) {
+                    } catch (IOException e) {
                         e.printStackTrace();
                     }
                 }
@@ -152,20 +145,20 @@ public class GUI extends Application implements UI {
         }
     }
 
-    public void setNicknameChoiceController(NicknameChoiceController nicknameChoiceController) {
-        this.nicknameChoiceController = nicknameChoiceController;
-    }
-
     public NicknameChoiceController getNicknameChoiceController() {
         return nicknameChoiceController;
     }
 
-    public void setClientMainLobbyController(ClientMainLobbyController clientMainLobbyController) {
-        this.clientMainLobbyController = clientMainLobbyController;
+    public void setNicknameChoiceController(NicknameChoiceController nicknameChoiceController) {
+        this.nicknameChoiceController = nicknameChoiceController;
     }
 
     public ClientMainLobbyController getClientMainLobbyController() {
         return clientMainLobbyController;
+    }
+
+    public void setClientMainLobbyController(ClientMainLobbyController clientMainLobbyController) {
+        this.clientMainLobbyController = clientMainLobbyController;
     }
 
     @Override

@@ -1,11 +1,11 @@
 package it.polimi.ingsw.view.UI.GUI.JavaFX.controllers;
 
-import it.polimi.ingsw.view.UI.GUI.GUI;
-import it.polimi.ingsw.model.full.table.Resource;
 import it.polimi.ingsw.model.full.cards.LeaderCard;
 import it.polimi.ingsw.model.full.specialAbilities.DevelopmentCardDiscount;
 import it.polimi.ingsw.model.full.specialAbilities.SpecialAbilityType;
+import it.polimi.ingsw.model.full.table.Resource;
 import it.polimi.ingsw.utils.Pair;
+import it.polimi.ingsw.view.UI.GUI.GUI;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -47,7 +47,8 @@ public class BuyDevCardController {
 
     private Pair<Integer, Integer> position;
 
-    @FXML private Button cancelButton;
+    @FXML
+    private Button cancelButton;
 
     public void initialize() {
         hideDiscounts();
@@ -81,10 +82,9 @@ public class BuyDevCardController {
             stage.setScene(new Scene(root, 500, 700));
             stage.initModality(Modality.WINDOW_MODAL);
             stage.initOwner(
-                    ((Node)event.getSource()).getScene().getWindow() );
+                    ((Node) event.getSource()).getScene().getWindow());
             stage.show();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -108,7 +108,7 @@ public class BuyDevCardController {
         List<LeaderCard> leaderCards = gui.getReducedModel().getReducedGame()
                 .getReducedPlayer(gui.getReducedModel().getReducedPlayer().getNickname())
                 .getDashboard().getPlayedLeaderCards().stream()
-                .filter(l-> l.getSpecialAbility().getType().equals(SpecialAbilityType.DEVELOPMENT_CARD_DISCOUNT))
+                .filter(l -> l.getSpecialAbility().getType().equals(SpecialAbilityType.DEVELOPMENT_CARD_DISCOUNT))
                 .collect(Collectors.toList());
         if (leaderCards.size() == 1) {
             Resource r = ((DevelopmentCardDiscount) leaderCards.get(0).getSpecialAbility()).getResource();
@@ -121,7 +121,7 @@ public class BuyDevCardController {
     }
 
     private void displayResource(ImageView iw, Label lb, Resource r) {
-        File file = new File("src/main/resources/png/resources/"+r.name().toLowerCase()+".png");
+        File file = new File("src/main/resources/png/resources/" + r.name().toLowerCase() + ".png");
         Image image = new Image(file.toURI().toString());
         iw.setImage(image);
         discountHbox.setVisible(true);

@@ -15,7 +15,7 @@ public class Pair<F, S> implements Serializable {
     /**
      * Constructor for a Pair.
      *
-     * @param first the first object in the Pair
+     * @param first  the first object in the Pair
      * @param second the second object in the pair
      */
     public Pair(F first, S second) {
@@ -29,7 +29,7 @@ public class Pair<F, S> implements Serializable {
      *
      * @param o the {@link Pair} to which this one is to be checked for equality
      * @return true if the underlying objects of the Pair are both considered
-     *         equal
+     * equal
      */
     @Override
     public boolean equals(Object o) {

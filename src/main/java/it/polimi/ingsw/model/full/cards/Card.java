@@ -8,10 +8,11 @@ import it.polimi.ingsw.model.full.table.Player;
 
 public interface Card {
 
-	/**
-	 * Allows to activate the special ability of a card.
-	 * @param p represents the player who activated the card.
-	 */
-	void activate(Player p);
+    /**
+     * Allows to activate the special ability of a card.
+     *
+     * @param p represents the player who activated the card.
+     */
+    void activate(Player p);
 
 }

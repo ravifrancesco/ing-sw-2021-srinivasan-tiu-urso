@@ -1,10 +1,10 @@
 package it.polimi.ingsw.view.UI.GUI.JavaFX.controllers;
 
-import it.polimi.ingsw.view.UI.GUI.GUI;
-import it.polimi.ingsw.model.full.table.Resource;
 import it.polimi.ingsw.model.full.marbles.Marble;
 import it.polimi.ingsw.model.full.marbles.MarbleColor;
+import it.polimi.ingsw.model.full.table.Resource;
 import it.polimi.ingsw.network.messages.clientMessages.game.PlayerGetsFromMarket;
+import it.polimi.ingsw.view.UI.GUI.GUI;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -26,38 +26,27 @@ public class MarketViewController {
 
     private final int NUM_OF_ROWS = 3;
     private final int NUM_OF_COLUMNS = 4;
-
-    private GUI gui;
-
     @FXML
     GridPane marketGridPane;
-
     ImageView freeMarbleIW;
     ArrayList<ImageView> marblesIW;
-
     @FXML
     Button button0;
-
     @FXML
     Button button1;
-
     @FXML
     Button button2;
-
     @FXML
     Button button3;
-
     @FXML
     Button button4;
-
     @FXML
     Button button5;
-
     @FXML
     Button button6;
-
     @FXML
     Button backButton;
+    private GUI gui;
 
     public void setGui(GUI gui) {
         this.gui = gui;
@@ -104,7 +93,7 @@ public class MarketViewController {
     @FXML
     public void button0Pressed() {
         Marble[] marbleGrid = gui.getReducedModel().getReducedGameBoard().getMarblesGrid();
-        List<Marble>  marbles = Arrays.asList(marbleGrid[0], marbleGrid[1], marbleGrid[2] , marbleGrid[3]);
+        List<Marble> marbles = Arrays.asList(marbleGrid[0], marbleGrid[1], marbleGrid[2], marbleGrid[3]);
         ArrayList<Resource> wmrs = askWMR(marbles);
         gui.send(new PlayerGetsFromMarket(0, wmrs));
     }
@@ -112,7 +101,7 @@ public class MarketViewController {
     @FXML
     public void button1Pressed() {
         Marble[] marbleGrid = gui.getReducedModel().getReducedGameBoard().getMarblesGrid();
-        List<Marble>  marbles = Arrays.asList(marbleGrid[4], marbleGrid[5], marbleGrid[6] , marbleGrid[7]);
+        List<Marble> marbles = Arrays.asList(marbleGrid[4], marbleGrid[5], marbleGrid[6], marbleGrid[7]);
         ArrayList<Resource> wmrs = askWMR(marbles);
         gui.send(new PlayerGetsFromMarket(1, wmrs));
     }
@@ -120,7 +109,7 @@ public class MarketViewController {
     @FXML
     public void button2Pressed() {
         Marble[] marbleGrid = gui.getReducedModel().getReducedGameBoard().getMarblesGrid();
-        List<Marble>  marbles = Arrays.asList(marbleGrid[8], marbleGrid[9], marbleGrid[10] , marbleGrid[11]);
+        List<Marble> marbles = Arrays.asList(marbleGrid[8], marbleGrid[9], marbleGrid[10], marbleGrid[11]);
         ArrayList<Resource> wmrs = askWMR(marbles);
         gui.send(new PlayerGetsFromMarket(2, wmrs));
     }
@@ -128,7 +117,7 @@ public class MarketViewController {
     @FXML
     public void button3Pressed() {
         Marble[] marbleGrid = gui.getReducedModel().getReducedGameBoard().getMarblesGrid();
-        List<Marble>  marbles = Arrays.asList(marbleGrid[0], marbleGrid[4], marbleGrid[8]);
+        List<Marble> marbles = Arrays.asList(marbleGrid[0], marbleGrid[4], marbleGrid[8]);
         ArrayList<Resource> wmrs = askWMR(marbles);
         gui.send(new PlayerGetsFromMarket(3, wmrs));
     }
@@ -136,7 +125,7 @@ public class MarketViewController {
     @FXML
     public void button4Pressed() {
         Marble[] marbleGrid = gui.getReducedModel().getReducedGameBoard().getMarblesGrid();
-        List<Marble>  marbles = Arrays.asList(marbleGrid[1], marbleGrid[5], marbleGrid[9]);
+        List<Marble> marbles = Arrays.asList(marbleGrid[1], marbleGrid[5], marbleGrid[9]);
         ArrayList<Resource> wmrs = askWMR(marbles);
         gui.send(new PlayerGetsFromMarket(4, wmrs));
     }
@@ -144,7 +133,7 @@ public class MarketViewController {
     @FXML
     public void button5Pressed() {
         Marble[] marbleGrid = gui.getReducedModel().getReducedGameBoard().getMarblesGrid();
-        List<Marble>  marbles = Arrays.asList(marbleGrid[2], marbleGrid[6], marbleGrid[10]);
+        List<Marble> marbles = Arrays.asList(marbleGrid[2], marbleGrid[6], marbleGrid[10]);
         ArrayList<Resource> wmrs = askWMR(marbles);
         gui.send(new PlayerGetsFromMarket(5, wmrs));
     }
@@ -152,7 +141,7 @@ public class MarketViewController {
     @FXML
     public void button6Pressed() {
         Marble[] marbleGrid = gui.getReducedModel().getReducedGameBoard().getMarblesGrid();
-        List<Marble>  marbles = Arrays.asList(marbleGrid[3], marbleGrid[7], marbleGrid[11]);
+        List<Marble> marbles = Arrays.asList(marbleGrid[3], marbleGrid[7], marbleGrid[11]);
         ArrayList<Resource> wmrs = askWMR(marbles);
         gui.send(new PlayerGetsFromMarket(6, wmrs));
     }
@@ -185,12 +174,12 @@ public class MarketViewController {
         alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo);
 
         Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == buttonTypeOne){
+        if (result.get() == buttonTypeOne) {
             return wmrsArray[0];
         } else if (result.get() == buttonTypeTwo) {
             return wmrsArray[1];
         }
         return null;
     }
-    
+
 }

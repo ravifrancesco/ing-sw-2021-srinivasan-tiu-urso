@@ -5,7 +5,6 @@ import it.polimi.ingsw.controller.exceptions.WrongMoveException;
 import it.polimi.ingsw.controller.exceptions.WrongTurnException;
 import it.polimi.ingsw.controller.exceptions.WrongTurnPhaseException;
 import it.polimi.ingsw.model.full.cards.Banner;
-import it.polimi.ingsw.model.full.cards.LeaderCard;
 import it.polimi.ingsw.model.full.table.*;
 
 import java.util.Map;
@@ -16,6 +15,7 @@ public class LeaderCardController {
 
     /**
      * Constructor for a LeaderCard Controller object.
+     *
      * @param game represents the game which the controller belongs to.
      */
 
@@ -69,9 +69,11 @@ public class LeaderCardController {
 
         try {
             player.playLeaderCard(cardToPlay);
+        } catch (IllegalStateException e) {
+            throw new CardNotPlayableException("Leader Card places are full");
+        } catch (IllegalArgumentException e) {
+            throw new CardNotPlayableException("Position given is already full");
         }
-        catch (IllegalStateException e) { throw new CardNotPlayableException("Leader Card places are full"); }
-        catch (IllegalArgumentException e) { throw new CardNotPlayableException("Position given is already full"); }
     }
 
     /**

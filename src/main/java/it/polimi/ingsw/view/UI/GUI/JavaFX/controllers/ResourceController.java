@@ -1,12 +1,12 @@
 package it.polimi.ingsw.view.UI.GUI.JavaFX.controllers;
 
-import it.polimi.ingsw.view.UI.GUI.JavaFX.utils.ExtraDepositSlot;
-import it.polimi.ingsw.view.UI.GUI.GUI;
-import it.polimi.ingsw.view.UI.GUI.JavaFX.utils.Slot;
 import it.polimi.ingsw.model.full.table.Resource;
 import it.polimi.ingsw.network.messages.clientMessages.game.PlayerChangesExtraDeposit;
 import it.polimi.ingsw.network.messages.clientMessages.game.PlayerStoresFromSupply;
 import it.polimi.ingsw.network.messages.clientMessages.game.PlayerStoresFromSupplyToExtraDeposit;
+import it.polimi.ingsw.view.UI.GUI.GUI;
+import it.polimi.ingsw.view.UI.GUI.JavaFX.utils.ExtraDepositSlot;
+import it.polimi.ingsw.view.UI.GUI.JavaFX.utils.Slot;
 import javafx.fxml.FXML;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
@@ -19,7 +19,8 @@ public class ResourceController {
 
     private GUI gui;
 
-    @FXML private ImageView item;
+    @FXML
+    private ImageView item;
 
     private double x;
 
@@ -44,13 +45,13 @@ public class ResourceController {
         String name = "";
         int newPos;
         this.resourceType = resourceType;
-        switch(resourceType) {
+        switch (resourceType) {
             case GOLD -> name = "gold";
             case SHIELD -> name = "shield";
             case STONE -> name = "stone";
             case SERVANT -> name = "servant";
         }
-        File file = new File("src/main/resources/png/resources/"+name+".png");
+        File file = new File("src/main/resources/png/resources/" + name + ".png");
         Image image = new Image(file.toURI().toString());
         item = new ImageView(image);
         item.setFitWidth(25);
@@ -60,13 +61,13 @@ public class ResourceController {
         item.setOnMouseReleased(this::released);
 
         if (pos < GameController.NUM_SHELFES) {
-            setX((slots[pos].getX() + slots[pos].getWidth()/2) - (item.getFitWidth() / 2));
-            setY((slots[pos].getY() + slots[pos].getHeight()/2) - (item.getFitWidth() / 2));
+            setX((slots[pos].getX() + slots[pos].getWidth() / 2) - (item.getFitWidth() / 2));
+            setY((slots[pos].getY() + slots[pos].getHeight() / 2) - (item.getFitWidth() / 2));
             slots[pos].filLSlot();
         } else {
             newPos = pos - GameController.NUM_SHELFES;
-            setX((leaderSlots[newPos].getX() + leaderSlots[newPos].getWidth()/2) - (item.getFitWidth() / 2));
-            setY((leaderSlots[newPos].getY() + leaderSlots[newPos].getHeight()/2) - (item.getFitWidth() / 2));
+            setX((leaderSlots[newPos].getX() + leaderSlots[newPos].getWidth() / 2) - (item.getFitWidth() / 2));
+            setY((leaderSlots[newPos].getY() + leaderSlots[newPos].getHeight() / 2) - (item.getFitWidth() / 2));
             leaderSlots[newPos].filLSlot();
         }
         currentSlot = pos;
@@ -76,13 +77,13 @@ public class ResourceController {
     public void createSupplyItem(Resource resourceType, int pos) {
         String name = "";
         this.resourceType = resourceType;
-        switch(resourceType) {
+        switch (resourceType) {
             case GOLD -> name = "gold";
             case SHIELD -> name = "shield";
             case STONE -> name = "stone";
             case SERVANT -> name = "servant";
         }
-        File file = new File("src/main/resources/png/resources/"+name+".png");
+        File file = new File("src/main/resources/png/resources/" + name + ".png");
         Image image = new Image(file.toURI().toString());
         item = new ImageView(image);
         item.setFitWidth(25);
@@ -91,7 +92,7 @@ public class ResourceController {
         item.setOnMouseDragged(this::dragged);
         item.setOnMouseReleased(this::released);
 
-        setX(280+70*pos - item.getFitWidth() / 2);
+        setX(280 + 70 * pos - item.getFitWidth() / 2);
         setY(90 - item.getFitHeight() / 2);
         currentSlot = -1;
         supplyPos = pos;
@@ -131,8 +132,8 @@ public class ResourceController {
     }
 
     private void dragged(MouseEvent event) {
-        item.setX(event.getX()-item.getFitWidth()/2);
-        item.setY(event.getY()-item.getFitHeight()/2);
+        item.setX(event.getX() - item.getFitWidth() / 2);
+        item.setY(event.getY() - item.getFitHeight() / 2);
     }
 
     private void released(MouseEvent event) {
@@ -148,8 +149,8 @@ public class ResourceController {
 
         for (int i = 0; i < GameController.NUM_SHELFES; i++) {
             if (slots[i].isPointInSlot(x, y) && slots[i].isEmpty()) {
-                setX((slots[i].getX() + slots[i].getWidth()/2) - (item.getFitWidth() / 2));
-                setY((slots[i].getY() + slots[i].getHeight()/2) - (item.getFitWidth() / 2));
+                setX((slots[i].getX() + slots[i].getWidth() / 2) - (item.getFitWidth() / 2));
+                setY((slots[i].getY() + slots[i].getHeight() / 2) - (item.getFitWidth() / 2));
                 slots[i].filLSlot();
                 if (currentSlot != -1) {
                     if (currentSlot < GameController.NUM_SHELFES) {
@@ -181,8 +182,8 @@ public class ResourceController {
 
         for (int i = 0; i < GameController.SIZE_EXTRA_DEPOSITS; i++) {
             if (leaderSlots[i].isPointInSlot(x, y) && leaderSlots[i].isEmpty() && leaderSlots[i].isAvailable() && resourceType == leaderSlots[i].getSlotType()) {
-                setX((leaderSlots[i].getX() + leaderSlots[i].getWidth()/2) - (item.getFitWidth() / 2));
-                setY((leaderSlots[i].getY() + leaderSlots[i].getHeight()/2) - (item.getFitWidth() / 2));
+                setX((leaderSlots[i].getX() + leaderSlots[i].getWidth() / 2) - (item.getFitWidth() / 2));
+                setY((leaderSlots[i].getY() + leaderSlots[i].getHeight() / 2) - (item.getFitWidth() / 2));
                 leaderSlots[i].filLSlot();
                 if (currentSlot != -1) {
                     if (currentSlot < GameController.NUM_SHELFES) {
@@ -192,13 +193,13 @@ public class ResourceController {
                     }
                     if (supplyPos == -1) {
                         gui.changeResourceController(currentSlot, i + GameController.NUM_SHELFES);
-                        gui.send(new PlayerChangesExtraDeposit(gui.getDepositView(), gui.getExtraDepositView(i/2), i/2));
+                        gui.send(new PlayerChangesExtraDeposit(gui.getDepositView(), gui.getExtraDepositView(i / 2), i / 2));
                     }
                 }
                 currentSlot = i + GameController.NUM_SHELFES;
                 if (supplyPos != -1) {
                     gui.changeSupplyController(supplyPos, currentSlot);
-                    gui.send(new PlayerStoresFromSupplyToExtraDeposit(i/2, supplyPos, i%2));
+                    gui.send(new PlayerStoresFromSupplyToExtraDeposit(i / 2, supplyPos, i % 2));
                     supplyPos = -1;
                 }
                 return;

@@ -70,7 +70,7 @@ public class DevelopmentCardDiscountTest {
         int vaticanReportsNum = 3;
         List<VaticanReport> vaticanReports = vaticanReportsListBuilder();
 
-        int[] faithTrackVictoryPoints = {0,0,0,1,0,0,2,0,0,4,0,0,6,0,0,9,0,0,12,0,0,16,0,0,0};
+        int[] faithTrackVictoryPoints = {0, 0, 0, 1, 0, 0, 2, 0, 0, 4, 0, 0, 6, 0, 0, 9, 0, 0, 12, 0, 0, 16, 0, 0, 0};
 
         return new GameSettings(developmentCards, leaderCardNum, leaderCards,
                 dashboardProductionPower, vaticanReports, faithTrackVictoryPoints);
@@ -91,7 +91,7 @@ public class DevelopmentCardDiscountTest {
         Map<Resource, Integer> resourceProduced = new HashMap<>();
         resourceProduced.put(Resource.SHIELD, 1);
 
-        ProductionPower p = new ProductionPower(resourceRequired, resourceProduced,2);
+        ProductionPower p = new ProductionPower(resourceRequired, resourceProduced, 2);
 
         return IntStream.range(0, GameSettings.DEVELOPMENT_CARD_NUM)
                 .boxed()
@@ -124,9 +124,9 @@ public class DevelopmentCardDiscountTest {
         SAs[2] = new WarehouseExtraSpace(Resource.SERVANT);
         SAs[3] = new WhiteMarbleResource(Resource.SHIELD);
 
-        return  IntStream.range(0, leaderCardNum)
+        return IntStream.range(0, leaderCardNum)
                 .boxed()
-                .map(i -> new LeaderCard(i, 2, bannerCost, resourceCost, SAs[i%4]))
+                .map(i -> new LeaderCard(i, 2, bannerCost, resourceCost, SAs[i % 4]))
                 .toArray(LeaderCard[]::new);
 
     }
@@ -140,7 +140,7 @@ public class DevelopmentCardDiscountTest {
         Map<Resource, Integer> resourceProduced = new HashMap<>();
         resourceProduced.put(Resource.SHIELD, 1);
 
-        return new ProductionPower(resourceRequired, resourceProduced,2);
+        return new ProductionPower(resourceRequired, resourceProduced, 2);
 
     }
 

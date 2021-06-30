@@ -18,7 +18,7 @@ public class FaithTrackObservable {
      *
      * @param observer observer to add.
      */
-    public void addObserver(FaithTrackObserver observer){
+    public void addObserver(FaithTrackObserver observer) {
         synchronized (observers) {
             observers.add(observer);
         }
@@ -27,9 +27,9 @@ public class FaithTrackObservable {
     /**
      * Remove observer.
      *
-     * @param observer  observer to remove.
+     * @param observer observer to remove.
      */
-    public void removeObserver(FaithTrackObserver observer){
+    public void removeObserver(FaithTrackObserver observer) {
         synchronized (observers) {
             observers.remove(observer);
         }
@@ -38,9 +38,9 @@ public class FaithTrackObservable {
     /**
      * Notify observes.
      *
-     * @param message   message for notification.
+     * @param message message for notification.
      */
-    public void notify(FaithTrack message){
+    public void notify(FaithTrack message) {
         synchronized (observers) {
             for (FaithTrackObserver observer : observers) {
                 observer.update(message);

@@ -1,7 +1,7 @@
 package it.polimi.ingsw.network.messages.clientMessages.game;
 
-import it.polimi.ingsw.view.virtualView.client.OfflineClientVirtualView;
 import it.polimi.ingsw.controller.Controller;
+import it.polimi.ingsw.view.virtualView.client.OfflineClientVirtualView;
 import it.polimi.ingsw.view.virtualView.server.ServerVirtualView;
 
 import java.io.Serializable;
@@ -16,7 +16,7 @@ public class PlayerDiscardsLeaderCard extends ClientGameMessage implements Seria
     @Override
     public void handle(ServerVirtualView c, Controller controller) {
         int output = controller.discardLeaderCard(c.getNickname(), cardToDiscard);
-        if(output == 0) {
+        if (output == 0) {
             c.sendSuccessfulMoveMessage("Card with index " + cardToDiscard + " has been discarded successfully");
         }
     }
@@ -24,7 +24,7 @@ public class PlayerDiscardsLeaderCard extends ClientGameMessage implements Seria
     @Override
     public void handleLocally(OfflineClientVirtualView offlineClientVirtualView, Controller controller) {
         int output = controller.discardLeaderCard(offlineClientVirtualView.getNickname(), cardToDiscard);
-        if(output == 0) {
+        if (output == 0) {
             offlineClientVirtualView.printSuccessfulMove("Card with index " + cardToDiscard + " has been discarded successfully");
         }
     }

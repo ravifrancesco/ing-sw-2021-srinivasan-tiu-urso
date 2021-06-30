@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model.full.table;
 
-import it.polimi.ingsw.model.full.table.VaticanReport;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.jupiter.api.Assumptions;
@@ -66,8 +65,6 @@ public class VaticanReportTest {
         Assert.assertEquals(5, cloneVaticanReport.getVictoryPoints());
 
     }
-
-
 
 
 }

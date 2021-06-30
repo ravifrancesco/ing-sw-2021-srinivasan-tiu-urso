@@ -1,8 +1,8 @@
 package it.polimi.ingsw.view.UI.GUI.JavaFX.controllers;
 
+import it.polimi.ingsw.model.full.cards.LeaderCard;
 import it.polimi.ingsw.view.UI.GUI.GUI;
 import it.polimi.ingsw.view.UI.GUI.JavaFX.utils.Slot;
-import it.polimi.ingsw.model.full.cards.LeaderCard;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -22,7 +22,8 @@ public class LeaderCardController {
 
     private GUI gui;
 
-    @FXML private ImageView item;
+    @FXML
+    private ImageView item;
 
     private LeaderCard leaderCard;
 
@@ -36,7 +37,7 @@ public class LeaderCardController {
 
     public void createItem(LeaderCard leaderCard, int slot) {
         String name = "leader_card_" + leaderCard.getId() + ".png";
-        File file = new File("src/main/resources/png/cards/leaderCards/"+name);
+        File file = new File("src/main/resources/png/cards/leaderCards/" + name);
         Image image = new Image(file.toURI().toString());
         item = new ImageView(image);
         item.setFitWidth(slots[slot].getWidth());
@@ -83,10 +84,9 @@ public class LeaderCardController {
             stage.setScene(new Scene(root, 500, 700));
             stage.initModality(Modality.WINDOW_MODAL);
             stage.initOwner(
-                    ((Node)event.getSource()).getScene().getWindow() );
+                    ((Node) event.getSource()).getScene().getWindow());
             stage.show();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

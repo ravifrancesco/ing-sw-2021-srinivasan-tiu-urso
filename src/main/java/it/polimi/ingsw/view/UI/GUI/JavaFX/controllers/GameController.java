@@ -1,21 +1,23 @@
 package it.polimi.ingsw.view.UI.GUI.JavaFX.controllers;
 
-import it.polimi.ingsw.model.reduced.*;
-import it.polimi.ingsw.model.utils.GameSettings;
-import it.polimi.ingsw.view.UI.GUI.JavaFX.utils.ExtraDepositSlot;
-import it.polimi.ingsw.view.UI.GUI.GUI;
-import it.polimi.ingsw.view.UI.GUI.JavaFX.utils.Slot;
-import it.polimi.ingsw.model.full.table.Resource;
-import it.polimi.ingsw.model.full.table.TurnPhase;
 import it.polimi.ingsw.model.full.cards.DevelopmentCard;
 import it.polimi.ingsw.model.full.cards.LeaderCard;
 import it.polimi.ingsw.model.full.marbles.Marble;
+import it.polimi.ingsw.model.full.specialAbilities.ProductionPower;
+import it.polimi.ingsw.model.full.specialAbilities.SpecialAbilityType;
+import it.polimi.ingsw.model.full.specialAbilities.WarehouseExtraSpace;
+import it.polimi.ingsw.model.full.table.Resource;
+import it.polimi.ingsw.model.full.table.TurnPhase;
 import it.polimi.ingsw.model.full.tokens.Token;
-import it.polimi.ingsw.model.full.specialAbilities.*;
+import it.polimi.ingsw.model.reduced.*;
+import it.polimi.ingsw.model.utils.GameSettings;
 import it.polimi.ingsw.network.messages.clientMessages.game.EndTurnGameMessage;
 import it.polimi.ingsw.network.messages.clientMessages.game.PlayerChangesDeposit;
 import it.polimi.ingsw.network.messages.clientMessages.game.StartGameGameMessage;
 import it.polimi.ingsw.utils.Pair;
+import it.polimi.ingsw.view.UI.GUI.GUI;
+import it.polimi.ingsw.view.UI.GUI.JavaFX.utils.ExtraDepositSlot;
+import it.polimi.ingsw.view.UI.GUI.JavaFX.utils.Slot;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -40,94 +42,66 @@ import java.util.stream.IntStream;
 
 public class GameController {
 
+    public static final int NUM_SHELFES = 6;
+    public static final int NUM_FAITH_SLOTS = 25;
+    public static final int NUM_LEADER_CARDS = 2;
+    public static final int NUM_DEVELOPMENT_CARDS = 3;
+    public static final int SIZE_EXTRA_DEPOSITS = 4;
+    public static final int SIZE_SUPPLY = 4;
+    @FXML
+    Label goldLabel;
+    @FXML
+    Label shieldLabel;
+    @FXML
+    Label stoneLabel;
+    @FXML
+    Label servantLabel;
+    String currentDisplayedPlayer = "";
     private GUI gui;
-
-    @FXML private Pane pane;
-
+    @FXML
+    private Pane pane;
     @FXML
     private Button btnConfirm;
-
     @FXML
     private Button btnCancel;
-
     @FXML
     private Text pointsText;
-
     @FXML
     private ImageView lorenzoPicIW;
     @FXML
     private ImageView tokenIW;
-
     private Alert mainAlert;
-
     private Slot[] depositSlots;
-
     private ExtraDepositSlot[] extraDepositSlots;
-
     private Slot[] faithSlots;
-
     private Slot[] leaderCardSlots;
-
     private Slot[] developmentCardSlots;
-
     private ResourceController[] resourceControllers;
-
     private LeaderCardController[] leaderCardControllers;
-
     private DevelopmentCardController[] developmentCardControllers;
-
     private ResourceController[] supplyControllers;
-
     private FaithMarkerController faithMarkerController;
-
     private FaithMarkerController lorenzoIlMagnificoFaithMarkerController;
-
     private MarketViewController marketController;
-
     private DevCardGridController devCardGridController;
-
     private HandController handController;
-
-    @FXML private ComboBox<String> nicknameCombo;
-
-    public static final int NUM_SHELFES = 6;
-
-    public static final int NUM_FAITH_SLOTS = 25;
-
-    public static final int NUM_LEADER_CARDS = 2;
-
-    public static final int NUM_DEVELOPMENT_CARDS = 3;
-
-    public static final int SIZE_EXTRA_DEPOSITS = 4;
-
-    public static final int SIZE_SUPPLY = 4;
-
-    @FXML private ImageView marketImage;
-
-    @FXML private ImageView dvGridImage;
-
-    @FXML private ImageView vaticanReport0IW;
-    @FXML private ImageView vaticanReport1IW;
-    @FXML private ImageView vaticanReport2IW;
-    private List<ImageView> vaticanReportTokens;
-
-    @FXML private Pane dashboardProductionPane;
+    @FXML
+    private ComboBox<String> nicknameCombo;
+    @FXML
+    private ImageView marketImage;
+    @FXML
+    private ImageView dvGridImage;
 
     // Label for locker
-
     @FXML
-    Label goldLabel;
-
+    private ImageView vaticanReport0IW;
     @FXML
-    Label shieldLabel;
-
+    private ImageView vaticanReport1IW;
     @FXML
-    Label stoneLabel;
-
+    private ImageView vaticanReport2IW;
+    private List<ImageView> vaticanReportTokens;
     @FXML
-    Label servantLabel;
-
-    String currentDisplayedPlayer = "";
+    private Pane dashboardProductionPane;
 
     public void setGui(GUI gui) {
         this.gui = gui;
@@ -274,14 +248,14 @@ public class GameController {
 
         if (leaderCard.getSpecialAbility().getType() == SpecialAbilityType.WAREHOUSE_EXTRA_SPACE) {
             WarehouseExtraSpace wes = (WarehouseExtraSpace) leaderCard.getSpecialAbility();
-            extraDepositSlots[slot*2].setStroke(Color.RED);
-            extraDepositSlots[slot*2].setAvailable(true);
-            extraDepositSlots[slot*2].setSlotType(wes.getStoredResource());
-            extraDepositSlots[slot*2+1].setStroke(Color.RED);
-            extraDepositSlots[slot*2+1].setAvailable(true);
-            extraDepositSlots[slot*2+1].setSlotType(wes.getStoredResource());
+            extraDepositSlots[slot * 2].setStroke(Color.RED);
+            extraDepositSlots[slot * 2].setAvailable(true);
+            extraDepositSlots[slot * 2].setSlotType(wes.getStoredResource());
+            extraDepositSlots[slot * 2 + 1].setStroke(Color.RED);
+            extraDepositSlots[slot * 2 + 1].setAvailable(true);
+            extraDepositSlots[slot * 2 + 1].setSlotType(wes.getStoredResource());
         } else if (leaderCard.getSpecialAbility().getType() == SpecialAbilityType.PRODUCTION_POWER) {
-            if (!((ProductionPower)leaderCard.getSpecialAbility()).isActivatable()) {
+            if (!((ProductionPower) leaderCard.getSpecialAbility()).isActivatable()) {
                 leaderCardControllers[slot].setDarker();
             } else {
                 leaderCardControllers[slot].getItem().setOnMouseClicked(mouseEvent -> leaderCardControllers[slot].openProductionPowerView(mouseEvent));
@@ -291,8 +265,8 @@ public class GameController {
         pane.getChildren().add(leaderCardControllers[slot].getItem());
 
         if (leaderCard.getSpecialAbility().getType() == SpecialAbilityType.WAREHOUSE_EXTRA_SPACE) {
-            pane.getChildren().add(extraDepositSlots[slot*2].getRectangle());
-            pane.getChildren().add(extraDepositSlots[slot*2+1].getRectangle());
+            pane.getChildren().add(extraDepositSlots[slot * 2].getRectangle());
+            pane.getChildren().add(extraDepositSlots[slot * 2 + 1].getRectangle());
         }
 
         reloadWarehouseImages();
@@ -303,8 +277,8 @@ public class GameController {
             if (leaderCardControllers[i] != null) {
                 pane.getChildren().remove(leaderCardControllers[i].getItem());
                 if (leaderCardControllers[i].getLeaderCard().getSpecialAbility().getType() == SpecialAbilityType.WAREHOUSE_EXTRA_SPACE) {
-                    pane.getChildren().remove(extraDepositSlots[i*2].getRectangle());
-                    pane.getChildren().remove(extraDepositSlots[i*2+1].getRectangle());
+                    pane.getChildren().remove(extraDepositSlots[i * 2].getRectangle());
+                    pane.getChildren().remove(extraDepositSlots[i * 2 + 1].getRectangle());
                 }
                 leaderCardControllers[i] = null;
             }
@@ -391,7 +365,7 @@ public class GameController {
         for (int i = 0; i < SIZE_EXTRA_DEPOSITS / 2; i++) {
             for (int j = 0; j < SIZE_EXTRA_DEPOSITS / 2; j++) {
                 if (extraDeposit[i] != null && extraDeposit[i][j] != null) {
-                    printResource(extraDeposit[i][j], NUM_SHELFES + i*2 + j);
+                    printResource(extraDeposit[i][j], NUM_SHELFES + i * 2 + j);
                 }
             }
         }
@@ -520,7 +494,7 @@ public class GameController {
         stage.setScene(new Scene(root, 465, 700));
         stage.initModality(Modality.WINDOW_MODAL);
         stage.initOwner(
-                ((Node)event.getSource()).getScene().getWindow() );
+                ((Node) event.getSource()).getScene().getWindow());
         stage.show();
     }
 
@@ -540,7 +514,7 @@ public class GameController {
         stage.setScene(new Scene(root, 700, 800));
         stage.initModality(Modality.WINDOW_MODAL);
         stage.initOwner(
-                ((Node)event.getSource()).getScene().getWindow() );
+                ((Node) event.getSource()).getScene().getWindow());
         stage.show();
     }
 
@@ -554,7 +528,7 @@ public class GameController {
         mainAlert.getButtonTypes().setAll(buttonTypeOne);
 
         Optional<ButtonType> result = mainAlert.showAndWait();
-        if (result.isPresent() && result.get() == buttonTypeOne){
+        if (result.isPresent() && result.get() == buttonTypeOne) {
             this.gui.send(new StartGameGameMessage());
             Platform.runLater(this::initHostAlert); // TODO make it better
         }
@@ -593,9 +567,9 @@ public class GameController {
     public void hideAlert() {
         if (mainAlert != null) {
             if (mainAlert.getAlertType().equals(Alert.AlertType.INFORMATION)) {
-                for ( ButtonType bt : mainAlert.getDialogPane().getButtonTypes() ) {
-                    if ( bt.getButtonData() == ButtonBar.ButtonData.OK_DONE ) {
-                        Button cancelButton = ( Button ) mainAlert.getDialogPane().lookupButton( bt );
+                for (ButtonType bt : mainAlert.getDialogPane().getButtonTypes()) {
+                    if (bt.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
+                        Button cancelButton = (Button) mainAlert.getDialogPane().lookupButton(bt);
                         Platform.runLater(cancelButton::fire);
                     }
                 }
@@ -616,10 +590,10 @@ public class GameController {
     }
 
     public Resource[] getExtraDepositView(int lcIndex) {
-        Resource[] extraDeposit = new Resource[SIZE_EXTRA_DEPOSITS/2];
+        Resource[] extraDeposit = new Resource[SIZE_EXTRA_DEPOSITS / 2];
         int newPos = NUM_SHELFES + lcIndex * 2;
         extraDeposit[0] = resourceControllers[newPos] != null ? resourceControllers[newPos].getResourceType() : null;
-        extraDeposit[1] = resourceControllers[newPos+1] != null ? resourceControllers[newPos+1].getResourceType() : null;
+        extraDeposit[1] = resourceControllers[newPos + 1] != null ? resourceControllers[newPos + 1].getResourceType() : null;
         return extraDeposit;
     }
 
@@ -717,16 +691,16 @@ public class GameController {
         mainAlert = new Alert(Alert.AlertType.INFORMATION);
         mainAlert.setTitle("New turn");
         ReducedGame rg = gui.getReducedModel().getReducedGame();
-        if(rg.getClientPlayer().equals(rg.getCurrentPlayer())) {
+        if (rg.getClientPlayer().equals(rg.getCurrentPlayer())) {
             mainAlert.setHeaderText("It's your turn!");
             setSelectedPlayer(rg.getClientPlayer());
             setEnable(); // TODO understand y not working
         } else {
-            mainAlert.setHeaderText("It is now " + rg.getCurrentPlayer()  + "'s turn!");
+            mainAlert.setHeaderText("It is now " + rg.getCurrentPlayer() + "'s turn!");
             setDisable();
         }
         mainAlert.showAndWait();
-        if(rg.getTurnPhase() == TurnPhase.FIRST_TURN) {
+        if (rg.getTurnPhase() == TurnPhase.FIRST_TURN) {
             showDiscardExcessLeaderCardMenu();
         }
     }
@@ -749,7 +723,7 @@ public class GameController {
         mainAlert = new Alert(Alert.AlertType.INFORMATION);
         mainAlert.setTitle("Game has ended");
         int winner = establishWinner();
-        if(winner == 0) {
+        if (winner == 0) {
             mainAlert.setHeaderText("Lorenzo has won!");
         } else {
             mainAlert.setHeaderText("You've won!");
@@ -770,7 +744,7 @@ public class GameController {
     private int establishWinner() {
         ReducedDashboard reducedDashboard = gui.getReducedModel().getReducedPlayer().getDashboard();
         ReducedGameBoard reducedGameBoard = gui.getReducedModel().getReducedGameBoard();
-        if(checkFTEnd(reducedDashboard) || checkDvGridEnd(reducedGameBoard)) {
+        if (checkFTEnd(reducedDashboard) || checkDvGridEnd(reducedGameBoard)) {
             return 0;
         } else {
             return 1;
@@ -778,12 +752,12 @@ public class GameController {
     }
 
     private boolean checkFTEnd(ReducedDashboard reducedDashboard) {
-        return reducedDashboard.getLorenzoIlMagnificoPosition() == GameSettings.FAITH_TRACK_LENGTH-1;
+        return reducedDashboard.getLorenzoIlMagnificoPosition() == GameSettings.FAITH_TRACK_LENGTH - 1;
     }
 
     private boolean checkDvGridEnd(ReducedGameBoard reducedGameBoard) {
-        for(int i = 8; i < 12; i++) {
-            if(reducedGameBoard.getGrid().get(i).isEmpty()) {
+        for (int i = 8; i < 12; i++) {
+            if (reducedGameBoard.getGrid().get(i).isEmpty()) {
                 return true;
             }
         }
@@ -793,7 +767,7 @@ public class GameController {
 
     public void showDiscardExcessLeaderCardMenu() {
         ReducedGame rg = gui.getReducedModel().getReducedGame();
-        if(!rg.getClientPlayer().equals(rg.getCurrentPlayer())) {
+        if (!rg.getClientPlayer().equals(rg.getCurrentPlayer())) {
             return; // ADD ALERT BOX
         } else if (rg.getPlayers().get(rg.getClientPlayer()).getHand().size() - 2 > 0) {
             hideAlert();
@@ -818,7 +792,7 @@ public class GameController {
     public void getInitialResources() {
         ReducedGame reducedGame = gui.getReducedModel().getReducedGame();
         int owed = getOwed(reducedGame.getFirstTurns());
-        if(owed - Arrays.stream(reducedGame.getPlayers()
+        if (owed - Arrays.stream(reducedGame.getPlayers()
                 .get(reducedGame.getClientPlayer()).getDashboard().getDeposit()).filter(Objects::nonNull).count() == 0) {
             gui.send(new EndTurnGameMessage());
         } else {
@@ -885,7 +859,7 @@ public class GameController {
         stage.setScene(new Scene(root, 508, 510));
         stage.initModality(Modality.WINDOW_MODAL);
         stage.initOwner(
-                ((Node)event.getSource()).getScene().getWindow() );
+                ((Node) event.getSource()).getScene().getWindow());
         stage.show();
     }
 
@@ -924,7 +898,8 @@ public class GameController {
         vaticanReportIW.setFitWidth(66);
     }
 
-    @FXML private void dashboardProductionClick(MouseEvent event) {
+    @FXML
+    private void dashboardProductionClick(MouseEvent event) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/dashboard_production.fxml"));
             Parent root = fxmlLoader.load();
@@ -936,10 +911,9 @@ public class GameController {
             stage.setScene(new Scene(root, 500, 700));
             stage.initModality(Modality.WINDOW_MODAL);
             stage.initOwner(
-                    ((Node)event.getSource()).getScene().getWindow() );
+                    ((Node) event.getSource()).getScene().getWindow());
             stage.show();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -948,7 +922,7 @@ public class GameController {
         if (token == null) {
             tokenIW.setImage(null);
         } else {
-            File file = new File("src/main/resources/png/singlePlayer/tokens/token_"+token.getType()+".png");
+            File file = new File("src/main/resources/png/singlePlayer/tokens/token_" + token.getType() + ".png");
             Image image = new Image(file.toURI().toString());
             tokenIW.setImage(image);
         }

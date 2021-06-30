@@ -10,7 +10,7 @@ public interface WarehouseObserver {
     /**
      * Handles the updates for the observer.
      *
-     * @param message   update message.
+     * @param message update message.
      */
     void update(Warehouse message);
 

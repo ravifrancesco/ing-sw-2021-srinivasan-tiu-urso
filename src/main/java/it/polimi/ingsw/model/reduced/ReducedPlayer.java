@@ -1,9 +1,8 @@
 package it.polimi.ingsw.model.reduced;
 
+import it.polimi.ingsw.model.full.cards.LeaderCard;
 import it.polimi.ingsw.model.full.specialAbilities.DevelopmentCardDiscount;
 import it.polimi.ingsw.model.full.table.Resource;
-import it.polimi.ingsw.model.full.cards.LeaderCard;
-import it.polimi.ingsw.utils.Pair;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,13 +10,22 @@ import java.util.List;
 
 public class ReducedPlayer {
 
+    // Dashboard
+    private final ReducedDashboard dashboard;
+    private final ReducedModel reducedModel;
     private String nickname;
-
     // Hand
     private List<LeaderCard> hand;
     private int handSize;
     private Resource[] activatedWMR;
     private ArrayList<DevelopmentCardDiscount> discounts;
+
+    public ReducedPlayer(ReducedModel reducedModel) {
+        this.reducedModel = reducedModel;
+        this.nickname = "";
+        this.hand = new ArrayList<>();
+        this.dashboard = new ReducedDashboard(this, reducedModel);
+    }
 
     public HashMap<Resource, Integer> getDiscounts() {
         HashMap<Resource, Integer> discountsMap = new HashMap<>();
@@ -29,18 +37,6 @@ public class ReducedPlayer {
 
     public void setDiscounts(ArrayList<DevelopmentCardDiscount> discounts) {
         this.discounts = discounts;
-    }
-
-    // Dashboard
-    private final ReducedDashboard dashboard;
-
-    private final ReducedModel reducedModel;
-
-    public ReducedPlayer(ReducedModel reducedModel) {
-        this.reducedModel = reducedModel;
-        this.nickname = "";
-        this.hand = new ArrayList<>();
-        this.dashboard = new ReducedDashboard(this, reducedModel);
     }
 
     public String getNickname() {

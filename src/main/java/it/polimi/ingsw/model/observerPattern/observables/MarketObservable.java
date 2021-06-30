@@ -18,7 +18,7 @@ public class MarketObservable {
      *
      * @param observer observer to add.
      */
-    public void addObserver(MarketObserver observer){
+    public void addObserver(MarketObserver observer) {
         synchronized (observers) {
             observers.add(observer);
         }
@@ -27,9 +27,9 @@ public class MarketObservable {
     /**
      * Remove observer.
      *
-     * @param observer  observer to remove.
+     * @param observer observer to remove.
      */
-    public void removeObserver(MarketObserver observer){
+    public void removeObserver(MarketObserver observer) {
         synchronized (observers) {
             observers.remove(observer);
         }
@@ -38,9 +38,9 @@ public class MarketObservable {
     /**
      * Notify observes.
      *
-     * @param message   message for notification.
+     * @param message message for notification.
      */
-    public void notify(Market message){
+    public void notify(Market message) {
         synchronized (observers) {
             for (MarketObserver observer : observers) {
                 observer.update(message);

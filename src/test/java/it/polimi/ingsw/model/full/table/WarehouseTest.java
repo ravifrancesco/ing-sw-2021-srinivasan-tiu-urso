@@ -1,9 +1,6 @@
 package it.polimi.ingsw.model.full.table;
 
 import it.polimi.ingsw.model.utils.DefaultSettingsBuilder;
-import it.polimi.ingsw.model.full.table.Player;
-import it.polimi.ingsw.model.full.table.Resource;
-import it.polimi.ingsw.model.full.table.Warehouse;
 import it.polimi.ingsw.model.utils.GameSettings;
 import org.junit.Assert;
 import org.junit.Test;
@@ -43,7 +40,9 @@ public class WarehouseTest {
         try {
             wh.storeInDeposit(Resource.STONE, 1);
         } catch (IllegalStateException e) {
-            if(e.getMessage().equals("Deposit positioning is illegal")) { thrownExceptions += 1; }
+            if (e.getMessage().equals("Deposit positioning is illegal")) {
+                thrownExceptions += 1;
+            }
         }
         wh.reset();
 
@@ -53,7 +52,9 @@ public class WarehouseTest {
         try {
             wh.storeInDeposit(Resource.SERVANT, 3);
         } catch (IllegalStateException e) {
-            if(e.getMessage().equals("Deposit positioning is illegal")) { thrownExceptions += 1; }
+            if (e.getMessage().equals("Deposit positioning is illegal")) {
+                thrownExceptions += 1;
+            }
         }
         wh.reset();
 
@@ -62,10 +63,11 @@ public class WarehouseTest {
         try {
             wh.storeInDeposit(Resource.GOLD, 3);
         } catch (IllegalStateException e) {
-            if(e.getMessage().equals("Deposit positioning is illegal")) { thrownExceptions += 1; }
+            if (e.getMessage().equals("Deposit positioning is illegal")) {
+                thrownExceptions += 1;
+            }
         }
         wh.reset();
-
 
 
         // Different resources in same depot: shelve 2
@@ -73,7 +75,9 @@ public class WarehouseTest {
         try {
             wh.storeInDeposit(Resource.GOLD, 2);
         } catch (IllegalStateException e) {
-            if(e.getMessage().equals("Deposit positioning is illegal")) { thrownExceptions += 1; }
+            if (e.getMessage().equals("Deposit positioning is illegal")) {
+                thrownExceptions += 1;
+            }
         }
         wh.reset();
 
@@ -482,13 +486,6 @@ public class WarehouseTest {
         wh.changeExtraDeposit(newExtraDeposit, leaderCardIndex);
         Assert.assertNull(wh.getExtraDeposits()[0][0]);
         Assert.assertNull(wh.getExtraDeposits()[0][1]);
-
-
-
-
-
-
-
 
 
     }

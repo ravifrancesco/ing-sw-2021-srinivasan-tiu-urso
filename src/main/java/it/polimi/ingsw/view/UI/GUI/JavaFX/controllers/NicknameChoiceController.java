@@ -1,7 +1,7 @@
 package it.polimi.ingsw.view.UI.GUI.JavaFX.controllers;
 
-import it.polimi.ingsw.view.UI.GUI.GUI;
 import it.polimi.ingsw.network.messages.clientMessages.lobbyMessage.AskGameLobbies;
+import it.polimi.ingsw.view.UI.GUI.GUI;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -17,7 +17,8 @@ public class NicknameChoiceController {
 
     private GUI gui;
 
-    @FXML private TextField nicknameField;
+    @FXML
+    private TextField nicknameField;
 
     @FXML
     private void handleChooseClick(InputEvent event) {
@@ -36,8 +37,7 @@ public class NicknameChoiceController {
             } catch (ClassNotFoundException e) {
                 gui.printErrorMessage("Class not found exception");
             }
-        }
-        else {
+        } else {
             gui.printErrorMessage("Fill nickname field");
         }
     }
@@ -61,9 +61,8 @@ public class NicknameChoiceController {
             stage.setScene(new Scene(root, 800, 600));
             stage.setOnCloseRequest(t -> System.exit(0));
             stage.show();
-            ((Node)(event.getSource())).getScene().getWindow().hide();
-        }
-        catch (IOException e) {
+            ((Node) (event.getSource())).getScene().getWindow().hide();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

@@ -6,6 +6,7 @@ public interface Token {
 
     /**
      * Activates a token
+     *
      * @param game the associated game
      * @return true if token end the game with a Lorenzo move
      */
@@ -13,6 +14,7 @@ public interface Token {
 
     /**
      * Returns the type of the Token
+     *
      * @return the type of the Token
      */
     String getType();

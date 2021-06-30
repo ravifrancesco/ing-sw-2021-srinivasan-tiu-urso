@@ -1,8 +1,8 @@
 package it.polimi.ingsw.view.UI.GUI.JavaFX.controllers;
 
+import it.polimi.ingsw.model.full.cards.DevelopmentCard;
 import it.polimi.ingsw.view.UI.GUI.GUI;
 import it.polimi.ingsw.view.UI.GUI.JavaFX.utils.Slot;
-import it.polimi.ingsw.model.full.cards.DevelopmentCard;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -35,7 +35,7 @@ public class DevelopmentCardController {
 
     public void createItem(DevelopmentCard developmentCard, int slot) {
         String name = "dev_card_" + developmentCard.getId() + ".png";
-        File file = new File("src/main/resources/png/cards/devCards/"+name);
+        File file = new File("src/main/resources/png/cards/devCards/" + name);
         Image image = new Image(file.toURI().toString());
         item = new ImageView(image);
         item.setFitWidth(slots[slot].getWidth());
@@ -81,10 +81,9 @@ public class DevelopmentCardController {
             stage.setScene(new Scene(root, 500, 600));
             stage.initModality(Modality.WINDOW_MODAL);
             stage.initOwner(
-                    ((Node)event.getSource()).getScene().getWindow() );
+                    ((Node) event.getSource()).getScene().getWindow());
             stage.show();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

@@ -94,7 +94,7 @@ public class ResourceContainer implements Serializable {
         IntStream.range(0, Warehouse.MAX_EXTRA_DEPOSIT_SLOTS)
                 .forEach(i -> selectedExtraDepositIndexes.get(i)
                         .forEach(j -> res.put(wh.getExtraDeposits()[i][j],
-                            res.get(wh.getExtraDeposits()[i][j]) + 1)));
+                                res.get(wh.getExtraDeposits()[i][j]) + 1)));
         return res;
     }
 

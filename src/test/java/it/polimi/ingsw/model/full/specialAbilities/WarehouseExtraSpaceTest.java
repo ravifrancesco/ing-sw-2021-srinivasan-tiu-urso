@@ -13,7 +13,7 @@ import org.junit.Test;
 
 import java.util.*;
 
-public class WarehouseExtraSpaceTest  {
+public class WarehouseExtraSpaceTest {
 
     @Test
     public void activateTest() {
@@ -23,16 +23,16 @@ public class WarehouseExtraSpaceTest  {
         resourceCostPP.put(Resource.STONE, 1);
         Map<Resource, Integer> resourceProduced = new HashMap<>();
         resourceProduced.put(Resource.SHIELD, 1);
-        ProductionPower p = new ProductionPower(resourceCostPP, resourceProduced,2);
+        ProductionPower p = new ProductionPower(resourceCostPP, resourceProduced, 2);
         Map<Resource, Integer> resCost = new HashMap<>();
         DevelopmentCard c = new DevelopmentCard(1, 5, resCost, p, null);
-        int[] faithTrackVictoryPoints = {0,0,0,1,0,0,2,0,0,4,0,0,6,0,0,9,0,0,12,0,0,16,0,0,0};
+        int[] faithTrackVictoryPoints = {0, 0, 0, 1, 0, 0, 2, 0, 0, 4, 0, 0, 6, 0, 0, 9, 0, 0, 12, 0, 0, 16, 0, 0, 0};
 
         List<VaticanReport> vaticanReports = new ArrayList<>();
 
-        vaticanReports.add(new VaticanReport(5,8,2));
-        vaticanReports.add(new VaticanReport(12,15,2));
-        vaticanReports.add(new VaticanReport(19,24,4));
+        vaticanReports.add(new VaticanReport(5, 8, 2));
+        vaticanReports.add(new VaticanReport(12, 15, 2));
+        vaticanReports.add(new VaticanReport(19, 24, 4));
 
 
         GameSettings gameSettings = new GameSettings(null, 0, null, null, vaticanReports, faithTrackVictoryPoints);
@@ -107,12 +107,11 @@ public class WarehouseExtraSpaceTest  {
         WarehouseExtraSpace wes3 = new WarehouseExtraSpace(Resource.SHIELD);
         WarehouseExtraSpace wes4 = new WarehouseExtraSpace(Resource.SERVANT);
 
-        Assert.assertEquals(wes1.toString(),"SA=WES;R=GOLD;");
-        Assert.assertEquals(wes2.toString(),"SA=WES;R=STONE;");
-        Assert.assertEquals(wes3.toString(),"SA=WES;R=SHIELD;");
-        Assert.assertEquals(wes4.toString(),"SA=WES;R=SERVANT;");
+        Assert.assertEquals(wes1.toString(), "SA=WES;R=GOLD;");
+        Assert.assertEquals(wes2.toString(), "SA=WES;R=STONE;");
+        Assert.assertEquals(wes3.toString(), "SA=WES;R=SHIELD;");
+        Assert.assertEquals(wes4.toString(), "SA=WES;R=SERVANT;");
     }
-
 
 
 }

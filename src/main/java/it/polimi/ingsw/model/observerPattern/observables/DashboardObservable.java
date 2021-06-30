@@ -18,7 +18,7 @@ public class DashboardObservable {
      *
      * @param observer observer to add.
      */
-    public void addObserver(DashboardObserver observer){
+    public void addObserver(DashboardObserver observer) {
         synchronized (observers) {
             observers.add(observer);
         }
@@ -27,9 +27,9 @@ public class DashboardObservable {
     /**
      * Remove observer.
      *
-     * @param observer  observer to remove.
+     * @param observer observer to remove.
      */
-    public void removeObserver(DashboardObserver observer){
+    public void removeObserver(DashboardObserver observer) {
         synchronized (observers) {
             observers.remove(observer);
         }
@@ -38,9 +38,9 @@ public class DashboardObservable {
     /**
      * Notify observes.
      *
-     * @param message   message for notification.
+     * @param message message for notification.
      */
-    public void notify(Dashboard message){
+    public void notify(Dashboard message) {
         synchronized (observers) {
             for (DashboardObserver observer : observers) {
                 observer.update(message);

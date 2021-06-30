@@ -14,6 +14,7 @@ public class DevelopmentCardController {
 
     /**
      * Constructor for a DevelopmentCard Controller object.
+     *
      * @param game represents the game which the controller belongs to.
      */
 
@@ -65,11 +66,9 @@ public class DevelopmentCardController {
 
         try {
             dashboard.placeDevelopmentCard(developmentCard, position);
-        }
-        catch (IllegalStateException e) {
+        } catch (IllegalStateException e) {
             throw new CardNotPlayableException("Not a valid index");
         }
-
 
 
         dashboard.payPrice(resourcesToPayCost);

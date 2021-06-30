@@ -1,27 +1,29 @@
 package it.polimi.ingsw.view.virtualView.client;
 
-import it.polimi.ingsw.model.full.specialAbilities.DevelopmentCardDiscount;
-import it.polimi.ingsw.view.UI.CLI.CLI;
-import it.polimi.ingsw.view.UI.CLI.IO.Constants;
-import it.polimi.ingsw.view.UI.UIType;
-import it.polimi.ingsw.model.reduced.ReducedModel;
-import it.polimi.ingsw.model.reduced.ReducedDashboard;
-import it.polimi.ingsw.model.reduced.ReducedGame;
-import it.polimi.ingsw.model.reduced.ReducedPlayer;
-import it.polimi.ingsw.model.full.table.Resource;
-import it.polimi.ingsw.model.full.table.TurnPhase;
 import it.polimi.ingsw.model.full.cards.DevelopmentCard;
 import it.polimi.ingsw.model.full.cards.LeaderCard;
 import it.polimi.ingsw.model.full.marbles.Marble;
-import it.polimi.ingsw.model.full.tokens.Token;
+import it.polimi.ingsw.model.full.specialAbilities.DevelopmentCardDiscount;
 import it.polimi.ingsw.model.full.specialAbilities.ProductionPower;
+import it.polimi.ingsw.model.full.table.Resource;
+import it.polimi.ingsw.model.full.table.TurnPhase;
+import it.polimi.ingsw.model.full.tokens.Token;
+import it.polimi.ingsw.model.reduced.ReducedDashboard;
+import it.polimi.ingsw.model.reduced.ReducedGame;
+import it.polimi.ingsw.model.reduced.ReducedModel;
+import it.polimi.ingsw.model.reduced.ReducedPlayer;
 import it.polimi.ingsw.network.messages.clientMessages.ClientMessage;
 import it.polimi.ingsw.network.messages.clientMessages.lobbyMessage.RegisterName;
 import it.polimi.ingsw.network.messages.serverMessages.ServerMessage;
 import it.polimi.ingsw.utils.Pair;
+import it.polimi.ingsw.view.UI.CLI.CLI;
+import it.polimi.ingsw.view.UI.CLI.IO.Constants;
 import it.polimi.ingsw.view.UI.UI;
+import it.polimi.ingsw.view.UI.UIType;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,26 +31,22 @@ import java.util.Map;
 import java.util.Stack;
 
 public class ClientVirtualView implements Runnable, ClientVirtualViewIF {
-    private String playerNickname;
-
+    public final UI ui;
     private final String ip;
     private final int port;
-    public final UI ui;
-
+    ReducedModel reducedModel;
+    private String playerNickname;
     private ObjectOutputStream outputStream;
     private ObjectInputStream inputStream;
-
     private boolean nameRegistered;
-
     private Socket socket;
-
-    ReducedModel reducedModel;
 
     /**
      * Virtual view for the multi player game
-     * @param ip the ip string
+     *
+     * @param ip   the ip string
      * @param port the port string
-     * @param ui the ui
+     * @param ui   the ui
      */
     public ClientVirtualView(String ip, int port, UI ui) {
         this.ip = ip;
@@ -61,6 +59,7 @@ public class ClientVirtualView implements Runnable, ClientVirtualViewIF {
 
     /**
      * Sets the player nickname
+     *
      * @param playerNickname the player nickname
      */
     public void setPlayerNickname(String playerNickname) {
@@ -70,6 +69,7 @@ public class ClientVirtualView implements Runnable, ClientVirtualViewIF {
 
     /**
      * Handles server connection
+     *
      * @throws IOException if the connection fails
      */
     public void connectToServer() throws IOException {
@@ -91,7 +91,8 @@ public class ClientVirtualView implements Runnable, ClientVirtualViewIF {
 
     /**
      * Handles the registration of a nickname to the server
-     * @throws IOException if the registration fails
+     *
+     * @throws IOException            if the registration fails
      * @throws ClassNotFoundException if the wrong message is received
      */
     public void registerName() throws IOException, ClassNotFoundException {
@@ -107,15 +108,18 @@ public class ClientVirtualView implements Runnable, ClientVirtualViewIF {
         } else {
             ui.printErrorMessage("Insert a non-empty nickname");
         }
-        if(isNameRegistered()) {
-            if(ui.getType() == UIType.CLI) { ((CLI) ui).showMainLobbyMenu(); }
+        if (isNameRegistered()) {
+            if (ui.getType() == UIType.CLI) {
+                ((CLI) ui).showMainLobbyMenu();
+            }
         }
     }
 
     /**
      * Receives a server message and reads it
+     *
      * @return the read server message
-     * @throws IOException if it is not received correctly
+     * @throws IOException            if it is not received correctly
      * @throws ClassNotFoundException if the wrong class is parsed
      */
     public ServerMessage receiveServerMessage() throws IOException, ClassNotFoundException {
@@ -124,6 +128,7 @@ public class ClientVirtualView implements Runnable, ClientVirtualViewIF {
 
     /**
      * Checks to see if the user registered
+     *
      * @return true if correctly registered
      */
     public boolean isNameRegistered() {
@@ -139,9 +144,10 @@ public class ClientVirtualView implements Runnable, ClientVirtualViewIF {
 
     /**
      * Sends a client message
+     *
      * @param message the client message
      */
-    public synchronized void send(ClientMessage message){
+    public synchronized void send(ClientMessage message) {
         try {
             outputStream.writeObject(message);
             outputStream.flush();
@@ -157,7 +163,7 @@ public class ClientVirtualView implements Runnable, ClientVirtualViewIF {
     public void close() {
         try {
             socket.close();
-        } catch (IOException e){
+        } catch (IOException e) {
             System.err.println(e.getMessage());
         }
     }
@@ -175,10 +181,10 @@ public class ClientVirtualView implements Runnable, ClientVirtualViewIF {
 
     /**
      * Starts the thread that receives messages from the server
-      */
+     */
     private void startReceivingThread() {
         new Thread(() -> {
-            while(true) {
+            while (true) {
                 try {
                     ServerMessage serverMessage = receiveServerMessage();
                     serverMessage.updateClient(this, playerNickname);

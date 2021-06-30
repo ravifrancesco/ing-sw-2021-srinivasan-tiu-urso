@@ -7,7 +7,6 @@ import it.polimi.ingsw.model.full.cards.LeaderCard;
 import it.polimi.ingsw.model.full.specialAbilities.*;
 import it.polimi.ingsw.model.full.table.Resource;
 import it.polimi.ingsw.model.full.table.VaticanReport;
-import it.polimi.ingsw.model.utils.GameSettings;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -86,7 +85,7 @@ public class DefaultSettingsBuilder {
         Map<String, String> propertyMap = Arrays.stream(card.split(";"))
                 .map(s -> s.split("="))
                 .filter(s -> s.length > 1)
-                .collect(Collectors.toMap(s-> s[0], s->s[1]));
+                .collect(Collectors.toMap(s -> s[0], s -> s[1]));
 
         int id = Integer.parseInt(propertyMap.get("ID"));
         int victoryPoints = Integer.parseInt(propertyMap.get("VP"));
@@ -132,7 +131,7 @@ public class DefaultSettingsBuilder {
         Map<String, String> propertyMap = Arrays.stream(card.split(";"))
                 .map(s -> s.split("="))
                 .filter(s -> s.length > 1)
-                .collect(Collectors.toMap(s-> s[0], s->s[1]));
+                .collect(Collectors.toMap(s -> s[0], s -> s[1]));
 
         Map<Resource, Integer> resourceCost = new HashMap<>();
         Map<Banner, Integer> bannerCost = new HashMap<>();
@@ -140,13 +139,13 @@ public class DefaultSettingsBuilder {
         int id = Integer.parseInt(propertyMap.get("ID"));
         int victoryPoints = Integer.parseInt(propertyMap.get("VP"));
 
-        if  (propertyMap.get("RC") != null) {
+        if (propertyMap.get("RC") != null) {
             resourceCost = Arrays.stream(propertyMap.get("RC").split(","))
                     .map(e -> e.split(":"))
                     .collect(Collectors.toMap(e -> parseResource(e[0]), e -> Integer.parseInt(e[1])));
         }
 
-        if  (propertyMap.get("BC") != null) {
+        if (propertyMap.get("BC") != null) {
             bannerCost = Arrays.stream(propertyMap.get("BC").split(","))
                     .map(e -> e.split(":"))
                     .collect(Collectors.toMap(e -> parseBanner(e[0], e[1]), e -> Integer.parseInt(e[2])));
@@ -206,7 +205,7 @@ public class DefaultSettingsBuilder {
                 .map(e -> e.split(":"))
                 .collect(Collectors.toMap(e -> parseResource(e[0]), e -> Integer.parseInt(e[1])));
 
-        if  (propertyMap.get("RP") != null) {
+        if (propertyMap.get("RP") != null) {
             resourceProduced = Arrays.stream(propertyMap.get("RP").split(","))
                     .map(e -> e.split(":"))
                     .collect(Collectors.toMap(e -> parseResource(e[0]), e -> Integer.parseInt(e[1])));
@@ -265,6 +264,6 @@ public class DefaultSettingsBuilder {
     }
 
     private int[] faithTrackVictoryPointsBuilder() {
-        return new int[]{0,0,0,1,0,0,2,0,0,4,0,0,6,0,0,9,0,0,12,0,0,16,0,0,20};
+        return new int[]{0, 0, 0, 1, 0, 0, 2, 0, 0, 4, 0, 0, 6, 0, 0, 9, 0, 0, 12, 0, 0, 16, 0, 0, 20};
     }
 }

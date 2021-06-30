@@ -8,10 +8,13 @@ import it.polimi.ingsw.model.utils.GameSettings;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.IntStream;
 
-public class LeaderCardTest{
+public class LeaderCardTest {
 
     @Test
     public void constructorTest() {
@@ -401,7 +404,7 @@ public class LeaderCardTest{
         int vaticanReportsNum = 3;
         List<VaticanReport> vaticanReports = vaticanReportsListBuilder();
 
-        int[] faithTrackVictoryPoints = {0,0,0,1,0,0,2,0,0,4,0,0,6,0,0,9,0,0,12,0,0,16,0,0,0};
+        int[] faithTrackVictoryPoints = {0, 0, 0, 1, 0, 0, 2, 0, 0, 4, 0, 0, 6, 0, 0, 9, 0, 0, 12, 0, 0, 16, 0, 0, 0};
 
         return new GameSettings(developmentCards, leaderCardNum, leaderCards,
                 dashboardProductionPower, vaticanReports, faithTrackVictoryPoints);
@@ -422,7 +425,7 @@ public class LeaderCardTest{
         Map<Resource, Integer> resourceProduced = new HashMap<>();
         resourceProduced.put(Resource.SHIELD, 1);
 
-        ProductionPower p = new ProductionPower(resourceRequired, resourceProduced,2);
+        ProductionPower p = new ProductionPower(resourceRequired, resourceProduced, 2);
 
         return IntStream.range(0, GameSettings.DEVELOPMENT_CARD_NUM)
                 .boxed()
@@ -455,9 +458,9 @@ public class LeaderCardTest{
         SAs[2] = new WarehouseExtraSpace(Resource.SERVANT);
         SAs[3] = new WhiteMarbleResource(Resource.SHIELD);
 
-        return  IntStream.range(0, leaderCardNum)
+        return IntStream.range(0, leaderCardNum)
                 .boxed()
-                .map(i -> new LeaderCard(i, 2, bannerCost, resourceCost, SAs[i%4]))
+                .map(i -> new LeaderCard(i, 2, bannerCost, resourceCost, SAs[i % 4]))
                 .toArray(LeaderCard[]::new);
 
     }
@@ -471,7 +474,7 @@ public class LeaderCardTest{
         Map<Resource, Integer> resourceProduced = new HashMap<>();
         resourceProduced.put(Resource.SHIELD, 1);
 
-        return new ProductionPower(resourceRequired, resourceProduced,2);
+        return new ProductionPower(resourceRequired, resourceProduced, 2);
 
     }
 

@@ -1,7 +1,7 @@
 package it.polimi.ingsw.view.UI.GUI.JavaFX.controllers;
 
-import it.polimi.ingsw.view.UI.GUI.GUI;
 import it.polimi.ingsw.model.full.cards.DevelopmentCard;
+import it.polimi.ingsw.view.UI.GUI.GUI;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -25,16 +25,12 @@ public class DevCardGridController {
 
     private final static int NUM_OF_ROWS = 3;
     private final static int NUM_OF_COLUMNS = 4;
-
-    private GUI gui;
-
     @FXML
     GridPane cardsGridPane;
-
     @FXML
     Button backButton;
-
     ArrayList<ImageView> cardImageViews;
+    private GUI gui;
 
     public void setGui(GUI gui) {
         this.gui = gui;
@@ -84,7 +80,7 @@ public class DevCardGridController {
             stage.setScene(new Scene(root, 422, 623));
             stage.initModality(Modality.WINDOW_MODAL);
             stage.initOwner(
-                    ((Node)event.getSource()).getScene().getWindow() );
+                    ((Node) event.getSource()).getScene().getWindow());
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -92,7 +88,7 @@ public class DevCardGridController {
     }
 
     public void update(List<Stack<DevelopmentCard>> grid) {
-        for (int i = 0; i < NUM_OF_ROWS*NUM_OF_COLUMNS; i++) {
+        for (int i = 0; i < NUM_OF_ROWS * NUM_OF_COLUMNS; i++) {
             loadImage(cardImageViews.get(i), grid.get(i).isEmpty() ? null : grid.get(i).peek());
         }
     }

@@ -1,24 +1,24 @@
 package it.polimi.ingsw.view.UI.CLI;
 
+import it.polimi.ingsw.model.full.cards.DevelopmentCard;
+import it.polimi.ingsw.model.full.cards.LeaderCard;
+import it.polimi.ingsw.model.full.marbles.Marble;
+import it.polimi.ingsw.model.full.specialAbilities.*;
+import it.polimi.ingsw.model.full.table.Resource;
+import it.polimi.ingsw.model.full.table.TurnPhase;
 import it.polimi.ingsw.model.full.tokens.Token;
+import it.polimi.ingsw.model.reduced.*;
+import it.polimi.ingsw.model.utils.GameSettings;
+import it.polimi.ingsw.network.messages.clientMessages.ClientMessage;
+import it.polimi.ingsw.network.server.lobby.GameLobbyDetails;
+import it.polimi.ingsw.utils.Pair;
 import it.polimi.ingsw.view.UI.CLI.IO.ClientMessageInputParser;
 import it.polimi.ingsw.view.UI.CLI.IO.Constants;
 import it.polimi.ingsw.view.UI.CLI.IO.FaithTrackCLI;
-import it.polimi.ingsw.view.virtualView.client.ClientVirtualView;
-import it.polimi.ingsw.view.virtualView.client.OfflineClientVirtualView;
 import it.polimi.ingsw.view.UI.UI;
 import it.polimi.ingsw.view.UI.UIType;
-import it.polimi.ingsw.model.utils.GameSettings;
-import it.polimi.ingsw.model.full.table.Resource;
-import it.polimi.ingsw.model.full.table.TurnPhase;
-import it.polimi.ingsw.model.full.cards.DevelopmentCard;
-import it.polimi.ingsw.model.full.cards.LeaderCard;
-import it.polimi.ingsw.model.reduced.*;
-import it.polimi.ingsw.model.full.marbles.Marble;
-import it.polimi.ingsw.model.full.specialAbilities.*;
-import it.polimi.ingsw.network.server.lobby.GameLobbyDetails;
-import it.polimi.ingsw.network.messages.clientMessages.ClientMessage;
-import it.polimi.ingsw.utils.Pair;
+import it.polimi.ingsw.view.virtualView.client.ClientVirtualView;
+import it.polimi.ingsw.view.virtualView.client.OfflineClientVirtualView;
 
 import java.io.IOException;
 import java.util.*;
@@ -28,14 +28,11 @@ import java.util.stream.IntStream;
 public class CLI implements UI {
 
     private final Scanner input;
-
+    private final FaithTrackCLI ftcli;
     private ReducedModel reducedModel;
-
     private ClientVirtualView clientVirtualView;
     private OfflineClientVirtualView offlineClientVirtualView;
     private boolean local;
-
-    private final FaithTrackCLI ftcli;
 
     /**
      * CLI for the game.
@@ -47,8 +44,9 @@ public class CLI implements UI {
 
     /**
      * Prints a colored message on the CLI.
+     *
      * @param message the message to print
-     * @param color the ansi code for the color in string format
+     * @param color   the ansi code for the color in string format
      */
     public void printColoredMessage(String message, String color) {
         System.out.println(color + message + Constants.ANSI_RESET);
@@ -56,6 +54,7 @@ public class CLI implements UI {
 
     /**
      * Method to get a string with the IP to connect to
+     *
      * @return the IP string
      * @throws IOException if the string is not parsed correctly
      */
@@ -68,6 +67,7 @@ public class CLI implements UI {
 
     /**
      * Method to get the port †o connect on
+     *
      * @return the port integer
      */
     public int getPort() {
@@ -84,6 +84,7 @@ public class CLI implements UI {
 
     /**
      * Used to get an input from the user.
+     *
      * @return the command (string) the user entered
      */
     public String readCommand() {
@@ -93,6 +94,7 @@ public class CLI implements UI {
 
     /**
      * Reads the next line from the input stream
+     *
      * @return the read string
      */
     public String readLine() {
@@ -101,6 +103,7 @@ public class CLI implements UI {
 
     /**
      * Prints a red colored message for errors.
+     *
      * @param error the message to print
      */
     public void printErrorMessage(String error) {
@@ -109,6 +112,7 @@ public class CLI implements UI {
 
     /**
      * Prints the message with a new line character
+     *
      * @param message the message to print
      */
     public void printMessage(String message) {
@@ -117,6 +121,7 @@ public class CLI implements UI {
 
     /**
      * Prints a message without the new line character
+     *
      * @param message the message to print
      */
     public void printMessageNoNL(String message) {
@@ -125,8 +130,9 @@ public class CLI implements UI {
 
     /**
      * Prints a colored message without the new line character
+     *
      * @param message the message to print
-     * @param color ansi code for the color
+     * @param color   ansi code for the color
      */
     public void printColoredMessageNoNL(String message, String color) {
         System.out.print(color + message + Constants.ANSI_RESET);
@@ -172,6 +178,7 @@ public class CLI implements UI {
 
     /**
      * Sends a client message to the server
+     *
      * @param clientMessage the message to send with the handle method inside to auto-handle itself
      */
     private void sendMessage(ClientMessage clientMessage) {
@@ -189,6 +196,7 @@ public class CLI implements UI {
 
     /**
      * Used to read the nickname by the user's input
+     *
      * @return a string with the nickname
      */
     public String getNickname() {
@@ -199,6 +207,7 @@ public class CLI implements UI {
 
     /**
      * Shows the game lobbies
+     *
      * @param activeGameLobbies an array list with all the information about the available game lobby
      */
     public void showGameLobbies(ArrayList<GameLobbyDetails> activeGameLobbies) {
@@ -221,6 +230,7 @@ public class CLI implements UI {
 
     /**
      * Shows the hand full of a cards of the player
+     *
      * @param nickname of the player of which the hand has to be shown
      */
     public void showHand(String nickname) {
@@ -244,6 +254,7 @@ public class CLI implements UI {
 
     /**
      * Shows a leader card on the CLI
+     *
      * @param leaderCard the leader card to show
      */
     private void showCard(LeaderCard leaderCard) {
@@ -272,6 +283,7 @@ public class CLI implements UI {
 
     /**
      * Shows a development card on the CLI
+     *
      * @param developmentCard the development card to show
      */
     private void showCard(DevelopmentCard developmentCard) {
@@ -291,6 +303,7 @@ public class CLI implements UI {
 
     /**
      * Shows the resource a cost for cards
+     *
      * @param resourceCost a map with the full costs
      */
     private void showResourceCost(Map<Resource, Integer> resourceCost) {
@@ -308,6 +321,7 @@ public class CLI implements UI {
 
     /**
      * Returns an ANSI color code based on the input
+     *
      * @param banner the input string representing a banner
      * @return correct ANSI color code
      */
@@ -323,6 +337,7 @@ public class CLI implements UI {
 
     /**
      * Chooses the color to print the resources with
+     *
      * @param resource the resource to decide the color for
      * @return the correct color associated to that resource
      */
@@ -338,6 +353,7 @@ public class CLI implements UI {
 
     /**
      * Checks what type of special ability is passed and prints information about it
+     *
      * @param sa the special ability to print
      */
     private void handleSA(SpecialAbility sa) {
@@ -392,6 +408,7 @@ public class CLI implements UI {
 
     /**
      * Parses a card toString output in order to get the banner string
+     *
      * @param banner the card toString
      * @return the banner color string
      */
@@ -402,6 +419,7 @@ public class CLI implements UI {
 
     /**
      * Shows a player dashboard
+     *
      * @param nickname the player of which the dashboard has to be shown
      */
     public void showDashboard(String nickname) {
@@ -455,6 +473,7 @@ public class CLI implements UI {
 
     /**
      * Shows a supply on the CLI
+     *
      * @param supply the supply to show
      */
     public void showSupply(ArrayList<Resource> supply) {
@@ -487,6 +506,7 @@ public class CLI implements UI {
 
     /**
      * Chooses the array of strings with the correct rows for market/deposit visualization
+     *
      * @param r the resource to print
      * @return an array of string with ANSI codes to print for market/deposit
      */
@@ -506,6 +526,7 @@ public class CLI implements UI {
 
     /**
      * Shows a player faith track, plus calls to see Lorenzo's one if in single player
+     *
      * @param nickname the player nickname
      */
     public void showFaithTrack(String nickname) {
@@ -527,6 +548,7 @@ public class CLI implements UI {
 
     /**
      * Shows Lorenzo's faith track
+     *
      * @param nickname player nickname (used to get the dashboard which contains information about Lorenzo)
      */
     public void showLorenzoFT(String nickname) {
@@ -541,11 +563,12 @@ public class CLI implements UI {
 
     /**
      * Returns the passed vatican reports by a certain player
+     *
      * @param reducedDashboard the player dashboard
      * @return a list of pair of integer that represents the state of the vatican reports
      */
-    public List<Pair<Integer, Integer>> getPassedVaticanReports (ReducedDashboard reducedDashboard) {
-        return  reducedDashboard.getVaticanReports().entrySet().stream()
+    public List<Pair<Integer, Integer>> getPassedVaticanReports(ReducedDashboard reducedDashboard) {
+        return reducedDashboard.getVaticanReports().entrySet().stream()
                 .sorted(Comparator.comparingInt(e -> e.getKey().second))
                 .map(Map.Entry::getValue)
                 .collect(Collectors.toList());
@@ -554,6 +577,7 @@ public class CLI implements UI {
 
     /**
      * Shows a player warehouse
+     *
      * @param nickname the player nickname
      */
     public void showWarehouse(String nickname) {
@@ -577,6 +601,7 @@ public class CLI implements UI {
 
     /**
      * Shows all player's extra deposits
+     *
      * @param extraDeposits the player's extra deposits array
      */
     private void showAllExtraDeposits(Resource[][] extraDeposits) {
@@ -584,7 +609,7 @@ public class CLI implements UI {
             if (extraDeposits[i] != null) {
                 Resource res = ((WarehouseExtraSpace) reducedModel.getReducedPlayer().
                         getDashboard().getPlayedLeaderCards().get(i).getSpecialAbility()).getStoredResource();
-                printMessageNoNL("EXTRA DEPOSIT #" + i +" FOR RESOURCE ");
+                printMessageNoNL("EXTRA DEPOSIT #" + i + " FOR RESOURCE ");
                 printColoredMessage("" + res, handleResourceColor(res.toString()));
                 showExtraDeposit(extraDeposits[i]);
             }
@@ -593,15 +618,16 @@ public class CLI implements UI {
 
     /**
      * Shows a single extra deposit
+     *
      * @param deposit the extra deposit to show
      */
     public void showExtraDeposit(Resource[] deposit) {
-        if(deposit[0] == null) {
+        if (deposit[0] == null) {
             printMessage("  INDEX 0: EMPTY");
         } else {
             printMessage("  INDEX 0: " + deposit[0]);
         }
-        if(deposit[1] == null) {
+        if (deposit[1] == null) {
             printMessage("  INDEX 1: EMPTY");
         } else {
             printMessage("  INDEX 1: " + deposit[1]);
@@ -610,6 +636,7 @@ public class CLI implements UI {
 
     /**
      * Shows the deposit
+     *
      * @param deposit the deposit to show
      */
     public void showDeposit(Resource[] deposit) {
@@ -620,18 +647,18 @@ public class CLI implements UI {
         printMessageNoNL("           ");
 
         IntStream.range(0, topHbar).forEach(i -> {
-            if(i == 5) {
-                printMessageNoNL("" + 0);
-            } else {
-                printMessageNoNL("―");
-            }
-        }
+                    if (i == 5) {
+                        printMessageNoNL("" + 0);
+                    } else {
+                        printMessageNoNL("―");
+                    }
+                }
         );
         System.out.println();
 
         IntStream.range(0, 6).forEach(column -> {
             IntStream.range(0, 1).forEach(i ->
-                printMessageNoNL("           | " + renderResourceRow(deposit[i])[column] + " |")
+                    printMessageNoNL("           | " + renderResourceRow(deposit[i])[column] + " |")
             );
             printMessage("");
         });
@@ -643,14 +670,14 @@ public class CLI implements UI {
 
         printMessageNoNL("    ");
         IntStream.range(0, middleHbar).forEach(i -> {
-            if(i == 5) {
-                printMessageNoNL("" + 1);
-            } else if (i == 20) {
-                printMessageNoNL("" + 2);
-            } else {
-                printMessageNoNL("―");
-            }
-        }
+                    if (i == 5) {
+                        printMessageNoNL("" + 1);
+                    } else if (i == 20) {
+                        printMessageNoNL("" + 2);
+                    } else {
+                        printMessageNoNL("―");
+                    }
+                }
         );
         System.out.println();
 
@@ -666,7 +693,7 @@ public class CLI implements UI {
 
 
         IntStream.range(0, bottomHbar).forEach(i -> {
-            if(i == 5) {
+            if (i == 5) {
                 printMessageNoNL("" + 3);
             } else if (i == 16) {
                 printMessageNoNL("" + 4);
@@ -674,7 +701,8 @@ public class CLI implements UI {
                 printMessageNoNL("" + 5);
             } else {
                 printMessageNoNL("―");
-            }});
+            }
+        });
         System.out.println();
 
         IntStream.range(0, 6).forEach(column -> {
@@ -710,7 +738,7 @@ public class CLI implements UI {
         System.out.print("> ");
         String choice = readLine();
         ReducedPlayer reducedPlayer = reducedModel.getReducedPlayer();
-        if(reducedPlayer.getDiscounts() != null
+        if (reducedPlayer.getDiscounts() != null
                 && reducedPlayer.getDiscounts().size() != 0) {
             printMessage("\n\nKeep in mind that due to your activated ability(s)\n");
             reducedPlayer.getDiscounts().forEach((resource, qty) -> {
@@ -719,7 +747,7 @@ public class CLI implements UI {
                 printMessage(" will be discounted\n\n");
             });
         }
-        switch(choice.toUpperCase()) {
+        switch (choice.toUpperCase()) {
             case "1", "2", "3" -> showDvRow(Integer.parseInt(choice));
             case "GREEN", "BLUE", "YELLOW", "PURPLE" -> showDvColumn(choice);
             default -> printColoredMessage("Wrong input", Constants.ANSI_RED);
@@ -728,38 +756,40 @@ public class CLI implements UI {
 
     /**
      * Returns the row-column pair of indexes starting from the 1D array index (help method for dvgrid)
+     *
      * @param position the 1D array index
      * @return the pair row-column
      */
     public Pair<Integer, Integer> invertIndex(int position) {
-        return switch(position) {
-            case(1) -> new Pair<>(1, 2);
-            case(2) -> new Pair<>(1, 3);
-            case(3) -> new Pair<>(1, 4);
-            case(4) -> new Pair<>(2, 1);
-            case(5) -> new Pair<>(2, 2);
-            case(6) -> new Pair<>(2, 3);
-            case(7) -> new Pair<>(2, 4);
-            case(8) -> new Pair<>(3, 1);
-            case(9) -> new Pair<>(3, 2);
-            case(10) -> new Pair<>(3, 3);
-            case(11) -> new Pair<>(3, 4);
+        return switch (position) {
+            case (1) -> new Pair<>(1, 2);
+            case (2) -> new Pair<>(1, 3);
+            case (3) -> new Pair<>(1, 4);
+            case (4) -> new Pair<>(2, 1);
+            case (5) -> new Pair<>(2, 2);
+            case (6) -> new Pair<>(2, 3);
+            case (7) -> new Pair<>(2, 4);
+            case (8) -> new Pair<>(3, 1);
+            case (9) -> new Pair<>(3, 2);
+            case (10) -> new Pair<>(3, 3);
+            case (11) -> new Pair<>(3, 4);
             default -> new Pair<>(1, 1);
         };
     }
 
     /**
      * Shows a dv grid row of cards
+     *
      * @param level the level of the cards, which has an associated row
      */
     public void showDvRow(int level) {
-        int startIndex = 4 * (level-1);
+        int startIndex = 4 * (level - 1);
         IntStream.range(0, 4).forEach(i -> {
             if (!reducedModel.getReducedGameBoard().getGrid().get(startIndex + i).isEmpty()) {
 
                 printColoredMessage("------- CARD ROW/COL ("
-                        + invertIndex(startIndex+i).first + "," + invertIndex(startIndex+i).second + ")" +
-                        " -------" , Constants.SHIELD_COLOR);
+                        + invertIndex(startIndex + i).first + "," + invertIndex(startIndex + i).second + ")" +
+                        " -------", Constants.SHIELD_COLOR);
                 showCard(reducedModel.getReducedGameBoard().getGrid().get(startIndex + i).peek());
             }
         });
@@ -769,7 +799,7 @@ public class CLI implements UI {
         printMessage(" to buy a development card");
         printMessageNoNL("\nAvailable empty slots: \n");
         IntStream.range(0, ReducedDashboard.NUM_DEVELOPMENT_CARD_STACKS).forEach(i -> {
-            if(reducedModel.getReducedPlayer().getDashboard().getPlayedDevelopmentCards().get(i).isEmpty()) {
+            if (reducedModel.getReducedPlayer().getDashboard().getPlayedDevelopmentCards().get(i).isEmpty()) {
                 printMessageNoNL("" + i + " ");
             }
         });
@@ -778,6 +808,7 @@ public class CLI implements UI {
 
     /**
      * Shows a dv grid column of cards
+     *
      * @param color the color of the cards, which has an associated column
      */
     public void showDvColumn(String color) {
@@ -787,11 +818,11 @@ public class CLI implements UI {
         // se yellow allora 2, 6, 10
         // se purple allora 3, 7, 11
         IntStream.range(0, 3).forEach(i -> {
-            if (!reducedModel.getReducedGameBoard().getGrid().get(index + (i*4)).isEmpty()) {
+            if (!reducedModel.getReducedGameBoard().getGrid().get(index + (i * 4)).isEmpty()) {
                 printColoredMessage("------- CARD ROW/COL ("
-                        + invertIndex(index + (i*4)).first + "," + invertIndex(index + (i*4)).second + ")" +
+                        + invertIndex(index + (i * 4)).first + "," + invertIndex(index + (i * 4)).second + ")" +
                         " -------", Constants.SHIELD_COLOR);
-                showCard(reducedModel.getReducedGameBoard().getGrid().get(index + (i*4)).peek());
+                showCard(reducedModel.getReducedGameBoard().getGrid().get(index + (i * 4)).peek());
             }
         });
 
@@ -800,20 +831,21 @@ public class CLI implements UI {
         printMessage(" to buy a development card");
         printMessageNoNL("Available empty slots: ");
         IntStream.range(0, ReducedDashboard.NUM_DEVELOPMENT_CARD_STACKS).forEach(i -> {
-                if(reducedModel.getReducedPlayer().getDashboard().getPlayedDevelopmentCards().get(i).isEmpty()) {
-                    printMessageNoNL("" + i + " ");
-                }
+            if (reducedModel.getReducedPlayer().getDashboard().getPlayedDevelopmentCards().get(i).isEmpty()) {
+                printMessageNoNL("" + i + " ");
+            }
         });
         printMessage("");
     }
 
     /**
      * Returns amount of shift between cards for development card grid visualization
+     *
      * @param color the color for which the shift is asked
      * @return the integer with the shift
      */
-    public int getShift(String color)  {
-        return switch(color) {
+    public int getShift(String color) {
+        return switch (color) {
             case "GREEN" -> 0;
             case "BLUE" -> 1;
             case "YELLOW" -> 2;
@@ -832,7 +864,7 @@ public class CLI implements UI {
         int gridIndex;
         String[] colours;
         int ctr = 0;
-        for(gridIndex = 0; gridIndex < 12; gridIndex += 4) {
+        for (gridIndex = 0; gridIndex < 12; gridIndex += 4) {
             colours = getMarblesColours(marblesGrid, gridIndex);
             printMarblesRow(colours[0], colours[1], colours[2], colours[3], ctr);
             ctr += 1;
@@ -852,11 +884,12 @@ public class CLI implements UI {
 
     /**
      * Returns the correct color to print a marble with
+     *
      * @param marble the marble to print
      * @return the color used to print the marlbe
      */
     public String getMarbleColor(Marble marble) {
-        return switch(marble.getMarbleColor().name()) {
+        return switch (marble.getMarbleColor().name()) {
             case "WHITE" -> Constants.ANSI_BG_WHITE;
             case "BLUE" -> Constants.SHIELD_COLOR_BG;
             case "GREY" -> Constants.STONE_COLOR_BG;
@@ -869,20 +902,21 @@ public class CLI implements UI {
 
     /**
      * Gets marble color but for multiple ones (used for market and succession of marbles)
+     *
      * @param grid marbles grid
      * @param ind1 index for the row to parse colours from
      * @return the array of colours to use
      */
     public String[] getMarblesColours(Marble[] grid, int ind1) {
         String[] colours = new String[4];
-        IntStream.range(ind1, ind1+4).forEach(i -> {
-            switch(grid[i].getMarbleColor().name()) {
-                case "WHITE" -> colours[i-ind1] = Constants.ANSI_BG_WHITE;
-                case "BLUE" -> colours[i-ind1] = Constants.SHIELD_COLOR_BG;
-                case "GREY" -> colours[i-ind1] = Constants.STONE_COLOR_BG;
-                case "PURPLE" -> colours[i-ind1] = Constants.SERVANT_COLOR_BG;
-                case "RED" -> colours[i-ind1] = Constants.ANSI_BG_RED;
-                case "YELLOW" -> colours[i-ind1] = Constants.GOLD_COLOR_BG;
+        IntStream.range(ind1, ind1 + 4).forEach(i -> {
+            switch (grid[i].getMarbleColor().name()) {
+                case "WHITE" -> colours[i - ind1] = Constants.ANSI_BG_WHITE;
+                case "BLUE" -> colours[i - ind1] = Constants.SHIELD_COLOR_BG;
+                case "GREY" -> colours[i - ind1] = Constants.STONE_COLOR_BG;
+                case "PURPLE" -> colours[i - ind1] = Constants.SERVANT_COLOR_BG;
+                case "RED" -> colours[i - ind1] = Constants.ANSI_BG_RED;
+                case "YELLOW" -> colours[i - ind1] = Constants.GOLD_COLOR_BG;
             }
         });
         return colours;
@@ -890,17 +924,18 @@ public class CLI implements UI {
 
     /**
      * Prints a row of marbles
+     *
      * @param color1 color of marble one on the row
      * @param color2 color of marble two on the row
      * @param color3 color of marble three on the row
      * @param color4 color of marble four on the row
-     * @param move the integer of the move
+     * @param move   the integer of the move
      */
     public void printMarblesRow(String color1, String color2, String color3, String color4, int move) {
         int k1;
         int k2 = 4;
 
-        for(k1 = 3; k1 > 0; k1--) {
+        for (k1 = 3; k1 > 0; k1--) {
 
             IntStream.range(0, k1).forEach(i -> System.out.print(" "));
             IntStream.range(0, k2).forEach(i -> printColoredMessageNoNL(" ", color1));
@@ -927,7 +962,7 @@ public class CLI implements UI {
         }
 
         k2 = 10;
-        for(k1 = 0; k1 < 4; k1++) {
+        for (k1 = 0; k1 < 4; k1++) {
 
             IntStream.range(0, k1).forEach(i -> System.out.print(" "));
             IntStream.range(0, k2).forEach(i -> printColoredMessageNoNL(" ", color1));
@@ -949,8 +984,8 @@ public class CLI implements UI {
             IntStream.range(0, k1).forEach(i -> System.out.print(" "));
             System.out.print(" ");
 
-            if(k1 == 0) {
-                System.out.print(" "+ move);
+            if (k1 == 0) {
+                System.out.print(" " + move);
             }
 
             System.out.println();
@@ -961,13 +996,14 @@ public class CLI implements UI {
 
     /**
      * Prints a marble
+     *
      * @param color marble color
      */
     public void printMarble(String color) {
         int k1;
         int k2 = 4;
 
-        for(k1 = 3; k1 > 0; k1--) {
+        for (k1 = 3; k1 > 0; k1--) {
 
             IntStream.range(0, k1).forEach(i -> System.out.print(" "));
             IntStream.range(0, k2).forEach(i -> printColoredMessageNoNL(" ", color));
@@ -979,7 +1015,7 @@ public class CLI implements UI {
         }
 
         k2 = 10;
-        for(k1 = 0; k1 < 4; k1++) {
+        for (k1 = 0; k1 < 4; k1++) {
 
             IntStream.range(0, k1).forEach(i -> System.out.print(" "));
             IntStream.range(0, k2).forEach(i -> printColoredMessageNoNL(" ", color));
@@ -1013,13 +1049,14 @@ public class CLI implements UI {
 
     /**
      * Prints payment costs
-     * @param golds amount of gold to pay
+     *
+     * @param golds    amount of gold to pay
      * @param servants amount of servants to pay
-     * @param shields amount of shields to pay
-     * @param stones amount of stones to pay
+     * @param shields  amount of shields to pay
+     * @param stones   amount of stones to pay
      */
     public void printPaymentCost(int golds, int servants, int shields, int stones) {
-        if((golds + servants + shields + stones) != 0) {
+        if ((golds + servants + shields + stones) != 0) {
             printMessageNoNL("You have to pay: ");
             if (golds != 0) {
                 printMessageNoNL("(GOLD, " + golds + ") ");
@@ -1058,6 +1095,7 @@ public class CLI implements UI {
 
     /**
      * See UI
+     *
      * @return
      */
     @Override
@@ -1067,6 +1105,7 @@ public class CLI implements UI {
 
     /**
      * Shows a certain menu based on the parameter string code
+     *
      * @param menuCode the string representing a code for the menu to show
      */
     @Override
@@ -1092,23 +1131,23 @@ public class CLI implements UI {
         if ("end_game_has_started".equals(menuCode)) {
             endGameHasStarted();
         }
-        if("game_has_ended".equals(menuCode)) {
+        if ("game_has_ended".equals(menuCode)) {
             gameHasEnded();
         }
-        if("game_has_ended_single".equals(menuCode)) {
+        if ("game_has_ended_single".equals(menuCode)) {
             gameHasEndedSingle();
         }
 
-        if("back_in_lobby". equals(menuCode)) {
+        if ("back_in_lobby".equals(menuCode)) {
             System.out.println("\n\nYou are being redirected to the main lobby...\n");
             System.out.println("Back to the main lobby!\n");
             showMainLobbyMenu();
         }
-        if("after_end_turn_single".equals(menuCode)) {
+        if ("after_end_turn_single".equals(menuCode)) {
             showAfterEndTurnSingleMenu();
         }
-        if("force_disconnection".equals(menuCode)) {
-            forceDisconnection(); 
+        if ("force_disconnection".equals(menuCode)) {
+            forceDisconnection();
         }
     }
 
@@ -1123,7 +1162,7 @@ public class CLI implements UI {
     private void gameHasEndedSingle() {
         showAfterEndTurnSingleMenu();
         int winner = establishWinner();
-        if(winner == 0) {
+        if (winner == 0) {
             printColoredMessage("Lorenzo has won!", Constants.BOLD + Constants.ANSI_RED);
         } else {
             printColoredMessage("You've won!", Constants.BOLD + Constants.ANSI_GREEN);
@@ -1132,12 +1171,13 @@ public class CLI implements UI {
 
     /**
      * Establishes who the winner is in a single player game
+     *
      * @return 0 if Lorenzo has won, 1 if player has won;
      */
     private int establishWinner() {
         ReducedDashboard reducedDashboard = reducedModel.getReducedPlayer().getDashboard();
         ReducedGameBoard reducedGameBoard = reducedModel.getReducedGameBoard();
-        if(checkFTEnd(reducedDashboard) || checkDvGridEnd(reducedGameBoard)) {
+        if (checkFTEnd(reducedDashboard) || checkDvGridEnd(reducedGameBoard)) {
             return 0;
         } else {
             return 1;
@@ -1146,21 +1186,23 @@ public class CLI implements UI {
 
     /**
      * Checks to see if a Lorenzo has finished the faith track
+     *
      * @param reducedDashboard the player's reduced dashboard
      * @return true if the faith track was finished by Lorenzp
      */
     private boolean checkFTEnd(ReducedDashboard reducedDashboard) {
-        return reducedDashboard.getLorenzoIlMagnificoPosition() == GameSettings.FAITH_TRACK_LENGTH-1;
+        return reducedDashboard.getLorenzoIlMagnificoPosition() == GameSettings.FAITH_TRACK_LENGTH - 1;
     }
 
     /**
      * Checks to see if Lorenzo has won the game by discarding the entirety of cards of a color
+     *
      * @param reducedGameBoard the reduced game board with the cards
      * @return true if Lorenzo has won by discarding all cards of a color
      */
     private boolean checkDvGridEnd(ReducedGameBoard reducedGameBoard) {
-        for(int i = 8; i < 12; i++) {
-            if(reducedGameBoard.getGrid().get(i).isEmpty()) {
+        for (int i = 8; i < 12; i++) {
+            if (reducedGameBoard.getGrid().get(i).isEmpty()) {
                 return true;
             }
         }
@@ -1177,7 +1219,7 @@ public class CLI implements UI {
         IntStream.range(0, 12).forEach(i -> {
             String color = decideColor(i);
             String level = decideLevel(i);
-            if(color != null && level != null) {
+            if (color != null && level != null) {
                 printMessageNoNL("Level " + level + " ");
                 printColoredMessageNoNL(color, handleBannerColor(color));
                 printMessage(" cards remaining: " + reducedModel.getReducedGameBoard().getGrid().get(i).size());
@@ -1190,11 +1232,12 @@ public class CLI implements UI {
 
     /**
      * Shows the last activated token by Lorenzo
+     *
      * @param token the token activated
      */
     private void showActivatedToken(Token token) {
         printMessageNoNL("\nLorenzo has activated the following token: ");
-        switch(token.getType()) {
+        switch (token.getType()) {
             case "one" -> printColoredMessage("Single Black Cross move\n", Constants.RED_ISH);
             case "two" -> printColoredMessage("Double Black Cross move", Constants.RED_ISH);
             case "yellow" -> printColoredMessage("Discard Yellow Development Card\n", Constants.GOLD_COLOR);
@@ -1206,11 +1249,12 @@ public class CLI implements UI {
 
     /**
      * Color of the cards based on the index (dvgrid)
+     *
      * @param i index of the card
      * @return the color string
      */
     private String decideColor(int i) {
-        return switch(i) {
+        return switch (i) {
             case 0, 4, 8 -> "GREEN";
             case 1, 5, 9 -> "BLUE";
             case 2, 6, 10 -> "YELLOW";
@@ -1221,11 +1265,12 @@ public class CLI implements UI {
 
     /**
      * Level of the cards based on the index (dvgrid)
+     *
      * @param i index of the card
      * @return the index integer
      */
     private String decideLevel(int i) {
-        return switch(i) {
+        return switch (i) {
             case 0, 1, 2, 3 -> "1";
             case 4, 5, 6, 7 -> "2";
             case 8, 9, 10, 11 -> "3";
@@ -1258,7 +1303,7 @@ public class CLI implements UI {
      */
     private void showAfterSupply() {
         ArrayList<Resource> supply = reducedModel.getReducedPlayer().getDashboard().getSupply();
-        if(!supply.isEmpty()) {
+        if (!supply.isEmpty()) {
             System.out.println("DEPOSIT: ");
             showDeposit(reducedModel.getReducedPlayer().getDashboard().getDeposit());
 
@@ -1280,12 +1325,13 @@ public class CLI implements UI {
 
     /**
      * Shows an extra warehouse from the deposit
+     *
      * @param i the extra warehouse index
      */
     private void showSingleExtraWh(int i) {
         Resource res = ((WarehouseExtraSpace) reducedModel.getReducedPlayer().
                 getDashboard().getPlayedLeaderCards().get(i).getSpecialAbility()).getStoredResource();
-        printMessageNoNL("EXTRA DEPOSIT #" + i +" FOR RESOURCE ");
+        printMessageNoNL("EXTRA DEPOSIT #" + i + " FOR RESOURCE ");
         printColoredMessage("" + res, handleResourceColor(res.toString()));
         showExtraDeposit(reducedModel.getReducedPlayer().getDashboard().getExtraDeposits()[i]);
         System.out.println();
@@ -1299,7 +1345,7 @@ public class CLI implements UI {
         showDeposit(reducedModel.getReducedPlayer().getDashboard().getDeposit());
         Resource[][] extraDeposits = reducedModel.getReducedPlayer().getDashboard().getExtraDeposits();
 
-        if(extraDeposits[0] != null || extraDeposits[1] != null) {
+        if (extraDeposits[0] != null || extraDeposits[1] != null) {
             System.out.println("EXTRA DEPOSIT(s): ");
         }
         if (reducedModel.getReducedPlayer().getDashboard().getExtraDeposits()[0] != null) {
@@ -1331,7 +1377,7 @@ public class CLI implements UI {
         showDeposit(reducedModel.getReducedPlayer().getDashboard().getDeposit());
         printMessage("");
         int owed = getOwed(reducedGame.getFirstTurns());
-        if(owed - Arrays.stream(reducedGame.getPlayers()
+        if (owed - Arrays.stream(reducedGame.getPlayers()
                 .get(reducedGame.getClientPlayer()).getDashboard().getDeposit()).filter(Objects::nonNull).count() == 0) {
             sendMessage(ClientMessageInputParser.parseInput("ENDTURN", this));
         } else {
@@ -1346,14 +1392,14 @@ public class CLI implements UI {
     private void showNextCardDiscardMenu() {
         ReducedGame rg = reducedModel.getReducedGame();
         int toDiscard = rg.getPlayers().get(rg.getClientPlayer()).getHand().size() - 2;
-        if(toDiscard > 0) {
+        if (toDiscard > 0) {
             printMessage("");
             printMessage("Please discard " + toDiscard + " more cards with the command ");
             printColoredMessage("DISCARDEXCESSCARD <cardIndex>", Constants.SERVANT_COLOR);
             showHand(rg.getClientPlayer());
         } else {
             int owed = getOwed(rg.getFirstTurns());
-            if(owed > 0) {
+            if (owed > 0) {
                 printMessage("");
                 printMessage("You are owed " + owed + " resources. Please use the command");
                 printColoredMessageNoNL("GETINITIALRESOURCES <resource> <depositindex>", Constants.SERVANT_COLOR);
@@ -1369,6 +1415,7 @@ public class CLI implements UI {
 
     /**
      * Decides how many resources a player is owed based on the turn
+     *
      * @param firstTurns the turn index (amount of players that completed the first turn)
      * @return the amount of resources owed
      */
@@ -1393,35 +1440,37 @@ public class CLI implements UI {
     private void showAfterEndTurnMenu() {
         ReducedGame rg = reducedModel.getReducedGame();
         TurnPhase phase = reducedModel.getReducedGame().getTurnPhase();
-        if(phase == TurnPhase.FIRST_TURN) {
+        if (phase == TurnPhase.FIRST_TURN) {
             firstPhaseMenu(rg);
         }
-        if(phase == TurnPhase.COMMON) {
+        if (phase == TurnPhase.COMMON) {
             commonPhaseMenu(rg);
         }
     }
 
     /**
      * Shows the menu for when the game has just started and the player is in turn
+     *
      * @param rg
      */
     private void firstPhaseMenu(ReducedGame rg) {
-        if(rg.getClientPlayer().equals(rg.getCurrentPlayer())) {
+        if (rg.getClientPlayer().equals(rg.getCurrentPlayer())) {
             printMessage(Constants.ANSI_CYAN + "It is now your turn" + Constants.ANSI_RESET);
             printMessage("");
             int toDiscard = rg.getPlayers().get(rg.getClientPlayer()).getHand().size() - 2;
-            if(toDiscard > 0) {
+            if (toDiscard > 0) {
                 printMessage("Here is your hand. Please discard " + toDiscard + " more cards with the command ");
                 printColoredMessage("DISCARDEXCESSCARD <cardIndex>", Constants.SERVANT_COLOR);
                 showHand(rg.getClientPlayer());
             }
         } else {
-            printMessage(Constants.ANSI_CYAN + "It is now " + rg.getCurrentPlayer()  + "'s turn, please wait..." + Constants.ANSI_RESET);
+            printMessage(Constants.ANSI_CYAN + "It is now " + rg.getCurrentPlayer() + "'s turn, please wait..." + Constants.ANSI_RESET);
         }
     }
 
     /**
      * Shows the menu for when a player is in turn in the middle of the game
+     *
      * @param rg
      */
     private void commonPhaseMenu(ReducedGame rg) {
@@ -1448,9 +1497,9 @@ public class CLI implements UI {
         printMessage("HAND, DASHBOARD, FAITHTRACK, WAREHOUSE");
         printMessageNoNL("Player list: | ");
         rg.getPlayers().keySet().forEach(p ->
-            printMessageNoNL(p + " | ")
+                printMessageNoNL(p + " | ")
         );
-        if(reducedModel.getReducedGame().getNumberOfPlayers() == 1) {
+        if (reducedModel.getReducedGame().getNumberOfPlayers() == 1) {
             printMessage("Lorenzo's faith track can be shown by calling to see your own");
         }
         printMessage("");

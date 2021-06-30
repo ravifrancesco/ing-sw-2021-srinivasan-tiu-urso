@@ -18,8 +18,10 @@ public class ServerChoiceController {
 
     GUI gui;
 
-    @FXML private TextField ipField;
-    @FXML private TextField portField;
+    @FXML
+    private TextField ipField;
+    @FXML
+    private TextField portField;
 
     @FXML
     private void handleConnectClick(InputEvent event) {
@@ -33,8 +35,7 @@ public class ServerChoiceController {
             } catch (IOException e) {
                 gui.printErrorMessage("IOException");
             }
-        }
-        else {
+        } else {
             gui.printErrorMessage("Fill all fields");
         }
     }
@@ -55,9 +56,8 @@ public class ServerChoiceController {
             stage.setTitle("Choose a nickname");
             stage.setScene(new Scene(root, 600, 400));
             stage.show();
-            ((Node)(event.getSource())).getScene().getWindow().hide();
-        }
-        catch (IOException e) {
+            ((Node) (event.getSource())).getScene().getWindow().hide();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

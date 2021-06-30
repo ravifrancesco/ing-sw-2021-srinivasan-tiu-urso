@@ -1,7 +1,7 @@
 package it.polimi.ingsw.network.server.lobby;
 
-import it.polimi.ingsw.view.virtualView.server.ServerVirtualView;
 import it.polimi.ingsw.network.messages.clientMessages.ClientMessage;
+import it.polimi.ingsw.view.virtualView.server.ServerVirtualView;
 
 import javax.naming.InvalidNameException;
 

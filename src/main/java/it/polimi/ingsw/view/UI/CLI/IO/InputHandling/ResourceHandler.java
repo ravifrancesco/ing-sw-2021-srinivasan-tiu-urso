@@ -1,10 +1,10 @@
 package it.polimi.ingsw.view.UI.CLI.IO.InputHandling;
 
+import it.polimi.ingsw.model.full.table.Resource;
+import it.polimi.ingsw.model.reduced.ReducedPlayer;
+import it.polimi.ingsw.model.utils.ResourceContainer;
 import it.polimi.ingsw.view.UI.CLI.CLI;
 import it.polimi.ingsw.view.UI.CLI.IO.Constants;
-import it.polimi.ingsw.model.reduced.ReducedPlayer;
-import it.polimi.ingsw.model.full.table.Resource;
-import it.polimi.ingsw.model.utils.ResourceContainer;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,6 +14,7 @@ public class ResourceHandler {
 
     /**
      * Parses a resource
+     *
      * @param in string to parse
      * @return the resource
      */
@@ -29,6 +30,7 @@ public class ResourceHandler {
 
     /**
      * Handles the selection of resources
+     *
      * @param cli the CLI
      * @param qty amount of resources to parse
      * @return the selected resources
@@ -43,11 +45,11 @@ public class ResourceHandler {
             while (qty != 0) {
                 System.out.println("Remaining to select: " + qty);
                 String input = cli.readCommand();
-                if(input.equals("DONE")) {
+                if (input.equals("DONE")) {
                     throw new Exception();
                 }
                 r = parseResource(input);
-                if(r != null) {
+                if (r != null) {
                     output.put(r, output.get(r) != null ? output.get(r) + 1 : 1);
                     qty -= 1;
                 } else {
@@ -65,6 +67,7 @@ public class ResourceHandler {
 
     /**
      * Handles the choosing of resources for a payment
+     *
      * @param cli the CLI
      * @return the resource container
      */
@@ -108,27 +111,28 @@ public class ResourceHandler {
 
     /**
      * Shows the currently selected resources for the chooseResources method
-     * @param cli the cli
+     *
+     * @param cli        the cli
      * @param currentRes the resource map
      */
     public static void showCurrSelected(CLI cli, Map<Resource, Integer> currentRes) {
 
-        if(currentRes.get(Resource.STONE) != null && currentRes.get(Resource.STONE) != 0) {
+        if (currentRes.get(Resource.STONE) != null && currentRes.get(Resource.STONE) != 0) {
             cli.printColoredMessageNoNL("STONE: ", Constants.STONE_COLOR);
             cli.printMessage(currentRes.get(Resource.STONE) + "");
         }
 
-        if(currentRes.get(Resource.GOLD) != null && currentRes.get(Resource.GOLD) != 0) {
+        if (currentRes.get(Resource.GOLD) != null && currentRes.get(Resource.GOLD) != 0) {
             cli.printColoredMessageNoNL("GOLD: ", Constants.GOLD_COLOR);
             cli.printMessage(currentRes.get(Resource.GOLD) + "");
         }
 
-        if(currentRes.get(Resource.SERVANT) != null && currentRes.get(Resource.SERVANT) != 0) {
+        if (currentRes.get(Resource.SERVANT) != null && currentRes.get(Resource.SERVANT) != 0) {
             cli.printColoredMessageNoNL("SERVANT: ", Constants.SERVANT_COLOR);
             cli.printMessage(currentRes.get(Resource.SERVANT) + "");
         }
 
-        if(currentRes.get(Resource.SHIELD) != null && currentRes.get(Resource.SHIELD) != 0) {
+        if (currentRes.get(Resource.SHIELD) != null && currentRes.get(Resource.SHIELD) != 0) {
             cli.printColoredMessageNoNL("SHIELD: ", Constants.SHIELD_COLOR);
             cli.printMessage(currentRes.get(Resource.SHIELD) + "");
         }
@@ -136,9 +140,10 @@ public class ResourceHandler {
 
     /**
      * Parses and handles a deposit selection
-     * @param input the input string
+     *
+     * @param input  the input string
      * @param player the reduced player
-     * @param rc the resource container to add resources to
+     * @param rc     the resource container to add resources to
      */
     public static void handleDepositSelection(String[] input, ReducedPlayer player, ResourceContainer rc) {
         try {
@@ -151,9 +156,10 @@ public class ResourceHandler {
 
     /**
      * Parses and handles an extra deposit selection
-     * @param input the input string
+     *
+     * @param input  the input string
      * @param player the reduced player
-     * @param rc the resource container
+     * @param rc     the resource container
      */
     public static void handleExtraDepositSelection(String[] input, ReducedPlayer player, ResourceContainer rc) {
         try {
@@ -167,9 +173,10 @@ public class ResourceHandler {
 
     /**
      * Parses and handles locker selection
-     * @param input the string to parse
+     *
+     * @param input  the string to parse
      * @param player the reduces player
-     * @param rc the resource container
+     * @param rc     the resource container
      */
     public static void handleLockerSelection(String[] input, ReducedPlayer player, ResourceContainer rc) {
         try {

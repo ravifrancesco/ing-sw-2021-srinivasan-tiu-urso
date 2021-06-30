@@ -1,11 +1,11 @@
 package it.polimi.ingsw.model.full.table;
 
-import it.polimi.ingsw.model.utils.DefaultSettingsBuilder;
 import it.polimi.ingsw.model.full.cards.Banner;
 import it.polimi.ingsw.model.full.cards.BannerEnum;
 import it.polimi.ingsw.model.full.cards.LeaderCard;
 import it.polimi.ingsw.model.full.specialAbilities.ProductionPower;
 import it.polimi.ingsw.model.full.specialAbilities.SpecialAbility;
+import it.polimi.ingsw.model.utils.DefaultSettingsBuilder;
 import it.polimi.ingsw.model.utils.GameSettings;
 import org.junit.Assert;
 import org.junit.Test;

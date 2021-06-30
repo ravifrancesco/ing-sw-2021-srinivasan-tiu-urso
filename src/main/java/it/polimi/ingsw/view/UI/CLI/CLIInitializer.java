@@ -11,6 +11,7 @@ public class CLIInitializer {
 
     /**
      * Runs the cli
+     *
      * @param args the arguments
      */
     public static void main(String[] args) {
@@ -35,10 +36,12 @@ public class CLIInitializer {
             switch (choice.toUpperCase()) {
                 case "LOCAL" -> {
                     handleLocal(cli);
-                    return; }
+                    return;
+                }
                 case "ONLINE" -> {
                     handleServer(cli);
-                    return; }
+                    return;
+                }
                 default -> System.out.println("Invalid input, please try again");
             }
         }
@@ -46,6 +49,7 @@ public class CLIInitializer {
 
     /**
      * Handles the multiplayer game setup
+     *
      * @param cli the CLI
      */
     public void handleServer(CLI cli) {
@@ -55,7 +59,7 @@ public class CLIInitializer {
             do {
                 String ip = cli.getIp();
                 int port = cli.getPort();
-                 clientVirtualView = new ClientVirtualView(ip, port, cli);
+                clientVirtualView = new ClientVirtualView(ip, port, cli);
                 try {
                     clientVirtualView.connectToServer();
                     connected = true;
@@ -79,6 +83,7 @@ public class CLIInitializer {
 
     /**
      * Handles the local game setup
+     *
      * @param cli the CLI
      */
     public void handleLocal(CLI cli) {

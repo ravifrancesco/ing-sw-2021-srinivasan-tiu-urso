@@ -25,7 +25,6 @@ public class Constants {
     public static final String BLACK = "\u001b[38;5;0m";
 
 
-
     public static final String FT_EMPTY = "\u001b[48;5;229m";
     public static final String FT_POS = "\u001b[48;5;160m";
     public static final String FT_SPACE_UNACTIVATED = "\u001b[48;5;9m";
@@ -35,13 +34,13 @@ public class Constants {
 
     public static final String[] servant = {
             "  " + concatColored("   ", SERVANT_COLOR_BG) + "  ",
-            " " +  concatColored("     ", SERVANT_COLOR_BG) + " ",
-            " " +  concatColored("     ", SERVANT_COLOR_BG) + " ",
+            " " + concatColored("     ", SERVANT_COLOR_BG) + " ",
+            " " + concatColored("     ", SERVANT_COLOR_BG) + " ",
             "  " + concatColored("   ", SERVANT_COLOR_BG) + "  ",
-            " " +  concatColored("     ", SERVANT_COLOR_BG) + " ", concatColored("       ", SERVANT_COLOR_BG) };
+            " " + concatColored("     ", SERVANT_COLOR_BG) + " ", concatColored("       ", SERVANT_COLOR_BG)};
 
     public static final String[] shield = {
-            "  " +  concatColored("   ", SHIELD_COLOR_BG) + "  ", // 2
+            "  " + concatColored("   ", SHIELD_COLOR_BG) + "  ", // 2
             concatColored("       ", SHIELD_COLOR_BG), // 0
             concatColored("       ", SHIELD_COLOR_BG), // 0
             " " + concatColored("     ", SHIELD_COLOR_BG) + " ", // 1
@@ -77,7 +76,6 @@ public class Constants {
     };
 
 
-
     public static final String logo =
             """
                                                 ███▄ ▄███▓    ▄▄▄         ▓█████      ██████    ▄▄▄█████▓    ██▀███      ██▓                               \s
@@ -110,9 +108,6 @@ public class Constants {
                       ░░   ░     ▒ ░      ░   ░ ░      ░   ▒      ░  ░  ░     ░            ▒ ░   ░      ░         ░         ░   ░ ░      ░         ░ ░ ░ ▒ \s
                        ░         ░              ░          ░  ░         ░     ░ ░          ░            ░         ░  ░            ░                    ░ ░ \s
                                                                               ░                                                                            \s""";
-
-
-
 
 
     public static final String ANSI_GENERIC_WHITE = "\u001b[38;5;255m";

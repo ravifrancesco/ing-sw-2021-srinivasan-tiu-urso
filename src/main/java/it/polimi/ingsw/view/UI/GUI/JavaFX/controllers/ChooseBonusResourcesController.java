@@ -1,9 +1,9 @@
 package it.polimi.ingsw.view.UI.GUI.JavaFX.controllers;
 
-import it.polimi.ingsw.view.UI.GUI.GUI;
-import it.polimi.ingsw.model.reduced.ReducedDashboard;
 import it.polimi.ingsw.model.full.table.Resource;
+import it.polimi.ingsw.model.reduced.ReducedDashboard;
 import it.polimi.ingsw.network.messages.clientMessages.game.GetInitialResourcesGameMessage;
+import it.polimi.ingsw.view.UI.GUI.GUI;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.effect.ColorAdjust;
@@ -101,7 +101,7 @@ public class ChooseBonusResourcesController {
 
 
     private Image loadResourceImage(String resource) {
-        File file = new File("src/main/resources/png/resources/"+resource+".png");
+        File file = new File("src/main/resources/png/resources/" + resource + ".png");
         return new Image(file.toURI().toString());
     }
 
@@ -134,7 +134,7 @@ public class ChooseBonusResourcesController {
             gui.printErrorMessage("Select a resource and a slot!");
         } else {
             gui.send(new GetInitialResourcesGameMessage(selectedResource, selectedIndex));
-            ((Node)(event.getSource())).getScene().getWindow().hide();
+            ((Node) (event.getSource())).getScene().getWindow().hide();
         }
     }
 

@@ -1,10 +1,10 @@
 package it.polimi.ingsw.network.messages.serverMessages.commons;
 
-import it.polimi.ingsw.view.virtualView.client.ClientVirtualView;
+import it.polimi.ingsw.network.messages.serverMessages.ServerMessage;
 import it.polimi.ingsw.view.UI.CLI.CLI;
 import it.polimi.ingsw.view.UI.CLI.IO.Constants;
 import it.polimi.ingsw.view.UI.UIType;
-import it.polimi.ingsw.network.messages.serverMessages.ServerMessage;
+import it.polimi.ingsw.view.virtualView.client.ClientVirtualView;
 
 import java.io.Serializable;
 
@@ -23,10 +23,10 @@ public class GameInfoMessage implements ServerMessage, Serializable {
     public void updateClient(ClientVirtualView clientVirtualView, String nickname) {
         clientVirtualView.updateGameInfo(numberOfPlayers);
         CLI cli;
-        if(clientVirtualView.ui.getType() == UIType.CLI) {
+        if (clientVirtualView.ui.getType() == UIType.CLI) {
             cli = (CLI) clientVirtualView.ui;
 
-            if(numberOfPlayers == 1) {
+            if (numberOfPlayers == 1) {
                 cli.printColoredMessage("Creating lobby...", Constants.GOLD_COLOR);
                 cli.printColoredMessage("Created successfully! Lobby details: ", Constants.ANSI_GREEN);
             } else {

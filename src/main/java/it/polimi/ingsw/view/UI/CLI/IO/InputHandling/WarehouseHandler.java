@@ -1,19 +1,20 @@
 package it.polimi.ingsw.view.UI.CLI.IO.InputHandling;
 
-import it.polimi.ingsw.view.UI.CLI.CLI;
-import it.polimi.ingsw.view.UI.CLI.IO.Constants;
 import it.polimi.ingsw.model.full.table.Resource;
 import it.polimi.ingsw.network.messages.clientMessages.ClientMessage;
 import it.polimi.ingsw.network.messages.clientMessages.game.PlayerChangesDeposit;
 import it.polimi.ingsw.network.messages.clientMessages.game.PlayerStoresFromSupply;
 import it.polimi.ingsw.network.messages.clientMessages.game.PlayerStoresFromSupplyToExtraDeposit;
+import it.polimi.ingsw.view.UI.CLI.CLI;
+import it.polimi.ingsw.view.UI.CLI.IO.Constants;
 
 import java.util.stream.IntStream;
 
 public class WarehouseHandler {
     /**
      * Creates a message to activate a store from supply move
-     * @param in the input string to be parsed
+     *
+     * @param in  the input string to be parsed
      * @param cli the cli
      * @return the client message for the server
      */
@@ -30,7 +31,8 @@ public class WarehouseHandler {
 
     /**
      * Creates a message to activate a store from supply to extra deposit move
-     * @param in the input string to be parsed
+     *
+     * @param in  the input string to be parsed
      * @param cli the cli
      * @return the client message for the server
      */
@@ -48,6 +50,7 @@ public class WarehouseHandler {
 
     /**
      * Creates a message to activate a change deposit move
+     *
      * @param cli the cli
      * @return the client message for the server
      */
@@ -62,6 +65,7 @@ public class WarehouseHandler {
 
     /**
      * Handles a deposit swap
+     *
      * @param cli the cli
      * @return the swapped deposit
      */
@@ -82,7 +86,7 @@ public class WarehouseHandler {
         Resource temp;
         do {
             input = cli.readCommand().toUpperCase().split(" ");
-            if(input[0].equals("DONE")) {
+            if (input[0].equals("DONE")) {
                 cli.printMessage("Swapping finished");
                 break;
             } else {

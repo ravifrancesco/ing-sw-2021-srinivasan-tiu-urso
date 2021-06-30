@@ -1,9 +1,9 @@
 package it.polimi.ingsw.network.server.lobby;
 
-import it.polimi.ingsw.view.virtualView.server.ServerVirtualView;
-import it.polimi.ingsw.network.server.Server;
 import it.polimi.ingsw.network.messages.clientMessages.ClientMessage;
 import it.polimi.ingsw.network.messages.clientMessages.lobbyMessage.ClientLobbyMessage;
+import it.polimi.ingsw.network.server.Server;
+import it.polimi.ingsw.view.virtualView.server.ServerVirtualView;
 
 import javax.naming.InvalidNameException;
 import java.util.*;
@@ -29,10 +29,10 @@ public class MainLobby implements Lobby {
     }
 
 
-
     public synchronized void enterLobby(ServerVirtualView c) throws InvalidNameException {
         String nickname = c.getNickname();
-        if (waitingConnection.containsKey(nickname) || playingConnection.containsKey(nickname)) throw new InvalidNameException();
+        if (waitingConnection.containsKey(nickname) || playingConnection.containsKey(nickname))
+            throw new InvalidNameException();
         else {
             waitingConnection.put(nickname, c);
             c.enterLobby(this);
@@ -91,7 +91,9 @@ public class MainLobby implements Lobby {
         return activeGameLobbies;
     }
 
-    public void removeGameLobby(GameLobby gameLobby) { activeGameLobbies.remove(gameLobby); }
+    public void removeGameLobby(GameLobby gameLobby) {
+        activeGameLobbies.remove(gameLobby);
+    }
 
 
 }

@@ -9,12 +9,10 @@ import java.io.File;
 
 public class FaithMarkerController {
 
+    double increment;
     @FXML
     private ImageView faithMarker;
-
     private Slot[] faithSlots;
-
-    double increment;
 
     public void assignSlots(Slot[] slots) {
         this.faithSlots = slots;

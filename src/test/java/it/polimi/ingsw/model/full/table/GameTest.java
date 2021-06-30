@@ -1,8 +1,5 @@
 package it.polimi.ingsw.model.full.table;
 
-import it.polimi.ingsw.model.full.table.Game;
-import it.polimi.ingsw.model.full.table.Player;
-import it.polimi.ingsw.model.full.table.TurnPhase;
 import it.polimi.ingsw.model.utils.GameSettings;
 import it.polimi.ingsw.utils.GameSettingsBuilder;
 import org.junit.Assert;
@@ -100,7 +97,7 @@ public class GameTest {
 
     @Test
     public void getTurnPhaseTest() {
-        Game game = new Game("1",3);
+        Game game = new Game("1", 3);
         GameSettingsBuilder gameSettingsBuilder = new GameSettingsBuilder();
         GameSettings gameSettings = gameSettingsBuilder.build();
         game.loadGameSettings(gameSettings);
@@ -108,7 +105,6 @@ public class GameTest {
         Assert.assertNull(game.getTurnPhase());
         game.startUniquePhase(TurnPhase.FIRST_TURN);
         Assert.assertEquals(game.getTurnPhase(), TurnPhase.FIRST_TURN);
-
 
 
     }

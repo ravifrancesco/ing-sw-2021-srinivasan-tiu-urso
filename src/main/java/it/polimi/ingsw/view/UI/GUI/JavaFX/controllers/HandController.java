@@ -1,9 +1,9 @@
 package it.polimi.ingsw.view.UI.GUI.JavaFX.controllers;
 
-import it.polimi.ingsw.view.UI.GUI.GUI;
 import it.polimi.ingsw.model.full.cards.LeaderCard;
 import it.polimi.ingsw.network.messages.clientMessages.game.PlayLeaderCardGameMessage;
 import it.polimi.ingsw.network.messages.clientMessages.game.PlayerDiscardsLeaderCard;
+import it.polimi.ingsw.view.UI.GUI.GUI;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -20,23 +20,17 @@ import java.util.List;
 
 public class HandController {
 
+    public GUI gui;
     @FXML
     HBox leaderCardContainerHBox;
-
     @FXML
     Button closeButton;
-
     @FXML
     Button discardButton;
-
     @FXML
     Button playButton;
-
-    public GUI gui;
-
-    private List<ImageView> imageViews;
-
     Integer selectedCard;
+    private List<ImageView> imageViews;
 
     public void initialize() {
         imageViews = new ArrayList<>();
@@ -59,13 +53,13 @@ public class HandController {
     }
 
     private void setLeaderCard(LeaderCard leaderCard) {
-        File file = new File("src/main/resources/png/cards/leaderCards/leader_card_" + leaderCard.getId()  + ".png");
+        File file = new File("src/main/resources/png/cards/leaderCards/leader_card_" + leaderCard.getId() + ".png");
         javafx.scene.image.Image image = new Image(file.toURI().toString());
         ImageView imageView = new ImageView(image);
         leaderCardContainerHBox.getChildren().add(imageView);
         imageView.setFitHeight(200);
         imageView.setFitWidth(132);
-        HBox.setMargin(imageView, new Insets(10,10,10,10));
+        HBox.setMargin(imageView, new Insets(10, 10, 10, 10));
         imageView.setOnMouseClicked(event -> selectedCard(imageView));
         imageViews.add(imageView);
     }
@@ -91,7 +85,7 @@ public class HandController {
 
     @FXML
     private void onCloseClicked(InputEvent event) {
-        ((Node)(event.getSource())).getScene().getWindow().hide();
+        ((Node) (event.getSource())).getScene().getWindow().hide();
     }
 
     @FXML
@@ -101,7 +95,7 @@ public class HandController {
             return;
         }
         gui.send(new PlayLeaderCardGameMessage(selectedCard));
-        ((Node)(event.getSource())).getScene().getWindow().hide();
+        ((Node) (event.getSource())).getScene().getWindow().hide();
     }
 
     @FXML
@@ -110,7 +104,7 @@ public class HandController {
             this.gui.printErrorMessage("Select a card first!");
         }
         gui.send(new PlayerDiscardsLeaderCard(selectedCard));
-        ((Node)(event.getSource())).getScene().getWindow().hide();
+        ((Node) (event.getSource())).getScene().getWindow().hide();
     }
 
     public void update(List<LeaderCard> leaderCards) {

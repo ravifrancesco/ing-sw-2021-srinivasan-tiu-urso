@@ -1,10 +1,10 @@
 package it.polimi.ingsw.view.UI.GUI.JavaFX.controllers;
 
-import it.polimi.ingsw.view.UI.GUI.GUI;
-import it.polimi.ingsw.network.server.lobby.GameLobbyDetails;
 import it.polimi.ingsw.network.messages.clientMessages.lobbyMessage.AskGameLobbies;
 import it.polimi.ingsw.network.messages.clientMessages.lobbyMessage.CreateGameLobby;
 import it.polimi.ingsw.network.messages.clientMessages.lobbyMessage.JoinGameLobby;
+import it.polimi.ingsw.network.server.lobby.GameLobbyDetails;
+import it.polimi.ingsw.view.UI.GUI.GUI;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -24,11 +24,10 @@ public class ClientMainLobbyController {
     String selectedGame = null;
 
     GUI gui;
-
-    @FXML private VBox listOfServersVBox;
     Node[] nodes;
     ServerItemController[] serverItemControllers;
-
+    @FXML
+    private VBox listOfServersVBox;
     private int selectedNode = -1;
 
     @FXML
@@ -64,7 +63,7 @@ public class ClientMainLobbyController {
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == buttonTypeZero) {
             gui.send(new CreateGameLobby(1));
-        } else if (result.get() == buttonTypeOne){
+        } else if (result.get() == buttonTypeOne) {
             gui.send(new CreateGameLobby(2));
         } else if (result.get() == buttonTypeTwo) {
             gui.send(new CreateGameLobby(3));
@@ -93,8 +92,16 @@ public class ClientMainLobbyController {
                             serverItemControllers[i] = loader.getController();
                             serverItemControllers[i].setFields(gameLobbies.get(i));
                             //give the items some effect
-                            nodes[i].setOnMouseEntered(event -> {   if (j != selectedNode)   { nodes[j].setStyle("-fx-background-color : #808080"); }});
-                            nodes[i].setOnMouseExited(event -> {    if (j != selectedNode)   { nodes[j].setStyle("-fx-background-color : #FFFFFF"); }});
+                            nodes[i].setOnMouseEntered(event -> {
+                                if (j != selectedNode) {
+                                    nodes[j].setStyle("-fx-background-color : #808080");
+                                }
+                            });
+                            nodes[i].setOnMouseExited(event -> {
+                                if (j != selectedNode) {
+                                    nodes[j].setStyle("-fx-background-color : #FFFFFF");
+                                }
+                            });
                             nodes[i].setOnMouseClicked(event -> {
                                 if (selectedNode != -1) {
                                     nodes[selectedNode].setStyle("-fx-background-color : #FFFFFF");

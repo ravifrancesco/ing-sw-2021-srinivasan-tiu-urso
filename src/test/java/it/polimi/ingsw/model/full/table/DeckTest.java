@@ -4,11 +4,9 @@ import it.polimi.ingsw.model.full.cards.Banner;
 import it.polimi.ingsw.model.full.cards.BannerEnum;
 import it.polimi.ingsw.model.full.cards.DevelopmentCard;
 import it.polimi.ingsw.model.full.cards.LeaderCard;
-import it.polimi.ingsw.model.full.specialAbilities.*;
-import it.polimi.ingsw.model.full.table.Deck;
-import it.polimi.ingsw.model.full.table.Player;
-import it.polimi.ingsw.model.full.table.Resource;
-import it.polimi.ingsw.model.full.table.VaticanReport;
+import it.polimi.ingsw.model.full.specialAbilities.ProductionPower;
+import it.polimi.ingsw.model.full.specialAbilities.SpecialAbility;
+import it.polimi.ingsw.model.full.specialAbilities.SpecialAbilityType;
 import it.polimi.ingsw.model.utils.GameSettings;
 import org.junit.Assert;
 import org.junit.Test;
@@ -143,7 +141,7 @@ public class DeckTest {
                 .forEach(i -> dc[i].getProductionPower().setSelectableResource(new HashMap<>(), new HashMap<>()));
 
         IntStream.range(0, dc.length)
-                .filter(i -> i%2 == 0)
+                .filter(i -> i % 2 == 0)
                 .forEach(i -> dc[i].activate(player));
 
         IntStream.range(0, dc.length)
@@ -187,7 +185,7 @@ public class DeckTest {
                 .forEach(i -> ((ProductionPower) lc[i].getSpecialAbility()).setSelectableResource(new HashMap<>(), resourceProduced));
 
         IntStream.range(0, lc.length)
-                .filter(i -> i%2 == 0)
+                .filter(i -> i % 2 == 0)
                 .forEach(i -> lc[i].activate(player));
 
         IntStream.range(0, lc.length)
@@ -197,7 +195,7 @@ public class DeckTest {
 
         Assert.assertTrue(IntStream.range(0, leaderDeck.getSize())
                 .mapToObj(i -> ((LeaderCard) leaderDeck.getCard()).getSpecialAbility())
-                .filter(specialAbility -> specialAbility.getType()==SpecialAbilityType.PRODUCTION_POWER)
+                .filter(specialAbility -> specialAbility.getType() == SpecialAbilityType.PRODUCTION_POWER)
                 .map(specialAbility -> (ProductionPower) specialAbility)
                 .allMatch(ProductionPower::isActivatable));
 
@@ -216,7 +214,7 @@ public class DeckTest {
         int vaticanReportsNum = 3;
         List<VaticanReport> vaticanReports = vaticanReportsListBuilder();
 
-        int[] faithTrackVictoryPoints = {0,0,0,1,0,0,2,0,0,4,0,0,6,0,0,9,0,0,12,0,0,16,0,0,0};
+        int[] faithTrackVictoryPoints = {0, 0, 0, 1, 0, 0, 2, 0, 0, 4, 0, 0, 6, 0, 0, 9, 0, 0, 12, 0, 0, 16, 0, 0, 0};
 
         return new GameSettings(developmentCards, leaderCardNum, leaderCards,
                 dashboardProductionPower, vaticanReports, faithTrackVictoryPoints);
@@ -239,7 +237,7 @@ public class DeckTest {
 
         return IntStream.range(0, GameSettings.DEVELOPMENT_CARD_NUM)
                 .boxed()
-                .map(i -> new DevelopmentCard(i, 4, resourceCost, new ProductionPower(resourceRequired, resourceProduced,0), banner))
+                .map(i -> new DevelopmentCard(i, 4, resourceCost, new ProductionPower(resourceRequired, resourceProduced, 0), banner))
                 .toArray(DevelopmentCard[]::new);
 
     }
@@ -261,7 +259,7 @@ public class DeckTest {
         Map<Resource, Integer> resourceProduced = new HashMap<>();
         resourceProduced.put(Resource.ANY, 1);
 
-        return  IntStream.range(0, leaderCardNum)
+        return IntStream.range(0, leaderCardNum)
                 .boxed()
                 .map(i -> new LeaderCard(i, 2, bannerCost, resourceCost, new ProductionPower(resourceRequired, resourceProduced, 1)))
                 .toArray(LeaderCard[]::new);
@@ -277,7 +275,7 @@ public class DeckTest {
         Map<Resource, Integer> resourceProduced = new HashMap<>();
         resourceProduced.put(Resource.SHIELD, 1);
 
-        return new ProductionPower(resourceRequired, resourceProduced,2);
+        return new ProductionPower(resourceRequired, resourceProduced, 2);
 
     }
 

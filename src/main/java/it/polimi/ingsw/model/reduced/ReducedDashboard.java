@@ -1,40 +1,34 @@
 package it.polimi.ingsw.model.reduced;
 
-import it.polimi.ingsw.model.full.table.Resource;
 import it.polimi.ingsw.model.full.cards.DevelopmentCard;
 import it.polimi.ingsw.model.full.cards.LeaderCard;
 import it.polimi.ingsw.model.full.specialAbilities.ProductionPower;
+import it.polimi.ingsw.model.full.table.Resource;
 import it.polimi.ingsw.utils.Pair;
 
 import java.util.*;
 
 public class ReducedDashboard {
 
-    private final ReducedPlayer reducedPlayer;
-
-    private int playerPoints;
-
-    private ProductionPower productionPower;
-
     // Cards
     public static final int NUM_DEVELOPMENT_CARD_STACKS = 3;
     public static final int NUM_LEADER_CARDS = 2;
-    private List<LeaderCard> playedLeaderCards;
-    private List<Stack<DevelopmentCard>> playedDevelopmentCards;
-
     // Warehouse
     static final int MAX_DEPOSIT_SLOTS = 6;
+    private final ReducedPlayer reducedPlayer;
+    private final ReducedModel reducedModel;
+    private int playerPoints;
+    private ProductionPower productionPower;
+    private List<LeaderCard> playedLeaderCards;
+    private List<Stack<DevelopmentCard>> playedDevelopmentCards;
     private ArrayList<Resource> supply;
     private Resource[] deposit;
     private Map<Resource, Integer> locker;
     private Resource[][] extraDeposits;
-
     // FaithTrack
     private int position;
     private int LorenzoIlMagnificoPosition;
     private Map<Pair<Integer, Integer>, Pair<Integer, Integer>> vaticanReports;
-
-    private final ReducedModel reducedModel;
 
     public ReducedDashboard(ReducedPlayer reducedPlayer, ReducedModel reducedModel) {
         this.reducedPlayer = reducedPlayer;
@@ -140,12 +134,12 @@ public class ReducedDashboard {
         updateLorenzoFaithMarker(LorenzoIlMagnificoPosition);
     }
 
-    public void setProductionPower(ProductionPower productionPower) {
-        this.productionPower = productionPower;
-    }
-
     public ProductionPower getProductionPower() {
         return productionPower;
+    }
+
+    public void setProductionPower(ProductionPower productionPower) {
+        this.productionPower = productionPower;
     }
 
     private void updateWarehouseView() {

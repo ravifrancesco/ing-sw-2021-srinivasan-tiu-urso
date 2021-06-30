@@ -1,11 +1,14 @@
 package it.polimi.ingsw.view.UI.CLI.IO.InputHandling;
 
-import it.polimi.ingsw.view.UI.CLI.CLI;
+import it.polimi.ingsw.model.full.specialAbilities.ProductionPower;
 import it.polimi.ingsw.model.full.table.Resource;
 import it.polimi.ingsw.model.utils.ResourceContainer;
-import it.polimi.ingsw.model.full.specialAbilities.ProductionPower;
 import it.polimi.ingsw.network.messages.clientMessages.ClientMessage;
-import it.polimi.ingsw.network.messages.clientMessages.game.*;
+import it.polimi.ingsw.network.messages.clientMessages.game.ActivateLeaderProductionGameMessage;
+import it.polimi.ingsw.network.messages.clientMessages.game.PlayLeaderCardGameMessage;
+import it.polimi.ingsw.network.messages.clientMessages.game.PlayerDiscardsExcessLeaderCards;
+import it.polimi.ingsw.network.messages.clientMessages.game.PlayerDiscardsLeaderCard;
+import it.polimi.ingsw.view.UI.CLI.CLI;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,7 +20,8 @@ public class LeaderCardHandler {
 
     /**
      * Handles the creation for the message to discard an excess card
-     * @param in the string to parse with the needed arguments
+     *
+     * @param in  the string to parse with the needed arguments
      * @param cli the CLI
      * @return the client message with the move
      */
@@ -33,7 +37,8 @@ public class LeaderCardHandler {
 
     /**
      * Handles the creation for the message to discard a card
-     * @param in the string to parse with the needed arguments
+     *
+     * @param in  the string to parse with the needed arguments
      * @param cli the CLI
      * @return the client message with the move
      */
@@ -49,7 +54,8 @@ public class LeaderCardHandler {
 
     /**
      * Handles the creation for the message to activate a leader card production
-     * @param in the string to parse with the needed arguments
+     *
+     * @param in  the string to parse with the needed arguments
      * @param cli the CLI
      * @return the client message with the move
      */
@@ -72,7 +78,7 @@ public class LeaderCardHandler {
             int getNumRequiredAny = pp.getNumRequiredAny();
             int getNumProducedAny = pp.getNumProducedAny();
 
-            if(getNumProducedAny != 0 || getNumRequiredAny != 0) {
+            if (getNumProducedAny != 0 || getNumRequiredAny != 0) {
                 cli.printMessage(ANSI_GREEN + "Production has " + getNumRequiredAny +
                         " required selectable resources and " + getNumProducedAny + " produced selectable resources..." + ANSI_RESET);
             }
@@ -110,7 +116,8 @@ public class LeaderCardHandler {
 
     /**
      * Handles the creation for the message to play a leader card
-     * @param in the string to parse with the needed arguments
+     *
+     * @param in  the string to parse with the needed arguments
      * @param cli the CLI
      * @return the client message with the move
      */

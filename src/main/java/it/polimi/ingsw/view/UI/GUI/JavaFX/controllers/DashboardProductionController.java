@@ -1,11 +1,11 @@
 package it.polimi.ingsw.view.UI.GUI.JavaFX.controllers;
 
-import it.polimi.ingsw.view.UI.GUI.GUI;
-import it.polimi.ingsw.view.UI.GUI.JavaFX.utils.Slot;
-import it.polimi.ingsw.model.reduced.ReducedDashboard;
 import it.polimi.ingsw.model.full.table.Resource;
+import it.polimi.ingsw.model.reduced.ReducedDashboard;
 import it.polimi.ingsw.model.utils.ResourceContainer;
 import it.polimi.ingsw.network.messages.clientMessages.game.ActivateDashboardProductionGameMessage;
+import it.polimi.ingsw.view.UI.GUI.GUI;
+import it.polimi.ingsw.view.UI.GUI.JavaFX.utils.Slot;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -26,12 +26,10 @@ import java.util.stream.IntStream;
 
 public class DashboardProductionController {
 
-    private GUI gui;
-
     private static final int NUM_RESOURCES = 4;
     private static final int NUM_SHELVES = 6;
     private static final int EXTRA_DEPOSITS_SIZE = 4;
-
+    private GUI gui;
     private int[] maxLockerResources;
 
     private Slot[] depositSlots;
@@ -47,12 +45,18 @@ public class DashboardProductionController {
     @FXML
     private Pane pane;
 
-    @FXML private Label labelGold;
-    @FXML private Label labelShield;
-    @FXML private Label labelStone;
-    @FXML private Label labelServant;
-    @FXML private Button btnOk;
-    @FXML private Button btnCanc;
+    @FXML
+    private Label labelGold;
+    @FXML
+    private Label labelShield;
+    @FXML
+    private Label labelStone;
+    @FXML
+    private Label labelServant;
+    @FXML
+    private Button btnOk;
+    @FXML
+    private Button btnCanc;
 
     @FXML
     private ImageView goldIW;
@@ -221,14 +225,14 @@ public class DashboardProductionController {
             case STONE -> resourceName = "stone";
             case SERVANT -> resourceName = "servant";
         }
-        File file = new File("src/main/resources/png/resources/"+resourceName+".png");
+        File file = new File("src/main/resources/png/resources/" + resourceName + ".png");
         Image image = new Image(file.toURI().toString());
         ImageView imageView = new ImageView(image);
         imageView.setOnMouseClicked(mouseEvent -> clickedDepositResource(imageView, pos));
         imageView.setFitWidth(25);
         imageView.setFitHeight(25);
-        imageView.setX((depositSlots[pos].getX() + depositSlots[pos].getWidth()/2) - (imageView.getFitWidth() / 2));
-        imageView.setY((depositSlots[pos].getY() + depositSlots[pos].getHeight()/2) - (imageView.getFitHeight() / 2));
+        imageView.setX((depositSlots[pos].getX() + depositSlots[pos].getWidth() / 2) - (imageView.getFitWidth() / 2));
+        imageView.setY((depositSlots[pos].getY() + depositSlots[pos].getHeight() / 2) - (imageView.getFitHeight() / 2));
         return imageView;
     }
 
@@ -252,14 +256,14 @@ public class DashboardProductionController {
             case STONE -> resourceName = "stone";
             case SERVANT -> resourceName = "servant";
         }
-        File file = new File("src/main/resources/png/resources/"+resourceName+".png");
+        File file = new File("src/main/resources/png/resources/" + resourceName + ".png");
         Image image = new Image(file.toURI().toString());
         ImageView imageView = new ImageView(image);
         imageView.setOnMouseClicked(mouseEvent -> clickedExtraDepositResource(imageView, pos));
         imageView.setFitWidth(25);
         imageView.setFitHeight(25);
-        imageView.setX((extraDepositSlots[pos].getX() + extraDepositSlots[pos].getWidth()/2) - (imageView.getFitWidth() / 2));
-        imageView.setY((extraDepositSlots[pos].getY() + extraDepositSlots[pos].getHeight()/2) - (imageView.getFitHeight() / 2));
+        imageView.setX((extraDepositSlots[pos].getX() + extraDepositSlots[pos].getWidth() / 2) - (imageView.getFitWidth() / 2));
+        imageView.setY((extraDepositSlots[pos].getY() + extraDepositSlots[pos].getHeight() / 2) - (imageView.getFitHeight() / 2));
         return imageView;
     }
 
@@ -278,7 +282,7 @@ public class DashboardProductionController {
     @FXML
     private void clickedOkBtn(MouseEvent event) {
         IntStream.range(0, selectedDeposit.length).filter(i -> selectedDeposit[i]).forEach(i -> resourceContainer.addDepositSelectedResource(i));
-        IntStream.range(0, selectedExtraDeposit.length).filter(i -> selectedExtraDeposit[i]).forEach(i -> resourceContainer.addExtraDepositSelectedResource(i/2,i%2));
+        IntStream.range(0, selectedExtraDeposit.length).filter(i -> selectedExtraDeposit[i]).forEach(i -> resourceContainer.addExtraDepositSelectedResource(i / 2, i % 2));
         if (!labelGold.getText().equals("0")) {
             resourceContainer.addLockerSelectedResource(Resource.GOLD, Integer.parseInt(labelGold.getText()));
         }
@@ -303,7 +307,7 @@ public class DashboardProductionController {
             return;
         }
 
-        gui.send(new ActivateDashboardProductionGameMessage(resourceContainer, resourceRequiredOptional , resourceProducedOptional));
+        gui.send(new ActivateDashboardProductionGameMessage(resourceContainer, resourceRequiredOptional, resourceProducedOptional));
 
         Stage stage = (Stage) btnOk.getScene().getWindow();
         stage.close();

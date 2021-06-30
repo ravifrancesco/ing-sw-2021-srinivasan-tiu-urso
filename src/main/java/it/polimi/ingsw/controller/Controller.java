@@ -1,13 +1,11 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.view.virtualView.client.OfflineClientVirtualView;
 import it.polimi.ingsw.controller.exceptions.*;
-import it.polimi.ingsw.model.full.cards.Banner;
 import it.polimi.ingsw.model.full.cards.DevelopmentCard;
-import it.polimi.ingsw.model.full.cards.LeaderCard;
 import it.polimi.ingsw.model.full.table.*;
 import it.polimi.ingsw.model.utils.GameSettings;
 import it.polimi.ingsw.model.utils.ResourceContainer;
+import it.polimi.ingsw.view.virtualView.client.OfflineClientVirtualView;
 import it.polimi.ingsw.view.virtualView.server.ServerVirtualView;
 
 import javax.naming.InvalidNameException;
@@ -31,17 +29,14 @@ public class Controller {
 
     // TODO: check that illegal actions don't change the state
     private final Game game;
-
-
-    GameSettings gameSettings;
+    private final ProductionController productionController;
 
     // controllers
-
-    private final ProductionController productionController;
     private final WarehouseController warehouseController;
     private final MarketController marketController;
     private final LeaderCardController leaderCardController;
     private final DevelopmentCardController developmentCardController;
+    GameSettings gameSettings;
 
     /**
      * Constructor for a Server Controller object. It creates the game and initializes all attributes.
@@ -308,7 +303,7 @@ public class Controller {
      * @param resourceProducedOptional the resources produced that replace the selectable resources (if present).
      */
     public int activateLeaderCardProductionPower(String nickname, int cardToActivate, ResourceContainer resourcesToPayCost,
-                                                  Map<Resource, Integer> resourceRequiredOptional, Map<Resource, Integer> resourceProducedOptional) {
+                                                 Map<Resource, Integer> resourceRequiredOptional, Map<Resource, Integer> resourceProducedOptional) {
 
         try {
             productionController.activateLeaderCardProduction(nickname, cardToActivate, resourcesToPayCost, resourceRequiredOptional, resourceProducedOptional);
@@ -359,9 +354,10 @@ public class Controller {
 
     /**
      * It allows to get resources from the market.
-     * @param nickname                      the nickname of the player who made the move.
-     * @param move                          the number that represents the selected row or column in the market.
-     * @param wmrs                          the collection of activated power related to the white marble resources.
+     *
+     * @param nickname the nickname of the player who made the move.
+     * @param move     the number that represents the selected row or column in the market.
+     * @param wmrs     the collection of activated power related to the white marble resources.
      */
     public int getFromMarket(String nickname, int move, ArrayList<Resource> wmrs) {
         try {
@@ -376,13 +372,14 @@ public class Controller {
 
     /**
      * It allows to buy a development card from the development card grid.
-     * @param nickname                      the nickname of the player who made the move.
-     * @param row                           the row of the grid selected.
-     * @param column                        the column of the grid selected.
-     * @param resourcesToPayCost            the resources to pay for the cost of the development card.
-     * @param position                      the index that represent where to place the card.
+     *
+     * @param nickname           the nickname of the player who made the move.
+     * @param row                the row of the grid selected.
+     * @param column             the column of the grid selected.
+     * @param resourcesToPayCost the resources to pay for the cost of the development card.
+     * @param position           the index that represent where to place the card.
      */
-    public int buyDevelopmentCard(String nickname, int row, int column, ResourceContainer resourcesToPayCost, int position)  {
+    public int buyDevelopmentCard(String nickname, int row, int column, ResourceContainer resourcesToPayCost, int position) {
         try {
             developmentCardController.buyDevelopmentCard(nickname, row, column, resourcesToPayCost, position);
             return 0;
@@ -394,14 +391,15 @@ public class Controller {
 
     /**
      * It allows to activate the production power of a development card.
-     * @param nickname                      the nickname of the player who made the move.
-     * @param cardToActivate                the index of the card whose production power is to be activated
-     * @param resourcesToPayCost            the resources to pay for the resources required by the production power.
-     * @param resourceRequiredOptional      the resources required that replace the selectable resources (if present).
-     * @param resourceProducedOptional      the resources produced that replace the selectable resources (if present).
+     *
+     * @param nickname                 the nickname of the player who made the move.
+     * @param cardToActivate           the index of the card whose production power is to be activated
+     * @param resourcesToPayCost       the resources to pay for the resources required by the production power.
+     * @param resourceRequiredOptional the resources required that replace the selectable resources (if present).
+     * @param resourceProducedOptional the resources produced that replace the selectable resources (if present).
      */
     public int activateDevelopmentCardProductionPower(String nickname, int cardToActivate, ResourceContainer resourcesToPayCost,
-                                                       Map<Resource, Integer> resourceRequiredOptional, Map<Resource, Integer> resourceProducedOptional) {
+                                                      Map<Resource, Integer> resourceRequiredOptional, Map<Resource, Integer> resourceProducedOptional) {
 
         try {
             productionController.activateDevelopmentCardProductionPower(nickname, cardToActivate, resourcesToPayCost, resourceRequiredOptional, resourceProducedOptional);
@@ -415,8 +413,9 @@ public class Controller {
 
     /**
      * Moves resources between the deposit
-     * @param nickname                      the player nickname
-     * @param deposit                       the new deposit
+     *
+     * @param nickname the player nickname
+     * @param deposit  the new deposit
      * @return
      */
     public int changeDeposit(String nickname, Resource[] deposit) {
@@ -447,9 +446,10 @@ public class Controller {
 
     /**
      * It allows to move the resources from the supply to the warehouse.
-     * @param nickname                      the nickname of the player who made the move.
-     * @param from                          the index of the supply where the resources are stored.
-     * @param to                            the index of the warehouse where to store the resources.
+     *
+     * @param nickname the nickname of the player who made the move.
+     * @param from     the index of the supply where the resources are stored.
+     * @param to       the index of the warehouse where to store the resources.
      */
     public int storeFromSupply(String nickname, int from, int to) {
         try {
@@ -463,10 +463,11 @@ public class Controller {
 
     /**
      * It allows to move the resources from the supply to the extra deposit.
-     * @param nickname                      the nickname of the player who made the move.
-     * @param leaderCardPos                 the position of the leader card which has extra deposit special ability.
-     * @param from                          the index of the supply where the resources are stored.
-     * @param to                            the index of the extra deposit where to store the resources.
+     *
+     * @param nickname      the nickname of the player who made the move.
+     * @param leaderCardPos the position of the leader card which has extra deposit special ability.
+     * @param from          the index of the supply where the resources are stored.
+     * @param to            the index of the extra deposit where to store the resources.
      */
     public int storeFromSupplyInExtraDeposit(String nickname, int leaderCardPos, int from, int to) {
         try {
@@ -480,8 +481,9 @@ public class Controller {
 
     /**
      * It allows to end a turn.
-     * @param nickname                      the nickname of the player in turn.
-     * @return                              true if the game is ended, false otherwise.
+     *
+     * @param nickname the nickname of the player in turn.
+     * @return true if the game is ended, false otherwise.
      */
     public int endTurn(String nickname) {
         String currentPlayer = game.getCurrentPlayer();
@@ -509,13 +511,13 @@ public class Controller {
 
         dashboard.resetProductionPowers();
 
-        if(game.getTurnPhase().equals(TurnPhase.FIRST_TURN) && !checkInitialPhaseCompletion(dashboard)) {
+        if (game.getTurnPhase().equals(TurnPhase.FIRST_TURN) && !checkInitialPhaseCompletion(dashboard)) {
             game.setError(new WrongMoveException(currentPlayer + " has not acquired all due resources."), nickname);
             return -1;
         }
 
 
-        if(game.getFirstTurns() < game.getNumberOfPlayers()-1) {
+        if (game.getFirstTurns() < game.getNumberOfPlayers() - 1) {
             dashboard.moveFaithMarker(game.getFirstTurns() < 2 ? 0 : 1);
             game.setFirstTurns(game.getFirstTurns() + 1);
             game.startUniquePhase(TurnPhase.FIRST_TURN);
@@ -526,13 +528,13 @@ public class Controller {
         checkVaticanReports();
 
 
-        if(player.getDashboard().checkGameEnd() && !game.isEndGamePhase()) {
+        if (player.getDashboard().checkGameEnd() && !game.isEndGamePhase()) {
             game.setEndGamePhase(true);
         }
 
         game.changePlayer();
 
-        if(game.isEndGamePhase() && game.getCurrentPlayer().equals(game.getFirstPlayer())) {
+        if (game.isEndGamePhase() && game.getCurrentPlayer().equals(game.getFirstPlayer())) {
             game.endGame();
             return 1;
         }
@@ -567,17 +569,17 @@ public class Controller {
 
         dashboard.resetProductionPowers();
 
-        if(game.getTurnPhase().equals(TurnPhase.FIRST_TURN) && !checkInitialPhaseCompletion(dashboard)) {
+        if (game.getTurnPhase().equals(TurnPhase.FIRST_TURN) && !checkInitialPhaseCompletion(dashboard)) {
             game.setError(new WrongMoveException(currentPlayer + " has not acquired all due resources."), nickname);
             return -1;
         }
 
         game.drawToken();
 
-        if(player.getDashboard().checkGameEnd() || game.checkEnd()) {
+        if (player.getDashboard().checkGameEnd() || game.checkEnd()) {
             game.endGame();
             return 1;
-        } else if(game.getFirstTurns() < game.getNumberOfPlayers()-1) {
+        } else if (game.getFirstTurns() < game.getNumberOfPlayers() - 1) {
             dashboard.moveFaithMarker(game.getFirstTurns() < 2 ? 0 : 1);
             game.setFirstTurns(game.getFirstTurns() + 1);
             game.startUniquePhase(TurnPhase.FIRST_TURN);
@@ -595,6 +597,7 @@ public class Controller {
 
     /**
      * Getter for the game status.
+     *
      * @return the game status.
      */
     public Game getGameStatus() {

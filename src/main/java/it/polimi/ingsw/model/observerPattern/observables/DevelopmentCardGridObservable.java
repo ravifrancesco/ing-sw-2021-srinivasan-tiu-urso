@@ -18,7 +18,7 @@ public class DevelopmentCardGridObservable {
      *
      * @param observer observer to add.
      */
-    public void addObserver(DevelopmentCardGridObserver observer){
+    public void addObserver(DevelopmentCardGridObserver observer) {
         synchronized (observers) {
             observers.add(observer);
         }
@@ -27,9 +27,9 @@ public class DevelopmentCardGridObservable {
     /**
      * Remove observer.
      *
-     * @param observer  observer to remove.
+     * @param observer observer to remove.
      */
-    public void removeObserver(DevelopmentCardGridObserver observer){
+    public void removeObserver(DevelopmentCardGridObserver observer) {
         synchronized (observers) {
             observers.remove(observer);
         }
@@ -38,9 +38,9 @@ public class DevelopmentCardGridObservable {
     /**
      * Notify observes.
      *
-     * @param message   message for notification.
+     * @param message message for notification.
      */
-    public void notify(DevelopmentCardGrid message){
+    public void notify(DevelopmentCardGrid message) {
         synchronized (observers) {
             for (DevelopmentCardGridObserver observer : observers) {
                 observer.update(message);

@@ -13,6 +13,7 @@ public class WarehouseController {
 
     /**
      * Constructor for a Warehouse Controller object.
+     *
      * @param game represents the game which the controller belongs to.
      */
 
@@ -68,9 +69,9 @@ public class WarehouseController {
     }
 
 
-  /**
-    *  @see Controller#storeFromSupply(String, int, int)
-  */
+    /**
+     * @see Controller#storeFromSupply(String, int, int)
+     */
     public void storeFromSupply(String nickname, int from, int to) throws WrongTurnException, WrongMoveException, IllegalDepositStateException {
         if (!game.getCurrentPlayer().equals(nickname)) {
             throw new WrongTurnException("Not " + nickname + " turn");

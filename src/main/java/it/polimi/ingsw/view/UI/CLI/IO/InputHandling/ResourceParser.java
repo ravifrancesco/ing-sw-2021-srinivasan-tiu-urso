@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.full.table.Resource;
 public class ResourceParser {
     /**
      * Parses a resource
+     *
      * @param in the input string
      * @return the resource
      */

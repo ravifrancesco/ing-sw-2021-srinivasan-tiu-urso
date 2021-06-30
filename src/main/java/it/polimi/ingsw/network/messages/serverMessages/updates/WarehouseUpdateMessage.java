@@ -17,6 +17,7 @@ public class WarehouseUpdateMessage implements ServerMessage, Serializable {
     private final Resource[] deposit;
     private final Resource[][] extraDeposits;
     private final Map<Resource, Integer> locker;
+
     /**
      * Constructor.
      *

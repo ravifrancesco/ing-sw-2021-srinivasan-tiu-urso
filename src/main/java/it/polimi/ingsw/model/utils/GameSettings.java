@@ -9,7 +9,10 @@ import it.polimi.ingsw.model.full.table.Resource;
 import it.polimi.ingsw.model.full.table.VaticanReport;
 
 import java.io.*;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -46,11 +49,11 @@ public class GameSettings implements Serializable {
     /**
      * The constructor for a GameSettings object.
      *
-     * @param developmentCards          array of DEVELOPMENT_CARD_NUM developmentCards.
-     * @param leaderCards               array of LEADER_CARD_NUM leaderCards.
-     * @param dashBoardProductionPower  productionPower of the dashboard.
-     * @param vaticanReports            List of vaticanReports.
-     * @param faithTrackVictoryPoints   array of FAITH_TRACK_LENGTH int representing faithTrackVictoryPoints.
+     * @param developmentCards         array of DEVELOPMENT_CARD_NUM developmentCards.
+     * @param leaderCards              array of LEADER_CARD_NUM leaderCards.
+     * @param dashBoardProductionPower productionPower of the dashboard.
+     * @param vaticanReports           List of vaticanReports.
+     * @param faithTrackVictoryPoints  array of FAITH_TRACK_LENGTH int representing faithTrackVictoryPoints.
      */
     public GameSettings(DevelopmentCard[] developmentCards, int leaderCardNum, LeaderCard[] leaderCards,
                         ProductionPower dashBoardProductionPower,
@@ -75,7 +78,10 @@ public class GameSettings implements Serializable {
         loadSettings(path);
     }
 
-
+    public static GameSettings loadDefaultGameSettings() {
+        DefaultSettingsBuilder defaultSettingsBuilder = new DefaultSettingsBuilder();
+        return defaultSettingsBuilder.getGameSettings();
+    }
 
     /**
      * Saves the current settings to a .properties file described by a path.
@@ -91,16 +97,16 @@ public class GameSettings implements Serializable {
 
             // set the properties value
             IntStream.range(0, DEVELOPMENT_CARD_NUM)
-                    .forEach(i -> prop.setProperty("DevelopmentCard."+ i , developmentCards[i].toString()));
+                    .forEach(i -> prop.setProperty("DevelopmentCard." + i, developmentCards[i].toString()));
             prop.setProperty("LeaderCardNum", String.valueOf(leaderCardNum));
             IntStream.range(0, leaderCardNum)
-                    .forEach(i -> prop.setProperty("LeaderCard."+ i , leaderCards[i].toString()));
+                    .forEach(i -> prop.setProperty("LeaderCard." + i, leaderCards[i].toString()));
             prop.setProperty("DashBoardProductionPower", dashBoardProductionPower.toString());
             prop.setProperty("VaticanReportsNum", String.valueOf(vaticanReportsNum));
             vaticanReports.
-                    forEach(vr -> prop.setProperty("VaticanReport."+ vaticanReports.indexOf(vr), vr.toString()));
+                    forEach(vr -> prop.setProperty("VaticanReport." + vaticanReports.indexOf(vr), vr.toString()));
             IntStream.range(0, FAITH_TRACK_LENGTH)
-                    .forEach(i -> prop.setProperty("FaithTrackVictoryPoint."+ i , String.valueOf(faithTrackVictoryPoints[i])));
+                    .forEach(i -> prop.setProperty("FaithTrackVictoryPoint." + i, String.valueOf(faithTrackVictoryPoints[i])));
 
             // save properties to path
             prop.store(output, null);
@@ -143,22 +149,22 @@ public class GameSettings implements Serializable {
     /**
      * Given a property string it will return a map<property, value>
      *
-     * @param property  string extracted from the property file
-     * @return          map with keys being the property, values being the property value
+     * @param property string extracted from the property file
+     * @return map with keys being the property, values being the property value
      */
     private Map<String, String> propertyParser(String property) {
 
         return Arrays.stream(property.split(";"))
                 .map(s -> s.split("="))
-                .collect(Collectors.toMap(s-> s[0], s->s[1]));
+                .collect(Collectors.toMap(s -> s[0], s -> s[1]));
 
     }
 
     /**
      * Converts a map representing the properties of development card into a DevelopmentCard
      *
-     * @param propertyMap   map with keys being the property, values being the property value
-     * @return              a Development card built using the propertyMap properties
+     * @param propertyMap map with keys being the property, values being the property value
+     * @return a Development card built using the propertyMap properties
      */
     private DevelopmentCard buildDevelopmentCard(Map<String, String> propertyMap) {
 
@@ -181,8 +187,8 @@ public class GameSettings implements Serializable {
     /**
      * Converts a map representing the properties of leader card into a LeaderCard
      *
-     * @param propertyMap   map with keys being the property, values being the property value
-     * @return              a Leader card built using the propertyMap properties
+     * @param propertyMap map with keys being the property, values being the property value
+     * @return a Leader card built using the propertyMap properties
      */
     private LeaderCard buildLeaderCard(Map<String, String> propertyMap) {
 
@@ -206,8 +212,8 @@ public class GameSettings implements Serializable {
     /**
      * Converts a map representing the properties of vatican report into a VaticanReport
      *
-     * @param propertyMap   map with keys being the property, values being the property value
-     * @return              a Vatican Report built using the propertyMap properties
+     * @param propertyMap map with keys being the property, values being the property value
+     * @return a Vatican Report built using the propertyMap properties
      */
     private VaticanReport buildVaticanReport(Map<String, String> propertyMap) {
 
@@ -222,7 +228,7 @@ public class GameSettings implements Serializable {
     /**
      * Loads the DevelopmentCard array
      *
-     * @param prop  game settings properties
+     * @param prop game settings properties
      */
     private void loadDevelopmentCards(Properties prop) {
 
@@ -237,7 +243,7 @@ public class GameSettings implements Serializable {
     /**
      * Loads the LeaderCards array
      *
-     * @param prop  game settings properties
+     * @param prop game settings properties
      */
     private void loadLeaderCards(Properties prop) {
 
@@ -252,7 +258,7 @@ public class GameSettings implements Serializable {
     /**
      * Loads the VaticanReports list
      *
-     * @param prop  game settings properties
+     * @param prop game settings properties
      */
     private void loadVaticanReports(Properties prop) {
 
@@ -269,24 +275,23 @@ public class GameSettings implements Serializable {
     /**
      * Loads the faithTrackVictoryPoints array
      *
-     * @param prop  game settings properties
+     * @param prop game settings properties
      */
     private void loadFaithTrackVictoryPoints(Properties prop) {
 
         this.faithTrackVictoryPoints = IntStream.range(0, FAITH_TRACK_LENGTH)
                 .boxed()
-                .map(i -> Integer.parseInt(prop.getProperty("FaithTrackVictoryPoint."+ i)))
+                .map(i -> Integer.parseInt(prop.getProperty("FaithTrackVictoryPoint." + i)))
                 .mapToInt(Integer::intValue)
                 .toArray();
 
     }
 
-
     /**
      * Method to convert a property string into a resource
      *
-     * @param resourceName  string representing the name of the resource
-     * @return              a Resource matching the resourceName
+     * @param resourceName string representing the name of the resource
+     * @return a Resource matching the resourceName
      */
     private Resource parseResource(String resourceName) {
 
@@ -304,9 +309,9 @@ public class GameSettings implements Serializable {
     /**
      * Method to convert a property string into a banner
      *
-     * @param bannerColor   string representing the color of the banner
-     * @param level         string representing the level of the banner
-     * @return              a banner matching the given color and level
+     * @param bannerColor string representing the color of the banner
+     * @param level       string representing the level of the banner
+     * @return a banner matching the given color and level
      */
     private Banner parseBanner(String bannerColor, String level) {
 
@@ -324,8 +329,9 @@ public class GameSettings implements Serializable {
     /**
      * Converts a map representing the properties of a special ability into a special ability.
      * TODO test
-     * @param propertyMap   map with keys being the property, values being the property value.
-     * @return              a ProductionPower built using the propertyMap properties.
+     *
+     * @param propertyMap map with keys being the property, values being the property value.
+     * @return a ProductionPower built using the propertyMap properties.
      */
     private SpecialAbility parseSpecialAbility(Map<String, String> propertyMap) {
 
@@ -344,8 +350,8 @@ public class GameSettings implements Serializable {
     /**
      * Converts a map representing the properties of a production power into a production power
      *
-     * @param propertyMap   map with keys being the property, values being the property value
-     * @return              a ProductionPower built using the propertyMap properties
+     * @param propertyMap map with keys being the property, values being the property value
+     * @return a ProductionPower built using the propertyMap properties
      */
     private ProductionPower parseProductionPower(Map<String, String> propertyMap) {
 
@@ -366,8 +372,9 @@ public class GameSettings implements Serializable {
     /**
      * Converts a map representing the properties of a production power into a development card discount.
      * TODO test
-     * @param propertyMap   map with keys being the property, values being the property value
-     * @return              a DevelopmentCardDiscount built using the propertyMap properties
+     *
+     * @param propertyMap map with keys being the property, values being the property value
+     * @return a DevelopmentCardDiscount built using the propertyMap properties
      */
     private DevelopmentCardDiscount parseDevelopmentCardDiscount(Map<String, String> propertyMap) {
 
@@ -382,8 +389,9 @@ public class GameSettings implements Serializable {
     /**
      * Converts a map representing the properties of a production power into a white marble resource.
      * TODO test
-     * @param propertyMap   map with keys being the property, values being the property value
-     * @return              a WhiteMarbleResource built using the propertyMap properties
+     *
+     * @param propertyMap map with keys being the property, values being the property value
+     * @return a WhiteMarbleResource built using the propertyMap properties
      */
     private WhiteMarbleResource parseWhiteMarbleResource(Map<String, String> propertyMap) {
 
@@ -396,8 +404,9 @@ public class GameSettings implements Serializable {
     /**
      * Converts a map representing the properties of a production power into a warehouse extra space.
      * TODO test
-     * @param propertyMap   map with keys being the property, values being the property value
-     * @return              a WarehouseExtraSpace built using the propertyMap properties
+     *
+     * @param propertyMap map with keys being the property, values being the property value
+     * @return a WarehouseExtraSpace built using the propertyMap properties
      */
     private WarehouseExtraSpace parseWarehouseExtraSpace(Map<String, String> propertyMap) {
 
@@ -454,15 +463,11 @@ public class GameSettings implements Serializable {
 
     /**
      * Getter for leaderCardNum.
+     *
      * @return the leaderCardNum.
      */
 
     public int getLeaderCardNum() {
         return leaderCardNum;
-    }
-
-    public static GameSettings loadDefaultGameSettings() {
-        DefaultSettingsBuilder defaultSettingsBuilder = new DefaultSettingsBuilder();
-        return defaultSettingsBuilder.getGameSettings();
     }
 }

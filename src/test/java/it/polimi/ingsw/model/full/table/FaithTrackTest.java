@@ -1,30 +1,25 @@
 package it.polimi.ingsw.model.full.table;
 
-import it.polimi.ingsw.model.full.table.FaithTrack;
-import it.polimi.ingsw.model.full.table.Player;
-import it.polimi.ingsw.model.full.table.VaticanReport;
 import it.polimi.ingsw.model.utils.GameSettings;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.jupiter.api.Assumptions;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class FaithTrackTest {
 
     @Test
     public void constructorTest() {
 
-        int[] faithTrackVictoryPoints = {0,0,0,1,0,0,2,0,0,4,0,0,6,0,0,9,0,0,12,0,0,16,0,0,0};
+        int[] faithTrackVictoryPoints = {0, 0, 0, 1, 0, 0, 2, 0, 0, 4, 0, 0, 6, 0, 0, 9, 0, 0, 12, 0, 0, 16, 0, 0, 0};
 
         List<VaticanReport> vaticanReports = new ArrayList<>();
 
-        vaticanReports.add(new VaticanReport(5,8,2));
-        vaticanReports.add(new VaticanReport(12,15,2));
-        vaticanReports.add(new VaticanReport(19,24,4));
+        vaticanReports.add(new VaticanReport(5, 8, 2));
+        vaticanReports.add(new VaticanReport(12, 15, 2));
+        vaticanReports.add(new VaticanReport(19, 24, 4));
 
 
         GameSettings gameSettings = new GameSettings(null, 0, null, null, vaticanReports, faithTrackVictoryPoints);
@@ -41,13 +36,13 @@ public class FaithTrackTest {
     @Test
     public void moveFaithMarkerTest() {
 
-        int[] faithTrackVictoryPoints = {0,0,0,1,0,0,2,0,0,4,0,0,6,0,0,9,0,0,12,0,0,16,0,0,0};
+        int[] faithTrackVictoryPoints = {0, 0, 0, 1, 0, 0, 2, 0, 0, 4, 0, 0, 6, 0, 0, 9, 0, 0, 12, 0, 0, 16, 0, 0, 0};
 
         List<VaticanReport> vaticanReports = new ArrayList<>();
 
-        vaticanReports.add(new VaticanReport(5,8,2));
-        vaticanReports.add(new VaticanReport(12,15,2));
-        vaticanReports.add(new VaticanReport(19,24,4));
+        vaticanReports.add(new VaticanReport(5, 8, 2));
+        vaticanReports.add(new VaticanReport(12, 15, 2));
+        vaticanReports.add(new VaticanReport(19, 24, 4));
 
 
         GameSettings gameSettings = new GameSettings(null, 0, null, null, vaticanReports, faithTrackVictoryPoints);
@@ -71,13 +66,13 @@ public class FaithTrackTest {
     @Test
     public void getVictoryPointsTest() {
 
-        int[] faithTrackVictoryPoints = {0,0,0,1,0,0,2,0,0,4,0,0,6,0,0,9,0,0,12,0,0,16,0,0,0};
+        int[] faithTrackVictoryPoints = {0, 0, 0, 1, 0, 0, 2, 0, 0, 4, 0, 0, 6, 0, 0, 9, 0, 0, 12, 0, 0, 16, 0, 0, 0};
 
         List<VaticanReport> vaticanReports = new ArrayList<>();
 
-        vaticanReports.add(new VaticanReport(5,8,2));
-        vaticanReports.add(new VaticanReport(12,16,3));
-        vaticanReports.add(new VaticanReport(19,24,4));
+        vaticanReports.add(new VaticanReport(5, 8, 2));
+        vaticanReports.add(new VaticanReport(12, 16, 3));
+        vaticanReports.add(new VaticanReport(19, 24, 4));
 
 
         GameSettings gameSettings = new GameSettings(null, 0, null, null, vaticanReports, faithTrackVictoryPoints);
@@ -101,13 +96,13 @@ public class FaithTrackTest {
     @Test
     public void checkVaticanVictoryTest() {
 
-        int[] faithTrackVictoryPoints = {0,0,0,1,0,0,2,0,0,4,0,0,6,0,0,9,0,0,12,0,0,16,0,0,0};
+        int[] faithTrackVictoryPoints = {0, 0, 0, 1, 0, 0, 2, 0, 0, 4, 0, 0, 6, 0, 0, 9, 0, 0, 12, 0, 0, 16, 0, 0, 0};
 
         List<VaticanReport> vaticanReports = new ArrayList<>();
 
-        vaticanReports.add(new VaticanReport(5,8,2));
-        vaticanReports.add(new VaticanReport(12,15,2));
-        vaticanReports.add(new VaticanReport(19,24,4));
+        vaticanReports.add(new VaticanReport(5, 8, 2));
+        vaticanReports.add(new VaticanReport(12, 15, 2));
+        vaticanReports.add(new VaticanReport(19, 24, 4));
 
 
         GameSettings gameSettings = new GameSettings(null, 0, null, null, vaticanReports, faithTrackVictoryPoints);

@@ -4,13 +4,13 @@ import java.io.Serializable;
 
 public enum Resource implements Serializable {
 
-	SHIELD,
+    SHIELD,
 
-	SERVANT,
+    SERVANT,
 
-	STONE,
+    STONE,
 
-	GOLD,
+    GOLD,
 
-	ANY
+    ANY
 }
