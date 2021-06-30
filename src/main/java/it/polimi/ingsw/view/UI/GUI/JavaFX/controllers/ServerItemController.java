@@ -6,17 +6,21 @@ import javafx.scene.text.Text;
 
 public class ServerItemController {
 
-    String gameID;
+    private String gameID;
 
     @FXML
-    Text hostNameTextView;
+    private Text hostNameTextView;
 
     @FXML
-    Text playersConnectedTextView;
+    private Text playersConnectedTextView;
 
     @FXML
-    Text maxPlayersTextView;
+    private Text maxPlayersTextView;
 
+    /**
+     * Setter for the fields
+     * @param gameLobbyDetails an object that represents the details of a game lobby
+     */
     public void setFields(GameLobbyDetails gameLobbyDetails) {
 
         this.gameID = gameLobbyDetails.id;
@@ -27,6 +31,10 @@ public class ServerItemController {
 
     }
 
+    /**
+     * Getter for the Game ID
+     * @return the Game ID
+     */
     public String getGameID() {
         return gameID;
     }

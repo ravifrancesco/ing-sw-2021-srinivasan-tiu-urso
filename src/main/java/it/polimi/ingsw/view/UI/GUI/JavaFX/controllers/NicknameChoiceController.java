@@ -20,6 +20,9 @@ public class NicknameChoiceController {
     @FXML
     private TextField nicknameField;
 
+    /**
+     * Method to handle choose click event
+     */
     @FXML
     private void handleChooseClick(InputEvent event) {
         if (!nicknameField.getText().equals("")) {
@@ -42,14 +45,25 @@ public class NicknameChoiceController {
         }
     }
 
+    /**
+     * Setter for the GUI
+     * @param gui the GUI
+     */
     public void setGui(GUI gui) {
         this.gui = gui;
     }
 
+    /**
+     * Getter for the nickname
+     * @return the nickname
+     */
     public String getNickname() {
         return nicknameField.getText();
     }
 
+    /**
+     * Method to open the ClientMainLobby window
+     */
     private void openClientMainLobbyWindow(InputEvent event) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/client_main_lobby.fxml"));

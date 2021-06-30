@@ -27,31 +27,38 @@ public class MarketViewController {
     private final int NUM_OF_ROWS = 3;
     private final int NUM_OF_COLUMNS = 4;
     @FXML
-    GridPane marketGridPane;
-    ImageView freeMarbleIW;
-    ArrayList<ImageView> marblesIW;
+    private GridPane marketGridPane;
+    private ImageView freeMarbleIW;
+    private ArrayList<ImageView> marblesIW;
     @FXML
-    Button button0;
+    private Button button0;
     @FXML
-    Button button1;
+    private Button button1;
     @FXML
-    Button button2;
+    private Button button2;
     @FXML
-    Button button3;
+    private Button button3;
     @FXML
-    Button button4;
+    private Button button4;
     @FXML
-    Button button5;
+    private Button button5;
     @FXML
-    Button button6;
+    private Button button6;
     @FXML
-    Button backButton;
+    private Button backButton;
     private GUI gui;
 
+    /**
+     * Setter for the GUI
+     * @param gui the GUI
+     */
     public void setGui(GUI gui) {
         this.gui = gui;
     }
 
+    /**
+     * Initialize method of the class
+     */
     public void initialize() {
 
         freeMarbleIW = new ImageView();
@@ -68,6 +75,11 @@ public class MarketViewController {
 
     }
 
+    /**
+     * Update method
+     * @param marblesGrid the marbles grid
+     * @param freeMarble the free marble
+     */
     public void update(Marble[] marblesGrid, Marble freeMarble) {
         loadImage(freeMarbleIW, freeMarble);
         for (int i = 0; i < marblesGrid.length; i++) {
@@ -75,6 +87,11 @@ public class MarketViewController {
         }
     }
 
+    /**
+     * Method to load an image
+     * @param imageView the imageview to create
+     * @param marble the marble related to the imageview
+     */
     private void loadImage(ImageView imageView, Marble marble) {
         imageView.setImage(null);
         String color = marble.getMarbleColor().toString().toLowerCase();
@@ -85,11 +102,17 @@ public class MarketViewController {
         imageView.setFitWidth(55);
     }
 
+    /**
+     * Method to handle back pressed event
+     */
     public void onBackPressed() {
         Stage stage = (Stage) backButton.getScene().getWindow();
         stage.close();
     }
 
+    /**
+     * Method to handle the click on button 0
+     */
     @FXML
     public void button0Pressed() {
         Marble[] marbleGrid = gui.getReducedModel().getReducedGameBoard().getMarblesGrid();
@@ -98,6 +121,9 @@ public class MarketViewController {
         gui.send(new PlayerGetsFromMarket(0, wmrs));
     }
 
+    /**
+     * Method to handle the click on button 1
+     */
     @FXML
     public void button1Pressed() {
         Marble[] marbleGrid = gui.getReducedModel().getReducedGameBoard().getMarblesGrid();
@@ -106,6 +132,9 @@ public class MarketViewController {
         gui.send(new PlayerGetsFromMarket(1, wmrs));
     }
 
+    /**
+     * Method to handle the click on button 2
+     */
     @FXML
     public void button2Pressed() {
         Marble[] marbleGrid = gui.getReducedModel().getReducedGameBoard().getMarblesGrid();
@@ -114,6 +143,9 @@ public class MarketViewController {
         gui.send(new PlayerGetsFromMarket(2, wmrs));
     }
 
+    /**
+     * Method to handle the click on button 3
+     */
     @FXML
     public void button3Pressed() {
         Marble[] marbleGrid = gui.getReducedModel().getReducedGameBoard().getMarblesGrid();
@@ -122,6 +154,9 @@ public class MarketViewController {
         gui.send(new PlayerGetsFromMarket(3, wmrs));
     }
 
+    /**
+     * Method to handle the click on button 4
+     */
     @FXML
     public void button4Pressed() {
         Marble[] marbleGrid = gui.getReducedModel().getReducedGameBoard().getMarblesGrid();
@@ -130,6 +165,9 @@ public class MarketViewController {
         gui.send(new PlayerGetsFromMarket(4, wmrs));
     }
 
+    /**
+     * Method to handle the click on button 5
+     */
     @FXML
     public void button5Pressed() {
         Marble[] marbleGrid = gui.getReducedModel().getReducedGameBoard().getMarblesGrid();
@@ -138,6 +176,9 @@ public class MarketViewController {
         gui.send(new PlayerGetsFromMarket(5, wmrs));
     }
 
+    /**
+     * Method to handle the click on button 6
+     */
     @FXML
     public void button6Pressed() {
         Marble[] marbleGrid = gui.getReducedModel().getReducedGameBoard().getMarblesGrid();
