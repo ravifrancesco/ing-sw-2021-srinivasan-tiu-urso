@@ -27,10 +27,6 @@ public class WarehouseController {
      * @param currentPlayer the current player of the game.
      */
 
-    public void setCurrentPlayer(String currentPlayer) {
-        this.currentPlayer = currentPlayer;
-    }
-
     /**
      * @see Controller#changeDeposit(String, Resource[])
      */
@@ -114,7 +110,5 @@ public class WarehouseController {
             throw new IllegalDepositStateException("Invalid deposit state");
         }
     }
-    public String getCurrentPlayer() {
-        return currentPlayer;
-    }
+
 }
