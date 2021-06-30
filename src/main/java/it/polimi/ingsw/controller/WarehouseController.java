@@ -11,8 +11,6 @@ import it.polimi.ingsw.model.full.table.Resource;
 public class WarehouseController {
     private final Game game;
 
-    private String currentPlayer;
-
     /**
      * Constructor for a Warehouse Controller object.
      * @param game represents the game which the controller belongs to.

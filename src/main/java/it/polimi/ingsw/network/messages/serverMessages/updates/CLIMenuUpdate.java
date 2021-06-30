@@ -11,7 +11,7 @@ import java.io.Serializable;
  */
 public class CLIMenuUpdate implements ServerMessage, Serializable {
 
-    private String menuCode;
+    private final String menuCode;
 
     public CLIMenuUpdate(String menuCode) {
         this.menuCode = menuCode;

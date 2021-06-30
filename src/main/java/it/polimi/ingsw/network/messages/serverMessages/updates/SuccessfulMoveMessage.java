@@ -7,7 +7,7 @@ import it.polimi.ingsw.network.messages.serverMessages.ServerMessage;
 import java.io.Serializable;
 
 public class SuccessfulMoveMessage implements ServerMessage, Serializable {
-    private String message;
+    private final String message;
 
     public SuccessfulMoveMessage(String message) {
         this.message = message;

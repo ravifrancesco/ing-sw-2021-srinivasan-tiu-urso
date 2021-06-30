@@ -17,25 +17,14 @@ public class ReducedGameBoard {
     static final int gridColLength = 4;
     private Marble[] marblesGrid;
 
-    // Development card grid
-    public static final int GRID_ROW_LENGTH = 3;
-    public static final int GRID_COL_LENGTH = 4;
     private List<Stack<DevelopmentCard>> grid;
 
-    // Decks
-    private List<LeaderCard> leaderCardDeck;
-    private List<DevelopmentCard> developmentCardDeck;
-    private List<Card> discardDeck;
-
-    private ReducedModel reducedModel;
+    private final ReducedModel reducedModel;
 
     public ReducedGameBoard(ReducedModel reducedModel) {
         this.reducedModel = reducedModel;
         this.marblesGrid = new Marble[(gridRowLength * gridColLength) + 1];
         grid = new ArrayList<>();
-        leaderCardDeck = new ArrayList<>();
-        developmentCardDeck = new ArrayList<>();
-        discardDeck = new ArrayList<>();
     }
 
     public Marble[] getMarblesGrid() {
@@ -54,30 +43,6 @@ public class ReducedGameBoard {
     public void setGrid(List<Stack<DevelopmentCard>> grid) {
         this.grid = grid;
         updateDecCardGrid();
-    }
-
-    public List<LeaderCard> getLeaderCardDeck() {
-        return leaderCardDeck;
-    }
-
-    public void setLeaderCardDeck(List<LeaderCard> leaderCardDeck) {
-        this.leaderCardDeck = leaderCardDeck;
-    }
-
-    public List<DevelopmentCard> getDevelopmentCardDeck() {
-        return developmentCardDeck;
-    }
-
-    public void setDevelopmentCardDeck(List<DevelopmentCard> developmentCardDeck) {
-        this.developmentCardDeck = developmentCardDeck;
-    }
-
-    public List<Card> getDiscardDeck() {
-        return discardDeck;
-    }
-
-    public void setDiscardDeck(List<Card> discardDeck) {
-        this.discardDeck = discardDeck;
     }
 
     public ArrayList<Marble> getMarblesMove(int move) {

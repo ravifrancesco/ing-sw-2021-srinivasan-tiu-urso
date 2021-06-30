@@ -60,8 +60,6 @@ public class LeaderCardController {
         Dashboard dashboard = player.getDashboard();
         Map<Banner, Integer> playerBanners = dashboard.getBanners();
         Map<Resource, Integer> playerResources = dashboard.getAllPlayerResources();
-        LeaderCard lc = player.getHand().get(cardToPlay);
-
 
         if (cardToPlay >= player.getHandSize() || cardToPlay < 0) {
             throw new CardNotPlayableException("Invalid index");

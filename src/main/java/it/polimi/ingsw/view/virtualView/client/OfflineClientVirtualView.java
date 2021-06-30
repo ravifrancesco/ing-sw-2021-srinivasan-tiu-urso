@@ -7,8 +7,6 @@ import it.polimi.ingsw.controller.*;
 import it.polimi.ingsw.model.full.table.*;
 import it.polimi.ingsw.model.reduced.*;
 import it.polimi.ingsw.controller.exceptions.GameFullException;
-import it.polimi.ingsw.model.full.cards.DevelopmentCard;
-import it.polimi.ingsw.model.full.cards.LeaderCard;
 import it.polimi.ingsw.model.observerPattern.observers.*;
 import it.polimi.ingsw.model.utils.GameError;
 import it.polimi.ingsw.model.utils.GameSettings;
@@ -19,20 +17,19 @@ import it.polimi.ingsw.view.UI.UI;
 
 import javax.naming.InvalidNameException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class OfflineClientVirtualView implements ClientVirtualViewIF, Runnable,
         FaithTrackObserver, WarehouseObserver, DashboardObserver,
-        PlayerObserver, GameObserver, GameBoardObserver,
+        PlayerObserver, GameObserver,
         DevelopmentCardGridObserver, MarketObserver, GameErrorObserver {
 
     private String nickname;
 
     private final UI ui;
 
-    private Controller controller;
+    private final Controller controller;
 
-    private ReducedModel reducedModel;
+    private final ReducedModel reducedModel;
 
     /**
      * The virtual view for the offline local game
@@ -127,7 +124,7 @@ public class OfflineClientVirtualView implements ClientVirtualViewIF, Runnable,
         Map<Pair<Integer, Integer>, Pair<Integer, Integer>> vaticanReports = new HashMap<>();
         message.getVaticanReports().forEach((key, value) -> vaticanReports.put(new Pair<>(value.getStart(), value.getEnd()), new Pair<>(value.getVictoryPoints(), vaticanReportState(value))));
         reducedDashboard.setVaticanReports(vaticanReports);
-        reducedDashboard.setFaithTrackVictoryPoints(message.getFaithTrackVictoryPoints());
+        reducedDashboard.setFaithTrackVictoryPoints();
     }
 
     @Override
@@ -174,24 +171,14 @@ public class OfflineClientVirtualView implements ClientVirtualViewIF, Runnable,
         ReducedGame reducedGame = ui.getReducedModel().getReducedGame();
         reducedGame.setGameStarted(message.isGameStarted());
         reducedGame.setGameStarted(message.isGameStarted());
-        reducedGame.setFirstPlayer(message.getFirstPlayer());
         reducedGame.setCurrentPlayer(message.getCurrentPlayer());
         reducedGame.updatePlayers(new ArrayList<>(message.getPlayers().keySet()));
         reducedGame.setTurnPhase(message.getTurnPhase());
         reducedGame.setFirstTurns(message.getFirstTurns());
-        reducedGame.setTokens(message.getTokens());
         reducedGame.setToken(message.getLastToken());
         if(message.getGameEnded()) {
             ui.handleMenuCode("game_has_ended_single");
         }
-    }
-
-    @Override
-    public void update(GameBoard message) {
-        ReducedGameBoard reducedGameBoard = ui.getReducedModel().getReducedGameBoard();
-        reducedGameBoard.setLeaderCardDeck(message.getLeaderDeck().toList().stream().map(card -> (LeaderCard) card).collect(Collectors.toList()));
-        reducedGameBoard.setDevelopmentCardDeck(message.getDevelopmentDeck().toList().stream().map(card -> (DevelopmentCard) card).collect(Collectors.toList()));
-        reducedGameBoard.setDiscardDeck(message.getDiscardDeck().toList());
     }
 
     @Override

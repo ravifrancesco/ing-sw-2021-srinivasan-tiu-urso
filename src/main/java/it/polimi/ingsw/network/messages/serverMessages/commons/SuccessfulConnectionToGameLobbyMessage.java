@@ -7,11 +7,9 @@ import java.io.Serializable;
 
 public class SuccessfulConnectionToGameLobbyMessage implements ServerMessage, Serializable {
 
-    String id;
     Boolean isHost;
 
-    public SuccessfulConnectionToGameLobbyMessage(String id, boolean isHost) {
-        this.id = id;
+    public SuccessfulConnectionToGameLobbyMessage(boolean isHost) {
         this.isHost = isHost;
     }
 

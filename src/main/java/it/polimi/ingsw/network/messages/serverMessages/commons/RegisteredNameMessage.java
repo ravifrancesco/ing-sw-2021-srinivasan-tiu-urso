@@ -18,7 +18,7 @@ public class RegisteredNameMessage implements ServerMessage, Serializable {
         clientVirtualView.nameRegistered();
         if(clientVirtualView.ui.getType() == UIType.CLI) {
             ((CLI) clientVirtualView.ui).printMessageNoNL("Successfully registered with nickname ");
-            ((CLI) clientVirtualView.ui).printColoredMessage("" + nickname, Constants.ANSI_CYAN);
+            clientVirtualView.ui.printColoredMessage("" + nickname, Constants.ANSI_CYAN);
         }
     }
 }

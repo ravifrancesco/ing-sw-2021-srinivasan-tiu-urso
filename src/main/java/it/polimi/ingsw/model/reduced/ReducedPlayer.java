@@ -34,7 +34,7 @@ public class ReducedPlayer {
     // Dashboard
     private final ReducedDashboard dashboard;
 
-    private ReducedModel reducedModel;
+    private final ReducedModel reducedModel;
 
     public ReducedPlayer(ReducedModel reducedModel) {
         this.reducedModel = reducedModel;

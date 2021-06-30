@@ -17,7 +17,6 @@ import it.polimi.ingsw.network.messages.clientMessages.game.PlayerChangesDeposit
 import it.polimi.ingsw.network.messages.clientMessages.game.StartGameGameMessage;
 import it.polimi.ingsw.utils.Pair;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -82,8 +81,6 @@ public class GameController {
     private FaithMarkerController faithMarkerController;
 
     private FaithMarkerController lorenzoIlMagnificoFaithMarkerController;
-
-    private ChooseResourceController chooseResourceController;
 
     private MarketViewController marketController;
 
@@ -159,7 +156,7 @@ public class GameController {
         currentDisplayedPlayer = nickname;
     }
 
-    public void comboAction(ActionEvent event) {
+    public void comboAction() {
         currentDisplayedPlayer = nicknameCombo.getSelectionModel().getSelectedItem();
         ReducedModel reducedModel = gui.getReducedModel();
         reducedModel.askWarehouseUpdate(currentDisplayedPlayer);
@@ -563,7 +560,7 @@ public class GameController {
         }
     }
 
-    public void btnConfirmClick(MouseEvent event) {
+    public void btnConfirmClick() {
         btnConfirm.setVisible(false);
         btnCancel.setVisible(false);
         Resource[] deposit = new Resource[NUM_SHELFES];
@@ -577,7 +574,7 @@ public class GameController {
         gui.send(new PlayerChangesDeposit(deposit));
     }
 
-    public void btnCancelClick(MouseEvent event) {
+    public void btnCancelClick() {
         btnConfirm.setVisible(false);
         btnCancel.setVisible(false);
         gui.setEnableNoDeposit();
@@ -743,7 +740,7 @@ public class GameController {
                 .max(Comparator.comparingInt(p -> p.getDashboard().getPlayerPoints())
                 );
         mainAlert.setHeaderText(winner.get().getNickname() + " has one with " + winner.get().getDashboard().getPlayerPoints() + " victory points!");
-        mainAlert.showAndWait();;
+        mainAlert.showAndWait();
         System.exit(0);
     }
 
@@ -757,7 +754,7 @@ public class GameController {
         } else {
             mainAlert.setHeaderText("You've won!");
         }
-        mainAlert.showAndWait();;
+        mainAlert.showAndWait();
         System.exit(0);
     }
 
@@ -955,10 +952,6 @@ public class GameController {
             Image image = new Image(file.toURI().toString());
             tokenIW.setImage(image);
         }
-    }
-
-    public Scene getScene() {
-        return pane.getScene();
     }
 
 }

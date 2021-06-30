@@ -26,10 +26,10 @@ public class FaithTrack extends FaithTrackObservable {
 
 	private int victoryPoints;
 
-	private Map<Integer, VaticanReport> vaticanReports;
-	private int[] faithTrackVictoryPoints;
+	private final Map<Integer, VaticanReport> vaticanReports;
+	private final int[] faithTrackVictoryPoints;
 
-	private Dashboard dashboard;
+	private final Dashboard dashboard;
 
 	/**
 	 * The constructor for a FaithTrack object.
@@ -131,11 +131,7 @@ public class FaithTrack extends FaithTrackObservable {
 				.reduce(0, Integer::sum);
 	}
 
-	public int[] getFaithTrackVictoryPoints() {
-		return faithTrackVictoryPoints;
-	}
-
-	public int getVictoryPoints() {
+    public int getVictoryPoints() {
 		return victoryPoints;
 	}
 

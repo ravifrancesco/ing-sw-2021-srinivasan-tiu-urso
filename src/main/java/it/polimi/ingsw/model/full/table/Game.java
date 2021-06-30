@@ -18,7 +18,7 @@ public class Game extends GameObservable  {
 
 	private int firstTurns;
 
-	private String gameId;
+	private final String gameId;
 
 
 	private final int numberOfPlayers;
@@ -26,10 +26,10 @@ public class Game extends GameObservable  {
 	private String currentPlayer;
 	private String firstPlayer;
 
-	private LinkedHashMap<String, Player> players;
+	private final LinkedHashMap<String, Player> players;
 	private Iterator<String> playerOrder;
 
-	private GameBoard gameBoard;
+	private final GameBoard gameBoard;
 
 	private GameSettings gameSettings;
 
@@ -40,7 +40,7 @@ public class Game extends GameObservable  {
 
 	private boolean endGamePhase;
 
-	private GameError gameError;
+	private final GameError gameError;
 
 	private int maxReached;
 
@@ -292,10 +292,6 @@ public class Game extends GameObservable  {
 		lastToken = this.tokens.pop();
 		gameEnded = lastToken.useToken(this);
 		notify(this);
-	}
-
-	public Stack<Token> getTokens() {
-		return tokens;
 	}
 
 	public Token getLastToken() {

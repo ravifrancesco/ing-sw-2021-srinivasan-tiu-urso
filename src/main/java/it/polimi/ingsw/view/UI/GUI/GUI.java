@@ -152,10 +152,6 @@ public class GUI extends Application implements UI {
         }
     }
 
-    public void setClientConnection(ClientVirtualView clientVirtualView) {
-        this.clientVirtualView = clientVirtualView;
-    }
-
     public void setNicknameChoiceController(NicknameChoiceController nicknameChoiceController) {
         this.nicknameChoiceController = nicknameChoiceController;
     }

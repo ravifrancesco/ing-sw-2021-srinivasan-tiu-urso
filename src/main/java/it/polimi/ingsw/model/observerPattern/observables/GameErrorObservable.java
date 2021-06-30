@@ -8,7 +8,7 @@ import java.util.List;
 
 public class GameErrorObservable {
 
-    private List<GameErrorObserver> observers = new ArrayList<>();
+    private final List<GameErrorObserver> observers = new ArrayList<>();
 
     /**
      * Add observer.
@@ -18,17 +18,6 @@ public class GameErrorObservable {
     public void addObserver(GameErrorObserver observer){
         synchronized (observers) {
             observers.add(observer);
-        }
-    }
-
-    /**
-     * Remove observer.
-     *
-     * @param observer  observer to remove.
-     */
-    public void removeObserver(GameErrorObserver observer){
-        synchronized (observers) {
-            observers.remove(observer);
         }
     }
 

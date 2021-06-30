@@ -8,9 +8,9 @@ import it.polimi.ingsw.view.virtualView.server.ServerVirtualView;
 import java.io.Serializable;
 
 public class PlayerChangesExtraDeposit extends ClientGameMessage implements Serializable {
-    private Resource[] deposit;
-    private Resource[] extraDeposit;
-    private int lcIndex;
+    private final Resource[] deposit;
+    private final Resource[] extraDeposit;
+    private final int lcIndex;
 
     public PlayerChangesExtraDeposit(Resource[] deposit, Resource[] extraDeposit, int lcIndex) {
         this.deposit = deposit;

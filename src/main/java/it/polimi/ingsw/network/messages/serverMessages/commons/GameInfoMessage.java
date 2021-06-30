@@ -21,7 +21,7 @@ public class GameInfoMessage implements ServerMessage, Serializable {
 
     @Override
     public void updateClient(ClientVirtualView clientVirtualView, String nickname) {
-        clientVirtualView.updateGameInfo(gameID, numberOfPlayers);
+        clientVirtualView.updateGameInfo(numberOfPlayers);
         CLI cli;
         if(clientVirtualView.ui.getType() == UIType.CLI) {
             cli = (CLI) clientVirtualView.ui;

@@ -3,7 +3,6 @@ package it.polimi.ingsw.view.virtualView.server;
 import it.polimi.ingsw.model.full.table.*;
 import it.polimi.ingsw.model.observerPattern.observers.*;
 import it.polimi.ingsw.model.utils.GameError;
-import it.polimi.ingsw.network.server.Server;
 import it.polimi.ingsw.network.server.lobby.*;
 import it.polimi.ingsw.network.messages.clientMessages.game.ClientGameMessage;
 import it.polimi.ingsw.network.messages.clientMessages.lobbyMessage.ClientLobbyMessage;
@@ -27,7 +26,7 @@ import java.util.ArrayList;
  */
 public class ServerVirtualView implements Runnable,
         FaithTrackObserver, WarehouseObserver, DashboardObserver,
-        PlayerObserver, GameObserver, GameBoardObserver,
+        PlayerObserver, GameObserver,
         DevelopmentCardGridObserver, MarketObserver, GameErrorObserver {
 
     private final Socket socket;
@@ -267,11 +266,10 @@ public class ServerVirtualView implements Runnable,
 
     /**
      * Sends the details of a just entered lobby
-     * @param id
      * @param isHost
      */
-    public void sendGameLobbyEntered(String id, boolean isHost) {
-        send(new SuccessfulConnectionToGameLobbyMessage(id, isHost));
+    public void sendGameLobbyEntered(boolean isHost) {
+        send(new SuccessfulConnectionToGameLobbyMessage(isHost));
     }
 
     public String getNickname() {
@@ -342,7 +340,7 @@ public class ServerVirtualView implements Runnable,
                 if(message.isEndGamePhase()) {
                     if(!gl.isEndGamePhase()) {
                         gl.startEndGamePhase();
-                    };
+                    }
                 }
                 if(message.getGameEnded()) {
                     if(!gl.isGameOver()) {
@@ -353,11 +351,6 @@ public class ServerVirtualView implements Runnable,
         } catch (Exception e) {
             System.out.println("Error in game end handling, please try again");
         }
-    }
-
-    @Override
-    public void update(GameBoard message) {
-        send(new GameBoardUpdateMessage(message));
     }
 
     @Override

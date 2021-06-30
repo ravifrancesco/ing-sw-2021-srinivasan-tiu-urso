@@ -7,9 +7,9 @@ import it.polimi.ingsw.view.virtualView.server.ServerVirtualView;
 import java.io.Serializable;
 
 public class PlayerStoresFromSupplyToExtraDeposit extends ClientGameMessage implements Serializable {
-    private int leaderCardPos;
-    private int from;
-    private int to;
+    private final int leaderCardPos;
+    private final int from;
+    private final int to;
 
     public PlayerStoresFromSupplyToExtraDeposit(int leaderCardPos, int from, int to) {
         this.leaderCardPos = leaderCardPos;

@@ -12,6 +12,6 @@ public interface DashboardObserver {
      *
      * @param message   update message.
      */
-    public void update(Dashboard message);
+    void update(Dashboard message);
 
 }

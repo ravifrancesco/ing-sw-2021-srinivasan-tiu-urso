@@ -10,11 +10,11 @@ public class EndMessage extends ClientGameMessage implements Serializable {
 
     @Override
     public void handle(ServerVirtualView c, Controller controller) {
-        controller.end(c.getNickname(), 0);
+        controller.end(c.getNickname());
     }
 
     @Override
     public void handleLocally(OfflineClientVirtualView offlineClientVirtualView, Controller controller) {
-        controller.end(offlineClientVirtualView.getNickname(), 0);
+        controller.end(offlineClientVirtualView.getNickname());
     }
 }

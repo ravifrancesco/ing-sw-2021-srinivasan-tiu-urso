@@ -10,8 +10,8 @@ import java.io.Serializable;
 
 public class Banner implements Serializable {
 
-	private BannerEnum color;
-	private int level;
+	private final BannerEnum color;
+	private final int level;
 
 	/**
 	 * 	The constructor for a Banner object.

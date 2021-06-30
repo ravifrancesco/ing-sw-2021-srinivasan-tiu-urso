@@ -7,9 +7,9 @@ import it.polimi.ingsw.view.virtualView.server.ServerVirtualView;
 import java.io.Serializable;
 
 public class GimmeMessage extends ClientGameMessage implements Serializable {
-    private int row;
-    private int column;
-    private int index;
+    private final int row;
+    private final int column;
+    private final int index;
 
     public GimmeMessage(int row, int column, int index) {
         this.row = row;

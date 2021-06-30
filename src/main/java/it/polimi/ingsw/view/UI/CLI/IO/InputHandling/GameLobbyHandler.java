@@ -13,31 +13,27 @@ import it.polimi.ingsw.network.messages.clientMessages.lobbyMessage.LeaveLobby;
 public class GameLobbyHandler {
     /**
      * Generates the message to leave the lobby
-     * @param in the string to parse
      * @param cli the cli
      * @return the client message to leave the lobby
      */
-    public static ClientMessage leaveLobby(String[] in, CLI cli) {
+    public static ClientMessage leaveLobby(CLI cli) {
         cli.printMessage("Leaving lobby...");
         return new LeaveLobby();
     }
 
     /**
      * Generates the message to start the game
-     * @param in the string to parse
-     * @param cli the cli
      * @return the client message to start the game
      */
-    public static ClientMessage startGame(String[] in, CLI cli) {
+    public static ClientMessage startGame() {
         return new StartGameGameMessage();
     }
 
     /**
      * Generates the message to end the turn
-     * @param in the string to parse
      * @return the client message to end the turn
      */
-    public static ClientMessage endTurn(String[] in) {
+    public static ClientMessage endTurn() {
         return new EndTurnGameMessage();
     }
 

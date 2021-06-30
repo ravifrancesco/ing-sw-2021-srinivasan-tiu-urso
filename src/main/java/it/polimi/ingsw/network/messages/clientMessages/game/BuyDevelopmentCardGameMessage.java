@@ -9,10 +9,10 @@ import java.io.Serializable;
 
 public class BuyDevelopmentCardGameMessage extends ClientGameMessage implements Serializable {
 
-    private int row;
-    private int column;
-    private ResourceContainer resourceToPayCost;
-    private int position;
+    private final int row;
+    private final int column;
+    private final ResourceContainer resourceToPayCost;
+    private final int position;
 
     public BuyDevelopmentCardGameMessage(int row, int column, ResourceContainer resourceToPayCost, int position) {
         this.row = row;

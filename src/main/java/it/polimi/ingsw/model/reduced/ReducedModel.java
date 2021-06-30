@@ -14,9 +14,9 @@ import java.util.stream.Collectors;
 
 public class ReducedModel {
 
-    private ReducedGame reducedGame;
+    private final ReducedGame reducedGame;
     private ReducedPlayer reducedPlayer;
-    private ReducedGameBoard reducedGameBoard;
+    private final ReducedGameBoard reducedGameBoard;
 
     GameController gameController;
 
@@ -32,10 +32,6 @@ public class ReducedModel {
 
     public ReducedPlayer getReducedPlayer() {
         return reducedPlayer;
-    }
-
-    public void setReducedPlayer(ReducedPlayer reducedPlayer) {
-        this.reducedPlayer = reducedPlayer;
     }
 
     public ReducedGameBoard getReducedGameBoard() {

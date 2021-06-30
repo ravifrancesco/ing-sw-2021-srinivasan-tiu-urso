@@ -7,8 +7,6 @@ import java.util.*;
 
 public class ReducedGame {
 
-    private String gameId;
-
     private int numberOfPlayers;
 
     private boolean gameStarted;
@@ -17,13 +15,11 @@ public class ReducedGame {
 
     private String currentPlayer;
 
-    private String firstPlayer;
-
     private Map<String, ReducedPlayer> players;
 
     private TurnPhase turnPhase;
 
-    private ReducedModel reducedModel;
+    private final ReducedModel reducedModel;
 
     private int firstTurns;
 
@@ -31,24 +27,14 @@ public class ReducedGame {
         return token;
     }
 
-    private Stack<Token> tokens;
     private Token token;
 
     public ReducedGame(ReducedModel reducedModel) {
         this.reducedModel = reducedModel;
-        this.gameId = "";
         this.numberOfPlayers = 0;
         this.gameStarted = false;
         this.clientPlayer = "";
         this.players = new HashMap<>();
-    }
-
-    public String getGameId() {
-        return gameId;
-    }
-
-    public void setGameId(String gameId) {
-        this.gameId = gameId;
     }
 
     public int getNumberOfPlayers() {
@@ -75,20 +61,8 @@ public class ReducedGame {
         this.currentPlayer = currentPlayer;
     }
 
-    public String getFirstPlayer() {
-        return firstPlayer;
-    }
-
-    public void setFirstPlayer(String firstPlayer) {
-        this.firstPlayer = firstPlayer;
-    }
-
     public Map<String, ReducedPlayer> getPlayers() {
         return players;
-    }
-
-    public void setPlayers(Map<String, ReducedPlayer> players) {
-        this.players = players;
     }
 
     public TurnPhase getTurnPhase() {
@@ -131,18 +105,8 @@ public class ReducedGame {
         return this.players.get(nickname);
     }
 
-    public void setTokens(Stack<Token> tokens) {
-        this.tokens = tokens;
-    }
-
     public void setToken(Token token) {
         this.token = token;
         this.reducedModel.updateToken(token);
-    }
-
-    public void setEndGamePhase(boolean endGamePhase) {
-    }
-
-    public void setGameEnded(boolean gameEnded) {
     }
 }

@@ -12,7 +12,7 @@ import java.io.Serializable;
  */
 public class MarketUpdateMessage implements ServerMessage, Serializable {
 
-    private Marble[] marblesGrid;
+    private final Marble[] marblesGrid;
 
     /**
      * Constructor.

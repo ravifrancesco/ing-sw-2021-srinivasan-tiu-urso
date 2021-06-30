@@ -12,6 +12,6 @@ public interface GameObserver {
      *
      * @param message   update message.
      */
-    public void update(Game message);
+    void update(Game message);
 
 }

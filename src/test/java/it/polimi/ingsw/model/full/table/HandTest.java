@@ -6,9 +6,6 @@ import it.polimi.ingsw.model.full.cards.BannerEnum;
 import it.polimi.ingsw.model.full.cards.LeaderCard;
 import it.polimi.ingsw.model.full.specialAbilities.ProductionPower;
 import it.polimi.ingsw.model.full.specialAbilities.SpecialAbility;
-import it.polimi.ingsw.model.full.table.Hand;
-import it.polimi.ingsw.model.full.table.Player;
-import it.polimi.ingsw.model.full.table.Resource;
 import it.polimi.ingsw.model.utils.GameSettings;
 import org.junit.Assert;
 import org.junit.Test;
@@ -26,7 +23,7 @@ public class HandTest {
 
         Player player = new Player(gameSettings, "test");
 
-        Hand hand = new Hand(player);
+        Hand hand = new Hand();
 
         Assert.assertNotNull(hand);
     }
@@ -39,7 +36,7 @@ public class HandTest {
 
         Player player = new Player(gameSettings, "test");
 
-        Hand hand = new Hand(player);
+        Hand hand = new Hand();
 
         Map<Resource, Integer> resourceCost = new HashMap<>();
 
@@ -72,7 +69,7 @@ public class HandTest {
 
         Player player = new Player(gameSettings, "test");
 
-        Hand hand = new Hand(player);
+        Hand hand = new Hand();
 
         Map<Resource, Integer> resourceCost = new HashMap<>();
 
@@ -105,7 +102,7 @@ public class HandTest {
 
         Player player = new Player(gameSettings, "test");
 
-        Hand hand = new Hand(player);
+        Hand hand = new Hand();
 
         Map<Resource, Integer> resourceCost = new HashMap<>();
 

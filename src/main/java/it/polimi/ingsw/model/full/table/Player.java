@@ -29,15 +29,13 @@ public class Player extends PlayerObservable {
 
 	static final int NUM_PLAYABLE_LEADER_CARDS = 2;
 
-	static final int NUM_WHITE_MARBLE_RESOURCE = 2;
+	private final Dashboard dashboard;
 
-	private Dashboard dashboard;
+	private final Hand hand;
 
-	private Hand hand;
+	private final ArrayList<DevelopmentCardDiscount> activeDiscounts;
 
-	private ArrayList<DevelopmentCardDiscount> activeDiscounts;
-
-	private ArrayList<Resource> activatedWMR;
+	private final ArrayList<Resource> activatedWMR;
 
 	private int victoryPoints;
 
@@ -52,7 +50,7 @@ public class Player extends PlayerObservable {
 	 */
 	public Player(GameSettings gameSettings, String nickname) {
 		this.dashboard = new Dashboard(gameSettings, this);
-		this.hand = new Hand(this);
+		this.hand = new Hand();
 		this.activeDiscounts = new ArrayList<>();
 		this.activatedWMR = new ArrayList<>();
 		this.nickname = nickname;
@@ -220,16 +218,6 @@ public class Player extends PlayerObservable {
 	 */
 	public int getVictoryPoints() {
 		return victoryPoints;
-	}
-
-	/**
-	 * Checks if the player has reached end game phase
-	 *
-	 * @return  <code>true</code> check if player has reached endGame phase.
-	 * 			<code>false</code> otherwise.
-	 */
-	public boolean checkGameEnd() {
-		return this.dashboard.checkGameEnd();
 	}
 
 	public int getHandSize() {

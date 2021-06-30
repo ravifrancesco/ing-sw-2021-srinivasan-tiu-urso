@@ -7,7 +7,7 @@ import it.polimi.ingsw.view.virtualView.server.ServerVirtualView;
 import java.io.Serializable;
 
 public class PlayerDiscardsLeaderCard extends ClientGameMessage implements Serializable {
-    private int cardToDiscard;
+    private final int cardToDiscard;
 
     public PlayerDiscardsLeaderCard(int cardToDiscard) {
         this.cardToDiscard = cardToDiscard;

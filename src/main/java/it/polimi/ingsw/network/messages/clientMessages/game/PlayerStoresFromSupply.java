@@ -7,8 +7,8 @@ import it.polimi.ingsw.view.virtualView.server.ServerVirtualView;
 import java.io.Serializable;
 
 public class PlayerStoresFromSupply extends ClientGameMessage implements Serializable {
-    private int from;
-    private int to;
+    private final int from;
+    private final int to;
 
     public PlayerStoresFromSupply(int from, int to) {
         this.from = from;

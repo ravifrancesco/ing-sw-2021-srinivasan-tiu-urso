@@ -109,10 +109,6 @@ public class ResourceController {
         this.gui = gui;
     }
 
-    public void setSupplyPos(int supplyPos) {
-        this.supplyPos = supplyPos;
-    }
-
     public void setX(double x) {
         this.x = x;
         item.setX(this.x);

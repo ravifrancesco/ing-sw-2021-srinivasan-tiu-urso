@@ -8,18 +8,12 @@ import it.polimi.ingsw.network.messages.clientMessages.lobbyMessage.JoinGameLobb
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
-import javafx.scene.input.InputEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -35,18 +29,15 @@ public class ClientMainLobbyController {
     Node[] nodes;
     ServerItemController[] serverItemControllers;
 
-    private final Background focusBackground = new Background( new BackgroundFill( Color.web( "#000000" ), CornerRadii.EMPTY, Insets.EMPTY ) );
-    private final Background unfocusBackground = new Background( new BackgroundFill( Color.web( "#F4F4F4" ), CornerRadii.EMPTY, Insets.EMPTY ) );
-
     private int selectedNode = -1;
 
     @FXML
-    public void handleRefreshClick(InputEvent event) {
+    public void handleRefreshClick() {
         gui.send(new AskGameLobbies());
     }
 
     @FXML
-    public void handleJoinClick(InputEvent event) {
+    public void handleJoinClick() {
         if (selectedGame == null) {
             gui.printErrorMessage("Please select a game");
         } else {
@@ -56,7 +47,7 @@ public class ClientMainLobbyController {
     }
 
     @FXML
-    public void handleCreateGameClick(InputEvent event) {
+    public void handleCreateGameClick() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Create game");
         alert.setHeaderText("You are creating a new game");
@@ -83,7 +74,7 @@ public class ClientMainLobbyController {
     }
 
     @FXML
-    public void handleQuitClick(InputEvent event) {
+    public void handleQuitClick() {
         System.exit(0);
     }
 

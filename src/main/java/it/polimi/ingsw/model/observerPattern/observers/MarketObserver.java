@@ -12,6 +12,6 @@ public interface MarketObserver {
      *
      * @param message   update message.
      */
-    public void update(Market message);
+    void update(Market message);
 
 }

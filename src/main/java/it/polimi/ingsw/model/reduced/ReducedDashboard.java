@@ -10,7 +10,7 @@ import java.util.*;
 
 public class ReducedDashboard {
 
-    private ReducedPlayer reducedPlayer;
+    private final ReducedPlayer reducedPlayer;
 
     private int playerPoints;
 
@@ -33,9 +33,8 @@ public class ReducedDashboard {
     private int position;
     private int LorenzoIlMagnificoPosition;
     private Map<Pair<Integer, Integer>, Pair<Integer, Integer>> vaticanReports;
-    private int[] faithTrackVictoryPoints;
 
-    private ReducedModel reducedModel;
+    private final ReducedModel reducedModel;
 
     public ReducedDashboard(ReducedPlayer reducedPlayer, ReducedModel reducedModel) {
         this.reducedPlayer = reducedPlayer;
@@ -129,12 +128,7 @@ public class ReducedDashboard {
         updateVaticanReports();
     }
 
-    public int[] getFaithTrackVictoryPoints() {
-        return faithTrackVictoryPoints;
-    }
-
-    public void setFaithTrackVictoryPoints(int[] faithTrackVictoryPoints) {
-        this.faithTrackVictoryPoints = faithTrackVictoryPoints;
+    public void setFaithTrackVictoryPoints() {
     }
 
     public int getLorenzoIlMagnificoPosition() {

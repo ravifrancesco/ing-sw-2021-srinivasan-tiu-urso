@@ -12,17 +12,14 @@ import java.util.List;
  */
 public class Hand {
 
-	private ArrayList<LeaderCard> cards;
+	private final ArrayList<LeaderCard> cards;
 	public static final int MAX_HAND_SIZE = 4;
-
-	private Player player;
 
 	/**
 	 * Constructor for the class.
 	 */
-	public Hand(Player player) {
+	public Hand() {
 		this.cards = new ArrayList<>();
-		this.player = player;
 	}
 
 	/**

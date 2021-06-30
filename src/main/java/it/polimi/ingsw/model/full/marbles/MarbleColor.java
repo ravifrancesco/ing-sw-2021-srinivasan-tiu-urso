@@ -12,6 +12,6 @@ public enum MarbleColor {
 
     WHITE,
 
-    YELLOW;
+    YELLOW
 
 }

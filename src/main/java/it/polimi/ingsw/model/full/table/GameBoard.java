@@ -3,7 +3,6 @@ package it.polimi.ingsw.model.full.table;
 import it.polimi.ingsw.model.utils.GameSettings;
 import it.polimi.ingsw.model.full.cards.Card;
 import it.polimi.ingsw.model.full.cards.LeaderCard;
-import it.polimi.ingsw.model.observerPattern.observables.GameBoardObservable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,15 +17,15 @@ import java.util.Arrays;
  * The development card grid
  */
 
-public class GameBoard extends GameBoardObservable {
+public class GameBoard {
 
-	private Deck discardDeck;
-	private Deck developmentDeck;
-	private Deck leaderDeck;
+	private final Deck discardDeck;
+	private final Deck developmentDeck;
+	private final Deck leaderDeck;
 
-	private Market market;
+	private final Market market;
 
-	private DevelopmentCardGrid developmentCardGrid;
+	private final DevelopmentCardGrid developmentCardGrid;
 
 	/**
 	 * The constructor for a GameBoard object.
@@ -57,7 +56,6 @@ public class GameBoard extends GameBoardObservable {
 		market.reset();
 		developmentCardGrid.reset();
 		developmentCardGrid.fillCardGrid(developmentDeck);
-		notify(this);
 	}
 
 	/**
@@ -68,7 +66,6 @@ public class GameBoard extends GameBoardObservable {
 	public void discardCard(Card c) {
 		LeaderCard leaderCard = (LeaderCard) c;
 		discardDeck.add(leaderCard);
-		notify(this);
 	}
 
 	/**
@@ -78,7 +75,6 @@ public class GameBoard extends GameBoardObservable {
 
 	public LeaderCard getLeaderCard() {
 		LeaderCard card = (LeaderCard) leaderDeck.getCard();
-		notify(this);
 		return card;
 	}
 

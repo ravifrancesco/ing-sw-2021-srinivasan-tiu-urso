@@ -20,7 +20,7 @@ import java.util.stream.IntStream;
 
 public class ReducedGameSettingsTest {
 
-    private String path = "testSave.properties";
+    private final String path = "testSave.properties";
 
     // Tests if the game settings file can be saved
     @Test

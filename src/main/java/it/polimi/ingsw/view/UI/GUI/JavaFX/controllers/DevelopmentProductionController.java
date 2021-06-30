@@ -186,7 +186,7 @@ public class DevelopmentProductionController {
         File file = new File("src/main/resources/png/resources/"+resourceName+".png");
         Image image = new Image(file.toURI().toString());
         ImageView imageView = new ImageView(image);
-        imageView.setOnMouseClicked(mouseEvent -> clickedDepositResource(imageView, mouseEvent, pos));
+        imageView.setOnMouseClicked(mouseEvent -> clickedDepositResource(imageView, pos));
         imageView.setFitWidth(25);
         imageView.setFitHeight(25);
         imageView.setX((depositSlots[pos].getX() + depositSlots[pos].getWidth()/2) - (imageView.getFitWidth() / 2));
@@ -194,7 +194,7 @@ public class DevelopmentProductionController {
         return imageView;
     }
 
-    private void clickedDepositResource(ImageView imageView, MouseEvent mouseEvent, int pos) {
+    private void clickedDepositResource(ImageView imageView, int pos) {
         ColorAdjust colorAdjust = new ColorAdjust();
         if (!selectedDeposit[pos]) {
             colorAdjust.setBrightness(-0.5);
@@ -217,7 +217,7 @@ public class DevelopmentProductionController {
         File file = new File("src/main/resources/png/resources/"+resourceName+".png");
         Image image = new Image(file.toURI().toString());
         ImageView imageView = new ImageView(image);
-        imageView.setOnMouseClicked(mouseEvent -> clickedExtraDepositResource(imageView, mouseEvent, pos));
+        imageView.setOnMouseClicked(mouseEvent -> clickedExtraDepositResource(imageView, pos));
         imageView.setFitWidth(25);
         imageView.setFitHeight(25);
         imageView.setX((extraDepositSlots[pos].getX() + extraDepositSlots[pos].getWidth()/2) - (imageView.getFitWidth() / 2));
@@ -225,7 +225,7 @@ public class DevelopmentProductionController {
         return imageView;
     }
 
-    private void clickedExtraDepositResource(ImageView imageView, MouseEvent mouseEvent, int pos) {
+    private void clickedExtraDepositResource(ImageView imageView, int pos) {
         ColorAdjust colorAdjust = new ColorAdjust();
         if (!selectedExtraDeposit[pos]) {
             colorAdjust.setBrightness(-0.5);

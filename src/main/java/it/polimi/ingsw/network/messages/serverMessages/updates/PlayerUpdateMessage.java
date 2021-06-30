@@ -17,10 +17,10 @@ import java.util.List;
 public class PlayerUpdateMessage implements ServerMessage, Serializable {
 
     private final String playerNickname;
-    private List<LeaderCard> hand;
-    private int handSize;
-    private Resource[] wmrs;
-    private ArrayList<DevelopmentCardDiscount> discounts;
+    private final List<LeaderCard> hand;
+    private final int handSize;
+    private final Resource[] wmrs;
+    private final ArrayList<DevelopmentCardDiscount> discounts;
 
     /**
      * Constructor.

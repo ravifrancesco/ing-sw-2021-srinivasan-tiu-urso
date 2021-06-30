@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public class WarehouseUpdateMessage implements ServerMessage, Serializable {
 
-    private String playerNickname;
+    private final String playerNickname;
     private final Resource[] deposit;
     private final Resource[][] extraDeposits;
     private final Map<Resource, Integer> locker;

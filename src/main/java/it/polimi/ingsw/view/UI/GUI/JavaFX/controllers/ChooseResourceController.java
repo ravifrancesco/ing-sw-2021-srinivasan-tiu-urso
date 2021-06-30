@@ -151,27 +151,6 @@ public class ChooseResourceController {
         this.buyDevCardController = buyDevCardController;
     }
 
-    /* TODO could be cancelled, use setResources without parameters */
-    public void setResources(Resource[] deposit, Map<Resource, Integer> locker, Resource[][] extraDeposits) {
-        for (int i = 0; i < deposit.length; i++) {
-            if (deposit[i] != null) {
-                ImageView imageView = createSelectableResourceDeposit(deposit[i], i);
-                pane.getChildren().add(imageView);
-            }
-        }
-
-        locker.forEach(this::updateLockerMaximum);
-
-        for (int i = 0; i < EXTRA_DEPOSITS_SIZE / 2; i++) {
-            for (int j = 0; j < EXTRA_DEPOSITS_SIZE / 2; j++) {
-                if (extraDeposits[i][j] != null) {
-                    ImageView imageView2 = createSelectableResourceExtraDeposit(extraDeposits[i][j], i*2+j);
-                    pane.getChildren().add(imageView2);
-                }
-            }
-        }
-    }
-
     public void setResources() {
         ReducedDashboard reducedDashboard = gui.getReducedModel().getReducedPlayer().getDashboard();
         Resource[] deposit = reducedDashboard.getDeposit();
@@ -217,7 +196,7 @@ public class ChooseResourceController {
         File file = new File("src/main/resources/png/resources/"+resourceName+".png");
         Image image = new Image(file.toURI().toString());
         ImageView imageView = new ImageView(image);
-        imageView.setOnMouseClicked(mouseEvent -> clickedDepositResource(imageView, mouseEvent, pos));
+        imageView.setOnMouseClicked(mouseEvent -> clickedDepositResource(imageView, pos));
         imageView.setFitWidth(25);
         imageView.setFitHeight(25);
         imageView.setX((depositSlots[pos].getX() + depositSlots[pos].getWidth()/2) - (imageView.getFitWidth() / 2));
@@ -225,7 +204,7 @@ public class ChooseResourceController {
         return imageView;
     }
 
-    private void clickedDepositResource(ImageView imageView, MouseEvent mouseEvent, int pos) {
+    private void clickedDepositResource(ImageView imageView, int pos) {
         ColorAdjust colorAdjust = new ColorAdjust();
         if (!selectedDeposit[pos]) {
             colorAdjust.setBrightness(-0.5);
@@ -248,7 +227,7 @@ public class ChooseResourceController {
         File file = new File("src/main/resources/png/resources/"+resourceName+".png");
         Image image = new Image(file.toURI().toString());
         ImageView imageView = new ImageView(image);
-        imageView.setOnMouseClicked(mouseEvent -> clickedExtraDepositResource(imageView, mouseEvent, pos));
+        imageView.setOnMouseClicked(mouseEvent -> clickedExtraDepositResource(imageView, pos));
         imageView.setFitWidth(25);
         imageView.setFitHeight(25);
         imageView.setX((extraDepositSlots[pos].getX() + extraDepositSlots[pos].getWidth()/2) - (imageView.getFitWidth() / 2));
@@ -256,7 +235,7 @@ public class ChooseResourceController {
         return imageView;
     }
 
-    private void clickedExtraDepositResource(ImageView imageView, MouseEvent mouseEvent, int pos) {
+    private void clickedExtraDepositResource(ImageView imageView, int pos) {
         ColorAdjust colorAdjust = new ColorAdjust();
         if (!selectedExtraDeposit[pos]) {
             colorAdjust.setBrightness(-0.5);

@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class WarehouseObservable {
 
-    private List<WarehouseObserver> observers = new ArrayList<>();
+    private final List<WarehouseObserver> observers = new ArrayList<>();
 
     /**
      * Add observer.

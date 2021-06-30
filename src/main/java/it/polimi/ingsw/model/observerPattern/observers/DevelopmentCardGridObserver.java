@@ -12,6 +12,6 @@ public interface DevelopmentCardGridObserver {
      *
      * @param message   update message.
      */
-    public void update(DevelopmentCardGrid message);
+    void update(DevelopmentCardGrid message);
 
 }

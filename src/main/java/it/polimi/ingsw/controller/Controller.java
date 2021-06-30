@@ -37,11 +37,11 @@ public class Controller {
 
     // controllers
 
-    private ProductionController productionController;
-    private WarehouseController warehouseController;
-    private MarketController marketController;
-    private LeaderCardController leaderCardController;
-    private DevelopmentCardController developmentCardController;
+    private final ProductionController productionController;
+    private final WarehouseController warehouseController;
+    private final MarketController marketController;
+    private final LeaderCardController leaderCardController;
+    private final DevelopmentCardController developmentCardController;
 
     /**
      * Constructor for a Server Controller object. It creates the game and initializes all attributes.
@@ -107,7 +107,6 @@ public class Controller {
         game.getGameError().addObserver(c);
 
         GameBoard gameBoard = game.getGameBoard();
-        gameBoard.addObserver(c);
         gameBoard.getMarket().addObserver(c);
         gameBoard.getDevelopmentCardGrid().addObserver(c);
 
@@ -139,7 +138,6 @@ public class Controller {
         game.getGameError().addObserver(offlineClientVirtualView);
 
         GameBoard gameBoard = game.getGameBoard();
-        gameBoard.addObserver(offlineClientVirtualView);
         gameBoard.getMarket().addObserver(offlineClientVirtualView);
         gameBoard.getDevelopmentCardGrid().addObserver(offlineClientVirtualView);
 
@@ -172,7 +170,6 @@ public class Controller {
         game.removeObserver(c);
 
         GameBoard gameBoard = game.getGameBoard();
-        gameBoard.removeObserver(c);
         gameBoard.getMarket().removeObserver(c);
         gameBoard.getDevelopmentCardGrid().removeObserver(c);
 
@@ -545,7 +542,6 @@ public class Controller {
 
     // TODO doc
     public int endTurnSinglePlayer(String nickname) {
-        boolean singlePlayerEnd;
         String currentPlayer = game.getCurrentPlayer();
         if (!currentPlayer.equals(nickname)) {
             game.setError(new WrongTurnException("Not " + nickname + " turn"), nickname);
@@ -605,10 +601,6 @@ public class Controller {
         return game.getGameStatus();
     }
 
-    public String getCurrentPlayer() {
-        return game.getCurrentPlayer();
-    }
-
     public void gimme(String nickname, int row, int column, int index) {
         Player player = game.getPlayers().get(nickname);
         Dashboard dashboard = player.getDashboard();
@@ -625,11 +617,6 @@ public class Controller {
 
     public void play(String nickname, int index) {
         Player player = game.getPlayers().get(nickname);
-        Dashboard dashboard = player.getDashboard();
-        Map<Banner, Integer> playerBanners = dashboard.getBanners();
-        Map<Resource, Integer> playerResources = dashboard.getAllPlayerResources();
-        LeaderCard lc = player.getHand().get(index);
-
         player.playLeaderCard(index);
     }
 
@@ -645,7 +632,7 @@ public class Controller {
     }
 
 
-    public void end(String nickname, int index) {
+    public void end(String nickname) {
         Player player = game.getPlayers().get(nickname);
         player.getDashboard().moveFaithMarker(23);
     }

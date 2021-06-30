@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class PlayerObservable {
 
-    private List<PlayerObserver> observers = new ArrayList<>();
+    private final List<PlayerObserver> observers = new ArrayList<>();
 
     /**
      * Add observer.

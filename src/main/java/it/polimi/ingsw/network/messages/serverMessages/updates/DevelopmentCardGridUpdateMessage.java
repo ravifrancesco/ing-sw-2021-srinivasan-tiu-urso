@@ -14,7 +14,7 @@ import java.util.Stack;
  */
 public class DevelopmentCardGridUpdateMessage implements ServerMessage, Serializable {
 
-    private List<Stack<DevelopmentCard>> grid;
+    private final List<Stack<DevelopmentCard>> grid;
 
     /**
      * Constructor.

@@ -97,8 +97,4 @@ public class Deck {
 				.forEach(ProductionPower::reset);
 	}
 
-	public ArrayList<Card> toList() {
-		return new ArrayList<>(deck);
-	}
-
 }

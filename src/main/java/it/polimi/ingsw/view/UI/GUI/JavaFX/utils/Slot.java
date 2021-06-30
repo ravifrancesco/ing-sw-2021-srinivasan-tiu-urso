@@ -5,13 +5,13 @@ import javafx.scene.shape.Rectangle;
 
 public class Slot {
 
-    private Rectangle rectangle;
+    private final Rectangle rectangle;
 
-    private double x;
-    private double y;
+    private final double x;
+    private final double y;
 
-    private double width;
-    private double height;
+    private final double width;
+    private final double height;
 
     private boolean empty;
 

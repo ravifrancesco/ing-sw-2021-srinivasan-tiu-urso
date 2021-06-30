@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class FaithTrackObservable {
 
-    private List<FaithTrackObserver> observers = new ArrayList<>();
+    private final List<FaithTrackObserver> observers = new ArrayList<>();
 
     /**
      * Add observer.

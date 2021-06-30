@@ -18,12 +18,12 @@ import java.util.Stack;
  */
 public class DashboardUpdateMessage implements ServerMessage, Serializable {
 
-    private String playerNickname;
-    private int playerPoints;
+    private final String playerNickname;
+    private final int playerPoints;
     private final List<LeaderCard> playedLeaderCards;
     private final List<Stack<DevelopmentCard>> playedDevelopmentCards;
-    private ArrayList<Resource> supply;
-    private ProductionPower productionPower;
+    private final ArrayList<Resource> supply;
+    private final ProductionPower productionPower;
 
     /**
      * Constructor.

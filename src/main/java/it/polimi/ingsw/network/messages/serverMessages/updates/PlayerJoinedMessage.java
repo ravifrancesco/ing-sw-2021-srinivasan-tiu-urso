@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 public class PlayerJoinedMessage implements ServerMessage, Serializable {
 
-    private String player;
+    private final String player;
 
     public PlayerJoinedMessage(String player) {
         this.player = player;

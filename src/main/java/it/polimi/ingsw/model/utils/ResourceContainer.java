@@ -12,9 +12,9 @@ import java.util.stream.IntStream;
 
 public class ResourceContainer implements Serializable {
 
-    private ArrayList<Integer> selectedDepositIndexes;
-    private Map<Resource, Integer> selectedLockerResources;
-    private Map<Integer, ArrayList<Integer>> selectedExtraDepositIndexes;
+    private final ArrayList<Integer> selectedDepositIndexes;
+    private final Map<Resource, Integer> selectedLockerResources;
+    private final Map<Integer, ArrayList<Integer>> selectedExtraDepositIndexes;
 
     public ResourceContainer() {
         selectedDepositIndexes = new ArrayList<>();

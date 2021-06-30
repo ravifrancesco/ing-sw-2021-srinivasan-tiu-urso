@@ -7,11 +7,9 @@ import it.polimi.ingsw.view.UI.UIType;
 import it.polimi.ingsw.model.reduced.ReducedModel;
 import it.polimi.ingsw.model.reduced.ReducedDashboard;
 import it.polimi.ingsw.model.reduced.ReducedGame;
-import it.polimi.ingsw.model.reduced.ReducedGameBoard;
 import it.polimi.ingsw.model.reduced.ReducedPlayer;
 import it.polimi.ingsw.model.full.table.Resource;
 import it.polimi.ingsw.model.full.table.TurnPhase;
-import it.polimi.ingsw.model.full.cards.Card;
 import it.polimi.ingsw.model.full.cards.DevelopmentCard;
 import it.polimi.ingsw.model.full.cards.LeaderCard;
 import it.polimi.ingsw.model.full.marbles.Marble;
@@ -33,8 +31,8 @@ import java.util.Stack;
 public class ClientVirtualView implements Runnable, ClientVirtualViewIF {
     private String playerNickname;
 
-    private String ip;
-    private int port;
+    private final String ip;
+    private final int port;
     public final UI ui;
 
     private ObjectOutputStream outputStream;
@@ -196,15 +194,13 @@ public class ClientVirtualView implements Runnable, ClientVirtualViewIF {
     /**
      * Methods for updates on information on the reduced model
      */
-    public void updateReducedGame(String firstPlayer, String currentPlayer, List<String> playersNicknames, TurnPhase turnPhase, int firstTurns, boolean gameStarted, Stack<Token> tokens, Token token) {
+    public void updateReducedGame(String currentPlayer, List<String> playersNicknames, TurnPhase turnPhase, int firstTurns, boolean gameStarted, Token token) {
         ReducedGame reducedGame = reducedModel.getReducedGame();
         reducedGame.setGameStarted(gameStarted);
-        reducedGame.setFirstPlayer(firstPlayer);
         reducedGame.setCurrentPlayer(currentPlayer);
         reducedGame.updatePlayers(playersNicknames);
         reducedGame.setTurnPhase(turnPhase);
         reducedGame.setFirstTurns(firstTurns);
-        reducedGame.setTokens(tokens);
         reducedGame.setToken(token);
     }
 
@@ -227,13 +223,6 @@ public class ClientVirtualView implements Runnable, ClientVirtualViewIF {
 
     public void updateReducedDVGrid(List<Stack<DevelopmentCard>> grid) {
         reducedModel.getReducedGameBoard().setGrid(grid);
-    }
-
-    public void updateReducedGameBoard(List<LeaderCard> leaderCardDeck, List<DevelopmentCard> developmentCardDeck, List<Card> discardDeck) {
-        ReducedGameBoard reducedGameBoard = reducedModel.getReducedGameBoard();
-        reducedGameBoard.setLeaderCardDeck(leaderCardDeck);
-        reducedGameBoard.setDevelopmentCardDeck(developmentCardDeck);
-        reducedGameBoard.setDiscardDeck(discardDeck);
     }
 
     public void updateReducedMarket(Marble[] marblesGrid) {
@@ -264,7 +253,7 @@ public class ClientVirtualView implements Runnable, ClientVirtualViewIF {
         reducedDashboard.setLocker(locker);
     }
 
-    public void updateReducedFaithTrack(String nickname, int position, int LorenzoIlMagnificoPosition, Map<Pair<Integer, Integer>, Pair<Integer, Integer>> vaticanReports, int[] faithTrackVictoryPoints) {
+    public void updateReducedFaithTrack(String nickname, int position, int LorenzoIlMagnificoPosition, Map<Pair<Integer, Integer>, Pair<Integer, Integer>> vaticanReports) {
         ReducedGame reducedGame = reducedModel.getReducedGame();
         if (!reducedGame.getPlayers().containsKey(nickname)) {
             reducedGame.createPlayer(nickname);
@@ -273,17 +262,12 @@ public class ClientVirtualView implements Runnable, ClientVirtualViewIF {
         reducedDashboard.setPosition(position);
         reducedDashboard.setLorenzoIlMagnificoPosition(LorenzoIlMagnificoPosition);
         reducedDashboard.setVaticanReports(vaticanReports);
-        reducedDashboard.setFaithTrackVictoryPoints(faithTrackVictoryPoints);
+        reducedDashboard.setFaithTrackVictoryPoints();
     }
 
-    public void updateGameInfo(String gameID, int numberOfPlayers) {
+    public void updateGameInfo(int numberOfPlayers) {
         ReducedGame reducedGame = reducedModel.getReducedGame();
-        reducedGame.setGameId(gameID);
         reducedGame.setNumberOfPlayers(numberOfPlayers);
-    }
-
-    public ReducedModel getReducedModel() {
-        return reducedModel;
     }
 
 }

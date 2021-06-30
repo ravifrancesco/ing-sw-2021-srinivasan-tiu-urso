@@ -72,7 +72,7 @@ public class DevelopmentCardController {
 
 
 
-        dashboard.payPrice(resourcesToPayCost, cost);
+        dashboard.payPrice(resourcesToPayCost);
 
         developmentCardGrid.buy(row, column);
         game.startUniquePhase(TurnPhase.BUY);

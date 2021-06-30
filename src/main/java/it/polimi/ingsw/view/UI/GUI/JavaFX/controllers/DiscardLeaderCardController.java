@@ -9,7 +9,6 @@ import javafx.scene.Node;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.InputEvent;
 import javafx.scene.layout.HBox;
 
 import java.io.File;
@@ -21,8 +20,6 @@ public class DiscardLeaderCardController {
     HBox leaderCardContainerHBox;
 
     public GUI gui;
-
-    int selectedCard;
 
     public void setGui(GUI gui) {
         this.gui = gui;
@@ -44,33 +41,6 @@ public class DiscardLeaderCardController {
             gui.send(new PlayerDiscardsExcessLeaderCards(index));
             ((Node)(event.getSource())).getScene().getWindow().hide();
         });
-
-    }
-
-    private void setBrightnessLow(ImageView imageView) {
-        ColorAdjust colorAdjust = new ColorAdjust();
-        colorAdjust.setBrightness(-0.5);
-        imageView.setEffect(colorAdjust);
-    }
-
-    private void setBrightnessHigh(ImageView imageView) {
-        ColorAdjust colorAdjust = new ColorAdjust();
-        colorAdjust.setBrightness(0);
-        imageView.setEffect(colorAdjust);
-    }
-
-    @FXML
-    private void onCloseClicked(InputEvent event) {
-
-    }
-
-    @FXML
-    private void onPlayClicked(InputEvent event) {
-
-    }
-
-    @FXML
-    private void onDiscardClicked(InputEvent event) {
 
     }
 

@@ -16,11 +16,10 @@ public class ProductionHandler {
 
     /**
      * Creates a message to activate a dashboard card production
-     * @param in the input string to be parsed
      * @param cli the cli
      * @return the client message for the server
      */
-    public static ClientMessage activateDashboardProduction(String[] in, CLI cli) {
+    public static ClientMessage activateDashboardProduction(CLI cli) {
         try {
             ProductionPower pp = cli.getReducedModel().getReducedPlayer().getDashboard().getProductionPower();
             Map<Resource, Integer> reqRes = pp.getResourceRequired();

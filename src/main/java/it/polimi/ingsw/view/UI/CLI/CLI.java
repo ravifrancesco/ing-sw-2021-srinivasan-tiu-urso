@@ -35,7 +35,7 @@ public class CLI implements UI {
     private OfflineClientVirtualView offlineClientVirtualView;
     private boolean local;
 
-    private FaithTrackCLI ftcli;
+    private final FaithTrackCLI ftcli;
 
     /**
      * CLI for the game.
@@ -723,7 +723,7 @@ public class CLI implements UI {
             case "1", "2", "3" -> showDvRow(Integer.parseInt(choice));
             case "GREEN", "BLUE", "YELLOW", "PURPLE" -> showDvColumn(choice);
             default -> printColoredMessage("Wrong input", Constants.ANSI_RED);
-        };
+        }
     }
 
     /**
@@ -838,10 +838,10 @@ public class CLI implements UI {
             ctr += 1;
         }
         System.out.println("     3          4          5         6      ");
-        System.out.println("");
+        System.out.println();
         printMarble(getMarbleColor(marblesGrid[12]));
         System.out.println("FREE MARBLE");
-        System.out.println("");
+        System.out.println();
 
         printMessage("Move indexes can be found next to the respective row or column. ");
         printMessage("Please insert:");
@@ -897,8 +897,6 @@ public class CLI implements UI {
      * @param move the integer of the move
      */
     public void printMarblesRow(String color1, String color2, String color3, String color4, int move) {
-        int color_base_value = 4;
-        int space_base_value = 3;
         int k1;
         int k2 = 4;
 
@@ -924,7 +922,7 @@ public class CLI implements UI {
             IntStream.range(0, k1).forEach(i -> System.out.print(" "));
             System.out.print(" ");
 
-            System.out.println("");
+            System.out.println();
             k2 += 2;
         }
 
@@ -955,10 +953,10 @@ public class CLI implements UI {
                 System.out.print(" "+ move);
             }
 
-            System.out.println("");
+            System.out.println();
             k2 -= 2;
         }
-        System.out.println("");
+        System.out.println();
     }
 
     /**
@@ -966,8 +964,6 @@ public class CLI implements UI {
      * @param color marble color
      */
     public void printMarble(String color) {
-        int color_base_value = 4;
-        int space_base_value = 3;
         int k1;
         int k2 = 4;
 
@@ -978,7 +974,7 @@ public class CLI implements UI {
             IntStream.range(0, k1).forEach(i -> System.out.print(" "));
             System.out.print(" ");
 
-            System.out.println("");
+            System.out.println();
             k2 += 2;
         }
 
@@ -989,10 +985,10 @@ public class CLI implements UI {
             IntStream.range(0, k2).forEach(i -> printColoredMessageNoNL(" ", color));
             IntStream.range(0, k1).forEach(i -> System.out.print(" "));
             System.out.print(" ");
-            System.out.println("");
+            System.out.println();
             k2 -= 2;
         }
-        System.out.println("");
+        System.out.println();
     }
 
     /**
@@ -1265,7 +1261,6 @@ public class CLI implements UI {
         if(!supply.isEmpty()) {
             System.out.println("DEPOSIT: ");
             showDeposit(reducedModel.getReducedPlayer().getDashboard().getDeposit());
-            Resource[][] extraDeposits = reducedModel.getReducedPlayer().getDashboard().getExtraDeposits();
 
             if (reducedModel.getReducedPlayer().getDashboard().getExtraDeposits()[0] != null) {
                 showSingleExtraWh(0);
@@ -1349,7 +1344,7 @@ public class CLI implements UI {
      * Shows the menu for when a player has just finished discarding a card
      */
     private void showNextCardDiscardMenu() {
-        ReducedGame rg = reducedModel.getReducedGame();;
+        ReducedGame rg = reducedModel.getReducedGame();
         int toDiscard = rg.getPlayers().get(rg.getClientPlayer()).getHand().size() - 2;
         if(toDiscard > 0) {
             printMessage("");

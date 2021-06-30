@@ -55,10 +55,10 @@ public class HandController {
     }
 
     public void setCards(List<LeaderCard> leaderCards) {
-        leaderCards.forEach(c -> setLeaderCard(c, leaderCards.indexOf(c)));
+        leaderCards.forEach(c -> setLeaderCard(c));
     }
 
-    private void setLeaderCard(LeaderCard leaderCard, int index) {
+    private void setLeaderCard(LeaderCard leaderCard) {
         File file = new File("src/main/resources/png/cards/leaderCards/leader_card_" + leaderCard.getId()  + ".png");
         javafx.scene.image.Image image = new Image(file.toURI().toString());
         ImageView imageView = new ImageView(image);

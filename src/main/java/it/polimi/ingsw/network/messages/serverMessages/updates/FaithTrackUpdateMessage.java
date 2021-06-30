@@ -15,11 +15,11 @@ import java.util.Map;
  */
 public class FaithTrackUpdateMessage implements ServerMessage, Serializable {
 
-    private String playerNickname;
+    private final String playerNickname;
     private final int position;
     private final int LorenzoIlMagnificoPosition;
-    private Map<Pair<Integer, Integer>, Pair<Integer, Integer>> vaticanReports; // TODO how should this be?
-    private int[] faithTrackVictoryPoints;
+    private final Map<Pair<Integer, Integer>, Pair<Integer, Integer>> vaticanReports; // TODO how should this be?
+
     /**
      * Constructor.
      *
@@ -31,12 +31,11 @@ public class FaithTrackUpdateMessage implements ServerMessage, Serializable {
         this.LorenzoIlMagnificoPosition = faithTrack.getLorenzoIlMagnificoPosition();
         this.vaticanReports = new HashMap<>();
         faithTrack.getVaticanReports().forEach((key, value) -> vaticanReports.put(new Pair<>(value.getStart(), value.getEnd()), new Pair<>(value.getVictoryPoints(), vaticanReportState(value))));
-        this.faithTrackVictoryPoints = faithTrack.getFaithTrackVictoryPoints();
     }
 
     @Override
     public void updateClient(ClientVirtualView clientVirtualView, String nickname) {
-        clientVirtualView.updateReducedFaithTrack(playerNickname, position, LorenzoIlMagnificoPosition, vaticanReports, faithTrackVictoryPoints);
+        clientVirtualView.updateReducedFaithTrack(playerNickname, position, LorenzoIlMagnificoPosition, vaticanReports);
     }
 
     private int vaticanReportState(VaticanReport v) {

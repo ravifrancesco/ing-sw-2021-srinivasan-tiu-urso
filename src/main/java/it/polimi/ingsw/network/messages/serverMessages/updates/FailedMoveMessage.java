@@ -6,7 +6,7 @@ import it.polimi.ingsw.network.messages.serverMessages.ServerMessage;
 import java.io.Serializable;
 
 public class FailedMoveMessage implements ServerMessage, Serializable {
-    private String message;
+    private final String message;
 
     public FailedMoveMessage(String message) {
         this.message = message;

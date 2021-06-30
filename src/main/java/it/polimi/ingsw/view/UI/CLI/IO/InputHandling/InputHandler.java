@@ -22,11 +22,11 @@ public class InputHandler {
         return MainLobbyHandler.joinGame(in, cli);
     }
 
-    public static ClientMessage leaveLobby(String[] in, CLI cli) {
-        return GameLobbyHandler.leaveLobby(in, cli);
+    public static ClientMessage leaveLobby(CLI cli) {
+        return GameLobbyHandler.leaveLobby(cli);
     }
 
-    public static ClientMessage quit(String[] in) {
+    public static ClientMessage quit() {
         System.exit(0);
         return new QuitGame();
     }
@@ -39,8 +39,8 @@ public class InputHandler {
         return new UnlimitedResourcesMessage();
     }
 
-    public static ClientMessage endTurn(String[] in) {
-        return GameLobbyHandler.endTurn(in);
+    public static ClientMessage endTurn() {
+        return GameLobbyHandler.endTurn();
     }
 
     public static ClientMessage discardCard(String[] in, CLI cli) {
@@ -65,21 +65,21 @@ public class InputHandler {
         return GameLobbyHandler.loadGameSettings(in);
     }
 
-    public static ClientMessage changeDeposit(String[] in, CLI cli) {
-        return WarehouseHandler.changeDeposit(in, cli);
+    public static ClientMessage changeDeposit(CLI cli) {
+        return WarehouseHandler.changeDeposit(cli);
     }
 
     public static ClientMessage playLeaderCard(String[] in, CLI cli) {
         return LeaderCardHandler.playLeaderCard(in, cli);
     }
 
-    public static ClientMessage activateDashboardProduction(String[] in, CLI cli) { return ProductionHandler.activateDashboardProduction(in, cli); }
+    public static ClientMessage activateDashboardProduction(CLI cli) { return ProductionHandler.activateDashboardProduction(cli); }
 
     public static ClientMessage activateDevelopmentProduction(String[] in, CLI cli) { return DevelopmentCardHandler.activateDevelopmentProduction(in, cli); }
 
     public static ClientMessage activateLeaderProduction(String[] in, CLI cli) { return LeaderCardHandler.activateLeaderProduction(in, cli); }
 
-    public static ClientMessage startGame(String[] in, CLI cli) { return GameLobbyHandler.startGame(in, cli); }
+    public static ClientMessage startGame() { return GameLobbyHandler.startGame(); }
 
     public static ClientMessage buyDevelopmentCard(String[] in, CLI cli) { return DevelopmentCardHandler.buyDevelopmentCard(in, cli); }
 
@@ -120,7 +120,7 @@ public class InputHandler {
         }
     }
 
-    public static ClientMessage end(String[] in) {
+    public static ClientMessage end() {
         return new EndMessage();
     }
 

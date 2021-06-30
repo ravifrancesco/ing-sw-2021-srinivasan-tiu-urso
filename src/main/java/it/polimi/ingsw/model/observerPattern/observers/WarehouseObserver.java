@@ -12,6 +12,6 @@ public interface WarehouseObserver {
      *
      * @param message   update message.
      */
-    public void update(Warehouse message);
+    void update(Warehouse message);
 
 }

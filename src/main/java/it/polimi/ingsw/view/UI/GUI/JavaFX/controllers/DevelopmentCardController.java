@@ -25,8 +25,6 @@ public class DevelopmentCardController {
     @FXML
     private ImageView item;
 
-    private DevelopmentCard developmentCard;
-
     private Slot[] slots;
 
     private int currentSlot;
@@ -54,7 +52,6 @@ public class DevelopmentCardController {
 
         slots[slot].filLSlot();
         currentSlot = slot;
-        this.developmentCard = developmentCard;
     }
 
     public ImageView getItem() {

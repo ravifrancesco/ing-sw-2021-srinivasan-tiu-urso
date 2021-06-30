@@ -33,12 +33,6 @@ public class Constants {
     public static final String FT_SPACE_ACTIVATED = "\u001b[48;5;46m";
 
 
-    public static final String FT_SEP = "\u001b[48;5;229m";
-
-
-
-
-
     public static final String[] servant = {
             "  " + concatColored("   ", SERVANT_COLOR_BG) + "  ",
             " " +  concatColored("     ", SERVANT_COLOR_BG) + " ",

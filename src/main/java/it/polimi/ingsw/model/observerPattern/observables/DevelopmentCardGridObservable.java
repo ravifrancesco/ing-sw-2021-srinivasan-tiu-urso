@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class DevelopmentCardGridObservable {
 
-    private List<DevelopmentCardGridObserver> observers = new ArrayList<>();
+    private final List<DevelopmentCardGridObserver> observers = new ArrayList<>();
 
     /**
      * Add observer.

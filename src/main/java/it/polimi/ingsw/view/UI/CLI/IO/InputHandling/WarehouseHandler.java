@@ -48,11 +48,10 @@ public class WarehouseHandler {
 
     /**
      * Creates a message to activate a change deposit move
-     * @param in the input string to be parsed
      * @param cli the cli
      * @return the client message for the server
      */
-    public static ClientMessage changeDeposit(String[] in, CLI cli) {
+    public static ClientMessage changeDeposit(CLI cli) {
         try {
             return new PlayerChangesDeposit(swapDeposit(cli));
         } catch (Exception e) {

@@ -12,6 +12,6 @@ public interface FaithTrackObserver {
      *
      * @param message   update message.
      */
-    public void update(FaithTrack message);
+    void update(FaithTrack message);
 
 }

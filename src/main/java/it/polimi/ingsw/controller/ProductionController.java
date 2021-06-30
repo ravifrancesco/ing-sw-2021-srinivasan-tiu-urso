@@ -46,13 +46,13 @@ public class ProductionController {
         try {
             specialAbility = dashboard.getLeaderCard(cardToActivate).getSpecialAbility();
         } catch (IllegalArgumentException e) {
-            throw new PowerNotActivatableException("Invalid index");
+            throw new PowerNotActivatableException();
         } catch (NullPointerException e) {
-            throw new PowerNotActivatableException("Card is null");
+            throw new PowerNotActivatableException();
         }
 
         if (!specialAbility.getType().equals(SpecialAbilityType.PRODUCTION_POWER)) {
-            throw new PowerNotActivatableException("Card doesn't have a production power special ability");
+            throw new PowerNotActivatableException();
         }
 
         ProductionPower productionPower = (ProductionPower) specialAbility;
@@ -64,9 +64,9 @@ public class ProductionController {
         try {
             productionPower.setSelectableResource(resourceRequiredOptional, resourceProducedOptional);
         } catch(IllegalArgumentException e) {
-            throw new PowerNotActivatableException("Illegal amount of required/produced resources");
+            throw new PowerNotActivatableException();
         } catch(IllegalStateException e) {
-            throw new PowerNotActivatableException("Selectable resources setting failed");
+            throw new PowerNotActivatableException();
         }
 
         try {
@@ -78,12 +78,12 @@ public class ProductionController {
         try {
             productionPower.activate(player);
         } catch (IllegalStateException e) {
-            throw new PowerNotActivatableException("Not enough resources");
+            throw new PowerNotActivatableException();
         } catch (UnsupportedOperationException e) {
-            throw new PowerNotActivatableException("Production already activated");
+            throw new PowerNotActivatableException();
         }
 
-        dashboard.payPrice(resourcesToPayCost, productionPower.getResourceRequiredModified());
+        dashboard.payPrice(resourcesToPayCost);
     }
 
     /**
@@ -105,7 +105,7 @@ public class ProductionController {
         Map<Resource, Integer> playerResources = dashboard.getAllPlayerResources();
 
         if (!productionPower.isActivatable()) {
-            throw new PowerNotActivatableException("Production already activated");
+            throw new PowerNotActivatableException();
         }
 
         if (game.getTurnPhase().equals(TurnPhase.COMMON)) {
@@ -115,13 +115,13 @@ public class ProductionController {
         try {
             productionPower.setSelectableResource(resourceRequiredOptional, resourceProducedOptional);
         } catch(IllegalArgumentException e) {
-            throw new PowerNotActivatableException("Illegal amount of required/produced resources");
+            throw new PowerNotActivatableException();
         } catch(IllegalStateException e) {
-            throw new PowerNotActivatableException("Selectable resources setting failed");
+            throw new PowerNotActivatableException();
         }
 
         if (!productionPower.isActivatable(playerResources)) {
-            throw new PowerNotActivatableException("Not enough resources");
+            throw new PowerNotActivatableException();
         }
 
         try {
@@ -133,12 +133,12 @@ public class ProductionController {
         try {
             productionPower.activate(player);
         } catch (IllegalStateException e) {
-            throw new PowerNotActivatableException("Not enough resources");
+            throw new PowerNotActivatableException();
         } catch (UnsupportedOperationException e) {
-            throw new PowerNotActivatableException("Production already activated");
+            throw new PowerNotActivatableException();
         }
 
-        dashboard.payPrice(resourcesToPayCost, productionPower.getResourceRequiredModified());
+        dashboard.payPrice(resourcesToPayCost);
 
     }
 
@@ -160,7 +160,7 @@ public class ProductionController {
         Dashboard dashboard = player.getDashboard();
 
         if (cardToActivate < 0 || cardToActivate > 2 || dashboard.getDevelopmentCard(cardToActivate) == null) {
-            throw new PowerNotActivatableException("Invalid index");
+            throw new PowerNotActivatableException();
         }
 
         DevelopmentCard developmentCard = dashboard.getDevelopmentCard(cardToActivate);
@@ -174,13 +174,13 @@ public class ProductionController {
         try {
             productionPower.setSelectableResource(resourceRequiredOptional, resourceProducedOptional);
         } catch(IllegalArgumentException e) {
-            throw new PowerNotActivatableException("Illegal amount of required/produced resources");
+            throw new PowerNotActivatableException();
         } catch(IllegalStateException e) {
-            throw new PowerNotActivatableException("Selectable resources setting failed");
+            throw new PowerNotActivatableException();
         }
 
         if (!productionPower.isActivatable(playerResources)) {
-            throw new PowerNotActivatableException("Not enough resources");
+            throw new PowerNotActivatableException();
         }
 
         try {
@@ -192,12 +192,12 @@ public class ProductionController {
         try {
             developmentCard.activate(player);
         } catch (IllegalStateException e) {
-            throw new PowerNotActivatableException("Not enough resources");
+            throw new PowerNotActivatableException();
         } catch (UnsupportedOperationException e) {
-            throw new PowerNotActivatableException("Production already activated");
+            throw new PowerNotActivatableException();
         }
 
-        dashboard.payPrice(resourcesToPayCost, productionPower.getResourceRequiredModified());
+        dashboard.payPrice(resourcesToPayCost);
 
     }
 }

@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class DashboardObservable {
 
-    private List<DashboardObserver> observers = new ArrayList<>();
+    private final List<DashboardObserver> observers = new ArrayList<>();
 
     /**
      * Add observer.

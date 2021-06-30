@@ -591,7 +591,7 @@ public class ReducedDashboardTest {
         Assert.assertEquals(java.util.Optional.ofNullable(allResources.get(Resource.SHIELD)), Optional.of(0));
         Assert.assertEquals(java.util.Optional.ofNullable(allResources.get(Resource.SERVANT)), Optional.of(0));
 
-        dashboard.payPrice(rc, cost);
+        dashboard.payPrice(rc);
 
         allResources = dashboard.getAllPlayerResources();
 
@@ -668,7 +668,7 @@ public class ReducedDashboardTest {
         rcc.addExtraDepositSelectedResource(0, 0, warehouse.getExtraDeposits());
         rcc.addExtraDepositSelectedResource(0, 1, warehouse.getExtraDeposits());
 
-        dashboard.payPrice(rcc, cost2);
+        dashboard.payPrice(rcc);
 
         allResources = dashboard.getAllPlayerResources();
 

@@ -9,8 +9,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class PlayerGetsFromMarket extends ClientGameMessage implements Serializable {
-    private int move;
-    private ArrayList<Resource> wmrs;
+    private final int move;
+    private final ArrayList<Resource> wmrs;
 
     public PlayerGetsFromMarket(int move, ArrayList<Resource> wmrs) {
         this.move = move;

@@ -56,8 +56,6 @@ public class MarketViewController {
     @FXML
     Button button6;
 
-    List<Button> placementButtons;
-
     @FXML
     Button backButton;
 

@@ -20,7 +20,7 @@ public class ProductionPower implements SpecialAbility, Serializable {
 	private Map<Resource, Integer> resourceRequiredModified;
 	private final Map<Resource, Integer> resourceProduced;
 	private Map<Resource, Integer> resourceProducedModified;
-	private int numberFaithPoints;
+	private final int numberFaithPoints;
 	private boolean activated;
 
 	/**

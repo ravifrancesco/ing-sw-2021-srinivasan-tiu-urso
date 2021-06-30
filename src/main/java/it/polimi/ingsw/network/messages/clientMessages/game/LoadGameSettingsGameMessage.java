@@ -9,7 +9,7 @@ import java.io.Serializable;
 
 public class LoadGameSettingsGameMessage extends ClientGameMessage implements Serializable {
 
-    private GameSettings gameSettings;
+    private final GameSettings gameSettings;
 
     public LoadGameSettingsGameMessage(GameSettings gameSettings) {
         this.gameSettings = gameSettings;

@@ -58,7 +58,7 @@ public class GameLobby implements Lobby, Serializable {
 
 
     private final Controller controller;
-    private GameSettings gameSettings;
+    private final GameSettings gameSettings;
 
     public GameLobby(String id, int maxPlayers) throws IllegalArgumentException {
         this.id = id;
@@ -99,7 +99,7 @@ public class GameLobby implements Lobby, Serializable {
         });
 
         controller.addObservers(c, connectedPlayers);
-        c.sendGameLobbyEntered(id, c.getNickname().equals(creator));
+        c.sendGameLobbyEntered(c.getNickname().equals(creator));
     }
 
     public synchronized void leaveLobby(ServerVirtualView c) {

@@ -13,9 +13,6 @@ import java.util.concurrent.Executors;
 public class MainLobby implements Lobby {
 
 
-    private boolean endGamePhase = false;
-    private boolean gameEnded = false;
-
     private final List<ServerVirtualView> serverVirtualViews;
     private final Map<String, ServerVirtualView> waitingConnection;
     private final Map<String, ServerVirtualView> playingConnection;
@@ -95,21 +92,6 @@ public class MainLobby implements Lobby {
     }
 
     public void removeGameLobby(GameLobby gameLobby) { activeGameLobbies.remove(gameLobby); }
-    public boolean isEndGamePhase() {
-        return endGamePhase;
-    }
-
-    public boolean isGameEnded() {
-        return gameEnded;
-    }
-
-    public void setEndGamePhase(boolean endGamePhase) {
-        this.endGamePhase = endGamePhase;
-    }
-
-    public void setGameEnded(boolean gameEnded) {
-        this.gameEnded = gameEnded;
-    }
 
 
 }

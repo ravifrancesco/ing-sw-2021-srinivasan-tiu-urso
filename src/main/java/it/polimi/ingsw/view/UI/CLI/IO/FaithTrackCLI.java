@@ -130,19 +130,4 @@ public class FaithTrackCLI {
         }
     }
 
-    public void main(String[] args) {
-        FaithTrackCLI ftCLI = new FaithTrackCLI();
-        for(int i = 0; i <= 24; i++) {
-            if(i == 5) {
-                missVR(2);
-            }
-            setPos(i);
-            showFTCLI();
-            if(i == 15) {
-                activateVR(3);
-            }
-
-            System.out.println("\n\n\n");
-        }
-    }
 }

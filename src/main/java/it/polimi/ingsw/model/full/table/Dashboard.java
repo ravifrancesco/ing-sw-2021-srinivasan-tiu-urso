@@ -43,13 +43,13 @@ public class Dashboard extends DashboardObservable {
 	private final Warehouse warehouse;
 	private final FaithTrack faithTrack;
 	private final List<LeaderCard> playedLeaderCards;
-	private ProductionPower dashBoardProductionPower;
-	private ArrayList<Resource> supply;
+	private final ProductionPower dashBoardProductionPower;
+	private final ArrayList<Resource> supply;
 	private final List<Stack<DevelopmentCard>> playedDevelopmentCards;
 
 	private int playerPoints;
 
-	private Player player;
+	private final Player player;
 
 	/**
 	 * The constructor for a Dashboard object.
@@ -420,34 +420,6 @@ public class Dashboard extends DashboardObservable {
 	}
 
 	/**
-	 * Support function used by moveDeposit, swaps two positions of a Resource[] array.
-	 *
-	 * @param deposit 					the Resource array
-	 * @param p1 						first position
-	 * @param p2 						second position
-	 */
-	private void swapDepositResources(Resource[] deposit, int p1, int p2) {
-		Resource temp = deposit[p1];
-		deposit[p1] = deposit[p2];
-		deposit[p2] = temp;
-		notify(this);
-	}
-
-	private void swapExtraDepositResources(Resource[] deposit, Resource[] extraDeposit, int p1, int p2, int lcPos, int lcIndex) {
-		Resource temp;
-		if(lcIndex == 0) { // p1 is the extraDeposit index
-			temp = warehouse.getExtraDeposits()[lcPos][p1];
-			warehouse.getExtraDeposits()[lcPos][p1] = deposit[p2];
-			deposit[p2] = temp;
-		} else { // p2 is the extraDeposit index
-			temp = warehouse.getExtraDeposits()[lcPos][p2];
-			warehouse.getExtraDeposits()[lcPos][p2] = deposit[p1];
-			deposit[p1] = temp;
-		}
-		notify(this);
-	}
-
-	/**
 	 * Allows to move resouces from the supply to the Warehouse.
 	 *
 	 * @param from						index of the supply box.
@@ -559,9 +531,9 @@ public class Dashboard extends DashboardObservable {
 
 	/**
 	 * Removes the resources from the warehouse
-	 * @param resToPayWith 	a SelectedResource data structure containing the player's choices of where to take the resources from
+	 * @param resToPayWith    a SelectedResource data structure containing the player's choices of where to take the resources from
 	 */
-	public void payPrice(ResourceContainer resToPayWith, Map<Resource, Integer> cost) {
+	public void payPrice(ResourceContainer resToPayWith) {
 		resToPayWith.getSelectedDepositIndexes().forEach(warehouse::removeFromDeposit);
 		resToPayWith.getSelectedLockerResources().forEach(warehouse::removeFromLocker);
 		IntStream.range(0, 2).forEach(i ->

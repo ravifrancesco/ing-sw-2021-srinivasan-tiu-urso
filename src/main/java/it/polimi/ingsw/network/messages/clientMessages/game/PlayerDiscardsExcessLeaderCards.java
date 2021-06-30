@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 
 public class PlayerDiscardsExcessLeaderCards extends ClientGameMessage implements Serializable {
-    private int cardToDiscard;
+    private final int cardToDiscard;
 
     public PlayerDiscardsExcessLeaderCards(int cardToDiscard) {
         this.cardToDiscard = cardToDiscard;

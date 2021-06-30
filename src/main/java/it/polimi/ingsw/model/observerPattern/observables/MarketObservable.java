@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class MarketObservable {
 
-    private List<MarketObserver> observers = new ArrayList<>();
+    private final List<MarketObserver> observers = new ArrayList<>();
 
     /**
      * Add observer.

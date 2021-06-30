@@ -1,6 +1,5 @@
 package it.polimi.ingsw.view.UI.GUI.JavaFX.controllers;
 
-import it.polimi.ingsw.view.UI.GUI.GUI;
 import it.polimi.ingsw.view.UI.GUI.JavaFX.utils.Slot;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
@@ -10,12 +9,8 @@ import java.io.File;
 
 public class FaithMarkerController {
 
-    private GUI gui;
-
     @FXML
     private ImageView faithMarker;
-
-    private int position;
 
     private Slot[] faithSlots;
 
@@ -34,7 +29,6 @@ public class FaithMarkerController {
         faithMarker.setFitWidth(35);
         faithMarker.setX(faithSlots[0].getX() + increment);
         faithMarker.setY(faithSlots[0].getY() + increment);
-        position = 0;
     }
 
     public void createLorenzoItem() {
@@ -46,25 +40,15 @@ public class FaithMarkerController {
         faithMarker.setFitWidth(25);
         faithMarker.setX(faithSlots[0].getX() + increment);
         faithMarker.setY(faithSlots[0].getY() + increment);
-        position = 0;
     }
 
     public void moveFaithMarker(int position) {
         faithMarker.setX(faithSlots[position].getX() + increment);
         faithMarker.setY(faithSlots[position].getY() + increment);
-        this.position = position;
     }
 
     public ImageView getItem() {
         return faithMarker;
-    }
-
-    public int getPosition() {
-        return position;
-    }
-
-    public void setGui(GUI gui) {
-        this.gui = gui;
     }
 
     public void hide() {

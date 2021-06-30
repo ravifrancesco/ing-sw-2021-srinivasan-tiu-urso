@@ -23,7 +23,7 @@ public class Warehouse extends WarehouseObservable {
 	private final Map<Resource, Integer> locker;
 	private Resource[][] extraDeposits;
 
-	private Dashboard dashboard;
+	private final Dashboard dashboard;
 
 	/**
 	 * The constructor for the class.

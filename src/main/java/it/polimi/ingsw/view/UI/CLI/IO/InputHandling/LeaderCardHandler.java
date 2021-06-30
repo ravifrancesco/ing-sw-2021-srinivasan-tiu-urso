@@ -13,7 +13,6 @@ import java.util.Map;
 public class LeaderCardHandler {
     public static String ANSI_GREEN = "\u001B[32m";
     public static String ANSI_RESET = "\u001B[0m";
-    public static String ANSI_BLUE = "\u001B[34m";
 
 
     /**

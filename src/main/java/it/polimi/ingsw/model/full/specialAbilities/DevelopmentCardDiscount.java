@@ -12,8 +12,8 @@ import java.io.Serializable;
 
 public class DevelopmentCardDiscount implements SpecialAbility, Serializable {
 
-	private Resource resource;
-	private int quantity;
+	private final Resource resource;
+	private final int quantity;
 
 	/**
 	 * The constructor for a DevelopmentCardDiscount object.
