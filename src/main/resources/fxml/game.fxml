@@ -12,7 +12,7 @@
             xmlns="http://javafx.com/javafx/16"
             fx:controller="it.polimi.ingsw.view.UI.GUI.JavaFX.controllers.GameController">
     <bottom>
-        <Pane id="pane" fx:id="pane" onMouseClicked="#testClick" prefHeight="768.0" prefWidth="1366.0"
+        <Pane id="pane" fx:id="pane" prefHeight="768.0" prefWidth="1366.0"
               BorderPane.alignment="CENTER">
             <children>
                 <ImageView fitHeight="643.0" fitWidth="900.0" layoutX="233.0" layoutY="125.0" pickOnBounds="true"

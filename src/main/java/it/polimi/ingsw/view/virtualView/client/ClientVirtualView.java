@@ -34,7 +34,7 @@ public class ClientVirtualView implements Runnable, ClientVirtualViewIF {
     public final UI ui;
     private final String ip;
     private final int port;
-    ReducedModel reducedModel;
+    private ReducedModel reducedModel;
     private String playerNickname;
     private ObjectOutputStream outputStream;
     private ObjectInputStream inputStream;

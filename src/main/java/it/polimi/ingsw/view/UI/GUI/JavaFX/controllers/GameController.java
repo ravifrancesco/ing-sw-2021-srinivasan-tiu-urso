@@ -40,6 +40,10 @@ import java.io.IOException;
 import java.util.*;
 import java.util.stream.IntStream;
 
+/**
+ * The class represents the GUI's game controller window.
+ */
+
 public class GameController {
 
     public static final int NUM_SHELFES = 6;
@@ -103,11 +107,18 @@ public class GameController {
     @FXML
     private Pane dashboardProductionPane;
 
+    /**
+     * Setter for the GUI
+     * @param gui the gui
+     */
     public void setGui(GUI gui) {
         this.gui = gui;
         this.gui.getReducedModel().setGameController(this);
     }
 
+    /**
+     * Setter for the players of the game.
+     */
     public void setPlayers() {
         Set<String> players = this.gui.getReducedModel().getReducedGame().getPlayers().keySet();
         if (players.size() == 1) { // TODO solve bug
@@ -121,15 +132,26 @@ public class GameController {
         }
     }
 
+    /**
+     * Setter for the selected player
+     * @param nickname the nickname selected from the combobox
+     */
     public void setSelectedPlayer(String nickname) {
         nicknameCombo.getSelectionModel().select(nickname);
         currentDisplayedPlayer = nickname;
     }
 
+    /**
+     * Setter for the selected player (single player) without combobox
+     * @param nickname the nickname of the selected player
+     */
     public void setSelectedPlayerSinglePlayer(String nickname) {
         currentDisplayedPlayer = nickname;
     }
 
+    /**
+     * Method called when an action is performed on the combobox
+     */
     public void comboAction() {
         currentDisplayedPlayer = nicknameCombo.getSelectionModel().getSelectedItem();
         ReducedModel reducedModel = gui.getReducedModel();
@@ -142,6 +164,9 @@ public class GameController {
         hideWarehouseButtons();
     }
 
+    /**
+     * Initializer method of the class
+     */
     @FXML
     public void initialize() {
         depositSlots = new Slot[NUM_SHELFES];
@@ -193,6 +218,11 @@ public class GameController {
         nicknameCombo.setVisible(false);
     }
 
+    /**
+     * Method to print a resource
+     * @param resource the resource to be printed
+     * @param pos the position of the resource (deposit or extra deposit): 0-5 deposit, 6-9 extra deposits
+     */
     public void printResource(Resource resource, int pos) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/resource_item.fxml"));
         try {
@@ -208,6 +238,11 @@ public class GameController {
         pane.getChildren().add(resourceControllers[pos].getItem());
     }
 
+    /**
+     * Method to print a supply resource
+     * @param resource the resource to be printed
+     * @param pos the position of the resource in the supply
+     */
     public void printSupplyResource(Resource resource, int pos) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/resource_item.fxml"));
         try {
@@ -223,6 +258,11 @@ public class GameController {
         pane.getChildren().add(supplyControllers[pos].getItem());
     }
 
+    /**
+     * Method to print all played leader cards of the player
+     * @param player the displayed player
+     * @param playedLeaderCards the played leader cards of the player
+     */
     public void printPlayedLeaderCards(String player, List<LeaderCard> playedLeaderCards) {
         if (!player.equals(currentDisplayedPlayer)) {
             return;
@@ -234,6 +274,11 @@ public class GameController {
                 .forEach(i -> printLeaderCard(playedLeaderCards.get(i), i));
     }
 
+    /**
+     * Method to print a leader card
+     * @param leaderCard the leader card to print
+     * @param slot the slot where to print the card
+     */
     public void printLeaderCard(LeaderCard leaderCard, int slot) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/leader_card.fxml"));
         try {
@@ -272,6 +317,9 @@ public class GameController {
         reloadWarehouseImages();
     }
 
+    /**
+     * Method to clean the played leader cards
+     */
     public void cleanLeaderCards() {
         for (int i = 0; i < leaderCardControllers.length; i++) {
             if (leaderCardControllers[i] != null) {
@@ -285,6 +333,11 @@ public class GameController {
         }
     }
 
+    /**
+     * Method to print the played development cards
+     * @param player the displayed player
+     * @param playedDevelopmentCards the played development cards of the player
+     */
     public void printPlayedDevelopmentCards(String player, List<Stack<DevelopmentCard>> playedDevelopmentCards) {
         if (!player.equals(currentDisplayedPlayer)) {
             return;
@@ -297,6 +350,11 @@ public class GameController {
         }
     }
 
+    /**
+     * Method to print a development card
+     * @param developmentCard the development card to print
+     * @param pos the position where to print the card (0-1-2)
+     */
     public void printDevelopmentCard(DevelopmentCard developmentCard, int pos) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/development_card.fxml"));
         try {
@@ -318,6 +376,9 @@ public class GameController {
         pane.getChildren().add(developmentCardControllers[pos].getItem());
     }
 
+    /**
+     * Method to clean the played development cards
+     */
     public void cleanDevelopmentCards() {
         for (int i = 0; i < developmentCardControllers.length; i++) {
             if (developmentCardControllers[i] != null) {
@@ -326,6 +387,9 @@ public class GameController {
         }
     }
 
+    /**
+     * Method to reload the warehouse images
+     */
     public void reloadWarehouseImages() {
         for (ResourceController resourceController : resourceControllers) {
             if (resourceController != null) {
@@ -341,6 +405,11 @@ public class GameController {
         }
     }
 
+    /**
+     * Method to update a locker label
+     * @param resource the resource whose label has to be updated
+     * @param quantity the quantity to be displayed
+     */
     public void updateLockerLabel(Resource resource, int quantity) {
         String stringQuantity = "x " + quantity;
         switch (resource) {
@@ -351,6 +420,14 @@ public class GameController {
         }
     }
 
+    /**
+     * Method to print the warehouse
+     * @param player the displayed player
+     * @param deposit the player's deposit
+     * @param locker the player's locker
+     * @param extraDeposit the player's extra deposits
+     * @param supply the player's supply
+     */
     public void printWarehouse(String player, Resource[] deposit, Map<Resource, Integer> locker, Resource[][] extraDeposit, ArrayList<Resource> supply) {
         if (!player.equals(currentDisplayedPlayer)) {
             return;
@@ -382,6 +459,9 @@ public class GameController {
         }
     }
 
+    /**
+     * Method to clean the warehouse
+     */
     public void cleanWarehouse() {
 
         for (int i = 0; i < resourceControllers.length; i++) {
@@ -409,21 +489,29 @@ public class GameController {
         }
     }
 
+    /**
+     * Method to change the controller from a supply controller to a resource controller
+     * @param supplyPos the position of the resource in supply controllers array
+     * @param pos the new position of the resource in resource controllers array
+     */
     public void changeSupplyController(int supplyPos, int pos) {
         resourceControllers[pos] = supplyControllers[supplyPos];
         supplyControllers[supplyPos] = null;
     }
 
+    /**
+     * Method to change the position of a resource in resource controllers array
+     * @param from the old position
+     * @param to the new position
+     */
     public void changeResourceController(int from, int to) {
         resourceControllers[to] = resourceControllers[from];
         resourceControllers[from] = null;
     }
 
-    @FXML
-    private void testClick(MouseEvent event) {
-    }
-
-
+    /**
+     * Faith track initializer
+     */
     public void initializeFaithTrack() {
         faithSlots = new Slot[NUM_FAITH_SLOTS];
         faithSlots[0] = new Slot(267, 251, 40, 40);
@@ -478,6 +566,9 @@ public class GameController {
         vaticanReportTokens = Arrays.asList(vaticanReport0IW, vaticanReport1IW, vaticanReport2IW);
     }
 
+    /**
+     * Method to open the market window
+     */
     public void openMarketWindow(MouseEvent event) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/market_view.fxml"));
         Parent root = null;
@@ -498,6 +589,9 @@ public class GameController {
         stage.show();
     }
 
+    /**
+     * Method to open the dev card window
+     */
     public void openDevCardGridWindow(MouseEvent event) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/dev_card_grid.fxml"));
         Parent root = null;
@@ -518,6 +612,9 @@ public class GameController {
         stage.show();
     }
 
+    /**
+     * Method to show the init host alert
+     */
     public void initHostAlert() {
         mainAlert = new Alert(Alert.AlertType.CONFIRMATION);
         mainAlert.setTitle("Start Game");
@@ -534,6 +631,9 @@ public class GameController {
         }
     }
 
+    /**
+     * Method to handle the click on confirm button in warehouse
+     */
     public void btnConfirmClick() {
         btnConfirm.setVisible(false);
         btnCancel.setVisible(false);
@@ -548,6 +648,9 @@ public class GameController {
         gui.send(new PlayerChangesDeposit(deposit));
     }
 
+    /**
+     * Method to handle the click on cancel button in warehouse
+     */
     public void btnCancelClick() {
         btnConfirm.setVisible(false);
         btnCancel.setVisible(false);
@@ -556,6 +659,9 @@ public class GameController {
         gui.getReducedModel().askWarehouseUpdate(currentDisplayedPlayer);
     }
 
+    /**
+     * Method to show the init player alert
+     */
     public void initPlayerAlert() {
         mainAlert = new Alert(Alert.AlertType.NONE);
         mainAlert.setTitle("Start Game");
@@ -564,6 +670,9 @@ public class GameController {
         mainAlert.show();
     }
 
+    /**
+     * Method to hide the alert
+     */
     public void hideAlert() {
         if (mainAlert != null) {
             if (mainAlert.getAlertType().equals(Alert.AlertType.INFORMATION)) {
@@ -579,6 +688,10 @@ public class GameController {
         }
     }
 
+    /**
+     * Getter for the deposit view
+     * @return the deposit view
+     */
     public Resource[] getDepositView() {
         Resource[] deposit = new Resource[NUM_SHELFES];
         for (int i = 0; i < NUM_SHELFES; i++) {
@@ -589,6 +702,10 @@ public class GameController {
         return deposit;
     }
 
+    /**
+     * Getter for the extra deposit view
+     * @return the extra deposit view
+     */
     public Resource[] getExtraDepositView(int lcIndex) {
         Resource[] extraDeposit = new Resource[SIZE_EXTRA_DEPOSITS / 2];
         int newPos = NUM_SHELFES + lcIndex * 2;
@@ -597,6 +714,9 @@ public class GameController {
         return extraDeposit;
     }
 
+    /**
+     * Method to disable all warehouse resources (no deposit)
+     */
     public void setDisableNoDeposit() {
         IntStream.range(NUM_SHELFES, resourceControllers.length)
                 .filter(i -> resourceControllers[i] != null)
@@ -607,17 +727,26 @@ public class GameController {
                 .forEach(i -> supplyControllers[i].setDisable());
     }
 
+    /**
+     * Method to disable all deposit resources
+     */
     public void setDisableDeposit() {
         IntStream.range(0, NUM_SHELFES)
                 .filter(i -> resourceControllers[i] != null)
                 .forEach(i -> resourceControllers[i].setDisable());
     }
 
+    /**
+     * Method to disable image views
+     */
     public void setDisableImageViews() {
         marketImage.setDisable(true);
         dvGridImage.setDisable(true);
     }
 
+    /**
+     * Method to disable things
+     */
     public void setDisable() {
         setDisableNoDeposit();
         setDisableDeposit();
@@ -625,6 +754,9 @@ public class GameController {
         // TODO disable productions
     }
 
+    /**
+     * Method to enable all warehouse resources (no deposit)
+     */
     public void setEnableNoDeposit() {
         IntStream.range(NUM_SHELFES, resourceControllers.length)
                 .filter(i -> resourceControllers[i] != null)
@@ -635,17 +767,26 @@ public class GameController {
                 .forEach(i -> supplyControllers[i].setEnable());
     }
 
+    /**
+     * Method to enable all deposit resources
+     */
     public void setEnableDeposit() {
         IntStream.range(0, NUM_SHELFES)
                 .filter(i -> resourceControllers[i] != null)
                 .forEach(i -> resourceControllers[i].setEnable());
     }
 
+    /**
+     * Method to enable image views
+     */
     public void setEnableImageViews() {
         marketImage.setDisable(false);
         dvGridImage.setDisable(false);
     }
 
+    /**
+     * Method to enable things
+     */
     public void setEnable() {
         setEnableNoDeposit();
         setEnableDeposit();
@@ -653,16 +794,27 @@ public class GameController {
         // TODO enable productions
     }
 
+    /**
+     * Method to show warehouse buttons
+     */
     public void showWarehouseButtons() {
         btnConfirm.setVisible(true);
         btnCancel.setVisible(true);
     }
 
+    /**
+     * Method to hide warehouse buttons
+     */
     public void hideWarehouseButtons() {
         btnConfirm.setVisible(false);
         btnCancel.setVisible(false);
     }
 
+    /**
+     * Method to move faith marker
+     * @param player the displayed player
+     * @param position the faith marker's position
+     */
     public void moveFaithMarker(String player, int position) {
         if (!player.equals(currentDisplayedPlayer)) {
             return;
@@ -670,6 +822,10 @@ public class GameController {
         faithMarkerController.moveFaithMarker(position);
     }
 
+    /**
+     * Method to move Lorenzo's faith marker
+     * @param position the Lorenzo's faith marker position
+     */
     public void moveLorenzoFaithMarker(int position) {
         lorenzoIlMagnificoFaithMarkerController.moveFaithMarker(position);
         if (gui.getReducedModel().getReducedGame().getNumberOfPlayers() == 1) {
@@ -677,6 +833,9 @@ public class GameController {
         }
     }
 
+    /**
+     * Shows alert game is starting
+     */
     public void showAfterGameStart() {
         hideAlert();
         setPlayers();
@@ -686,6 +845,9 @@ public class GameController {
         showDiscardExcessLeaderCardMenu();
     }
 
+    /**
+     * Shows alert after end turn
+     */
     public void showAfterEndTurn() {
         hideAlert();
         mainAlert = new Alert(Alert.AlertType.INFORMATION);
@@ -705,6 +867,9 @@ public class GameController {
         }
     }
 
+    /**
+     * Shows alert when the game is ended
+     */
     public void gameHasEnded() {
         hideAlert();
         mainAlert = new Alert(Alert.AlertType.INFORMATION);
@@ -718,6 +883,9 @@ public class GameController {
         System.exit(0);
     }
 
+    /**
+     * Shows alert when the game is ended (single player)
+     */
     public void gameHasEndedSinglePlayer() {
         hideAlert();
         mainAlert = new Alert(Alert.AlertType.INFORMATION);
@@ -732,6 +900,9 @@ public class GameController {
         System.exit(0);
     }
 
+    /**
+     * Allows to force a disconnection
+     */
     public void forceDisconnection() {
         hideAlert();
         mainAlert = new Alert(Alert.AlertType.INFORMATION);
@@ -741,6 +912,10 @@ public class GameController {
         System.exit(0);
     }
 
+    /**
+     * Method to establish winner in single player
+     * @return if Lorenzo has won or not
+     */
     private int establishWinner() {
         ReducedDashboard reducedDashboard = gui.getReducedModel().getReducedPlayer().getDashboard();
         ReducedGameBoard reducedGameBoard = gui.getReducedModel().getReducedGameBoard();
@@ -751,10 +926,20 @@ public class GameController {
         }
     }
 
+    /**
+     * Check if Lorenzo has finished the faith track
+     * @param reducedDashboard the reduced dashboard
+     * @return true if Lorenzo has finished the faith track, false otherwise
+     */
     private boolean checkFTEnd(ReducedDashboard reducedDashboard) {
         return reducedDashboard.getLorenzoIlMagnificoPosition() == GameSettings.FAITH_TRACK_LENGTH - 1;
     }
 
+    /**
+     * Check if Lorenzo has finished a column of development cards
+     * @param reducedGameBoard the reduced gameboard
+     * @return true if Lorenzo has finished a column of development cards, false otherwise
+     */
     private boolean checkDvGridEnd(ReducedGameBoard reducedGameBoard) {
         for (int i = 8; i < 12; i++) {
             if (reducedGameBoard.getGrid().get(i).isEmpty()) {
@@ -764,7 +949,9 @@ public class GameController {
         return false;
     }
 
-
+    /**
+     * Shows the discard excess leader card menu
+     */
     public void showDiscardExcessLeaderCardMenu() {
         ReducedGame rg = gui.getReducedModel().getReducedGame();
         if (!rg.getClientPlayer().equals(rg.getCurrentPlayer())) {
@@ -789,6 +976,9 @@ public class GameController {
         }
     }
 
+    /**
+     * Method to get the initial resources
+     */
     public void getInitialResources() {
         ReducedGame reducedGame = gui.getReducedModel().getReducedGame();
         int owed = getOwed(reducedGame.getFirstTurns());
@@ -831,10 +1021,18 @@ public class GameController {
         }
     }
 
+    /**
+     * Method to send the end turn message
+     */
     public void onEndTurnPressed() {
         gui.send(new EndTurnGameMessage());
     }
 
+    /**
+     * Methods to set the victory points text
+     * @param player the displayed player
+     * @param text the victory points
+     */
     public void setPointsText(String player, String text) {
         if (!player.equals(currentDisplayedPlayer)) {
             return;
@@ -842,6 +1040,9 @@ public class GameController {
         pointsText.setText(text);
     }
 
+    /**
+     * Method to show hand
+     */
     public void onHandPressed(InputEvent event) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/hand.fxml"));
         Parent root = null;
@@ -877,6 +1078,11 @@ public class GameController {
         vaticanReports.forEach(p -> loadVaticanReportImage(vaticanReports.indexOf(p), p.second));
     }
 
+    /**
+     * Method to show the image of a vatican report
+     * @param i the position
+     * @param state the state
+     */
     private void loadVaticanReportImage(int i, int state) {
         ImageView vaticanReportIW = vaticanReportTokens.get(i);
         vaticanReportIW.setImage(null);
@@ -898,6 +1104,9 @@ public class GameController {
         vaticanReportIW.setFitWidth(66);
     }
 
+    /**
+     * Method to open the dashboard production window
+     */
     @FXML
     private void dashboardProductionClick(MouseEvent event) {
         try {
