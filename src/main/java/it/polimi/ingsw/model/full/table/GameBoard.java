@@ -31,7 +31,6 @@ public class GameBoard {
      * The constructor for a GameBoard object.
      * It initializes the three decks from the game settings and it creates the market and the development card grid.
      */
-
     public GameBoard() {
         discardDeck = new Deck();
         developmentDeck = new Deck();
@@ -43,8 +42,8 @@ public class GameBoard {
     /**
      * The init method for the class. It shuffles the development cards and the leader cards decks.
      * It also resets the market and it resets and fills the development card grid.
+     * @param gameSettings the game settings of the game.
      */
-
     public void reset(GameSettings gameSettings) {
         developmentDeck.reset(Arrays.asList(gameSettings.getDevelopmentCards()));
         leaderDeck.reset(Arrays.asList(gameSettings.getLeaderCards()));
@@ -63,7 +62,6 @@ public class GameBoard {
      *
      * @param c the card to be discarded.
      */
-
     public void discardCard(Card c) {
         LeaderCard leaderCard = (LeaderCard) c;
         discardDeck.add(leaderCard);
@@ -74,7 +72,6 @@ public class GameBoard {
      *
      * @return the top card of the leader card deck.
      */
-
     public LeaderCard getLeaderCard() {
         LeaderCard card = (LeaderCard) leaderDeck.getCard();
         return card;
@@ -83,7 +80,6 @@ public class GameBoard {
     /**
      * @see Market#getResources(int move, Player p)
      */
-
     public ArrayList<Resource> getResourcesFromMarket(int move, Player p) {
         return market.getResources(move, p);
     }
@@ -93,7 +89,6 @@ public class GameBoard {
      *
      * @return a copy of the discard deck.
      */
-
     public Deck getDiscardDeck() {
         return discardDeck.copy();
     }
@@ -103,7 +98,6 @@ public class GameBoard {
      *
      * @return a copy of the development cards deck.
      */
-
     public Deck getDevelopmentDeck() {
         return developmentDeck.copy();
     }
@@ -113,7 +107,6 @@ public class GameBoard {
      *
      * @return a copy of the leader cards deck.
      */
-
     public Deck getLeaderDeck() {
         return leaderDeck.copy();
     }
@@ -123,7 +116,6 @@ public class GameBoard {
      *
      * @return the market.
      */
-
     public Market getMarket() {
         return market;
     }
@@ -133,7 +125,6 @@ public class GameBoard {
      *
      * @return the development cards grid.
      */
-
     public DevelopmentCardGrid getDevelopmentCardGrid() {
         return developmentCardGrid;
     }

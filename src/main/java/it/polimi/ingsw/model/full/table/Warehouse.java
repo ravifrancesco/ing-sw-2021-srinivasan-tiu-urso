@@ -5,9 +5,12 @@ import it.polimi.ingsw.model.observerPattern.observables.WarehouseObservable;
 import java.util.*;
 import java.util.stream.IntStream;
 
-// TODO documentation
-
 /**
+ * The class represents a warehouse. Its state includes:
+ * The locker.
+ * The deposit.
+ * The extra deposits.
+ * The dashboard.
  * The class is observable and notifies the observers on a change of the state.
  */
 public class Warehouse extends WarehouseObservable {
@@ -27,6 +30,7 @@ public class Warehouse extends WarehouseObservable {
      * The constructor for the class.
      * Allocates space for the locker and the deposit (both are Resource-Integer HashMaps), and calls the clear
      * (initialization) method.
+     * @param dashboard the dashboard which warehouse belongs to.
      */
     public Warehouse(Dashboard dashboard) {
         locker = new HashMap<>();
@@ -36,6 +40,9 @@ public class Warehouse extends WarehouseObservable {
         reset();
     }
 
+    /**
+     * Reset method for the class. It clears the deposit, the locker and creates the extra deposits.
+     */
     public void reset() {
         this.clearDeposit();
         this.clearLocker();
@@ -65,7 +72,8 @@ public class Warehouse extends WarehouseObservable {
      *
      * @param resToAdd resource to store
      * @param pos      deposit position in which the resource is stored
-     * @throws IllegalStateException if resource is stored in an illegal position
+     * @throws IllegalStateException    if resource is stored in an illegal position
+     * @throws IllegalArgumentException if the given position is already full
      */
     public void storeInDeposit(Resource resToAdd, int pos) throws IllegalStateException, IllegalArgumentException {
         Resource[] newDeposit = new Resource[MAX_DEPOSIT_SLOTS];
@@ -122,6 +130,7 @@ public class Warehouse extends WarehouseObservable {
      * Stores resources in the locker, with no checks due to the fact that the locker has no restrictions.
      *
      * @param resToAdd ArrayList with the resources to add.
+     * @param qty the amount of resources to add.
      */
     public void storeInLocker(Resource resToAdd, int qty) {
         locker.put(resToAdd, locker.get(resToAdd) + qty);
@@ -157,6 +166,7 @@ public class Warehouse extends WarehouseObservable {
      * @param extraDepositLeaderCardPos position of the extra deposit (leader card)
      * @param r                         resource to be stored
      * @param pos                       position where to store the resource
+     * @throws IllegalArgumentException if the given position is already full
      */
     public void storeInExtraDeposit(int extraDepositLeaderCardPos, Resource r, int pos) throws IllegalArgumentException {
         if (extraDeposits[extraDepositLeaderCardPos][pos] != null) {
@@ -330,18 +340,34 @@ public class Warehouse extends WarehouseObservable {
         notify(this);
     }
 
+    /**
+     * Getter for the deposit.
+     * @return the deposit.
+     */
     public Resource[] getDeposit() {
         return deposit;
     }
 
+    /**
+     * Getter for the locker.
+     * @return the locker.
+     */
     public Map<Resource, Integer> getLocker() {
         return locker;
     }
 
+    /**
+     * Getter for the extra deposits.
+     * @return the extra deposits.
+     */
     public Resource[][] getExtraDeposits() {
         return extraDeposits;
     }
 
+    /**
+     * Getter for the dashboard.
+     * @return the dashboard.
+     */
     public Dashboard getDashboard() {
         return dashboard;
     }

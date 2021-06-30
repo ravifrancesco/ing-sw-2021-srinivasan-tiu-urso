@@ -18,10 +18,10 @@ import java.util.List;
  * <li> The player's hand.
  * <li> The player's active discounts.
  * <li> The player's active WMRs.
+ * <li> The player's nickname.
  * <li> The player's victory points.
  * </ul>
  * <p>
- * TODO testing
  * <p>
  * The class is observable and notifies the observers on a change of the state.
  */
@@ -36,7 +36,9 @@ public class Player extends PlayerObservable {
     private final ArrayList<DevelopmentCardDiscount> activeDiscounts;
 
     private final ArrayList<Resource> activatedWMR;
-    String nickname;
+
+    private String nickname;
+
     private int victoryPoints;
 
     // WMR = white marble resource
@@ -44,7 +46,8 @@ public class Player extends PlayerObservable {
     /**
      * Constructor of the Player class.
      *
-     * @param gameSettings the settings for the current game.
+     * @param gameSettings  the settings for the current game.
+     * @param nickname      the player's nickname.
      */
     public Player(GameSettings gameSettings, String nickname) {
         this.dashboard = new Dashboard(gameSettings, this);
@@ -166,6 +169,7 @@ public class Player extends PlayerObservable {
      * Adds a new WhiteMarbleResource as a player's special ability.
      *
      * @param wmr the WhiteMarbleResource being added
+     * @throws IllegalStateException if too many special abilities are activated.
      */
     public void addWMR(WhiteMarbleResource wmr) {
         if (activeDiscounts.size() + activatedWMR.size() >= NUM_PLAYABLE_LEADER_CARDS) {
@@ -221,10 +225,19 @@ public class Player extends PlayerObservable {
         return victoryPoints;
     }
 
+    /**
+     * Getter for the hand size.
+     * @return the hands size.
+     */
     public int getHandSize() {
         return this.hand.getHandSize();
     }
 
+    /**
+     * Getter for a card from the hand.
+     * @param c the index of the card in the hand.
+     * @return the leader card from the hand in c position.
+     */
     public LeaderCard getCard(int c) {
         return this.hand.getCard(c);
     }
@@ -232,7 +245,7 @@ public class Player extends PlayerObservable {
     /**
      * Adds a card to the hand
      *
-     * @param lc
+     * @param lc the leader card to add.
      */
     public void addCard(LeaderCard lc) {
         this.hand.addCard(lc);
@@ -249,10 +262,18 @@ public class Player extends PlayerObservable {
         notify(this);
     }
 
+    /**
+     * Getter for the hand.
+     * @return the player's hand.
+     */
     public List<LeaderCard> getHand() {
         return hand.getAllCards();
     }
 
+    /**
+     * Getter for the nickname.
+     * @return the player's nickname.
+     */
     public String getNickname() {
         return nickname;
     }

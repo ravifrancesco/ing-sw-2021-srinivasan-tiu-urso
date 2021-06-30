@@ -7,6 +7,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.stream.IntStream;
 
+/**
+ * This class represents the only Market in the game.
+ * <p>
+ * The class is observable and notifies the observers on a change of the state.
+ */
+
 public class Market extends MarketObservable {
     public static final int gridRowLength = 3;
 
@@ -85,6 +91,7 @@ public class Market extends MarketObservable {
     }
 
     /**
+     * Getter for the free marble.
      * @return the current free marble.
      */
     public Marble getFreeMarble() {
@@ -188,6 +195,10 @@ public class Market extends MarketObservable {
         }
     }
 
+    /**
+     * Getter for the marbles grid.
+     * @return the marbles grid.
+     */
     public Marble[] getMarblesGrid() {
         return marblesGrid;
     }

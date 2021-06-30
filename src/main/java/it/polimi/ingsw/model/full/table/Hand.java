@@ -67,6 +67,10 @@ public class Hand {
         return cards.size();
     }
 
+    /**
+     * Getter for the hand's cards.
+     * @return a list of hand's cards.
+     */
     public List<LeaderCard> getAllCards() {
         return cards;
     }

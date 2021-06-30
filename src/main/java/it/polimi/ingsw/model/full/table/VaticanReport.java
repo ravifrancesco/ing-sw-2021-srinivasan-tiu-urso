@@ -95,6 +95,10 @@ public class VaticanReport implements Serializable {
         return new VaticanReport(start, end, victoryPoints);
     }
 
+    /**
+     * To string method of the class.
+     * @return a string representation of the object.
+     */
     @Override
     public String toString() {
 
@@ -108,14 +112,26 @@ public class VaticanReport implements Serializable {
 
     }
 
+    /**
+     * Getter for start.
+     * @return the start index of the vatican report.
+     */
     public int getStart() {
         return start;
     }
 
+    /**
+     * Getter for the end.
+     * @return the end index of the vatican report.
+     */
     public int getEnd() {
         return end;
     }
 
+    /**
+     * Getter for the victory points.
+     * @return the victory points given by the vatican report.
+     */
     public int getVictoryPoints() {
         return victoryPoints;
     }
