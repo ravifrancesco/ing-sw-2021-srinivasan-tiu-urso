@@ -50,10 +50,16 @@ public class BuyDevCardController {
     @FXML
     private Button cancelButton;
 
+    /**
+     * Initialize method of the class
+     */
     public void initialize() {
         hideDiscounts();
     }
 
+    /**
+     * Method to hide discounts
+     */
     private void hideDiscounts() {
         discountHbox.setVisible(false);
         resourceOneIW.setVisible(false);
@@ -62,6 +68,13 @@ public class BuyDevCardController {
         resourceTwoLabel.setVisible(false);
     }
 
+    /**
+     * Setter for the parameters
+     * @param gui the GUI
+     * @param image the image to be displayed
+     * @param row the row of the card
+     * @param col the col of the card
+     */
     public void setParameters(GUI gui, Image image, int row, int col) {
         this.gui = gui;
         loadCardImage(image);
@@ -69,6 +82,9 @@ public class BuyDevCardController {
         displayDiscounts();
     }
 
+    /**
+     * Method to handle the buy click
+     */
     public void onBuyPressed(MouseEvent event) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/choose_resource.fxml"));
@@ -89,21 +105,35 @@ public class BuyDevCardController {
         }
     }
 
+    /**
+     * Method to close the window
+     */
     public void closeWindow() {
         Stage stage = (Stage) cancelButton.getScene().getWindow();
         stage.close();
     }
 
+    /**
+     * Method to load the card image
+     * @param image the image to be loaded
+     */
     private void loadCardImage(Image image) {
         cardImageView.setImage(image);
         cardImageView.setFitWidth(309);
         cardImageView.setFitHeight(466);
     }
 
+    /**
+     * Getter for the position
+     * @return a pair that represents the position of the card
+     */
     public Pair<Integer, Integer> getPosition() {
         return position;
     }
 
+    /**
+     * Method to display the active discounts of the player
+     */
     private void displayDiscounts() {
         List<LeaderCard> leaderCards = gui.getReducedModel().getReducedGame()
                 .getReducedPlayer(gui.getReducedModel().getReducedPlayer().getNickname())
@@ -120,6 +150,12 @@ public class BuyDevCardController {
         }
     }
 
+    /**
+     * Method to display the resource of a discount
+     * @param iw the imageview
+     * @param lb the label
+     * @param r the displayed resource
+     */
     private void displayResource(ImageView iw, Label lb, Resource r) {
         File file = new File("src/main/resources/png/resources/" + r.name().toLowerCase() + ".png");
         Image image = new Image(file.toURI().toString());

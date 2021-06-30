@@ -47,16 +47,26 @@ public class ChooseBonusResourcesController {
 
     private GUI gui;
 
+    /**
+     * Initialized method of the class
+     */
     public void initialize() {
         initializeResources();
         initializeSlots();
     }
 
+    /**
+     * Setter for the GUI
+     * @param gui the GUI
+     */
     public void setGui(GUI gui) {
         this.gui = gui;
         setDeposit();
     }
 
+    /**
+     * Method to initialize the resources
+     */
     private void initializeResources() {
         resources = Arrays.asList(goldIW, servantIW, shieldIW, stoneIW);
         goldIW.setOnMouseClicked(mouseEvent -> {
@@ -82,11 +92,18 @@ public class ChooseBonusResourcesController {
         resources.forEach(this::setBrightnessLow);
     }
 
+    /**
+     * Method to initialize the slots
+     */
     private void initializeSlots() {
         slots = Arrays.asList(slot0IW, slot1IW, slot2IW, slot3IW, slot4IW, slot5IW);
         slots.forEach(iw -> iw.setOnMouseClicked(event -> clickSlot(slots.indexOf(iw))));
     }
 
+    /**
+     * Method to handle the click on a slot
+     * @param index the index of the selected slot
+     */
     private void clickSlot(int index) {
         if (selectedResource != null) {
             selectedIndex = index;
@@ -99,24 +116,39 @@ public class ChooseBonusResourcesController {
         }
     }
 
-
+    /**
+     * Method to load the resource image
+     * @param resource the resource to be displayed
+     * @return an image that represents the resource
+     */
     private Image loadResourceImage(String resource) {
         File file = new File("src/main/resources/png/resources/" + resource + ".png");
         return new Image(file.toURI().toString());
     }
 
+    /**
+     * Method to make an image darker
+     * @param imageView the image to change
+     */
     private void setBrightnessLow(ImageView imageView) {
         ColorAdjust colorAdjust = new ColorAdjust();
         colorAdjust.setBrightness(-0.5);
         imageView.setEffect(colorAdjust);
     }
 
+    /**
+     * Method to make an image lighter
+     * @param imageView the image to change
+     */
     private void setBrightnessHigh(ImageView imageView) {
         ColorAdjust colorAdjust = new ColorAdjust();
         colorAdjust.setBrightness(0);
         imageView.setEffect(colorAdjust);
     }
 
+    /**
+     * Setter for the deposit
+     */
     private void setDeposit() {
         ReducedDashboard rd = gui.getReducedModel().getReducedPlayer().getDashboard();
         Resource[] deposit = rd.getDeposit();
@@ -129,6 +161,9 @@ public class ChooseBonusResourcesController {
         });
     }
 
+    /**
+     * Method to handle confirm click
+     */
     public void handleConfirmClick(InputEvent event) {
         if (selectedResource == null || selectedIndex == null) {
             gui.printErrorMessage("Select a resource and a slot!");

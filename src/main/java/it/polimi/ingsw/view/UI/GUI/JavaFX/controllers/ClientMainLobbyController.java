@@ -30,11 +30,17 @@ public class ClientMainLobbyController {
     private VBox listOfServersVBox;
     private int selectedNode = -1;
 
+    /**
+     * Method to handle refresh click
+     */
     @FXML
     public void handleRefreshClick() {
         gui.send(new AskGameLobbies());
     }
 
+    /**
+     * Method to handle join click
+     */
     @FXML
     public void handleJoinClick() {
         if (selectedGame == null) {
@@ -45,6 +51,9 @@ public class ClientMainLobbyController {
         }
     }
 
+    /**
+     * Method to handle create game click
+     */
     @FXML
     public void handleCreateGameClick() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -72,11 +81,18 @@ public class ClientMainLobbyController {
         }
     }
 
+    /**
+     * Method to handle quit click
+     */
     @FXML
     public void handleQuitClick() {
         System.exit(0);
     }
 
+    /**
+     * Method to update the server list
+     * @param gameLobbies the list of the game lobbies
+     */
     public void updateServerList(ArrayList<GameLobbyDetails> gameLobbies) {
 
         Platform.runLater(
@@ -120,10 +136,18 @@ public class ClientMainLobbyController {
 
     }
 
+    /**
+     * Setter for the GUI
+     * @param gui the GUI
+     */
     public void setGui(GUI gui) {
         this.gui = gui;
     }
 
+    /**
+     * Getter for the Scene
+     * @return the scene
+     */
     public Scene getScene() {
         return listOfServersVBox.getScene();
     }
