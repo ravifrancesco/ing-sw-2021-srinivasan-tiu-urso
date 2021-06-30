@@ -16,13 +16,16 @@ import java.io.IOException;
 
 public class ServerChoiceController {
 
-    GUI gui;
+    private GUI gui;
 
     @FXML
     private TextField ipField;
     @FXML
     private TextField portField;
 
+    /**
+     * Method to handle connect click event
+     */
     @FXML
     private void handleConnectClick(InputEvent event) {
         if (!ipField.getText().equals("") && !portField.getText().equals("")) {
@@ -40,12 +43,18 @@ public class ServerChoiceController {
         }
     }
 
+    /**
+     * Method to handle offline click event
+     */
     @FXML
     private void handleOfflineClick(InputEvent event) {
         new OfflineClientVirtualView(gui, "local_host");
         gui.enterGamePhase(true, true);
     }
 
+    /**
+     * Method to open Nickname Window
+     */
     private void openNicknameWindow(InputEvent event) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/nickname_choice.fxml"));
@@ -62,10 +71,18 @@ public class ServerChoiceController {
         }
     }
 
+    /**
+     * Getter for scene
+     * @return the scene
+     */
     public Scene getScene() {
         return ipField.getScene();
     }
 
+    /**
+     * Setter for the GUI
+     * @param gui the GUI
+     */
     public void setGui(GUI gui) {
         this.gui = gui;
     }

@@ -60,6 +60,9 @@ public class DevelopmentProductionController {
     @FXML
     private Button btnCanc;
 
+    /**
+     * Initialize method of the class
+     */
     @FXML
     public void initialize() {
         depositSlots = new Slot[NUM_SHELVES];
@@ -97,54 +100,81 @@ public class DevelopmentProductionController {
 
     }
 
+    /**
+     * Method to handle add of gold
+     */
     @FXML
     private void handleAddGold(InputEvent event) {
         int number = Math.min(Integer.parseInt(labelGold.getText()) + 1, maxLockerResources[0]);
         labelGold.setText(Integer.toString(number));
     }
 
+    /**
+     * Method to handle sub of gold
+     */
     @FXML
     private void handleSubGold(InputEvent event) {
         int number = Math.max(Integer.parseInt(labelGold.getText()) - 1, 0);
         labelGold.setText(Integer.toString(number));
     }
 
+    /**
+     * Method to handle add of shield
+     */
     @FXML
     private void handleAddShield(InputEvent event) {
         int number = Math.min(Integer.parseInt(labelShield.getText()) + 1, maxLockerResources[1]);
         labelShield.setText(Integer.toString(number));
     }
 
+    /**
+     * Method to handle sub of shield
+     */
     @FXML
     private void handleSubShield(InputEvent event) {
         int number = Math.max(Integer.parseInt(labelShield.getText()) - 1, 0);
         labelShield.setText(Integer.toString(number));
     }
 
+    /**
+     * Method to handle add of stone
+     */
     @FXML
     private void handleAddStone(InputEvent event) {
         int number = Math.min(Integer.parseInt(labelStone.getText()) + 1, maxLockerResources[2]);
         labelStone.setText(Integer.toString(number));
     }
 
+    /**
+     * Method to handle sub of stone
+     */
     @FXML
     private void handleSubStone(InputEvent event) {
         int number = Math.max(Integer.parseInt(labelStone.getText()) - 1, 0);
         labelStone.setText(Integer.toString(number));
     }
 
+    /**
+     * Method to handle add of servant
+     */
     @FXML
     private void handleAddServant(InputEvent event) {
         int number = Math.min(Integer.parseInt(labelServant.getText()) + 1, maxLockerResources[3]);
         labelServant.setText(Integer.toString(number));
     }
 
+    /**
+     * Method to handle sub of servant
+     */
     @FXML
     private void handleSubServant(InputEvent event) {
         int number = Math.max(Integer.parseInt(labelServant.getText()) - 1, 0);
         labelServant.setText(Integer.toString(number));
     }
 
+    /**
+     * Setter for the resources
+     */
     public void setResources() {
         ReducedDashboard reducedDashboard = gui.getReducedModel().getReducedPlayer().getDashboard();
         Resource[] deposit = reducedDashboard.getDeposit();
@@ -170,6 +200,11 @@ public class DevelopmentProductionController {
         }
     }
 
+    /**
+     * Method to update the max amount of each resource in locker
+     * @param resource the resource
+     * @param quantity the resource's maximum
+     */
     private void updateLockerMaximum(Resource resource, int quantity) {
         switch (resource) {
             case GOLD -> maxLockerResources[0] = quantity;
@@ -179,6 +214,12 @@ public class DevelopmentProductionController {
         }
     }
 
+    /**
+     * Method to create a selectable resource in deposit
+     * @param resource the resource
+     * @param pos the position
+     * @return an imageview related to the resource
+     */
     private ImageView createSelectableResourceDeposit(Resource resource, int pos) {
         String resourceName = "";
         switch (resource) {
@@ -198,6 +239,11 @@ public class DevelopmentProductionController {
         return imageView;
     }
 
+    /**
+     * Method to handle a click of an imageview's resource
+     * @param imageView the imageview
+     * @param pos the position of the imageview
+     */
     private void clickedDepositResource(ImageView imageView, int pos) {
         ColorAdjust colorAdjust = new ColorAdjust();
         if (!selectedDeposit[pos]) {
@@ -210,6 +256,12 @@ public class DevelopmentProductionController {
         selectedDeposit[pos] = !selectedDeposit[pos];
     }
 
+    /**
+     * Method to create a selectable resource in extra deposit
+     * @param resource the resource
+     * @param pos the position
+     * @return an imageview related to the resource
+     */
     private ImageView createSelectableResourceExtraDeposit(Resource resource, int pos) {
         String resourceName = "";
         switch (resource) {
@@ -229,6 +281,11 @@ public class DevelopmentProductionController {
         return imageView;
     }
 
+    /**
+     * Method to handle a click of an imageview's resource in extra deposit
+     * @param imageView the imageview
+     * @param pos the position of the imageview
+     */
     private void clickedExtraDepositResource(ImageView imageView, int pos) {
         ColorAdjust colorAdjust = new ColorAdjust();
         if (!selectedExtraDeposit[pos]) {
@@ -241,6 +298,9 @@ public class DevelopmentProductionController {
         selectedExtraDeposit[pos] = !selectedExtraDeposit[pos];
     }
 
+    /**
+     * Method to handle the click on confirm button
+     */
     @FXML
     private void clickedOkBtn(MouseEvent event) {
         IntStream.range(0, selectedDeposit.length).filter(i -> selectedDeposit[i]).forEach(i -> resourceContainer.addDepositSelectedResource(i));
@@ -264,16 +324,27 @@ public class DevelopmentProductionController {
         stage.close();
     }
 
+    /**
+     * Method to handle the click on cancel button
+     */
     @FXML
     private void clickedCancBtn(MouseEvent event) {
         Stage stage = (Stage) btnCanc.getScene().getWindow();
         stage.close();
     }
 
+    /**
+     * Setter for the GUI
+     * @param gui the GUI
+     */
     public void setGui(GUI gui) {
         this.gui = gui;
     }
 
+    /**
+     * Setter for the card index
+     * @param cardIndex the index of the development card
+     */
     public void setCardIndex(int cardIndex) {
         this.cardIndex = cardIndex;
     }

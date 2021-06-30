@@ -36,11 +36,21 @@ public class ResourceController {
 
     private int supplyPos;
 
+    /**
+     * Method to assign resources slots
+     * @param slots the deposit slots
+     * @param leaderSlots the leader slots
+     */
     public void assignSlots(Slot[] slots, ExtraDepositSlot[] leaderSlots) {
         this.slots = slots;
         this.leaderSlots = leaderSlots;
     }
 
+    /**
+     * Method to create an item
+     * @param resourceType the type of resource
+     * @param pos the position of the resource
+     */
     public void createItem(Resource resourceType, int pos) {
         String name = "";
         int newPos;
@@ -74,6 +84,11 @@ public class ResourceController {
         supplyPos = -1;
     }
 
+    /**
+     * Method to create a supply item
+     * @param resourceType the type of resource
+     * @param pos the position of the resource in supply
+     */
     public void createSupplyItem(Resource resourceType, int pos) {
         String name = "";
         this.resourceType = resourceType;
@@ -98,32 +113,57 @@ public class ResourceController {
         supplyPos = pos;
     }
 
+    /**
+     * Set disable
+     */
     public void setDisable() {
         item.setDisable(true);
     }
 
+    /**
+     * Set enable
+     */
     public void setEnable() {
         item.setDisable(false);
     }
 
+    /**
+     * Setter for the GUI
+     * @param gui the GUI
+     */
     public void setGui(GUI gui) {
         this.gui = gui;
     }
 
+    /**
+     * Setter for the x of imageviev
+     * @param x the x coordinate
+     */
     public void setX(double x) {
         this.x = x;
         item.setX(this.x);
     }
 
+    /**
+     * Setter for the y of imageviev
+     * @param y the y coordinate
+     */
     public void setY(double y) {
         this.y = y;
         item.setY(this.y);
     }
 
+    /**
+     * Getter for the item
+     * @return the imageview of the resource
+     */
     public ImageView getItem() {
         return this.item;
     }
 
+    /**
+     * Method to handle pressed event on a resource
+     */
     @FXML
     public void pressed(MouseEvent event) {
         ColorAdjust colorAdjust = new ColorAdjust();
@@ -131,11 +171,17 @@ public class ResourceController {
         item.setEffect(colorAdjust);
     }
 
+    /**
+     * Method to handle dragged event on a resource
+     */
     private void dragged(MouseEvent event) {
         item.setX(event.getX() - item.getFitWidth() / 2);
         item.setY(event.getY() - item.getFitHeight() / 2);
     }
 
+    /**
+     * Method to handle released event on a resource
+     */
     private void released(MouseEvent event) {
         ColorAdjust colorAdjust = new ColorAdjust();
         colorAdjust.setBrightness(0);
@@ -143,6 +189,9 @@ public class ResourceController {
         computePosition(event);
     }
 
+    /**
+     * Method to compute a position of a resource after releasing
+     */
     private void computePosition(MouseEvent event) {
         double x = event.getX();
         double y = event.getY();
@@ -210,6 +259,10 @@ public class ResourceController {
         setY(this.y);
     }
 
+    /**
+     * Getter for the resource type
+     * @return the resource
+     */
     public Resource getResourceType() {
         return resourceType;
     }

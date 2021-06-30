@@ -21,11 +21,11 @@ import java.util.Optional;
 
 public class ClientMainLobbyController {
 
-    String selectedGame = null;
+    private String selectedGame = null;
 
-    GUI gui;
-    Node[] nodes;
-    ServerItemController[] serverItemControllers;
+    private GUI gui;
+    private Node[] nodes;
+    private ServerItemController[] serverItemControllers;
     @FXML
     private VBox listOfServersVBox;
     private int selectedNode = -1;

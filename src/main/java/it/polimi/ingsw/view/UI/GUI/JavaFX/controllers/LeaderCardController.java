@@ -31,10 +31,19 @@ public class LeaderCardController {
 
     private int currentSlot;
 
+    /**
+     * Method to assign leader slots
+     * @param slots the leader slots
+     */
     public void assignSlots(Slot[] slots) {
         this.slots = slots;
     }
 
+    /**
+     * Method to create a item
+     * @param leaderCard the leader card related to the imageview
+     * @param slot the slot where the card is played
+     */
     public void createItem(LeaderCard leaderCard, int slot) {
         String name = "leader_card_" + leaderCard.getId() + ".png";
         File file = new File("src/main/resources/png/cards/leaderCards/" + name);
@@ -42,12 +51,6 @@ public class LeaderCardController {
         item = new ImageView(image);
         item.setFitWidth(slots[slot].getWidth());
         item.setFitHeight(slots[slot].getHeight());
-
-        // TODO
-
-        //item.setOnMousePressed(this::pressed);
-        //item.setOnMouseDragged(this::dragged);
-        //item.setOnMouseReleased(this::released);
 
         item.setX(slots[slot].getX());
         item.setY(slots[slot].getY());
@@ -57,20 +60,34 @@ public class LeaderCardController {
         this.leaderCard = leaderCard;
     }
 
+    /**
+     * Getter for the item
+     * @return the imageview of the card
+     */
     public ImageView getItem() {
         return this.item;
     }
 
+    /**
+     * Setter for the GUI
+     * @param gui the GUI
+     */
     public void setGui(GUI gui) {
         this.gui = gui;
     }
 
+    /**
+     * Method to make the imageview darker
+     */
     public void setDarker() {
         ColorAdjust colorAdjust = new ColorAdjust();
         colorAdjust.setBrightness(-0.5);
         item.setEffect(colorAdjust);
     }
 
+    /**
+     * Method to open ProductionPowerView
+     */
     public void openProductionPowerView(MouseEvent event) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/leader_production.fxml"));
@@ -91,6 +108,10 @@ public class LeaderCardController {
         }
     }
 
+    /**
+     * Getter for the leader card
+     * @return the leader card
+     */
     public LeaderCard getLeaderCard() {
         return leaderCard;
     }

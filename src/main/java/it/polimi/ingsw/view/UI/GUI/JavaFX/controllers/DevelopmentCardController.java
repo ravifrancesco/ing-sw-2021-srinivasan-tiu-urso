@@ -29,10 +29,19 @@ public class DevelopmentCardController {
 
     private int currentSlot;
 
+    /**
+     * Method to assign the development card slots
+     * @param slots the slots for the development cards
+     */
     public void assignSlots(Slot[] slots) {
         this.slots = slots;
     }
 
+    /**
+     * Method to create an item
+     * @param developmentCard the development card to show
+     * @param slot the slot where the card is placed
+     */
     public void createItem(DevelopmentCard developmentCard, int slot) {
         String name = "dev_card_" + developmentCard.getId() + ".png";
         File file = new File("src/main/resources/png/cards/devCards/" + name);
@@ -41,12 +50,6 @@ public class DevelopmentCardController {
         item.setFitWidth(slots[slot].getWidth());
         item.setFitHeight(slots[slot].getHeight());
 
-        // TODO
-
-        //item.setOnMousePressed(this::pressed);
-        //item.setOnMouseDragged(this::dragged);
-        //item.setOnMouseReleased(this::released);
-
         item.setX(slots[slot].getX());
         item.setY(slots[slot].getY());
 
@@ -54,20 +57,34 @@ public class DevelopmentCardController {
         currentSlot = slot;
     }
 
+    /**
+     * Getter for the item
+     * @return the item
+     */
     public ImageView getItem() {
         return this.item;
     }
 
+    /**
+     * Setter for the GUI
+     * @param gui the GUI
+     */
     public void setGui(GUI gui) {
         this.gui = gui;
     }
 
+    /**
+     * Method to set the card darker
+     */
     public void setDarker() {
         ColorAdjust colorAdjust = new ColorAdjust();
         colorAdjust.setBrightness(-0.5);
         item.setEffect(colorAdjust);
     }
 
+    /**
+     * Method to open ProductionPowerView
+     */
     public void openProductionPowerView(MouseEvent event) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/production_power.fxml"));

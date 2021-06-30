@@ -28,20 +28,20 @@ import java.util.stream.Collectors;
 public class BuyDevCardController {
 
     @FXML
-    ImageView cardImageView;
+    private ImageView cardImageView;
 
     @FXML
-    HBox discountHbox;
+    private HBox discountHbox;
 
     @FXML
-    ImageView resourceOneIW;
+    private ImageView resourceOneIW;
     @FXML
-    Label resourceOneLabel;
+    private Label resourceOneLabel;
 
     @FXML
-    ImageView resourceTwoIW;
+    private ImageView resourceTwoIW;
     @FXML
-    Label resourceTwoLabel;
+    private Label resourceTwoLabel;
 
     private GUI gui;
 
