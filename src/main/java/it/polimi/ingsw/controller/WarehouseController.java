@@ -16,15 +16,9 @@ public class WarehouseController {
      *
      * @param game represents the game which the controller belongs to.
      */
-
     public WarehouseController(Game game) {
         this.game = game;
     }
-
-    /**
-     * Setter for the current player.
-     * @param currentPlayer the current player of the game.
-     */
 
     /**
      * @see Controller#changeDeposit(String, Resource[])
@@ -92,7 +86,6 @@ public class WarehouseController {
     /**
      * @see Controller#storeFromSupplyInExtraDeposit(String, int, int, int)
      */
-
     public void storeFromSupplyInExtraDeposit(String nickname, int leaderCardPos, int from, int to) throws WrongTurnException, WrongMoveException, IllegalDepositStateException {
         if (!game.getCurrentPlayer().equals(nickname)) {
             throw new WrongTurnException("Not " + nickname + " turn");

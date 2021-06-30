@@ -18,7 +18,6 @@ public class LeaderCardController {
      *
      * @param game represents the game which the controller belongs to.
      */
-
     public LeaderCardController(Game game) {
         this.game = game;
     }
@@ -26,7 +25,6 @@ public class LeaderCardController {
     /**
      * @see Controller#discardExcessLeaderCards(String, int)
      */
-
     public void discardExcessLeaderCards(String nickname, int cardToDiscard) throws WrongTurnException, WrongMoveException, CardNotPlayableException {
         if (!game.getCurrentPlayer().equals(nickname)) {
             throw new WrongTurnException("Not " + nickname + " turn");
@@ -47,7 +45,9 @@ public class LeaderCardController {
         player.discardLeaderCard(cardToDiscard, gameboard);
     }
 
-
+    /**
+     * @see Controller#playLeaderCard(String, int)
+     */
     public void playLeaderCard(String nickname, int cardToPlay) throws WrongTurnException, CardNotPlayableException, WrongMoveException {
 
         if (!game.getCurrentPlayer().equals(nickname)) {
@@ -79,7 +79,6 @@ public class LeaderCardController {
     /**
      * @see Controller#discardLeaderCard(String, int)
      */
-
     public void discardLeaderCard(String nickname, int cardToDiscard) throws WrongTurnException, CardNotPlayableException {
         if (!game.getCurrentPlayer().equals(nickname)) {
             throw new WrongTurnException("Not " + nickname + " turn");

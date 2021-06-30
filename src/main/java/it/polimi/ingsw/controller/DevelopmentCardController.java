@@ -17,7 +17,6 @@ public class DevelopmentCardController {
      *
      * @param game represents the game which the controller belongs to.
      */
-
     public DevelopmentCardController(Game game) {
         this.game = game;
     }

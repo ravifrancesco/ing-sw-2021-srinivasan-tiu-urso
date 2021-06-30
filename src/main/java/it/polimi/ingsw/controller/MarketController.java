@@ -16,7 +16,6 @@ public class MarketController {
      *
      * @param game represents the game which the controller belongs to.
      */
-
     public MarketController(Game game) {
         this.game = game;
     }
@@ -24,7 +23,6 @@ public class MarketController {
     /**
      * @see Controller#getFromMarket(String, int, ArrayList)
      */
-
     public void getFromMarket(String nickname, int move, ArrayList<Resource> wmrs) throws WrongTurnException, WrongMoveException {
         if (!game.getCurrentPlayer().equals(nickname)) {
             throw new WrongTurnException("Not " + nickname + " turn");

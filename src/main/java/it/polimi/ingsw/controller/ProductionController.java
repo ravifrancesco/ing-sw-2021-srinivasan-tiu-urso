@@ -22,15 +22,13 @@ public class ProductionController {
      *
      * @param game represents the game which the controller belongs to.
      */
-
     public ProductionController(Game game) {
         this.game = game;
     }
 
     /**
-     * // @see ServerController#activateLeaderCardProduction(String, int, ResourceContainer, Map, Map)
+     * @see Controller#activateLeaderCardProductionPower(String, int, ResourceContainer, Map, Map)
      */
-
     public void activateLeaderCardProduction(String nickname, int cardToActivate, ResourceContainer resourcesToPayCost,
                                              Map<Resource, Integer> resourceRequiredOptional, Map<Resource, Integer> resourceProducedOptional) throws WrongTurnException, PowerNotActivatableException, WrongMoveException {
 
@@ -88,9 +86,8 @@ public class ProductionController {
     }
 
     /**
-     * // @see ServerController#activateDashboardProduction(String, ResourceContainer, Map, Map)
+     * @see Controller#activateDashboardProductionPower(String, ResourceContainer, Map, Map)
      */
-
     public void activateDashboardProduction(String nickname, ResourceContainer resourcesToPayCost,
                                             Map<Resource, Integer> resourceRequiredOptional, Map<Resource, Integer> resourceProducedOptional) throws WrongTurnException, PowerNotActivatableException, WrongMoveException {
 
@@ -146,7 +143,6 @@ public class ProductionController {
     /**
      * @see Controller#activateDevelopmentCardProductionPower(String, int, ResourceContainer, Map, Map)
      */
-
     public void activateDevelopmentCardProductionPower(String nickname, int cardToActivate, ResourceContainer resourcesToPayCost,
                                                        Map<Resource, Integer> resourceRequiredOptional, Map<Resource, Integer> resourceProducedOptional) throws WrongTurnException, PowerNotActivatableException, WrongMoveException {
 
