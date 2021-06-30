@@ -106,6 +106,7 @@ public class GameController {
     private List<ImageView> vaticanReportTokens;
     @FXML
     private Pane dashboardProductionPane;
+    private boolean enabledDashboardProduction;
 
     /**
      * Setter for the GUI
@@ -216,6 +217,7 @@ public class GameController {
         this.lorenzoPicIW.setVisible(false);
         this.tokenIW.setVisible(false);
         nicknameCombo.setVisible(false);
+        enabledDashboardProduction = true;
     }
 
     /**
@@ -725,6 +727,17 @@ public class GameController {
         IntStream.range(0, SIZE_SUPPLY)
                 .filter(i -> supplyControllers[i] != null)
                 .forEach(i -> supplyControllers[i].setDisable());
+
+        // TODO disable productions
+
+        Arrays.stream(developmentCardControllers).filter(Objects::nonNull)
+                .forEach(controller -> controller.getItem().setDisable(true));
+
+        Arrays.stream(leaderCardControllers).filter(Objects::nonNull)
+                .filter(controller -> controller.getLeaderCard().getSpecialAbility().getType() == SpecialAbilityType.PRODUCTION_POWER)
+                .forEach(controller -> controller.getItem().setDisable(true));
+
+        enabledDashboardProduction = false;
     }
 
     /**
@@ -750,8 +763,6 @@ public class GameController {
     public void setDisable() {
         setDisableNoDeposit();
         setDisableDeposit();
-
-        // TODO disable productions
     }
 
     /**
@@ -765,6 +776,17 @@ public class GameController {
         IntStream.range(0, SIZE_SUPPLY)
                 .filter(i -> supplyControllers[i] != null)
                 .forEach(i -> supplyControllers[i].setEnable());
+
+        // TODO enable productions
+
+        Arrays.stream(developmentCardControllers).filter(Objects::nonNull)
+                .forEach(controller -> controller.getItem().setDisable(false));
+
+        Arrays.stream(leaderCardControllers).filter(Objects::nonNull)
+                .filter(controller -> controller.getLeaderCard().getSpecialAbility().getType() == SpecialAbilityType.PRODUCTION_POWER)
+                .forEach(controller -> controller.getItem().setDisable(false));
+
+        enabledDashboardProduction = true;
     }
 
     /**
@@ -790,8 +812,6 @@ public class GameController {
     public void setEnable() {
         setEnableNoDeposit();
         setEnableDeposit();
-
-        // TODO enable productions
     }
 
     /**
@@ -1109,21 +1129,23 @@ public class GameController {
      */
     @FXML
     private void dashboardProductionClick(MouseEvent event) {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/dashboard_production.fxml"));
-            Parent root = fxmlLoader.load();
-            DashboardProductionController dashboardProductionController = fxmlLoader.getController();
-            dashboardProductionController.setGui(this.gui);
-            dashboardProductionController.setResources();
-            Stage stage = new Stage();
-            stage.setTitle("Select resources");
-            stage.setScene(new Scene(root, 500, 700));
-            stage.initModality(Modality.WINDOW_MODAL);
-            stage.initOwner(
-                    ((Node) event.getSource()).getScene().getWindow());
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (enabledDashboardProduction) {
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/dashboard_production.fxml"));
+                Parent root = fxmlLoader.load();
+                DashboardProductionController dashboardProductionController = fxmlLoader.getController();
+                dashboardProductionController.setGui(this.gui);
+                dashboardProductionController.setResources();
+                Stage stage = new Stage();
+                stage.setTitle("Select resources");
+                stage.setScene(new Scene(root, 500, 700));
+                stage.initModality(Modality.WINDOW_MODAL);
+                stage.initOwner(
+                        ((Node) event.getSource()).getScene().getWindow());
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
