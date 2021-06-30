@@ -8,7 +8,7 @@ import java.io.Serializable;
 public class DiscardDevCardBlue implements Token, Serializable {
 
     /**
-     * Discars two blue bannered cards of level 1. If no level 1 cards are available, level 2 cards will be discarded.
+     * Discards two blue bannered cards of level 1. If no level 1 cards are available, level 2 cards will be discarded.
      * If no level 2 cards are available, level 3 cards will be discarded. If no level 3 cards are available, Lorenzo
      * has won the game.
      */

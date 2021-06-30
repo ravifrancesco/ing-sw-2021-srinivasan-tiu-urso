@@ -17,17 +17,12 @@ import java.util.Map;
  * Class that represents the Server Controller of a game. The object memorizes the state of a Server Controller.
  * The state includes:
  * - The game.
- * - Number of players of the game.
- * - The current player.
- * - The first player.
- * - The number of first turns done.
+ *  * - Other controllers.
  * - The game settings.
- * - Other controllers.
  */
 
 public class Controller {
 
-    // TODO: check that illegal actions don't change the state
     private final Game game;
     private final ProductionController productionController;
 
@@ -36,7 +31,7 @@ public class Controller {
     private final MarketController marketController;
     private final LeaderCardController leaderCardController;
     private final DevelopmentCardController developmentCardController;
-    GameSettings gameSettings;
+    private GameSettings gameSettings;
 
     /**
      * Constructor for a Server Controller object. It creates the game and initializes all attributes.
@@ -44,7 +39,6 @@ public class Controller {
      * @param gameId          the unique id of the game.
      * @param numberOfPlayers the number of players of the game.
      */
-
     public Controller(String gameId, int numberOfPlayers) throws IllegalArgumentException {
         if (numberOfPlayers < 1 || numberOfPlayers > 4) throw new IllegalArgumentException();
         this.game = new Game(gameId, numberOfPlayers);
@@ -82,6 +76,11 @@ public class Controller {
         }
     }
 
+    /**
+     * Method to leave a game.
+     * @param nickname the nickname of the player who wants to leave the game.
+     * @throws InvalidNameException if the game does not contain the nickname given.
+     */
     public void leaveGame(String nickname) throws InvalidNameException {
         if (!game.getPlayers().containsKey(nickname)) {
             throw new InvalidNameException("Nickname " + nickname + " is not a part of the game");
@@ -95,6 +94,7 @@ public class Controller {
      * Adds the connection as the observer of all observable classes
      *
      * @param c observer
+     * @param connectedPlayers the connected players
      */
     public void addObservers(ServerVirtualView c, Map<String, ServerVirtualView> connectedPlayers) {
 
@@ -108,7 +108,11 @@ public class Controller {
         updatePlayerObservers(c, connectedPlayers);
     }
 
-    //TODO doc
+    /**
+     * Allows to update the player observers.
+     * @param c the observer
+     * @param connectedPlayers the connected players.
+     */
     public void updatePlayerObservers(ServerVirtualView c, Map<String, ServerVirtualView> connectedPlayers) {
         List<Player> players = new ArrayList<>(game.getPlayers().values());
         players.forEach(p -> p.addObserver(c));
@@ -126,7 +130,10 @@ public class Controller {
                 });
     }
 
-    // TODO doc
+    /**
+     * Allows to add the observer in local single-player
+     * @param offlineClientVirtualView the observer
+     */
     public void addObserversLocal(OfflineClientVirtualView offlineClientVirtualView) {
 
         game.addObserver(offlineClientVirtualView);
@@ -140,6 +147,10 @@ public class Controller {
 
     }
 
+    /**
+     * Allows to update the observers in local single-player
+     * @param offlineClientVirtualView the observer
+     */
     public void updatePlayerObserversLocal(OfflineClientVirtualView offlineClientVirtualView) {
         List<Player> players = new ArrayList<>(game.getPlayers().values());
         players.forEach(p -> p.addObserver(offlineClientVirtualView));
@@ -159,6 +170,7 @@ public class Controller {
      * Removes the connection from the observers of all observable classes
      *
      * @param c observer
+     * @param connectedPlayers the connected players
      */
     public void removeObservers(ServerVirtualView c, Map<String, ServerVirtualView> connectedPlayers) {
 
@@ -171,7 +183,11 @@ public class Controller {
         removePlayerObservers(c, connectedPlayers);
     }
 
-    //TODO doc
+    /**
+     * Allows to remove player observers
+     * @param c the observer
+     * @param connectedPlayers the connected players
+     */
     public void removePlayerObservers(ServerVirtualView c, Map<String, ServerVirtualView> connectedPlayers) {
         List<Player> players = new ArrayList<>(game.getPlayers().values());
         players.forEach(p -> p.removeObserver(c));
@@ -191,6 +207,8 @@ public class Controller {
 
     /**
      * Starts the game.
+     * @param nickname the player's nickname who started the game.
+     * @return 0 if the move is done, -1 if an error occurred.
      */
     public int startGame(String nickname) {
         try {
@@ -212,6 +230,7 @@ public class Controller {
      *
      * @param nickname      the nickname of the player who made the move.
      * @param cardToDiscard the index of the card to be discarded.
+     * @return 0 if the move is done, -1 if an error occurred.
      */
     public int discardExcessLeaderCards(String nickname, int cardToDiscard) {
         try {
@@ -229,6 +248,7 @@ public class Controller {
      * @param nickname the nickname of the player who made the move.
      * @param resource the resource chosen by the player.
      * @param position the position where to store the resource.
+     * @return 0 if the move is done, -1 if an error occurred.
      */
     public int getInitialResources(String nickname, Resource resource, int position) {
         String currentPlayer = game.getCurrentPlayer();
@@ -266,7 +286,6 @@ public class Controller {
      * @param d the dashboard of the player.
      * @return true if the initial phase is completed, false otherwise.
      */
-
     private boolean checkInitialPhaseCompletion(Dashboard d) {
         int storedResources = d.getDepositResourceQty();
         return switch (game.getFirstTurns()) {
@@ -282,6 +301,7 @@ public class Controller {
      *
      * @param nickname   the nickname of the player who made the move.
      * @param cardToPlay the index of the card to be played.
+     * @return 0 if the move is done, -1 if an error occurred.
      */
     public int playLeaderCard(String nickname, int cardToPlay) {
         try {
@@ -290,7 +310,7 @@ public class Controller {
         } catch (WrongTurnException | CardNotPlayableException | WrongMoveException e) {
             game.setError(e, nickname);
         }
-        return 1;
+        return -1;
     }
 
     /**
@@ -301,6 +321,7 @@ public class Controller {
      * @param resourcesToPayCost       the resources to pay for the resources required by the production power.
      * @param resourceRequiredOptional the resources required that replace the selectable resources (if present).
      * @param resourceProducedOptional the resources produced that replace the selectable resources (if present).
+     * @return 0 if the move is done, -1 if an error occurred.
      */
     public int activateLeaderCardProductionPower(String nickname, int cardToActivate, ResourceContainer resourcesToPayCost,
                                                  Map<Resource, Integer> resourceRequiredOptional, Map<Resource, Integer> resourceProducedOptional) {
@@ -320,6 +341,7 @@ public class Controller {
      *
      * @param nickname      the nickname of the player who made the move.
      * @param cardToDiscard the index of the card to be discarded.
+     * @return 0 if the move is done, -1 if an error occurred.
      */
     public int discardLeaderCard(String nickname, int cardToDiscard) {
         try {
@@ -339,6 +361,7 @@ public class Controller {
      * @param resourcesToPayCost       the resources to pay for the resources required by the production power.
      * @param resourceRequiredOptional the resources required that replace the selectable resources (if present).
      * @param resourceProducedOptional the resources produced that replace the selectable resources (if present).
+     * @return 0 if the move is done, -1 if an error occurred.
      */
     public int activateDashboardProductionPower(String nickname, ResourceContainer resourcesToPayCost,
                                                 Map<Resource, Integer> resourceRequiredOptional, Map<Resource, Integer> resourceProducedOptional) {
@@ -358,6 +381,7 @@ public class Controller {
      * @param nickname the nickname of the player who made the move.
      * @param move     the number that represents the selected row or column in the market.
      * @param wmrs     the collection of activated power related to the white marble resources.
+     * @return 0 if the move is done, -1 if an error occurred.
      */
     public int getFromMarket(String nickname, int move, ArrayList<Resource> wmrs) {
         try {
@@ -378,6 +402,7 @@ public class Controller {
      * @param column             the column of the grid selected.
      * @param resourcesToPayCost the resources to pay for the cost of the development card.
      * @param position           the index that represent where to place the card.
+     * @return 0 if the move is done, -1 if an error occurred.
      */
     public int buyDevelopmentCard(String nickname, int row, int column, ResourceContainer resourcesToPayCost, int position) {
         try {
@@ -397,6 +422,7 @@ public class Controller {
      * @param resourcesToPayCost       the resources to pay for the resources required by the production power.
      * @param resourceRequiredOptional the resources required that replace the selectable resources (if present).
      * @param resourceProducedOptional the resources produced that replace the selectable resources (if present).
+     * @return 0 if the move is done, -1 if an error occurred.
      */
     public int activateDevelopmentCardProductionPower(String nickname, int cardToActivate, ResourceContainer resourcesToPayCost,
                                                       Map<Resource, Integer> resourceRequiredOptional, Map<Resource, Integer> resourceProducedOptional) {
@@ -416,7 +442,7 @@ public class Controller {
      *
      * @param nickname the player nickname
      * @param deposit  the new deposit
-     * @return
+     * @return 0 if the move is done, -1 if an error occurred.
      */
     public int changeDeposit(String nickname, Resource[] deposit) {
         try {
@@ -435,7 +461,15 @@ public class Controller {
         game.getPlayers().get(nickname).getDashboard().getWarehouse().storeInLocker(Resource.SERVANT, 999);
     }
 
-    // TODO doc (paste from history)
+    /**
+     * Allows to move resources between the deposit and extra deposit.
+     *
+     * @param nickname        the nickname of the player who made the move.
+     * @param deposit      the new deposit with the moved resources
+     * @param extraDeposit the new extra deposit with the moved resources
+     * @param lcIndex         the index of the leader card where the extra deposit is
+     * @return 0 if the move is done, -1 if an error occurred.
+     */
     public void changeDepositExtraDeposit(String nickname, Resource[] deposit, Resource[] extraDeposit, int lcIndex) {
         try {
             warehouseController.changeResourcesDepositExtraDeposit(nickname, deposit, extraDeposit, lcIndex);
@@ -450,6 +484,7 @@ public class Controller {
      * @param nickname the nickname of the player who made the move.
      * @param from     the index of the supply where the resources are stored.
      * @param to       the index of the warehouse where to store the resources.
+     * @return 0 if the move is done, -1 if an error occurred.
      */
     public int storeFromSupply(String nickname, int from, int to) {
         try {
@@ -468,6 +503,7 @@ public class Controller {
      * @param leaderCardPos the position of the leader card which has extra deposit special ability.
      * @param from          the index of the supply where the resources are stored.
      * @param to            the index of the extra deposit where to store the resources.
+     * @return 0 if the move is done, -1 if an error occurred.
      */
     public int storeFromSupplyInExtraDeposit(String nickname, int leaderCardPos, int from, int to) {
         try {
@@ -483,7 +519,7 @@ public class Controller {
      * It allows to end a turn.
      *
      * @param nickname the nickname of the player in turn.
-     * @return true if the game is ended, false otherwise.
+     * @return 1 if the game is ended, -1 if an error occurred, 0 otherwise.
      */
     public int endTurn(String nickname) {
         String currentPlayer = game.getCurrentPlayer();
@@ -542,7 +578,12 @@ public class Controller {
 
     }
 
-    // TODO doc
+    /**
+     * It allows to end a turn in single player.
+     *
+     * @param nickname the nickname of the player in turn.
+     * @return 1 if the game is ended, -1 if an error occurred, 0 otherwise.
+     */
     public int endTurnSinglePlayer(String nickname) {
         String currentPlayer = game.getCurrentPlayer();
         if (!currentPlayer.equals(nickname)) {
@@ -623,6 +664,9 @@ public class Controller {
         player.playLeaderCard(index);
     }
 
+    /**
+     * Checker for the vatican reports.
+     */
     private void checkVaticanReports() {
         game.updateMaxReached();
         game.getPlayers().values()
@@ -630,6 +674,10 @@ public class Controller {
                 .forEach(f -> f.checkVaticanVictoryPoints(game.getMaxReached()));
     }
 
+    /**
+     * Getter for the number of players.
+     * @return the number of players.
+     */
     public int getNumberOfPlayers() {
         return this.game.getNumberOfPlayers();
     }
