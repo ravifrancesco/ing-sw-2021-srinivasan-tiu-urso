@@ -3,7 +3,7 @@ package it.polimi.ingsw.model.full.specialAbilities;
 import it.polimi.ingsw.model.full.table.Player;
 
 /**
- * The interface represent a special ability of a game's card.
+ * The interface represents a special ability of a game's card.
  */
 
 public interface SpecialAbility {

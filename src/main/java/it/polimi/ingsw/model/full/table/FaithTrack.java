@@ -14,6 +14,8 @@ import java.util.stream.Collectors;
  * <li> The vatican report zones.
  * <li> The bonus victory points in the faith track.
  * <li> The total victory points accumulated by the faith track.
+ * <li> The dashboard which faith tracks belong to.
+ * <li> The Lorenzo's faith marker position (for single player).
  * </ul>
  * <p>
  * <p>
@@ -34,7 +36,8 @@ public class FaithTrack extends FaithTrackObservable {
      * and load the vatican reports settings and the faith track
      * bonus victory points from the gameSettings object.
      *
-     * @param gameSettings the settings for the current game.
+     * @param gameSettings  the settings for the current game.
+     * @param dashboard     the dashboard which faith track belongs to.
      */
     public FaithTrack(GameSettings gameSettings, Dashboard dashboard) {
         this.position = 0;
@@ -62,7 +65,6 @@ public class FaithTrack extends FaithTrackObservable {
      *
      * @param pos number of positions for the movement.
      */
-
     public void moveFaithMarker(int pos) {
         for (int i = 1; i <= pos; i++) {
             if (position == GameSettings.FAITH_TRACK_LENGTH - 1) {
@@ -113,9 +115,7 @@ public class FaithTrack extends FaithTrackObservable {
     }
 
     /**
-     * Getter for the victoryPoints
-     *
-     * @return the current victoryPoints
+     * Methods to update the victory points.
      */
     public void updateVictoryPoints() {
         this.victoryPoints = 0;
@@ -128,6 +128,11 @@ public class FaithTrack extends FaithTrackObservable {
                 .reduce(0, Integer::sum);
     }
 
+    /**
+     * Getter for the victoryPoints
+     *
+     * @return the current victoryPoints
+     */
     public int getVictoryPoints() {
         return victoryPoints;
     }
@@ -141,6 +146,10 @@ public class FaithTrack extends FaithTrackObservable {
         return vaticanReports;
     }
 
+    /**
+     * Getter for the dashboard.
+     * @return the dashboard.
+     */
     public Dashboard getDashboard() {
         return dashboard;
     }
@@ -161,6 +170,10 @@ public class FaithTrack extends FaithTrackObservable {
         notify(this);
     }
 
+    /**
+     * Getter for the Lorenzo's faith marker position.
+     * @return Lorenzo's faith marker position
+     */
     public int getLorenzoIlMagnificoPosition() {
         return LorenzoIlMagnificoPosition;
     }

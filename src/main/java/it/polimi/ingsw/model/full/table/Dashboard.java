@@ -26,16 +26,16 @@ import java.util.stream.IntStream;
  * <li> The played development cards.
  * <li> The dashboard production power.
  * <li> The resources supply.
+ * <li> The player
+ * <li> The player points.
  * </ul>
  * <p>
  * <p>
- * The class also acts as a proxy for the warehouse and  the faith track, that are
+ * The class also acts as a proxy for the warehouse and the faith track, that are
  * not directly visible from the outside.
  * <p>
  * The class is observable and notifies the observers on a change of the state.
  * <p>
- * TODO testing
- * TODO changing the way production powers are activated, and use it to notify()
  */
 public class Dashboard extends DashboardObservable {
 
@@ -56,6 +56,7 @@ public class Dashboard extends DashboardObservable {
      * The constructor for a Dashboard object.
      *
      * @param gameSettings the settings for the current game.
+     * @param player the dashboard's owner.
      */
     public Dashboard(GameSettings gameSettings, Player player) {
 
@@ -110,6 +111,11 @@ public class Dashboard extends DashboardObservable {
         return faithTrack.getPosition();
     }
 
+    /**
+     * Gets the current position of Lorenzo's faith marker.
+     *
+     * @return the current position of Lorenzo's faith marker.
+     */
     public int getLorenzoIlMagnificoPosition() {
         return faithTrack.getLorenzoIlMagnificoPosition();
     }
@@ -158,8 +164,7 @@ public class Dashboard extends DashboardObservable {
      *
      * @param c the Leader Card to place.
      * @return the position of the leader card on the dashboard.
-     * @throws NullPointerException     if the Leader Card to place is null.
-     * @throws IllegalArgumentException if no more Leader Card slots are available.
+     * @throws IllegalStateException if no more Leader Card slots are available.
      */
     public int placeLeaderCard(LeaderCard c) throws IllegalStateException {
         if (playedLeaderCards.size() == NUM_LEADER_CARDS) {
@@ -178,9 +183,9 @@ public class Dashboard extends DashboardObservable {
      *
      * @param c        the Development Card to place.
      * @param position position to place the development card.
-     * @throws IllegalStateException in case the state of the stacs does not
-     *                               follow game rules.
-     * @throws IllegalStateException in case the index is out of bounds TODO check if call is catched later
+     * @throws IllegalStateException    in case the state of the stacks does not
+     *                                  follow game rules.
+     * @throws IllegalArgumentException in case the index is out of bounds.
      */
     public void placeDevelopmentCard(DevelopmentCard c, int position) throws IllegalStateException, IllegalArgumentException {
 
@@ -276,7 +281,6 @@ public class Dashboard extends DashboardObservable {
      *
      * @param c index to retrieve Leader Card.
      * @throws IllegalArgumentException if the index is out of bounds.
-     * @throws NullPointerException     if the selected slot is empty.
      * @return played Leader Card at index c.
      */
     public LeaderCard getLeaderCard(int c) throws IllegalArgumentException {
@@ -426,7 +430,7 @@ public class Dashboard extends DashboardObservable {
     }
 
     /**
-     * Allows to move resouces from the supply to the Warehouse.
+     * Allows to move resources from the supply to the Warehouse.
      *
      * @param from index of the supply box.
      * @param to   index of the deposit.
@@ -455,7 +459,7 @@ public class Dashboard extends DashboardObservable {
     }
 
     /**
-     * Allows to move resouces from the supply to the Extraspace.
+     * Allows to move resources from the supply to the Extraspace.
      *
      * @param leaderCardPosition index of the Leader Card to be used.
      * @param from               index of the supply box.
@@ -519,6 +523,7 @@ public class Dashboard extends DashboardObservable {
 
     /**
      * Activates new extra deposit inside the warehouse
+     * @param leaderCardPos the position of the leader card with warehouse extra space.
      */
     public void activateExtraDeposit(int leaderCardPos) {
         warehouse.activateExtraDeposit(leaderCardPos);
@@ -549,7 +554,12 @@ public class Dashboard extends DashboardObservable {
         notify(this);
     }
 
-    // TODO doc
+    /**
+     * Simulates the payment to check if the selected resources match the cost.
+     * @param resToPayWith  the resources selected by the player.
+     * @param cost          the resources cost for the player.
+     * @throws IllegalArgumentException if the resources don't match the cost.
+     */
     public void simulatePayment(ResourceContainer resToPayWith, Map<Resource, Integer> cost) throws IllegalArgumentException {
         HashMap<Resource, Integer> rcAllRes = (HashMap<Resource, Integer>) resToPayWith.getAllResources(warehouse);
         cost.forEach((k, v) -> rcAllRes.merge(k, v, (v1, v2) -> v1 - v2));
@@ -559,28 +569,50 @@ public class Dashboard extends DashboardObservable {
         }
     }
 
-    // TODO doc
-
+    /**
+     * Getter for the warehouse.
+     * @return the warehouse.
+     */
     public Warehouse getWarehouse() {
         return warehouse;
     }
 
+    /**
+     * Getter for the faith track.
+     * @return the faith track.
+     */
     public FaithTrack getFaithTrack() {
         return faithTrack;
     }
 
+    /**
+     * Getter for the supply.
+     * @return the supply.
+     */
     public ArrayList<Resource> getSupply() {
         return supply;
     }
 
+    /**
+     * Getter for the played leader cards.
+     * @return the played leader cards.
+     */
     public List<LeaderCard> getPlayedLeaderCards() {
         return playedLeaderCards;
     }
 
+    /**
+     * Getter for the played development cards.
+     * @return the played development cards.
+     */
     public List<Stack<DevelopmentCard>> getPlayedDevelopmentCards() {
         return playedDevelopmentCards;
     }
 
+    /**
+     * Getter for the player.
+     * @return the player.
+     */
     public Player getPlayer() {
         return player;
     }

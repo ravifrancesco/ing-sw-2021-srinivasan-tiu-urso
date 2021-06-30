@@ -6,7 +6,7 @@ import it.polimi.ingsw.model.full.table.Resource;
 public interface Marble {
 
     /**
-     * Returns the corrisponding resource from the marble.
+     * Returns the corresponding resource from the marble.
      *
      * @param p the player receiving the resource.
      * @return the resource associated with the marble.

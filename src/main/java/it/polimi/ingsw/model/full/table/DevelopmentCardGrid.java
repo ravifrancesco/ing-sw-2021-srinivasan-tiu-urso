@@ -23,7 +23,6 @@ public class DevelopmentCardGrid extends DevelopmentCardGridObservable {
     /**
      * Constructor for a DevelopmentCardGrid object.
      */
-
     public DevelopmentCardGrid() {
         reset();
     }
@@ -32,7 +31,6 @@ public class DevelopmentCardGrid extends DevelopmentCardGridObservable {
      * Reset method for the class.
      * It fills the grid with empty stacks of cards.
      */
-
     public void reset() {
 
         this.grid = IntStream.range(0, GRID_ROW_LENGTH * GRID_COL_LENGTH)
@@ -49,7 +47,6 @@ public class DevelopmentCardGrid extends DevelopmentCardGridObservable {
      *
      * @param developmentCardDeck the deck of Development Cards.
      */
-
     public void fillCardGrid(Deck developmentCardDeck) {
         IntStream.range(0, DEVELOPMENT_CARD_NUM)
                 .mapToObj(i -> (DevelopmentCard) developmentCardDeck.getCard())
@@ -65,7 +62,6 @@ public class DevelopmentCardGrid extends DevelopmentCardGridObservable {
      * @param column index of the interest column.
      * @return the position in the list of the element.
      */
-
     private int getPosition(int row, int column) {
         return (row - 1) * GRID_COL_LENGTH + (column - 1);
     }
@@ -76,7 +72,6 @@ public class DevelopmentCardGrid extends DevelopmentCardGridObservable {
      * @param color the color of the banner.
      * @return the column index.
      */
-
     private int getColumn(BannerEnum color) {
         return switch (color) {
             case GREEN -> 1;
@@ -93,7 +88,6 @@ public class DevelopmentCardGrid extends DevelopmentCardGridObservable {
      * @param column index of the column where the card is placed (starting from 1).
      * @return the bought card.
      */
-
     public DevelopmentCard buy(int row, int column) {
         int position = getPosition(row, column);
         DevelopmentCard card = grid.get(position).pop();
@@ -108,7 +102,6 @@ public class DevelopmentCardGrid extends DevelopmentCardGridObservable {
      * @param column index of the column where the card is placed (starting from 1).
      * @return the "peek" card.
      */
-
     public DevelopmentCard peek(int row, int column) {
         int position = getPosition(row, column);
         return grid.get(position).peek();
@@ -120,9 +113,10 @@ public class DevelopmentCardGrid extends DevelopmentCardGridObservable {
      * @param row             index of the row where the card is placed (starting from 1).
      * @param column          index of the column where the card is placed (starting from 1).
      * @param playerResources all the resources of the player.
+     * @param activeDiscounts the activated discounts of the player.
+     * @throws IllegalArgumentException if the row or the column is out of bound or if the stack of the grid is empty.
      * @return if the development card is buyable or not with the given resources.
      */
-
     public boolean isBuyable(int row, int column, Map<Resource, Integer> playerResources, ArrayList<DevelopmentCardDiscount> activeDiscounts)
             throws IllegalArgumentException {
         long contResources;
@@ -154,6 +148,10 @@ public class DevelopmentCardGrid extends DevelopmentCardGridObservable {
         return contResources >= resourceCost.size();
     }
 
+    /**
+     * Getter for the grid.
+     * @return the grid of the development cards.
+     */
     public List<Stack<DevelopmentCard>> getGrid() {
         return grid;
     }
@@ -161,8 +159,8 @@ public class DevelopmentCardGrid extends DevelopmentCardGridObservable {
     /**
      * Discards a card from the grid (used by Lorenzo in the singleplayer)
      *
-     * @param COLOR_INDEX the index for the color to discard
-     * @return
+     * @param COLOR_INDEX the index for the color to discard.
+     * @return if the position after discarding is empty, false otherwise.
      */
     public boolean discardCard(int COLOR_INDEX) {
         if (!grid.get(COLOR_INDEX).isEmpty()) {

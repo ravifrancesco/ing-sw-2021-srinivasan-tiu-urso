@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 public class WhiteMarbleResource implements SpecialAbility, Serializable {
 
-    Resource res;
+    private final Resource res;
 
     /**
      * The constructor for the class: changes the effect of a WhiteMarble's getResources method (effect)
@@ -48,7 +48,6 @@ public class WhiteMarbleResource implements SpecialAbility, Serializable {
 
     /**
      * To string method of the class.
-     * TODO test
      *
      * @return a string representation of the object.
      */

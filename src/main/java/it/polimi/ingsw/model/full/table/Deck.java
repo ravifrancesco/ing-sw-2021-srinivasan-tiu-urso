@@ -25,6 +25,10 @@ public class Deck {
         deck = new Stack<>();
     }
 
+    /**
+     * A private constructor to create a new deck from an old deck, in order to do a copy.
+     * @param oldDeck the old deck to clone.
+     */
     private Deck(Stack<Card> oldDeck) {
         deck = new Stack<>();
         deck.addAll(oldDeck);
@@ -43,7 +47,6 @@ public class Deck {
     /**
      * Allows to shuffle the deck.
      */
-
     public void shuffle() {
         Collections.shuffle(deck);
     }
@@ -53,7 +56,6 @@ public class Deck {
      *
      * @param c the card to be added.
      */
-
     public void add(Card c) {
         deck.push(c);
     }
@@ -63,7 +65,6 @@ public class Deck {
      *
      * @return the top card of the deck.
      */
-
     public Card getCard() {
         return deck.pop();
     }
@@ -73,7 +74,6 @@ public class Deck {
      *
      * @return the size of the deck.
      */
-
     public int getSize() {
         return deck.size();
     }
@@ -83,7 +83,6 @@ public class Deck {
      *
      * @return a copy of the deck.
      */
-
     public Deck copy() {
         return new Deck(this.deck);
     }
@@ -91,7 +90,6 @@ public class Deck {
     /**
      * Resets the production power of the development cards into the deck.
      */
-
     public void resetProductionPowerDevelopmentCards() {
         deck.stream().map(card -> (DevelopmentCard) card).forEach(DevelopmentCard::resetProductionPower);
     }
@@ -99,7 +97,6 @@ public class Deck {
     /**
      * Resets the production power of the leader cards into the deck.
      */
-
     public void resetProductionPowerLeaderCards() {
         deck.stream().map(card -> (LeaderCard) card).filter(card -> card.getSpecialAbility().getType() == SpecialAbilityType.PRODUCTION_POWER)
                 .map(card -> (ProductionPower) card.getSpecialAbility())

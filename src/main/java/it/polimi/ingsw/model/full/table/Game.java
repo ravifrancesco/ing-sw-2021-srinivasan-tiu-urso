@@ -12,6 +12,10 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+/**
+ * The class represents one game with it states.
+ */
+
 public class Game extends GameObservable {
 
 
@@ -75,18 +79,34 @@ public class Game extends GameObservable {
         notify(this);
     }
 
+    /**
+     * Getter for the end game phase.
+     * @return true if the current phase is "end game", false otherwise.
+     */
     public boolean isEndGamePhase() {
         return endGamePhase;
     }
 
+    /**
+     * Setter for the end game phase.
+     * @param endGamePhase represents if the current phase is "end game" or not.
+     */
     public void setEndGamePhase(boolean endGamePhase) {
         this.endGamePhase = endGamePhase;
     }
 
+    /**
+     * Allows to know if the game is ended.
+     * @return true if the game is ended, false otherwise.
+     */
     public boolean getGameEnded() {
         return gameEnded;
     }
 
+    /**
+     * Allows to know if the game is ended.
+     * @return true if the game is ended, false otherwise.
+     */
     public boolean checkEnd() {
         return gameEnded;
     }
@@ -123,18 +143,34 @@ public class Game extends GameObservable {
         notify(this);
     }
 
+    /**
+     * Getter for the players of the game.
+     * @return the players.
+     */
     public LinkedHashMap<String, Player> getPlayers() {
         return players;
     }
 
+    /**
+     * Getter for the game id.
+     * @return the game id.
+     */
     public String getGameId() {
         return gameId;
     }
 
+    /**
+     * Getter for the game settings.
+     * @return the game settings.
+     */
     public GameSettings getGameSettings() {
         return gameSettings;
     }
 
+    /**
+     * Getter for the GameBoard.
+     * @return the GameBoard.
+     */
     public GameBoard getGameBoard() {
         return gameBoard;
     }
@@ -161,6 +197,10 @@ public class Game extends GameObservable {
         notify(this);
     }
 
+    /**
+     * Getter for the turn phase.
+     * @return the turn phase.
+     */
     public TurnPhase getTurnPhase() {
         return turnPhase;
     }
@@ -190,40 +230,66 @@ public class Game extends GameObservable {
         notify(this);
     }
 
+    /**
+     * Getter for the game status.
+     * @return the game status.
+     */
     public Game getGameStatus() {
         players.values().forEach(Player::updateVictoryPoints);
         return this;
     }
 
-
+    /**
+     * Getter for the last error occurred.
+     * @return the last error.
+     */
     public GameError getGameError() {
         return gameError;
     }
 
+    /**
+     * Getter for the number of players.
+     * @return the number of players.
+     */
     public int getNumberOfPlayers() {
         return numberOfPlayers;
     }
 
+    /**
+     * Getter for the current player in turn.
+     * @return the current player in turn.
+     */
     public String getCurrentPlayer() {
         return currentPlayer;
     }
 
+    /**
+     * Getter for the first player.
+     * @return the first player.
+     */
     public String getFirstPlayer() {
         return firstPlayer;
     }
 
+    /**
+     * Setter for the first player.
+     * @param firstPlayer the first player in turn.
+     */
     public void setFirstPlayer(String firstPlayer) {
         this.firstPlayer = firstPlayer;
         notify(this);
     }
 
+    /**
+     * Method to change the player in turn.
+     */
     public void changePlayer() {
         this.currentPlayer = getNextPlayer();
         notify(this);
     }
 
     /**
-     * Sets an error, keepin track of the exception that happened and the player nickname
+     * Sets an error, keeping track of the exception that happened and the player nickname
      *
      * @param exception the caused exception
      * @param nickname  the nickname of the player that caused it
@@ -250,15 +316,26 @@ public class Game extends GameObservable {
         notify(this);
     }
 
+    /**
+     * Getter for the game started.
+     * @return true if the game is started, false otherwise.
+     */
     public boolean isGameStarted() {
         return gameStarted;
     }
 
-
+    /**
+     * Getter for first turns count.
+     * @return first turns count.
+     */
     public int getFirstTurns() {
         return firstTurns;
     }
 
+    /**
+     * Setter for first turns count.
+     * @param firstTurns the first turns count.
+     */
     public void setFirstTurns(int firstTurns) {
         this.firstTurns = firstTurns;
     }
@@ -288,6 +365,10 @@ public class Game extends GameObservable {
         notify(this);
     }
 
+    /**
+     * Getter for last Lorenzo's token.
+     * @return last Lorenzo's token.
+     */
     public Token getLastToken() {
         return lastToken;
     }
@@ -305,6 +386,10 @@ public class Game extends GameObservable {
         maxReached = Math.max(maxReachedPlayer, maxReachedLorenzo);
     }
 
+    /**
+     * Getter for the max reached.
+     * @return the max reached in faith track.
+     */
     public int getMaxReached() {
         return maxReached;
     }

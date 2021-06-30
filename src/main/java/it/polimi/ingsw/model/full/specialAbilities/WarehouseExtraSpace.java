@@ -5,12 +5,20 @@ import it.polimi.ingsw.model.full.table.Resource;
 
 import java.io.Serializable;
 
+/**
+ * The class represents the warehouse extra space ability given by a leader card of the game.
+ */
+
 public class WarehouseExtraSpace implements SpecialAbility, Serializable {
 
     private final Resource storedResource;
 
     private int leaderCardPos;
 
+    /**
+     * The constructor for a Warehouse Extra Space object.
+     * @param storedResource the type of stored resource.
+     */
     public WarehouseExtraSpace(Resource storedResource) {
         this.storedResource = storedResource;
     }
@@ -41,6 +49,11 @@ public class WarehouseExtraSpace implements SpecialAbility, Serializable {
         return SpecialAbilityType.WAREHOUSE_EXTRA_SPACE;
     }
 
+    /**
+     * Method to get the type of the stored resource.
+     *
+     * @return the type of the stored resource.
+     */
     public Resource getStoredResource() {
         return storedResource;
     }
