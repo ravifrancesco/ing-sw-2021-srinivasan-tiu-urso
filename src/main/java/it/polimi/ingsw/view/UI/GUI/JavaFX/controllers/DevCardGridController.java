@@ -26,16 +26,23 @@ public class DevCardGridController {
     private final static int NUM_OF_ROWS = 3;
     private final static int NUM_OF_COLUMNS = 4;
     @FXML
-    GridPane cardsGridPane;
+    private GridPane cardsGridPane;
     @FXML
-    Button backButton;
-    ArrayList<ImageView> cardImageViews;
+    private Button backButton;
+    private ArrayList<ImageView> cardImageViews;
     private GUI gui;
 
+    /**
+     * Setter for the GUI
+     * @param gui the GUI
+     */
     public void setGui(GUI gui) {
         this.gui = gui;
     }
 
+    /**
+     * Initialize method of the class
+     */
     public void initialize() {
 
         cardImageViews = new ArrayList<>();
@@ -52,11 +59,19 @@ public class DevCardGridController {
         }
     }
 
+    /**
+     * Method to handle back button click
+     */
     public void onBackPressed() {
         Stage stage = (Stage) backButton.getScene().getWindow();
         stage.close();
     }
 
+    /**
+     * Method do load an image
+     * @param imageView the imageview
+     * @param developmentCard the development card to set
+     */
     private void loadImage(ImageView imageView, DevelopmentCard developmentCard) {
         if (developmentCard == null) {
             imageView.setImage(null);
@@ -70,6 +85,13 @@ public class DevCardGridController {
         }
     }
 
+    /**
+     * Method to open BuyDevCardController
+     * @param event
+     * @param image the image of the card to buy
+     * @param row the row of the card to buy
+     * @param col the column of the card to buy
+     */
     private void openBuyDevCardController(MouseEvent event, Image image, int row, int col) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/buy_dev_card.fxml"));
@@ -87,6 +109,10 @@ public class DevCardGridController {
         }
     }
 
+    /**
+     * Method to update the grid
+     * @param grid the grid to show
+     */
     public void update(List<Stack<DevelopmentCard>> grid) {
         for (int i = 0; i < NUM_OF_ROWS * NUM_OF_COLUMNS; i++) {
             loadImage(cardImageViews.get(i), grid.get(i).isEmpty() ? null : grid.get(i).peek());

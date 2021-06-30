@@ -17,16 +17,29 @@ public class DiscardLeaderCardController {
 
     public GUI gui;
     @FXML
-    HBox leaderCardContainerHBox;
+    private HBox leaderCardContainerHBox;
 
+    /**
+     * Setter for the GUI
+     * @param gui the GUI
+     */
     public void setGui(GUI gui) {
         this.gui = gui;
     }
 
+    /**
+     * Setter for the leader cards
+     * @param leaderCards the list of leader cards
+     */
     public void setCards(List<LeaderCard> leaderCards) {
         leaderCards.forEach(c -> setLeaderCard(c, leaderCards.indexOf(c)));
     }
 
+    /**
+     * Setter for the leader
+     * @param leaderCard the leader card
+     * @param index the index
+     */
     private void setLeaderCard(LeaderCard leaderCard, int index) {
         File file = new File("src/main/resources/png/cards/leaderCards/leader_card_" + leaderCard.getId() + ".png");
         javafx.scene.image.Image image = new Image(file.toURI().toString());

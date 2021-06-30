@@ -14,10 +14,17 @@ public class FaithMarkerController {
     private ImageView faithMarker;
     private Slot[] faithSlots;
 
+    /**
+     * Method to assign the slots of the faith track
+     * @param slots the slots
+     */
     public void assignSlots(Slot[] slots) {
         this.faithSlots = slots;
     }
 
+    /**
+     * Method to create a faith marker
+     */
     public void createItem() {
         File file = new File("src/main/resources/png/table/faith_marker.png");
         Image image = new Image(file.toURI().toString());
@@ -29,6 +36,9 @@ public class FaithMarkerController {
         faithMarker.setY(faithSlots[0].getY() + increment);
     }
 
+    /**
+     * Method to create Lorenzo's faith marker
+     */
     public void createLorenzoItem() {
         File file = new File("src/main/resources/png/singlePlayer/lorenzo_faith_marker.png");
         Image image = new Image(file.toURI().toString());
@@ -40,19 +50,33 @@ public class FaithMarkerController {
         faithMarker.setY(faithSlots[0].getY() + increment);
     }
 
+    /**
+     * Method to move the faith marker
+     * @param position the position of the faith marker
+     */
     public void moveFaithMarker(int position) {
         faithMarker.setX(faithSlots[position].getX() + increment);
         faithMarker.setY(faithSlots[position].getY() + increment);
     }
 
+    /**
+     * Getter for the item
+     * @return the faith marker
+     */
     public ImageView getItem() {
         return faithMarker;
     }
 
+    /**
+     * Method to hide the faith marker
+     */
     public void hide() {
         faithMarker.setVisible(false);
     }
 
+    /**
+     * Method to show the faith marker
+     */
     public void show() {
         faithMarker.setVisible(true);
     }
