@@ -36,7 +36,7 @@ public class Controller {
     private final MarketController marketController;
     private final LeaderCardController leaderCardController;
     private final DevelopmentCardController developmentCardController;
-    GameSettings gameSettings;
+    private GameSettings gameSettings;
 
     /**
      * Constructor for a Server Controller object. It creates the game and initializes all attributes.
