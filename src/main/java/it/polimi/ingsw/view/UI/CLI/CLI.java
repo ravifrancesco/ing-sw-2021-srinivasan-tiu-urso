@@ -1131,9 +1131,11 @@ public class CLI implements UI {
             endGameHasStarted();
         }
         if ("game_has_ended".equals(menuCode)) {
+            reducedModel.getReducedGame().setGameIsEnded(true);
             gameHasEnded();
         }
         if ("game_has_ended_single".equals(menuCode)) {
+            reducedModel.getReducedGame().setGameIsEnded(true);
             gameHasEndedSingle();
         }
 
@@ -1145,7 +1147,7 @@ public class CLI implements UI {
         if ("after_end_turn_single".equals(menuCode)) {
             showAfterEndTurnSingleMenu();
         }
-        if ("force_disconnection".equals(menuCode)) {
+        if ("force_disconnection".equals(menuCode) && !reducedModel.getReducedGame().isGameIsEnded()) {
             forceDisconnection();
         }
     }
@@ -1170,6 +1172,7 @@ public class CLI implements UI {
         } else {
             printColoredMessage("You've won!", Constants.BOLD + Constants.ANSI_GREEN);
         }
+        forceDisconnection();
     }
 
     /**
@@ -1299,6 +1302,7 @@ public class CLI implements UI {
         reducedModel.getReducedGame().getPlayers().forEach((nickname, reducedPlayer) -> {
             System.out.println(nickname + ": " + reducedPlayer.getDashboard().getPlayerPoints());
         });
+        forceDisconnection();
     }
 
     /**

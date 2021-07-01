@@ -18,6 +18,7 @@ public class ReducedGame {
     private TurnPhase turnPhase;
     private int firstTurns;
     private Token token;
+    private boolean gameIsEnded;
 
     public ReducedGame(ReducedModel reducedModel) {
         this.reducedModel = reducedModel;
@@ -25,6 +26,7 @@ public class ReducedGame {
         this.gameStarted = false;
         this.clientPlayer = "";
         this.players = new HashMap<>();
+        this.gameIsEnded = false;
     }
 
     public Token getToken() {
@@ -101,5 +103,13 @@ public class ReducedGame {
 
     public ReducedPlayer getReducedPlayer(String nickname) {
         return this.players.get(nickname);
+    }
+
+    public boolean isGameIsEnded() {
+        return gameIsEnded;
+    }
+
+    public void setGameIsEnded(boolean gameIsEnded) {
+        this.gameIsEnded = gameIsEnded;
     }
 }

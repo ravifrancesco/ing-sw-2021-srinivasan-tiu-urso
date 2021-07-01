@@ -16,7 +16,7 @@ public class ReducedModel {
 
     private final ReducedGame reducedGame;
     private final ReducedGameBoard reducedGameBoard;
-    GameController gameController;
+    private GameController gameController;
     private final ReducedPlayer reducedPlayer;
 
     public ReducedModel() {
