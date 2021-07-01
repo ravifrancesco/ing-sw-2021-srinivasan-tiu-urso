@@ -207,12 +207,14 @@ public class GUI extends Application implements UI {
             Platform.runLater(() -> gameController.getInitialResources());
         }
         if ("game_has_ended".equals(menuCode)) {
+            reducedModel.getReducedGame().setGameIsEnded(true);
             Platform.runLater(() -> gameController.gameHasEnded());
         }
         if ("game_has_ended_single".equals(menuCode)) {
+            reducedModel.getReducedGame().setGameIsEnded(true);
             Platform.runLater(() -> gameController.gameHasEndedSinglePlayer());
         }
-        if ("force_disconnection".equals(menuCode)) {
+        if ("force_disconnection".equals(menuCode) && !reducedModel.getReducedGame().isGameIsEnded()) {
             Platform.runLater(() -> gameController.forceDisconnection());
         }
     }
