@@ -14,6 +14,7 @@ import it.polimi.ingsw.view.virtualView.client.ClientVirtualView;
 import it.polimi.ingsw.view.virtualView.client.OfflineClientVirtualView;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -87,6 +88,8 @@ public class GUI extends Application implements UI {
             alert.setTitle("Error box");
             alert.setHeaderText("");
             alert.setContentText(s);
+            Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+            stage.setOnCloseRequest(Event::consume);
             alert.showAndWait();
         });
     }

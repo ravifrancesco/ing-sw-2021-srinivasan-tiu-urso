@@ -19,6 +19,7 @@ import it.polimi.ingsw.view.UI.GUI.GUI;
 import it.polimi.ingsw.view.UI.GUI.JavaFX.utils.ExtraDepositSlot;
 import it.polimi.ingsw.view.UI.GUI.JavaFX.utils.Slot;
 import javafx.application.Platform;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -621,11 +622,11 @@ public class GameController {
         mainAlert = new Alert(Alert.AlertType.CONFIRMATION);
         mainAlert.setTitle("Start Game");
         mainAlert.setHeaderText("Start game when you are ready!");
-
         ButtonType buttonTypeOne = new ButtonType("Start");
 
         mainAlert.getButtonTypes().setAll(buttonTypeOne);
-
+        Stage stage = (Stage) mainAlert.getDialogPane().getScene().getWindow();
+        stage.setOnCloseRequest(Event::consume);
         Optional<ButtonType> result = mainAlert.showAndWait();
         if (result.isPresent() && result.get() == buttonTypeOne) {
             this.gui.send(new StartGameGameMessage());
@@ -669,6 +670,8 @@ public class GameController {
         mainAlert.setTitle("Start Game");
         mainAlert.setHeaderText("Waiting for host to start the game");
         mainAlert.setResult(ButtonType.CANCEL);
+        Stage stage = (Stage) mainAlert.getDialogPane().getScene().getWindow();
+        stage.setOnCloseRequest(Event::consume);
         mainAlert.show();
     }
 
@@ -858,6 +861,8 @@ public class GameController {
         mainAlert = new Alert(Alert.AlertType.INFORMATION);
         mainAlert.setTitle("Game is starting");
         mainAlert.setHeaderText("Press OK to continue");
+        Stage stage = (Stage) mainAlert.getDialogPane().getScene().getWindow();
+        stage.setOnCloseRequest(Event::consume);
         mainAlert.showAndWait();
         showDiscardExcessLeaderCardMenu();
     }
@@ -878,6 +883,8 @@ public class GameController {
             mainAlert.setHeaderText("It is now " + rg.getCurrentPlayer() + "'s turn!");
             setDisable();
         }
+        Stage stage = (Stage) mainAlert.getDialogPane().getScene().getWindow();
+        stage.setOnCloseRequest(Event::consume);
         mainAlert.showAndWait();
         if (rg.getTurnPhase() == TurnPhase.FIRST_TURN) {
             showDiscardExcessLeaderCardMenu();
@@ -896,6 +903,8 @@ public class GameController {
                 .max(Comparator.comparingInt(p -> p.getDashboard().getPlayerPoints())
                 );
         alert.setHeaderText(winner.get().getNickname() + " has one with " + winner.get().getDashboard().getPlayerPoints() + " victory points!");
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        stage.setOnCloseRequest(Event::consume);
         alert.showAndWait();
         System.exit(0);
     }
@@ -913,6 +922,8 @@ public class GameController {
         } else {
             alert.setHeaderText("You've won!");
         }
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        stage.setOnCloseRequest(Event::consume);
         alert.showAndWait();
         System.exit(0);
     }
@@ -925,6 +936,8 @@ public class GameController {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Disconnection");
         alert.setHeaderText("Game is ended due to the disconnection of a player");
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        stage.setOnCloseRequest(Event::consume);
         alert.showAndWait();
         System.exit(0);
     }
@@ -972,7 +985,7 @@ public class GameController {
     public void showDiscardExcessLeaderCardMenu() {
         ReducedGame rg = gui.getReducedModel().getReducedGame();
         if (!rg.getClientPlayer().equals(rg.getCurrentPlayer())) {
-            return; // ADD ALERT BOX
+            return;
         } else if (rg.getPlayers().get(rg.getClientPlayer()).getHand().size() - 2 > 0) {
             hideAlert();
             try {
