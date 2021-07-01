@@ -904,7 +904,7 @@ public class GameController {
                 .stream()
                 .max(Comparator.comparingInt(p -> p.getDashboard().getPlayerPoints())
                 );
-        alert.setHeaderText(winner.get().getNickname() + " has one with " + winner.get().getDashboard().getPlayerPoints() + " victory points!");
+        alert.setHeaderText(winner.get().getNickname() + " has won with " + winner.get().getDashboard().getPlayerPoints() + " victory points!");
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
         stage.setOnCloseRequest(Event::consume);
         alert.showAndWait();
@@ -1001,6 +1001,7 @@ public class GameController {
                 stage.setScene(new Scene(root, 760, 462));
                 stage.setTitle("Discard excess leader cards");
                 stage.setResizable(false);
+                stage.setOnCloseRequest(Event::consume);
                 stage.show();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -1030,6 +1031,7 @@ public class GameController {
                 stage.setScene(new Scene(root, 524, 471));
                 stage.setTitle("Choose bonus resources");
                 stage.setResizable(false);
+                stage.setOnCloseRequest(Event::consume);
                 stage.show();
             } catch (IOException e) {
                 e.printStackTrace();

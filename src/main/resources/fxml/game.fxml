@@ -78,7 +78,7 @@
                 </ImageView>
                 <Text fx:id="pointsText" layoutX="629.0" layoutY="97.0" strokeType="OUTSIDE" strokeWidth="0.0">
                     <font>
-                        <Font size="36.0"/>
+                        <Font size="30.0"/>
                     </font>
                 </Text>
                 <Button fx:id="handButton" layoutX="1191.0" layoutY="608.0" mnemonicParsing="false"
