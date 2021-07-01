@@ -19,7 +19,7 @@ public class Main {
             Server server = null;
             try {
                 server = new Server(args[1], Integer.parseInt(args[2]));
-            } catch (IOException | IndexOutOfBoundsException e) {
+            } catch (IOException | IndexOutOfBoundsException | NumberFormatException e) {
                 System.out.println(errorMessage);
             }
             server.run();
