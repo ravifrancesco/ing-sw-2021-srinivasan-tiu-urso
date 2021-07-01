@@ -895,7 +895,7 @@ public class GameController {
                 .stream()
                 .max(Comparator.comparingInt(p -> p.getDashboard().getPlayerPoints())
                 );
-        alert.setHeaderText(winner.get().getNickname() + " has one with " + winner.get().getDashboard().getPlayerPoints() + " victory points!");
+        alert.setHeaderText(winner.get().getNickname() + " has won with " + winner.get().getDashboard().getPlayerPoints() + " victory points!");
         alert.showAndWait();
         System.exit(0);
     }
