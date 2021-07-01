@@ -4,3 +4,5 @@
 .idea/
 #bin
 target/
+# META-INF
+/src/main/java/META-INF/
