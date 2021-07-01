@@ -36,8 +36,7 @@ public class EndTurnGameMessage extends ClientGameMessage implements Serializabl
             offlineClientVirtualView.getUi().handleMenuCode("after_end_turn_single");
         }
         if (output == 1) {
-            offlineClientVirtualView.getUi().handleMenuCode("force_disconnection");
-            offlineClientVirtualView.handleGameEnded();
+            offlineClientVirtualView.getUi().handleMenuCode("game_has_ended_single");
         }
     }
 }
