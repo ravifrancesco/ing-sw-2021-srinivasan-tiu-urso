@@ -9,6 +9,11 @@ import java.io.Serializable;
 
 public class GetInitialResourcesGameMessage extends ClientGameMessage implements Serializable {
 
+    /**
+     * Message to activate the get initial resources move from the controller.
+     * See controller doc for more details about the arguments.
+     */
+
     Resource resource;
     int position;
 

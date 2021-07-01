@@ -8,6 +8,13 @@ import it.polimi.ingsw.view.virtualView.server.ServerVirtualView;
 import java.io.Serializable;
 
 public class PlayerChangesExtraDeposit extends ClientGameMessage implements Serializable {
+
+    /**
+     * Message to activate the change extra deposit move from the controller.
+     * See controller doc for more details about arguments.
+     */
+
+
     private final Resource[] deposit;
     private final Resource[] extraDeposit;
     private final int lcIndex;

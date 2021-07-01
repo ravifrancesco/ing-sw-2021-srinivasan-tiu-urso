@@ -8,6 +8,11 @@ import java.io.Serializable;
 
 public class PlayLeaderCardGameMessage extends ClientGameMessage implements Serializable {
 
+    /**
+     * Message to activate the play leader card move from the controller.
+     * See controller doc for more details about arguments.
+     */
+
     int cardToPlay;
 
     public PlayLeaderCardGameMessage(int cardToPlay) {

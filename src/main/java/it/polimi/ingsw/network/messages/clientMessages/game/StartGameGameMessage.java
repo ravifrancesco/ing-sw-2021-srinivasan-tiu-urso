@@ -9,6 +9,11 @@ import java.io.Serializable;
 
 public class StartGameGameMessage extends ClientGameMessage implements Serializable {
 
+    /**
+     * Message to activate the start game move from the controller.
+     * See controller doc for more details about arguments.
+     */
+
     @Override
     public void handle(ServerVirtualView c, Controller controller) {
         int output = controller.startGame(c.getNickname());

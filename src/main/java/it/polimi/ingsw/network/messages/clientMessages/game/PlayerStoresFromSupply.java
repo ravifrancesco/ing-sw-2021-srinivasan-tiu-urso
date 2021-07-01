@@ -7,6 +7,12 @@ import it.polimi.ingsw.view.virtualView.server.ServerVirtualView;
 import java.io.Serializable;
 
 public class PlayerStoresFromSupply extends ClientGameMessage implements Serializable {
+
+    /**
+     * Message to activate the player stores from supply move from the controller.
+     * See controller doc for more details about arguments.
+     */
+
     private final int from;
     private final int to;
 

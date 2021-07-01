@@ -7,6 +7,13 @@ import it.polimi.ingsw.view.virtualView.server.ServerVirtualView;
 import java.io.Serializable;
 
 public class PlayerDiscardsLeaderCard extends ClientGameMessage implements Serializable {
+
+    /**
+     * Message to activate the discard leader card move from the controller.
+     * See controller doc for more details about arguments.
+     */
+
+
     private final int cardToDiscard;
 
     public PlayerDiscardsLeaderCard(int cardToDiscard) {

@@ -73,13 +73,15 @@ public class OfflineClientVirtualView implements ClientVirtualViewIF, Runnable,
     public void askNickname() {
         Scanner input = new Scanner(System.in);
         String choice;
-        System.out.println("Please insert a nickname: ");
+        System.out.println("\nPlease insert a nickname: ");
+        System.out.print("> ");
         while (true) {
             choice = input.nextLine();
             if (choice.isEmpty()) {
                 System.out.println("Please insert a non-empty nickname");
             } else {
                 setNickName(choice);
+                System.out.println();
                 return;
             }
         }
@@ -240,6 +242,7 @@ public class OfflineClientVirtualView implements ClientVirtualViewIF, Runnable,
     }
 
     public void handleGameEnded() {
+        System.exit(0);
     }
 }
 
