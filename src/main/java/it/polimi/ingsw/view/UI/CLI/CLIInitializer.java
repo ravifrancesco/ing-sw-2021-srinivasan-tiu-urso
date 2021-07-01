@@ -10,16 +10,6 @@ import java.util.Scanner;
 public class CLIInitializer {
 
     /**
-     * Runs the cli
-     * TODO remove method
-     * @param args the arguments
-     */
-    public static void main(String[] args) {
-        CLIInitializer CLIInitializer = new CLIInitializer();
-        CLIInitializer.run();
-    }
-
-    /**
      * Runs the CLI, handling the connection to the game either locally or online
      */
     public void run() {
