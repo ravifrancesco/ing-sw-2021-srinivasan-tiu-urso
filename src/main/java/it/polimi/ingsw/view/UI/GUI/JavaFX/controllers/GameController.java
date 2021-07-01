@@ -889,14 +889,14 @@ public class GameController {
      */
     public void gameHasEnded() {
         hideAlert();
-        mainAlert = new Alert(Alert.AlertType.INFORMATION);
-        mainAlert.setTitle("Game has ended");
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Game has ended");
         Optional<ReducedPlayer> winner = gui.getReducedModel().getReducedGame().getPlayers().values()
                 .stream()
                 .max(Comparator.comparingInt(p -> p.getDashboard().getPlayerPoints())
                 );
-        mainAlert.setHeaderText(winner.get().getNickname() + " has one with " + winner.get().getDashboard().getPlayerPoints() + " victory points!");
-        mainAlert.showAndWait();
+        alert.setHeaderText(winner.get().getNickname() + " has one with " + winner.get().getDashboard().getPlayerPoints() + " victory points!");
+        alert.showAndWait();
         System.exit(0);
     }
 
@@ -905,15 +905,15 @@ public class GameController {
      */
     public void gameHasEndedSinglePlayer() {
         hideAlert();
-        mainAlert = new Alert(Alert.AlertType.INFORMATION);
-        mainAlert.setTitle("Game has ended");
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Game has ended");
         int winner = establishWinner();
         if (winner == 0) {
-            mainAlert.setHeaderText("Lorenzo has won!");
+            alert.setHeaderText("Lorenzo has won!");
         } else {
-            mainAlert.setHeaderText("You've won!");
+            alert.setHeaderText("You've won!");
         }
-        mainAlert.showAndWait();
+        alert.showAndWait();
         System.exit(0);
     }
 
@@ -922,10 +922,10 @@ public class GameController {
      */
     public void forceDisconnection() {
         hideAlert();
-        mainAlert = new Alert(Alert.AlertType.INFORMATION);
-        mainAlert.setTitle("Disconnection");
-        mainAlert.setHeaderText("Game is ended due to the disconnection of a player");
-        mainAlert.showAndWait();
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Disconnection");
+        alert.setHeaderText("Game is ended due to the disconnection of a player");
+        alert.showAndWait();
         System.exit(0);
     }
 

@@ -119,8 +119,6 @@ public class OfflineClientVirtualView implements ClientVirtualViewIF, Runnable,
      *
      * @param message the updated class
      */
-
-
     @Override
     public void update(FaithTrack message) {
         ReducedGame reducedGame = ui.getReducedModel().getReducedGame();
@@ -185,9 +183,6 @@ public class OfflineClientVirtualView implements ClientVirtualViewIF, Runnable,
         reducedGame.setTurnPhase(message.getTurnPhase());
         reducedGame.setFirstTurns(message.getFirstTurns());
         reducedGame.setToken(message.getLastToken());
-        if (message.getGameEnded()) {
-            ui.handleMenuCode("game_has_ended_single");
-        }
     }
 
     @Override
@@ -241,9 +236,6 @@ public class OfflineClientVirtualView implements ClientVirtualViewIF, Runnable,
         return ui;
     }
 
-    public void handleGameEnded() {
-        System.exit(0);
-    }
 }
 
 
