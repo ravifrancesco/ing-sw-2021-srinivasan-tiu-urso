@@ -16,13 +16,12 @@ public class Main {
 
     public static void main(String[] args) {
         if (args[0].equalsIgnoreCase("server")) {
-            Server server = null;
             try {
-                server = new Server(args[1], Integer.parseInt(args[2]));
-            } catch (IOException | IndexOutOfBoundsException e) {
+                Server server = new Server(args[1], Integer.parseInt(args[2]));
+                server.run();
+            } catch (IOException | IndexOutOfBoundsException | NumberFormatException e) {
                 System.out.println(errorMessage);
             }
-            server.run();
         } else if (args[0].equalsIgnoreCase("ui")) {
             if (args[1].equalsIgnoreCase("cli")) {
                 CLIInitializer CLIInitializer = new CLIInitializer();
