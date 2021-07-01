@@ -30,7 +30,6 @@ public class GameInfoMessage implements ServerMessage, Serializable {
                 cli.printColoredMessage("Creating lobby...", Constants.GOLD_COLOR);
                 cli.printColoredMessage("Created successfully! Lobby details: ", Constants.ANSI_GREEN);
             } else {
-                // System.out.println("Creating lobby for " + numberOfPlayers + " players...");
                 cli.printColoredMessage("\nJoining lobby...", Constants.GOLD_COLOR);
                 cli.printColoredMessage("Joined successfully! Lobby details: ", Constants.ANSI_GREEN);
             }

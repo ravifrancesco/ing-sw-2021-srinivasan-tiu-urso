@@ -328,7 +328,6 @@ public class GameSettings implements Serializable {
 
     /**
      * Converts a map representing the properties of a special ability into a special ability.
-     * TODO test
      *
      * @param propertyMap map with keys being the property, values being the property value.
      * @return a ProductionPower built using the propertyMap properties.
@@ -370,9 +369,7 @@ public class GameSettings implements Serializable {
     }
 
     /**
-     * Converts a map representing the properties of a production power into a development card discount.
-     * TODO test
-     *
+     * Converts a map representing the properties of a production power into a development card discount.*
      * @param propertyMap map with keys being the property, values being the property value
      * @return a DevelopmentCardDiscount built using the propertyMap properties
      */
@@ -388,7 +385,6 @@ public class GameSettings implements Serializable {
 
     /**
      * Converts a map representing the properties of a production power into a white marble resource.
-     * TODO test
      *
      * @param propertyMap map with keys being the property, values being the property value
      * @return a WhiteMarbleResource built using the propertyMap properties
@@ -403,7 +399,6 @@ public class GameSettings implements Serializable {
 
     /**
      * Converts a map representing the properties of a production power into a warehouse extra space.
-     * TODO test
      *
      * @param propertyMap map with keys being the property, values being the property value
      * @return a WarehouseExtraSpace built using the propertyMap properties

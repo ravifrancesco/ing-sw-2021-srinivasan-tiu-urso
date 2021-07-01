@@ -251,7 +251,6 @@ public class Dashboard extends DashboardObservable {
      * Gets the player's banners on the dashboard.
      *
      * @return a map with keys being the banners and values being the quantities.
-     * TODO fix this implementation
      */
     public Map<Banner, Integer> getBanners() {
 

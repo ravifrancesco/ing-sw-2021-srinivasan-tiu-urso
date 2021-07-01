@@ -71,7 +71,7 @@ public class MainLobby implements Lobby {
     public synchronized void deregisterConnection(ServerVirtualView c) {
         serverVirtualViews.remove(c);
         waitingConnection.remove(c.getNickname());
-        playingConnection.remove(c.getNickname()); // TODO reconnection
+        playingConnection.remove(c.getNickname());
     }
 
     /**

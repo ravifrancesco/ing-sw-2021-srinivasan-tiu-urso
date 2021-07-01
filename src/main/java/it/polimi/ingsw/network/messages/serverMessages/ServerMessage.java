@@ -7,7 +7,6 @@ import it.polimi.ingsw.view.virtualView.client.ClientVirtualView;
  */
 public interface ServerMessage {
 
-    // TODO change to client and doc
     void updateClient(ClientVirtualView clientVirtualView, String nickname);
 
 }

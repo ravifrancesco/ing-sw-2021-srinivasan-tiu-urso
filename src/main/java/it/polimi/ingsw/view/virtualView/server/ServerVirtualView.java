@@ -286,7 +286,7 @@ public class ServerVirtualView implements Runnable,
      * @param menuCode the menu code string
      */
     public void sendCLIupdateMessage(String menuCode) {
-        send(new CLIMenuUpdate(menuCode));
+        send(new UIMenuUpdate(menuCode));
     }
 
     /**

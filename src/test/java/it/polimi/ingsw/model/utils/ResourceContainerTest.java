@@ -9,8 +9,6 @@ import org.junit.Test;
 import java.util.Map;
 import java.util.Optional;
 
-// TODO add check to not select empty slots when adding
-
 public class ResourceContainerTest {
     @Test
     public void constructorTest() {
