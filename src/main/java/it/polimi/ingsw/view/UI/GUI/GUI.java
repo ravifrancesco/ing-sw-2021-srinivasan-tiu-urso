@@ -36,6 +36,8 @@ public class GUI extends Application implements UI {
     private ClientMainLobbyController clientMainLobbyController;
     private GameController gameController;
 
+    public static void launchGUI() { launch(); }
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/server_choice.fxml"));

@@ -28,8 +28,7 @@ public class Main {
                 CLIInitializer CLIInitializer = new CLIInitializer();
                 CLIInitializer.run();
             } else if (args[1].equalsIgnoreCase("gui")) {
-                new GUI();
-                Application.launch(args);
+                GUI.launchGUI();
             } else {
                 System.out.println(errorMessage);
             }
