@@ -16,9 +16,8 @@ public class Main {
 
     public static void main(String[] args) {
         if (args[0].equalsIgnoreCase("server")) {
-            Server server = null;
             try {
-                server = new Server(args[1], Integer.parseInt(args[2]));
+                Server server = new Server(args[1], Integer.parseInt(args[2]));
                 server.run();
             } catch (IOException | IndexOutOfBoundsException | NumberFormatException e) {
                 System.out.println(errorMessage);
