@@ -857,6 +857,7 @@ public class GameController {
         setPlayers();
         mainAlert = new Alert(Alert.AlertType.INFORMATION);
         mainAlert.setTitle("Game is starting");
+        mainAlert.setHeaderText("Press OK to continue");
         mainAlert.showAndWait();
         showDiscardExcessLeaderCardMenu();
     }
