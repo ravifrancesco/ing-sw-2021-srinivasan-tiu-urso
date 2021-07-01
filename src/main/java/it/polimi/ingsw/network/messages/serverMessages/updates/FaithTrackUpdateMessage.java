@@ -18,7 +18,7 @@ public class FaithTrackUpdateMessage implements ServerMessage, Serializable {
     private final String playerNickname;
     private final int position;
     private final int LorenzoIlMagnificoPosition;
-    private final Map<Pair<Integer, Integer>, Pair<Integer, Integer>> vaticanReports; // TODO how should this be?
+    private final Map<Pair<Integer, Integer>, Pair<Integer, Integer>> vaticanReports;
 
     /**
      * Constructor.

@@ -40,7 +40,7 @@ public class ReducedModel {
     public void setNickname(String nickname) {
         reducedPlayer.setNickname(nickname);
         reducedGame.setClientPlayer(nickname);
-        reducedGame.createPlayer(reducedPlayer); // TODO is there a better way to do this?
+        reducedGame.createPlayer(reducedPlayer);
     }
 
     public void setGameController(GameController gameController) {

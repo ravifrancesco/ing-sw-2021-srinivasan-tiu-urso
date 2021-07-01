@@ -143,7 +143,6 @@ public class Warehouse extends WarehouseObservable {
      * @param resToRemove resource to remove from
      * @param qty         the amount of resource quantity to remove
      */
-    // TODO fix
     public void removeFromLocker(Resource resToRemove, int qty) {
         locker.put(resToRemove, locker.get(resToRemove) - qty);
         notify(this);

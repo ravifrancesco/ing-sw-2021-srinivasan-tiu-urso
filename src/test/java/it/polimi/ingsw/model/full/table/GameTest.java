@@ -28,7 +28,6 @@ public class GameTest {
 
     @Test
     public void resetTest() {
-        // TODO find a better way to test this?
         Game game = new Game("1", 3);
         GameSettingsBuilder gameSettingsBuilder = new GameSettingsBuilder();
         GameSettings gameSettings = gameSettingsBuilder.build();

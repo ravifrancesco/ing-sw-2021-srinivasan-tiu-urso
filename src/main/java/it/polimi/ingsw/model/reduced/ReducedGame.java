@@ -73,7 +73,6 @@ public class ReducedGame {
     }
 
     public void updatePlayers(List<String> playersNicknames) {
-        // TODO add and remove players after disconnections
         playersNicknames.forEach(nickname -> this.players.putIfAbsent(nickname, new ReducedPlayer(reducedModel)));
     }
 

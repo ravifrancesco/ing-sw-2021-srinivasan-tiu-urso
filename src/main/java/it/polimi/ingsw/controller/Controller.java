@@ -85,7 +85,6 @@ public class Controller {
         if (!game.getPlayers().containsKey(nickname)) {
             throw new InvalidNameException("Nickname " + nickname + " is not a part of the game");
         } else {
-            // TODO reconnection?
             game.removePlayer(nickname);
         }
     }

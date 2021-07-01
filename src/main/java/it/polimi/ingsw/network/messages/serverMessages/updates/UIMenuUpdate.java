@@ -7,13 +7,12 @@ import java.io.Serializable;
 
 /**
  * Class used to send Dashboard updates to the clients.
- * TODO change names with UI
  */
-public class CLIMenuUpdate implements ServerMessage, Serializable {
+public class UIMenuUpdate implements ServerMessage, Serializable {
 
     private final String menuCode;
 
-    public CLIMenuUpdate(String menuCode) {
+    public UIMenuUpdate(String menuCode) {
         this.menuCode = menuCode;
     }
 

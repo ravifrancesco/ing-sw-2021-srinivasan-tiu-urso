@@ -36,7 +36,6 @@ public class ResourceContainer implements Serializable {
                 selectedExtraDepositIndexes.put(i, new ArrayList<>()));
     }
 
-    // TODO during view coding: add checks to never select an empty slot
     public void addDepositSelectedResource(int pos, Resource[] whDeposit) {
         if (whDeposit[pos] != null) {
             selectedDepositIndexes.add(pos);

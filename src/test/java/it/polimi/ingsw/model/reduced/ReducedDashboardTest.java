@@ -563,11 +563,9 @@ public class ReducedDashboardTest {
 
     }
 
-    // TODO wait for explanation
     @Test
     public void payPriceTest() {
 
-        // TODO change when we have the view
         dashboard.reset();
 
         // HAPPY FLOW

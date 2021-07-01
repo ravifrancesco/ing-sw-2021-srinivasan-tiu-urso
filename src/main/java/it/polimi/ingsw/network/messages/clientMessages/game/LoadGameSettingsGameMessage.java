@@ -20,7 +20,7 @@ public class LoadGameSettingsGameMessage extends ClientGameMessage implements Se
         try {
             controller.loadGameSettings(gameSettings);
         } catch (Exception e) {
-            // TODO
+            e.printStackTrace();
         }
     }
 
@@ -29,7 +29,7 @@ public class LoadGameSettingsGameMessage extends ClientGameMessage implements Se
         try {
             controller.loadGameSettings(gameSettings);
         } catch (Exception e) {
-            // TODO
+            e.printStackTrace();
         }
     }
 }

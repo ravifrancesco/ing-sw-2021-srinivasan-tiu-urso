@@ -26,6 +26,6 @@ public class LeaveLobby extends ClientGameMessage implements Serializable {
 
     @Override
     public void handleLocally(OfflineClientVirtualView offlineClientVirtualView, Controller controller) {
-        // TODO
+        // No action
     }
 }
