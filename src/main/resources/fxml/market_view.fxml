@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="700.0" prefWidth="465.0"
-            xmlns="http://javafx.com/javafx/11.0.1"
+            xmlns="http://javafx.com/javafx"
             fx:controller="it.polimi.ingsw.view.UI.GUI.JavaFX.controllers.MarketViewController">
     <children>
         <ImageView fitHeight="600.0" fitWidth="503.0" pickOnBounds="true" preserveRatio="true">

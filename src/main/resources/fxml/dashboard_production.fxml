@@ -4,7 +4,7 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.AnchorPane?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" id="pane" fx:id="pane" prefHeight="700.0" prefWidth="500.0"
-            xmlns="http://javafx.com/javafx/11.0.1"
+            xmlns="http://javafx.com/javafx"
             fx:controller="it.polimi.ingsw.view.UI.GUI.JavaFX.controllers.DashboardProductionController">
 
     <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="90.0" layoutY="190.0" pickOnBounds="true">

@@ -6,7 +6,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="623.0" prefWidth="422.0" xmlns="http://javafx.com/javafx/16"
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="623.0" prefWidth="422.0" xmlns="http://javafx.com/javafx"
             fx:controller="it.polimi.ingsw.view.UI.GUI.JavaFX.controllers.BuyDevCardController">
     <children>
         <ImageView fx:id="cardImageView" fitHeight="466.0" fitWidth="309.0" layoutX="57.0" layoutY="79.0"

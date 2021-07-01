@@ -9,7 +9,7 @@
 <?import javafx.scene.text.Text?>
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="768.0"
             prefWidth="1366.0" style="-fx-background-image: url('png/table/dashboard_background.png')"
-            xmlns="http://javafx.com/javafx/16"
+            xmlns="http://javafx.com/javafx"
             fx:controller="it.polimi.ingsw.view.UI.GUI.JavaFX.controllers.GameController">
     <bottom>
         <Pane id="pane" fx:id="pane" prefHeight="768.0" prefWidth="1366.0"

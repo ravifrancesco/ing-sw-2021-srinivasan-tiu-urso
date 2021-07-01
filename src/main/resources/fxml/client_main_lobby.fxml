@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="600.0" prefWidth="800.0"
-            xmlns="http://javafx.com/javafx/11.0.1"
+            xmlns="http://javafx.com/javafx"
             fx:controller="it.polimi.ingsw.view.UI.GUI.JavaFX.controllers.ClientMainLobbyController">
     <children>
         <SplitPane dividerPositions="0.2157190635451505, 0.7341137123745819" orientation="VERTICAL" prefHeight="600.0"

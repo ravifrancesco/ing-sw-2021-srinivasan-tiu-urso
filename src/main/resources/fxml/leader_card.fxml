@@ -3,5 +3,5 @@
 
 <?import javafx.scene.image.ImageView?>
 <ImageView xmlns:fx="http://javafx.com/fxml/1" fx:id="item" fitHeight="318.0" fitWidth="223.0" pickOnBounds="true"
-           preserveRatio="true" xmlns="http://javafx.com/javafx/11.0.1"
+           preserveRatio="true" xmlns="http://javafx.com/javafx"
            fx:controller="it.polimi.ingsw.view.UI.GUI.JavaFX.controllers.LeaderCardController"/>

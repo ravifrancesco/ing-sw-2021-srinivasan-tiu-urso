@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="800.0" prefWidth="700.0"
-            xmlns="http://javafx.com/javafx/11.0.1"
+            xmlns="http://javafx.com/javafx"
             fx:controller="it.polimi.ingsw.view.UI.GUI.JavaFX.controllers.DevCardGridController">
     <children>
         <GridPane fx:id="cardsGridPane" layoutX="71.0" layoutY="40.0" maxHeight="-Infinity" maxWidth="-Infinity"
