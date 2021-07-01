@@ -46,8 +46,7 @@ public class LeaderCardController {
      */
     public void createItem(LeaderCard leaderCard, int slot) {
         String name = "leader_card_" + leaderCard.getId() + ".png";
-        File file = new File("src/main/resources/png/cards/leaderCards/" + name);
-        Image image = new Image(file.toURI().toString());
+        Image image = new Image(this.getClass().getResourceAsStream("/png/cards/leaderCards/" + name));
         item = new ImageView(image);
         item.setFitWidth(slots[slot].getWidth());
         item.setFitHeight(slots[slot].getHeight());

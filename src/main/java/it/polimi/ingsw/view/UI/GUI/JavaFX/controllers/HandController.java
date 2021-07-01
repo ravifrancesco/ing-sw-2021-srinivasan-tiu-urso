@@ -72,8 +72,7 @@ public class HandController {
      * @param leaderCard a leader card
      */
     private void setLeaderCard(LeaderCard leaderCard) {
-        File file = new File("src/main/resources/png/cards/leaderCards/leader_card_" + leaderCard.getId() + ".png");
-        javafx.scene.image.Image image = new Image(file.toURI().toString());
+        Image image = new Image(this.getClass().getResourceAsStream("/png/cards/leaderCards/leader_card_" + leaderCard.getId() + ".png"));
         ImageView imageView = new ImageView(image);
         leaderCardContainerHBox.getChildren().add(imageView);
         imageView.setFitHeight(200);
