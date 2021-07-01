@@ -77,8 +77,7 @@ public class DevCardGridController {
             imageView.setImage(null);
         } else {
             String id = String.valueOf(developmentCard.getId());
-            File file = new File("src/main/resources/png/cards/devCards/dev_card_" + id + ".png");
-            Image image = new Image(file.toURI().toString());
+            Image image = new Image(this.getClass().getResourceAsStream("/png/cards/devCards/dev_card_" + id + ".png"));
             imageView.setImage(image);
             imageView.setFitWidth(130);
             imageView.setFitHeight(200);

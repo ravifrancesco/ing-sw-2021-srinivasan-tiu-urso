@@ -26,8 +26,7 @@ public class FaithMarkerController {
      * Method to create a faith marker
      */
     public void createItem() {
-        File file = new File("src/main/resources/png/table/faith_marker.png");
-        Image image = new Image(file.toURI().toString());
+        Image image = new Image(this.getClass().getResourceAsStream("/png/table/faith_marker.png"));
         faithMarker = new ImageView(image);
         increment = 2.5;
         faithMarker.setFitHeight(35);
@@ -40,8 +39,7 @@ public class FaithMarkerController {
      * Method to create Lorenzo's faith marker
      */
     public void createLorenzoItem() {
-        File file = new File("src/main/resources/png/singlePlayer/lorenzo_faith_marker.png");
-        Image image = new Image(file.toURI().toString());
+        Image image = new Image(this.getClass().getResourceAsStream("/png/singlePlayer/lorenzo_faith_marker.png"));
         faithMarker = new ImageView(image);
         increment = 7.5;
         faithMarker.setFitHeight(25);

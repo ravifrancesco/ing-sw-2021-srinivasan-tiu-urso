@@ -7,6 +7,12 @@ import it.polimi.ingsw.view.virtualView.server.ServerVirtualView;
 import java.io.Serializable;
 
 public class PlayerStoresFromSupplyToExtraDeposit extends ClientGameMessage implements Serializable {
+
+    /**
+     * Message to activate the store from supply to extra deposit move from the controller.
+     * See controller doc for more details about arguments.
+     */
+
     private final int leaderCardPos;
     private final int from;
     private final int to;

@@ -10,7 +10,10 @@ import java.io.Serializable;
 import java.util.Map;
 
 public class ActivateDevelopmentProductionGameMessage extends ClientGameMessage implements Serializable {
-
+    /**
+     * Message to activate a development card production move in the controller.
+     * See controller doc for more details about arguments.
+     */
     int cardToActivate;
     ResourceContainer resourceToPayCost;
     Map<Resource, Integer> resourceRequiredOptional;

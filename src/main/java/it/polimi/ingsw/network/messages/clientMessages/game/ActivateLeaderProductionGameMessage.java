@@ -11,6 +11,10 @@ import java.util.Map;
 
 public class ActivateLeaderProductionGameMessage extends ClientGameMessage implements Serializable {
 
+    /**
+     * Message to activate a leader card production move in the controller.
+     * See controller doc for more details about arguments.
+     */
     int cardToActivate;
     ResourceContainer resourceToPayCost;
     Map<Resource, Integer> resourceRequiredOptional;

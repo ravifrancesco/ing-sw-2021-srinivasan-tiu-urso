@@ -7,6 +7,7 @@ import it.polimi.ingsw.view.virtualView.server.ServerVirtualView;
 import java.io.Serializable;
 
 public class PlayMessage extends ClientGameMessage implements Serializable {
+
     private final int index;
 
     public PlayMessage(int index) {

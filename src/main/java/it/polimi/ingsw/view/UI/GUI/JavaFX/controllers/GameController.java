@@ -1105,12 +1105,10 @@ public class GameController {
         Image image;
         switch (state) {
             case 1 -> {
-                File file = new File("src/main/resources/png/vaticanReport/pope_favor_" + i + "_missed.png");
-                image = new Image(file.toURI().toString());
+                image = new Image(this.getClass().getResourceAsStream("/png/vaticanReport/pope_favor_" + i + "_missed.png"));
             }
             case 2 -> {
-                File file = new File("src/main/resources/png/vaticanReport/pope_favor_" + i + "_achieved.png");
-                image = new Image(file.toURI().toString());
+                image = new Image(this.getClass().getResourceAsStream("/png/vaticanReport/pope_favor_" + i + "_achieved.png"));
             }
             default -> image = null;
 
@@ -1149,8 +1147,7 @@ public class GameController {
         if (token == null) {
             tokenIW.setImage(null);
         } else {
-            File file = new File("src/main/resources/png/singlePlayer/tokens/token_" + token.getType() + ".png");
-            Image image = new Image(file.toURI().toString());
+            Image image = new Image(this.getClass().getResourceAsStream("/png/singlePlayer/tokens/token_" + token.getType() + ".png"));
             tokenIW.setImage(image);
         }
     }

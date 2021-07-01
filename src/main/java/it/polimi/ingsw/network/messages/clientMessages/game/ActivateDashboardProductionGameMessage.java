@@ -10,6 +10,10 @@ import java.io.Serializable;
 import java.util.Map;
 
 public class ActivateDashboardProductionGameMessage extends ClientGameMessage implements Serializable {
+    /**
+     * Message to activate a dashboard production move in the controller.
+     * See controller doc for more details about arguments.
+     */
 
     ResourceContainer resourceToPayCost;
     Map<Resource, Integer> resourceRequiredOptional;

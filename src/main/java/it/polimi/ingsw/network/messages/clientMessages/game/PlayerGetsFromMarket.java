@@ -9,6 +9,13 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class PlayerGetsFromMarket extends ClientGameMessage implements Serializable {
+
+    /**
+     * Message to activate the get from market move from the controller.
+     * See controller doc for more details about arguments.
+     */
+
+
     private final int move;
     private final ArrayList<Resource> wmrs;
 

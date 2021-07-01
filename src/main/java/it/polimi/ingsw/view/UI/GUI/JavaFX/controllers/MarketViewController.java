@@ -95,8 +95,7 @@ public class MarketViewController {
     private void loadImage(ImageView imageView, Marble marble) {
         imageView.setImage(null);
         String color = marble.getMarbleColor().toString().toLowerCase();
-        File file = new File("src/main/resources/png/marbles/" + color + "_marble.png");
-        Image image = new Image(file.toURI().toString());
+        Image image = new Image(this.getClass().getResourceAsStream("/png/marbles/" + color + "_marble.png"));
         imageView.setImage(image);
         imageView.setFitHeight(55);
         imageView.setFitWidth(55);

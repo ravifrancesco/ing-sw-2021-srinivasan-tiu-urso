@@ -8,6 +8,12 @@ import java.io.Serializable;
 
 
 public class PlayerDiscardsExcessLeaderCards extends ClientGameMessage implements Serializable {
+
+    /**
+     * Message to activate the discard excess leader cards move from the controller.
+     * See controller doc for more details about arguments.
+     */
+
     private final int cardToDiscard;
 
     public PlayerDiscardsExcessLeaderCards(int cardToDiscard) {

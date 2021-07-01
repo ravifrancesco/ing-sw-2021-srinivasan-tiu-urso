@@ -61,8 +61,7 @@ public class ResourceController {
             case STONE -> name = "stone";
             case SERVANT -> name = "servant";
         }
-        File file = new File("src/main/resources/png/resources/" + name + ".png");
-        Image image = new Image(file.toURI().toString());
+        Image image = new Image(this.getClass().getResourceAsStream("/png/resources/" + name + ".png"));
         item = new ImageView(image);
         item.setFitWidth(25);
         item.setFitHeight(25);
@@ -98,8 +97,7 @@ public class ResourceController {
             case STONE -> name = "stone";
             case SERVANT -> name = "servant";
         }
-        File file = new File("src/main/resources/png/resources/" + name + ".png");
-        Image image = new Image(file.toURI().toString());
+        Image image = new Image(this.getClass().getResourceAsStream("/png/resources/" + name + ".png"));
         item = new ImageView(image);
         item.setFitWidth(25);
         item.setFitHeight(25);

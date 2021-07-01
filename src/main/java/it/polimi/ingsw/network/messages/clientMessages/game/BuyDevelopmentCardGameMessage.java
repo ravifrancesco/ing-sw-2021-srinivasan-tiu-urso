@@ -9,6 +9,11 @@ import java.io.Serializable;
 
 public class BuyDevelopmentCardGameMessage extends ClientGameMessage implements Serializable {
 
+    /**
+     * Message to buy a development card move in the controller.
+     * See controller doc for more details about arguments.
+     */
+
     private final int row;
     private final int column;
     private final ResourceContainer resourceToPayCost;

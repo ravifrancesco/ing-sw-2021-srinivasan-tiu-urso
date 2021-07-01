@@ -17,10 +17,20 @@ public class CLIInitializer {
         Scanner input = new Scanner(System.in);
         String choice;
         System.out.println(Constants.logo);
-        System.out.println("Please choose");
-        System.out.println("LOCAL to play locally");
-        System.out.println("ONLINE to play online");
-        System.out.print("> ");
+        cli.printMessage("Welcome to Maestri del Rinascimento!");
+        cli.printMessageNoNL("Created by: ");
+        cli.printColoredMessage("Tiu Robert Andrei (rbtasvg)   " +
+                "Srinivasan Ravi (ravifrancesco)   Giuseppe Urso (giuseppeurso)\n", Constants.GOLD_COLOR);
+
+        cli.printMessage("Please choose:\n");
+
+        cli.printColoredMessageNoNL("LOCAL ", Constants.SERVANT_COLOR);
+        cli.printMessage( "to play locally");
+
+        cli.printColoredMessageNoNL("ONLINE ", Constants.SERVANT_COLOR);
+        cli.printMessage( "to play online\n");
+
+        cli.printMessageNoNL("> ");
         while (true) {
             choice = input.nextLine();
             switch (choice.toUpperCase()) {

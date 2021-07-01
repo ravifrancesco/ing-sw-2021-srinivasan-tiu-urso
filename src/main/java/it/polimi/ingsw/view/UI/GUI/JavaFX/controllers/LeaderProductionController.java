@@ -268,8 +268,7 @@ public class LeaderProductionController {
             case STONE -> resourceName = "stone";
             case SERVANT -> resourceName = "servant";
         }
-        File file = new File("src/main/resources/png/resources/" + resourceName + ".png");
-        Image image = new Image(file.toURI().toString());
+        Image image = new Image(this.getClass().getResourceAsStream("/png/resources/" + resourceName + ".png"));
         ImageView imageView = new ImageView(image);
         imageView.setOnMouseClicked(mouseEvent -> clickedDepositResource(imageView, pos));
         imageView.setFitWidth(25);
@@ -310,8 +309,7 @@ public class LeaderProductionController {
             case STONE -> resourceName = "stone";
             case SERVANT -> resourceName = "servant";
         }
-        File file = new File("src/main/resources/png/resources/" + resourceName + ".png");
-        Image image = new Image(file.toURI().toString());
+        Image image = new Image(this.getClass().getResourceAsStream("/png/resources/" + resourceName + ".png"));
         ImageView imageView = new ImageView(image);
         imageView.setOnMouseClicked(mouseEvent -> clickedExtraDepositResource(imageView, pos));
         imageView.setFitWidth(25);

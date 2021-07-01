@@ -22,8 +22,7 @@ public class EndTurnGameMessage extends ClientGameMessage implements Serializabl
         if (output == 1) {
             GameLobby gl = (GameLobby) c.getCurrentLobby();
             gl.getConnectedPlayers().forEach((nick, player) -> {
-                player.enterLobby(player.getMainLobby());
-                player.sendCLIupdateMessage("back_in_lobby");
+                player.sendCLIupdateMessage("force_disconnection");
             });
             c.getMainLobby().removeGameLobby(gl);
         }
@@ -37,7 +36,7 @@ public class EndTurnGameMessage extends ClientGameMessage implements Serializabl
             offlineClientVirtualView.getUi().handleMenuCode("after_end_turn_single");
         }
         if (output == 1) {
-            offlineClientVirtualView.getUi().handleMenuCode("back_in_lobby");
+            offlineClientVirtualView.getUi().handleMenuCode("force_disconnection");
             offlineClientVirtualView.handleGameEnded();
         }
     }

@@ -44,8 +44,7 @@ public class DevelopmentCardController {
      */
     public void createItem(DevelopmentCard developmentCard, int slot) {
         String name = "dev_card_" + developmentCard.getId() + ".png";
-        File file = new File("src/main/resources/png/cards/devCards/" + name);
-        Image image = new Image(file.toURI().toString());
+        Image image = new Image(this.getClass().getResourceAsStream("/png/cards/devCards/" + name));
         item = new ImageView(image);
         item.setFitWidth(slots[slot].getWidth());
         item.setFitHeight(slots[slot].getHeight());

@@ -1150,7 +1150,11 @@ public class CLI implements UI {
         }
     }
 
+    /*
+    Disconnect the client after the game is finished.
+     */
     private void forceDisconnection() {
+        printColoredMessage("\n\nDisconnecting...", Constants.BOLD + Constants.ANSI_RED );
         System.exit(0);
 
     }
@@ -1289,9 +1293,9 @@ public class CLI implements UI {
      * Shows the notification for when the game has ended.
      */
     private void gameHasEnded() {
-        System.out.println("GAME HAS ENDED!");
+        printColoredMessage("GAME HAS ENDED!", Constants.BOLD + Constants.ANSI_RED);
 
-        System.out.println("PLAYER POINTS: ");
+        printColoredMessage("\nPLAYER POINTS: ", Constants.BOLD);
         reducedModel.getReducedGame().getPlayers().forEach((nickname, reducedPlayer) -> {
             System.out.println(nickname + ": " + reducedPlayer.getDashboard().getPlayerPoints());
         });
