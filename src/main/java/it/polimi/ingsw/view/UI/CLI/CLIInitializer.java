@@ -11,7 +11,7 @@ public class CLIInitializer {
 
     /**
      * Runs the cli
-     *
+     * TODO remove method
      * @param args the arguments
      */
     public static void main(String[] args) {

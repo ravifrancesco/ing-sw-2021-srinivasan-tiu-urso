@@ -21,7 +21,6 @@ import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 public class GUI extends Application implements UI {
@@ -36,10 +35,6 @@ public class GUI extends Application implements UI {
     private ServerChoiceController serverChoiceController;
     private ClientMainLobbyController clientMainLobbyController;
     private GameController gameController;
-
-    public static void main(String[] args) {
-        launch(args);
-    }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
