@@ -51,6 +51,7 @@ public class GUI extends Application implements UI {
         serverChoiceController.setGui(this);
         primaryStage.setTitle("Choose a server");
         primaryStage.setScene(new Scene(root, 600, 400));
+        primaryStage.setResizable(false);
         primaryStage.show();
     }
 
@@ -152,6 +153,8 @@ public class GUI extends Application implements UI {
                         gameController.setGui(this);
                         Stage stage = new Stage();
                         stage.setScene(new Scene(root, 1366, 768));
+                        stage.setTitle("Master of Renaissance");
+                        stage.setResizable(false);
                         stage.setOnCloseRequest(t -> System.exit(0));
                         stage.show();
                         if (isOffline) {

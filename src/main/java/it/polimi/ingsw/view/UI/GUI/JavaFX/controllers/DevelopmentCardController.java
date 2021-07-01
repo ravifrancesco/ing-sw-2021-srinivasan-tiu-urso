@@ -95,6 +95,7 @@ public class DevelopmentCardController {
             Stage stage = new Stage();
             stage.setTitle("Select resources");
             stage.setScene(new Scene(root, 500, 600));
+            stage.setResizable(false);
             stage.initModality(Modality.WINDOW_MODAL);
             stage.initOwner(
                     ((Node) event.getSource()).getScene().getWindow());

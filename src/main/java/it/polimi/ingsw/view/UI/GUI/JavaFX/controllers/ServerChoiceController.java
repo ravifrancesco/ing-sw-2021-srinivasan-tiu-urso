@@ -64,6 +64,7 @@ public class ServerChoiceController {
             Stage stage = new Stage();
             stage.setTitle("Choose a nickname");
             stage.setScene(new Scene(root, 600, 400));
+            stage.setResizable(false);
             stage.show();
             ((Node) (event.getSource())).getScene().getWindow().hide();
         } catch (IOException e) {

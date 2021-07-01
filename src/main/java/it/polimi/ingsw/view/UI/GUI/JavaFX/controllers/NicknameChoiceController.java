@@ -73,6 +73,8 @@ public class NicknameChoiceController {
             gui.send(new AskGameLobbies());
             Stage stage = new Stage();
             stage.setScene(new Scene(root, 800, 600));
+            stage.setTitle("Main lobby");
+            stage.setResizable(false);
             stage.setOnCloseRequest(t -> System.exit(0));
             stage.show();
             ((Node) (event.getSource())).getScene().getWindow().hide();

@@ -585,6 +585,7 @@ public class GameController {
         Stage stage = new Stage();
         stage.setTitle("Market");
         stage.setScene(new Scene(root, 465, 700));
+        stage.setResizable(false);
         stage.initModality(Modality.WINDOW_MODAL);
         stage.initOwner(
                 ((Node) event.getSource()).getScene().getWindow());
@@ -608,6 +609,7 @@ public class GameController {
         Stage stage = new Stage();
         stage.setTitle("Development card grid");
         stage.setScene(new Scene(root, 700, 800));
+        stage.setResizable(false);
         stage.initModality(Modality.WINDOW_MODAL);
         stage.initOwner(
                 ((Node) event.getSource()).getScene().getWindow());
@@ -984,6 +986,8 @@ public class GameController {
                 controller.setCards(rg.getPlayers().get(rg.getClientPlayer()).getHand());
                 Stage stage = new Stage();
                 stage.setScene(new Scene(root, 760, 462));
+                stage.setTitle("Discard excess leader cards");
+                stage.setResizable(false);
                 stage.show();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -1011,6 +1015,8 @@ public class GameController {
                 controller.setGui(gui);
                 Stage stage = new Stage();
                 stage.setScene(new Scene(root, 524, 471));
+                stage.setTitle("Choose bonus resources");
+                stage.setResizable(false);
                 stage.show();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -1075,6 +1081,7 @@ public class GameController {
         Stage stage = new Stage();
         stage.setTitle("Hand");
         stage.setScene(new Scene(root, 508, 510));
+        stage.setResizable(false);
         stage.initModality(Modality.WINDOW_MODAL);
         stage.initOwner(
                 ((Node) event.getSource()).getScene().getWindow());
@@ -1134,6 +1141,7 @@ public class GameController {
                 Stage stage = new Stage();
                 stage.setTitle("Select resources");
                 stage.setScene(new Scene(root, 500, 700));
+                stage.setResizable(false);
                 stage.initModality(Modality.WINDOW_MODAL);
                 stage.initOwner(
                         ((Node) event.getSource()).getScene().getWindow());

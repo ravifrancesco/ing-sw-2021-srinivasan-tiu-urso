@@ -99,6 +99,8 @@ public class DevCardGridController {
             ((BuyDevCardController) fxmlLoader.getController()).setParameters(gui, image, row, col);
             Stage stage = new Stage();
             stage.setScene(new Scene(root, 422, 623));
+            stage.setTitle("Buy development card");
+            stage.setResizable(false);
             stage.initModality(Modality.WINDOW_MODAL);
             stage.initOwner(
                     ((Node) event.getSource()).getScene().getWindow());
