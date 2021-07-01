@@ -24,7 +24,7 @@ public class MarketHandler {
             ReducedPlayer currentPlayer = cli.getReducedModel().getReducedPlayer();
             ArrayList<Resource> wmrResources = new ArrayList<>();
             int whiteMarbles = (int) cli.getReducedModel().getReducedGameBoard()
-                    .getMarblesMove(move).stream().filter(marble -> marble instanceof WhiteMarble).count(); // TODO remove instanceof
+                    .getMarblesMove(move).stream().filter(marble -> marble instanceof WhiteMarble).count();
 
             if (currentPlayer.getActivatedWMR().length > 0 && whiteMarbles > 0) {
                 // WMRS are present

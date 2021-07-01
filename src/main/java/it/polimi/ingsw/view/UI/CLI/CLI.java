@@ -225,7 +225,7 @@ public class CLI implements UI {
 
     @Override
     public void enterGamePhase(boolean isHost, boolean isOffline) {
-        // TODO want to display something?
+        // no action
     }
 
     /**
@@ -379,7 +379,6 @@ public class CLI implements UI {
                     printMessage(pp.getNumRequiredAny() + Constants.STONE_COLOR + " ANY RESOURCE" + Constants.ANSI_RESET);
                 }
                 printMessage("Into");
-                // TODO qualcosa non va qua, non funziona bene se ha i faith track
 
                 if (produced.size() > 0) {
                     produced.forEach((resource, qty) ->

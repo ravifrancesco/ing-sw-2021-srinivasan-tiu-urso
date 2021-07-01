@@ -95,7 +95,7 @@ public class GUI extends Application implements UI {
 
     @Override
     public void printColoredMessage(String message, String ansiGreen) {
-        // TODO
+        // no action
     }
 
     @Override
@@ -196,7 +196,6 @@ public class GUI extends Application implements UI {
 
     @Override
     public void handleMenuCode(String menuCode) {
-        System.out.println(menuCode);
         if ("after_game_start".equals(menuCode)) {
             Platform.runLater(() -> gameController.showAfterGameStart());
         }

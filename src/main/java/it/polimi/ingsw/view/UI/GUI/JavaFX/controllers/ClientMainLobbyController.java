@@ -47,7 +47,6 @@ public class ClientMainLobbyController {
             gui.printErrorMessage("Please select a game");
         } else {
             gui.send(new JoinGameLobby(selectedGame));
-            // TODO change windows
         }
     }
 

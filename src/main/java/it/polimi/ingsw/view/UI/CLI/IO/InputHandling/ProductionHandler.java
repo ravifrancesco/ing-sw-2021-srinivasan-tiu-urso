@@ -36,7 +36,6 @@ public class ProductionHandler {
                 cli.printMessage(getNumRequiredAny + " resources are selectable by you.");
             }
 
-            // TODO fix this trash
             cli.printMessage(ANSI_GREEN + "Please choose the payment resources" + ANSI_RESET);
             ResourceContainer rc = ResourceHandler.chooseResources(cli);
             cli.printMessage("");

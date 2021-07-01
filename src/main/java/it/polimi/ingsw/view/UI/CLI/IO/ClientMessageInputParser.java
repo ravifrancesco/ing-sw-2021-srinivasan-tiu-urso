@@ -25,14 +25,14 @@ public class ClientMessageInputParser {
             case "JOINGAME" -> InputHandler.joinGame(in, cli); // tested
             case "LEAVELOBBY" -> InputHandler.leaveLobby(cli); // tested
             case "STARTGAME" -> InputHandler.startGame();
-            case "QUIT" -> InputHandler.quit(); // TODO fix
+            case "QUIT" -> InputHandler.quit();
 
             case "SHOW" -> ViewHandler.show(in, cli); // tested
 
             case "DISCARDEXCESSCARD" -> InputHandler.discardExcessCard(in, cli); // tested ---
             case "GETINITIALRESOURCES" -> InputHandler.getInitialResources(in, cli); // tested
 
-            case "GETFROMMARKET" -> InputHandler.getFromMarket(in, cli); // TODO fix WMRS ----
+            case "GETFROMMARKET" -> InputHandler.getFromMarket(in, cli);
             case "BUYDEVELOPMENTCARD" -> InputHandler.buyDevelopmentCard(in, cli); // tested ---
             case "ACTIVATEDASHBOARDPRODUCTION" -> InputHandler.activateDashboardProduction(cli); // tested
             case "ACTIVATEDEVELOPMENTPRODUCTION" -> InputHandler.activateDevelopmentProduction(in, cli); // tested
@@ -43,10 +43,10 @@ public class ClientMessageInputParser {
             case "PLAYLEADERCARD" -> InputHandler.playLeaderCard(in, cli); // tested
 
             case "STOREFROMSUPPLY" -> InputHandler.storeFromSupply(in, cli); // tested
-            case "STOREFROMSUPPLYED" -> InputHandler.storeFromSupplyToExtraDeposit(in, cli); // TODO controllare se ho sistemato gli indici
+            case "STOREFROMSUPPLYED" -> InputHandler.storeFromSupplyToExtraDeposit(in, cli);
             case "CHANGEDEPOSIT" -> InputHandler.changeDeposit(cli); // tested
 
-            case "LOADGAMESETTINGS" -> InputHandler.loadGameSettings(in); // TODO test
+            case "LOADGAMESETTINGS" -> InputHandler.loadGameSettings(in);
 
             case "ENDTURN" -> InputHandler.endTurn(); // tested -// ---
             case "HELP" -> InputHandler.sendHelp(cli);

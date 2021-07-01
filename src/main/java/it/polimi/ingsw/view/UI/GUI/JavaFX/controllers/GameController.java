@@ -122,8 +122,8 @@ public class GameController {
      */
     public void setPlayers() {
         Set<String> players = this.gui.getReducedModel().getReducedGame().getPlayers().keySet();
-        if (players.size() == 1) { // TODO solve bug
-            this.lorenzoPicIW.setVisible(true); // TODO show lorenzo
+        if (players.size() == 1) {
+            this.lorenzoPicIW.setVisible(true);
             this.tokenIW.setVisible(true);
             setSelectedPlayerSinglePlayer(gui.getReducedModel().getReducedPlayer().getNickname());
         } else {
@@ -629,7 +629,7 @@ public class GameController {
         Optional<ButtonType> result = mainAlert.showAndWait();
         if (result.isPresent() && result.get() == buttonTypeOne) {
             this.gui.send(new StartGameGameMessage());
-            Platform.runLater(this::initHostAlert); // TODO make it better
+            Platform.runLater(this::initHostAlert);
         }
     }
 
@@ -728,8 +728,6 @@ public class GameController {
                 .filter(i -> supplyControllers[i] != null)
                 .forEach(i -> supplyControllers[i].setDisable());
 
-        // TODO disable productions
-
         Arrays.stream(developmentCardControllers).filter(Objects::nonNull)
                 .forEach(controller -> controller.getItem().setDisable(true));
 
@@ -776,8 +774,6 @@ public class GameController {
         IntStream.range(0, SIZE_SUPPLY)
                 .filter(i -> supplyControllers[i] != null)
                 .forEach(i -> supplyControllers[i].setEnable());
-
-        // TODO enable productions
 
         Arrays.stream(developmentCardControllers).filter(Objects::nonNull)
                 .forEach(controller -> controller.getItem().setDisable(false));
@@ -876,7 +872,7 @@ public class GameController {
         if (rg.getClientPlayer().equals(rg.getCurrentPlayer())) {
             mainAlert.setHeaderText("It's your turn!");
             setSelectedPlayer(rg.getClientPlayer());
-            setEnable(); // TODO understand y not working
+            setEnable();
         } else {
             mainAlert.setHeaderText("It is now " + rg.getCurrentPlayer() + "'s turn!");
             setDisable();

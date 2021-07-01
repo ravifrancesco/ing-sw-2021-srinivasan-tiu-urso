@@ -18,10 +18,6 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 
-/**
- * TODO doc
- * TODO check synchronized methods (send/close)
- */
 public class ServerVirtualView implements Runnable,
         FaithTrackObserver, WarehouseObserver, DashboardObserver,
         PlayerObserver, GameObserver,
@@ -84,7 +80,6 @@ public class ServerVirtualView implements Runnable,
      * @param message the message
      */
     private synchronized void send(ServerMessage message) {
-        System.out.println(message);
         try {
             out.writeObject(message);
             out.flush();
