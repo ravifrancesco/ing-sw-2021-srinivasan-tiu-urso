@@ -165,7 +165,7 @@ public class ServerVirtualView implements Runnable,
             System.out.println("Deregistering client " + nickname + "..");
             deregisterConnection();
             System.out.println("Deregistration complete");
-            if (currentLobby.getType() == LobbyType.GAME_LOBBY) {
+            if (currentLobby.getType() == LobbyType.GAME_LOBBY && !((GameLobby) currentLobby).isGameOver()) {
                 ((GameLobby) currentLobby).getConnectedPlayers().values()
                         .forEach(value -> value.sendCLIupdateMessage("force_disconnection"));
             }
@@ -186,7 +186,7 @@ public class ServerVirtualView implements Runnable,
                 handleMessage();
             }
         } catch (Exception e) {
-            //System.out.println("solo questo");
+            e.printStackTrace();
         } finally {
             close();
         }
