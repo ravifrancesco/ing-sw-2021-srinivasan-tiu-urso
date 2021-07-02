@@ -1,4 +1,4 @@
-# Master of Renaissance
+# Masters of Renaissance
 
 [![CircleCI](https://img.shields.io/circleci/build/gh/ravifrancesco/ing-sw-2021-srinivasan-tiu-urso?style=for-the-badge&token=e30efbb709d41ac851479f2a553ca2077d99b251)](https://app.circleci.com/pipelines/github/ravifrancesco/ing-sw-2021-srinivasan-tiu-urso)
 
@@ -27,5 +27,7 @@ We decided to implement two advanced features in our project:
 
 ## Test coverage
 
-We implemented tests for the model and controller side of our project. In our project, the state of the model is always correct (meaning that when trying to modify it, the model will throw exceptions in cases of states that do not sadisfy the rules of the game). For this reason, we mainly tested the model, and tested the controller parts that do not depend on the model. This are our test coverage reults:
+We implemented tests for the model and controller side of our project. In our project, the state of the model is always correct (meaning that when trying to modify it, the model will throw exceptions in cases of states that do not sadisfy the rules of the game). For this reason, we mainly tested the model, and tested the controller parts that do not depend on the model. These are our test coverage reults:
 
+![Full Model Coverage](https://github.com/ravifrancesco/ing-sw-2021-srinivasan-tiu-urso/blob/master/deliverables/full_model_coverage.png)
+![Controller Coverage](https://github.com/ravifrancesco/ing-sw-2021-srinivasan-tiu-urso/blob/master/deliverables/controller_coverage.png)
